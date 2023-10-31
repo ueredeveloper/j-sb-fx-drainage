@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.web.WebView?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="459.0" prefWidth="866.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MainController">
+   <children>
+      <Label layoutX="333.0" layoutY="14.0" text="Main Page">
+         <font>
+            <Font size="43.0" />
+         </font>
+      </Label>
+      <WebView fx:id="wvMap" layoutY="86.0" prefHeight="374.0" prefWidth="866.0" />
+      <JFXButton layoutX="665.0" layoutY="46.0" />
+   </children>
+</AnchorPane>

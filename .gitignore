@@ -1,0 +1,70 @@
+# Maven
+target/
+
+# Java
+*.class
+
+# IDE-specific files and directories
+.idea/
+.eclipse/
+.vscode/
+
+# JavaFX specific
+bin/
+nbproject/private/
+nbproject/Makefile-*
+nbproject/project.properties
+nbproject/project.xml
+nb-configuration.xml
+
+# Eclipse specific
+.classpath
+.project
+.settings/
+
+# IntelliJ IDEA specific
+out/
+
+# NetBeans specific
+build/
+dist/
+nbbuild/
+nbdist/
+nbactions.xml
+nbp-ant.xml
+
+# Operating System specific
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Compiled files
+*.jar
+*.war
+*.ear
+
+# Package Files
+*.war
+*.ear
+
+# Maven Wrapper (https://github.com/takari/maven-wrapper)
+.mvn/wrapper/maven-wrapper.jar
+.mvn/wrapper/maven-wrapper.properties
+
+# Gradle
+.gradle/
+
+# User-specific files
+*.iml
+*.iws
+*.ipr
+
+# Miscellaneous
+.idea/
+*.ipr
+*.iws
+*.iml
+out/
+*.class
