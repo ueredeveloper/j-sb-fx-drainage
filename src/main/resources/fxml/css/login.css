@@ -1,0 +1,54 @@
+/* Define custom colors using CSS variables */
+* {
+  -fx-primary-color: #9FC773;
+  -fx-secondary-color: #000750;
+  -fx-text-color: #FEFFFE;
+  -fx-button-google: #FF3B00;
+}
+#pLogin{
+	-fx-background-color: -fx-primary-color;
+}
+
+#lblSignUp {
+  -fx-text-fill: -fx-secondary-color;
+}
+
+#lblSignIn {
+  -fx-text-fill: -fx-text-color;
+}
+
+#lblSignInEmail {
+  -fx-text-fill: -fx-text-color;
+}
+
+#lblSignInPassword {
+  -fx-text-fill: -fx-text-color;
+}
+
+#lblSignUpEmail {
+  -fx-text-fill: -fx-secondary-color;
+}
+
+#lblSignUpPassword {
+  -fx-text-fill: -fx-secondary-color;
+}
+
+#btnSignIn {
+  -fx-background-color: -fx-secondary-color;
+  -fx-text-fill: -fx-text-color;
+}
+
+#btnSignUp {
+  -fx-background-color: -fx-secondary-color;
+  -fx-text-fill: -fx-text-color;
+}
+
+#btnSignUpGoogle {
+  -fx-background-color: -fx-button-google;
+}
+#lbl-google{
+	-fx-text-fill: -fx-text-color;
+}
+#icon-google {
+	-fx-fill: -fx-text-color;
+}
