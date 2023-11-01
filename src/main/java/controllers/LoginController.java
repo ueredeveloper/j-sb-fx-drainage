@@ -15,12 +15,14 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class LoginController implements Initializable {
@@ -98,6 +100,22 @@ public class LoginController implements Initializable {
 
 					// stage.close();
 					Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/fxml/Main.fxml")));
+					
+					
+					// Redimensionamento da do stage de acordo com as dimensões do monitor
+                    Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+                    
+                    // Tela cheia
+                    stage.setX(primaryScreenBounds.getMinX());
+                    stage.setY(primaryScreenBounds.getMinY());
+                    stage.setWidth(primaryScreenBounds.getWidth());
+                    stage.setHeight(primaryScreenBounds.getHeight());
+                    // Minímo de tamanho e largura da tela principal
+                    stage.setMinHeight(668);
+                    stage.setMinWidth(1266);
+                    // título
+                    stage.setTitle("SAD/DF - Geo - Cadastro");
+                    
 					stage.setScene(scene);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
