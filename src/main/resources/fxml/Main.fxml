@@ -14,6 +14,7 @@
          </font>
       </Label>
       <WebView fx:id="wvMap" layoutY="86.0" prefHeight="374.0" prefWidth="866.0" />
-      <JFXButton layoutX="665.0" layoutY="46.0" />
+      <JFXButton layoutX="52.0" layoutY="24.0" prefHeight="44.0" prefWidth="208.0" text="jfoenix button" />
+      
    </children>
 </AnchorPane>
