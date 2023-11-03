@@ -10,8 +10,6 @@ import java.util.ResourceBundle;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import javafx.beans.property.Property;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -34,12 +32,16 @@ public class DocumentController implements Initializable {
 	TableView<Documento> tv_doc;
 	@FXML
 	TableColumn<Documento, Integer> tc_doc_id;
+	
+	
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		tc_doc_id.setCellValueFactory(new PropertyValueFactory<Documento, Integer>("doc_id"));
 
+		
 	}
+	
 
 	public void handleListDocuments() {
 		System.out.println("Get list of documents ");

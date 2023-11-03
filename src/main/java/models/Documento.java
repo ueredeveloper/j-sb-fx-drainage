@@ -1,7 +1,5 @@
 package models;
 
-import models.DocumentoTipo;
-
 public class Documento {
 
 	private int doc_id;
