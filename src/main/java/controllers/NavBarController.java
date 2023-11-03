@@ -10,7 +10,6 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
 import utilities.ResizePaneAnimation;
 
 public class NavBarController implements Initializable {
@@ -23,22 +22,23 @@ public class NavBarController implements Initializable {
 
 	@FXML
 	private JFXButton btnMapa;
-	
-	@FXML
-	MainController mainController;
 
+	@FXML
+	private MainController mainController;
+
+    
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		System.out.println("nav bar controller ");
-		
+
 		btnCadastro.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent event) {
-				
-				//Pane pMapAndDocs = mainController.getPane();
-				
-				//System.out.println(pMapAndDocs);
+
+				// Pane pMapAndDocs = mainController.getPane();
+
+				// System.out.println(pMapAndDocs);
 
 				if (mainController.getPane().getParent() instanceof AnchorPane) {
 
@@ -49,6 +49,11 @@ public class NavBarController implements Initializable {
 			}
 		});
 
+	}
+
+	public void setMainController(MainController mainController) {
+		this.mainController = mainController;
+		
 	}
 
 }

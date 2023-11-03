@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import com.jfoenix.controls.JFXButton;
-
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -28,13 +26,7 @@ public class MainController implements Initializable {
 	@FXML
 	private WebView wvMap;
 
-	@FXML
-	private JFXButton btnOpenListDocs;
-	
-	@FXML
-    private NavBarController navBarController;
-	
-	public Pane getPane () {
+	public Pane getPane() {
 		return pMapAndDocs;
 	}
 
@@ -57,19 +49,21 @@ public class MainController implements Initializable {
 			wvMap.setPrefHeight(newValue.doubleValue());
 		});
 
-		
-
 	}
 
 	private void loadNavBar() {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/NavBar.fxml"));
-			Pane pTopBarContent = loader.load();
-			pTopBar.getChildren().add(pTopBarContent);
+			Pane pNavBar = loader.load();
+			// acesso ao MainController dentro do NavBarController
+			NavBarController navBarController = loader.getController();
+		    navBarController.setMainController(this);
+		    
+			pTopBar.getChildren().add(pNavBar);
 
-			// Setar pane com barra de navegação do lado direito do pane (pTopBar)
+			// Seta pane com barra de navegação (p do lado direito do pane (pTopBar)
 			pTopBar.widthProperty().addListener((observable, oldValue, newValue) -> {
-				pTopBarContent.layoutXProperty().set(newValue.doubleValue()-pTopBarContent.getPrefWidth());
+				pNavBar.layoutXProperty().set(newValue.doubleValue() - pNavBar.getPrefWidth());
 
 			});
 		} catch (IOException e) {
