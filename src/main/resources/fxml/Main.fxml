@@ -1,20 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import java.net.URL?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.web.WebView?>
 
 <AnchorPane fx:id="apMain" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="459.0" prefWidth="866.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MainController">
    <children>
-      <Pane prefHeight="50.0" style="-fx-background-color: red;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+      <Pane fx:id="pTopBar" prefHeight="50.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
-            <JFXButton fx:id="btnOpenListDocs" alignment="TOP_RIGHT" layoutX="777.0" layoutY="13.0" style="-fx-background-color: blue;" text="OnAction" />
+            <JFXButton fx:id="btnOpenListDocs" alignment="TOP_RIGHT" layoutX="14.0" layoutY="13.0" style="-fx-background-color: blue;" text="OnAction" />
          </children>
       </Pane>
-      <Pane fx:id="pMapAndDocs" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: orange;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
+      <Pane fx:id="pMapAndDocs" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
          <children>
                   <WebView fx:id="wvMap" prefHeight="0.0" prefWidth="0.0" />
          </children></Pane>
    </children>
+   <stylesheets>
+      <URL value="@css/colors.css" />
+      <URL value="@css/main.css" />
+   </stylesheets>
 </AnchorPane>

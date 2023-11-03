@@ -1,0 +1,11 @@
+
+.nav-bar-container {
+    -fx-padding : 0 10 0 0 ;
+    -fx-alignment: CENTER_RIGHT;
+    -fx-font-weight: bold;
+	 
+}
+.buttons{
+	-fx-text-fill: -fx-secondary-color;
+	-fx-pref-width:100;
+}

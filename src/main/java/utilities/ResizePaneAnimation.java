@@ -19,6 +19,8 @@ import javafx.util.Duration;
  */
 public class ResizePaneAnimation {
 
+	// 031123 os valores target right e target bottom devem ser dinâmicos 705 para tela pequena é
+	//muito mas não é para um tela grande
     /**
      * @var targetRight
      * Largura alvo do painel.
