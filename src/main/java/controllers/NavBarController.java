@@ -46,10 +46,10 @@ public class NavBarController implements Initializable {
 
 
 				// Redimensiona o mapa através do acMap no MainController (Pai)
-				if (mainController.getAnchorPane().getParent() instanceof AnchorPane) {
+				if (mainController.getAnchorPaneMap().getParent() instanceof AnchorPane) {
 
 					ResizePaneAnimation resizer = new ResizePaneAnimation();
-					resizer.animateResize(mainController.getAnchorPane());
+					resizer.animateResize(mainController.getAnchorPaneMap());
 				}
 
 				loadListDocuments();
@@ -66,16 +66,13 @@ public class NavBarController implements Initializable {
 
 	private void loadListDocuments() {
 		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ListDocuments.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Documents.fxml"));
 
 			AnchorPane apListDocuments = loader.load();
-
-			mainController.getAnchorPane().getChildren().add(apListDocuments);
-			mainController.setRightAnchor(apListDocuments, -700.0);
-			//AnchorPane.setRightAnchor(apListDocuments, 0.0);
-
-			// pDocuments.setLayoutX(mainController.getPane().getWidth() -
-			// pDocuments.getPrefWidth());
+			
+			mainController.getAnchorPaneMain().getChildren().add(apListDocuments);
+			mainController.setAnchorPositions (apListDocuments, 0.0);
+			
 
 		} catch (IOException e) {
 			e.printStackTrace();
