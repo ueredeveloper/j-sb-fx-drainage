@@ -9,6 +9,7 @@ import java.util.ResourceBundle;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.jfoenix.controls.JFXButton;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -18,30 +19,52 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import models.Documento;
+import utilities.ResizePaneAnimation;
 
 public class DocumentController implements Initializable {
-	
-	//static String url_server = System.getenv("URL_SEVER");
-	private static final String url = "http://localhost:8080";
-	
+
+	// static String url_server = System.getenv("URL_SEVER");
+	// private static final String url = "http://localhost:8080";
+	public static final String url = "https://j-sb-drainage.ueredeveloper.repl.co";
 
 	@FXML
-	Button btn_doc_search;
+	private AnchorPane apListDocuments;
+
 	@FXML
-	TableView<Documento> tv_doc;
+	private JFXButton btnSearchDocuments;
+
 	@FXML
-	TableColumn<Documento, Integer> tc_doc_id;
-	
-	
+	private TableView<Documento> tabViewDocuments;
+
+	@FXML
+	private TableColumn<Documento, Integer> tcId;
+
+	@FXML
+	private TableColumn<Documento, String> tcNum;
+
+	@FXML
+	private TableColumn<Documento, String> tcProc;
+
+	@FXML
+	private TableColumn<Documento, String> tcNumSei;
+
+	public AnchorPane getAnchorPane () {
+		return apListDocuments;
+	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		tc_doc_id.setCellValueFactory(new PropertyValueFactory<Documento, Integer>("doc_id"));
-
+		tcId.setCellValueFactory(new PropertyValueFactory<Documento, Integer>("doc_id"));
+		tcNum.setCellValueFactory(new PropertyValueFactory<Documento, String>("doc_numero"));
+		tcProc.setCellValueFactory(new PropertyValueFactory<Documento, String>("doc_processo"));
+		tcNumSei.setCellValueFactory(new PropertyValueFactory<Documento, String>("doc_sei"));
 		
+		//AnchorPane.setRightAnchor(apListDocuments, 1.0);
+
 	}
-	
 
 	public void handleListDocuments() {
 		System.out.println("Get list of documents ");
@@ -99,7 +122,7 @@ public class DocumentController implements Initializable {
 				ObservableList<Documento> documentList = FXCollections.observableArrayList(documentos);
 
 				// Set the items in the TableView
-				tv_doc.setItems(documentList);
+				tabViewDocuments.setItems(documentList);
 
 			} else {
 				// System.out.println("Error: " + responseCode);

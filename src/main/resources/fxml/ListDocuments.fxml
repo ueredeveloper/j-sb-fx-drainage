@@ -1,20 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import java.net.URL?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="430.0" prefWidth="907.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.DocumentController">
+<AnchorPane fx:id="apListDocuments" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="700.0" styleClass="ap-list" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.DocumentController">
 	<children>
-		<Button fx:id="btn_doc_search" layoutX="765.0" layoutY="49.0" mnemonicParsing="false" onAction="#handleListDocuments" prefHeight="29.0" prefWidth="126.0" text="search" />
-		<TableView fx:id="tv_doc" layoutX="38.0" layoutY="93.0" prefHeight="265.0" prefWidth="853.0">
+      <JFXButton fx:id="btnSearchDocuments" layoutX="586.0" layoutY="14.0" onAction="#handleListDocuments" prefHeight="30.0" prefWidth="100.0" styleClass="btnList" text="Buscar" />
+		<TableView id="tab-view-list" fx:id="tabViewDocuments" layoutX="10.0" layoutY="53.0" prefHeight="265.0" prefWidth="681.0">
 			<columns>
-				<TableColumn fx:id="tc_doc_id" prefWidth="75.0" text="id" />
-				<TableColumn prefWidth="75.0" text="numero" />
-				<TableColumn prefWidth="75.0" text="processo" />
-				<TableColumn prefWidth="75.0" text="sei" />
+				<TableColumn fx:id="tcId" prefWidth="75.0" text="id" />
+				<TableColumn fx:id="tcNum" prefWidth="75.0" text="numero" />
+				<TableColumn fx:id="tcProc" prefWidth="75.0" text="processo" />
+				<TableColumn fx:id="tcNumSei" prefWidth="75.0" text="sei" />
 			</columns>
 		</TableView>
 	</children>
+   <stylesheets>
+      <URL value="@css/colors.css" />
+      <URL value="@css/list-documents.css" />
+   </stylesheets>
 </AnchorPane>

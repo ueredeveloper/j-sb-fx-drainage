@@ -17,15 +17,6 @@ public class MainFormController {
 
 	private static final String url = "https://j-sb-drainage.ueredeveloper.repl.co";
 
-	private static List<Documento> parseJson(String json) {
-		List<Documento> documentList = new ArrayList<>();
-
-		// Parse the JSON and create Document objects
-		// Modify this logic based on the expected response format
-
-		return documentList;
-	}
-
 	public Button button;
 
 	public void handleOnClick() {

@@ -8,26 +8,28 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 
 public class MainController implements Initializable {
 
 	@FXML
-	AnchorPane apMain;
+	private AnchorPane apMain;
 
 	@FXML
-	Pane pTopBar;
+	private AnchorPane apTopBar;
 
 	@FXML
-	Pane pMapAndDocs;
+	private AnchorPane apMap;
 
 	@FXML
 	private WebView wvMap;
 
-	public Pane getPane() {
-		return pMapAndDocs;
+	public AnchorPane getAnchorPane() {
+		return apMap;
+	}
+	public void setRightAnchor (AnchorPane ac, double value) {
+		AnchorPane.setRightAnchor(ac, value);
 	}
 
 	@Override
@@ -38,14 +40,13 @@ public class MainController implements Initializable {
 
 		loadNavBar();
 
-		// Torna as dimensões do WebView (wvMap) semelhantes ao do pai (pMapAndDocs)
-
-		pMapAndDocs.widthProperty().addListener((observable, oldValue, newValue) -> {
+		// Torna as dimensões do WebView (wvMap) semelhantes ao do pai (apMap)
+		apMap.widthProperty().addListener((observable, oldValue, newValue) -> {
 			wvMap.setPrefWidth(newValue.doubleValue());
 
 		});
 
-		pMapAndDocs.heightProperty().addListener((observable, oldValue, newValue) -> {
+		apMap.heightProperty().addListener((observable, oldValue, newValue) -> {
 			wvMap.setPrefHeight(newValue.doubleValue());
 		});
 
@@ -54,18 +55,21 @@ public class MainController implements Initializable {
 	private void loadNavBar() {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/NavBar.fxml"));
-			Pane pNavBar = loader.load();
+			AnchorPane apNavBar = loader.load();
 			// acesso ao MainController dentro do NavBarController
 			NavBarController navBarController = loader.getController();
-		    navBarController.setMainController(this);
-		    
-			pTopBar.getChildren().add(pNavBar);
+			navBarController.setMainController(this);
 
-			// Seta pane com barra de navegação (p do lado direito do pane (pTopBar)
-			pTopBar.widthProperty().addListener((observable, oldValue, newValue) -> {
-				pNavBar.layoutXProperty().set(newValue.doubleValue() - pNavBar.getPrefWidth());
+			apTopBar.getChildren().add(apNavBar);
+			//AnchorPane.setRightAnchor(apNavBar, 0.0);
+			// seta apNavBar no lado direito da tela
+			setRightAnchor(apNavBar, 0.0);
 
-			});
+			// Seta pane com barra de navegação (p do lado direito do pane (apTopBar)
+		/*	apTopBar.widthProperty().addListener((observable, oldValue, newValue) -> {
+				apNavBar.layoutXProperty().set(newValue.doubleValue() - apNavBar.getPrefWidth());
+
+			});*/
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
