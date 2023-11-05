@@ -8,38 +8,54 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 
 public class MainController implements Initializable {
 
 	@FXML
-	private AnchorPane apMain;
+    private AnchorPane apMain;
 
-	@FXML
-	private AnchorPane apTopBar;
+    @FXML
+    private AnchorPane acTop;
 
-	@FXML
-	private AnchorPane apMap;
+    @FXML
+    private AnchorPane apContent;
 
-	@FXML
-	private WebView wvMap;
+    @FXML
+    private Pane pMap;
 
-	public AnchorPane getAnchorPaneMap () {
-		return apMap;
+    @FXML
+    private WebView wvMap;
+
+    @FXML
+    private Pane pManager;
+   
+
+	public AnchorPane getAnchorPaneContent () {
+		return this.apContent;
+	}
+	public void setRightAnchorPaneContent(Pane pane) {
+		AnchorPane.setRightAnchor(pane, 0.0);
 	}
 	public AnchorPane getAnchorPaneMain () {
-		return apMain;
+		return this.apMain;
 	}
-	public void setRightAnchor (AnchorPane ac, double value) {
-		AnchorPane.setRightAnchor(ac, value);
+	public Pane getPaneManager () {
+		return this.pManager;
+	}
+	public Pane getMapPane () {
+		return this.pMap;
 	}
 	
-	public void setAnchorPositions (AnchorPane ac, double value) {
-		AnchorPane.setTopAnchor(ac, 50.0);
-		AnchorPane.setRightAnchor(ac, value);
-		AnchorPane.setBottomAnchor(ac, value);
-		AnchorPane.setLeftAnchor(ac, value);
+	double mapWidth = 0;
+	
+	public void setMapWidth (double width) {
+		this.mapWidth = width;
+	}
+	public double getMapWidth () {
+		return this.mapWidth;
 	}
 
 	@Override
@@ -48,17 +64,27 @@ public class MainController implements Initializable {
 		WebEngine webEngine = wvMap.getEngine();
 		webEngine.load(getClass().getResource("/map/index.html").toExternalForm());
 
-		loadNavBar();
+		// setar pManager à direita
+		AnchorPane.setRightAnchor(pManager, 0.0);
 
 		// Torna as dimensões do WebView (wvMap) semelhantes ao do pai (apMap)
-		apMap.widthProperty().addListener((observable, oldValue, newValue) -> {
+		pMap.widthProperty().addListener((observable, oldValue, newValue) -> {
+			// setar largura do mapa
+			setMapWidth(newValue.doubleValue());
+			// setar prefwidth no mapa
 			wvMap.setPrefWidth(newValue.doubleValue());
+			// setar prefWidth no pane pManager
+			//pManager.setPrefWidth(newValue.doubleValue()/2);
+			// direcionar pManager para a direita
+			
 
 		});
 
-		apMap.heightProperty().addListener((observable, oldValue, newValue) -> {
+		pMap.heightProperty().addListener((observable, oldValue, newValue) -> {
 			wvMap.setPrefHeight(newValue.doubleValue());
 		});
+		
+		loadNavBar();
 
 	}
 
@@ -72,12 +98,12 @@ public class MainController implements Initializable {
 			navBarController.setMainController(this);
 			
 
-			apTopBar.getChildren().add(apNavBar);
+			acTop.getChildren().add(apNavBar);
 			// seta apNavBar no lado direito da tela
-			setRightAnchor(apNavBar, 0.0);
+			AnchorPane.setRightAnchor(apNavBar, 0.0);
 
-			// Seta pane com barra de navegação (p do lado direito do pane (apTopBar)
-		/*	apTopBar.widthProperty().addListener((observable, oldValue, newValue) -> {
+			// Seta pane com barra de navegação (p do lado direito do pane (aacTop)
+		/*	aacTop.widthProperty().addListener((observable, oldValue, newValue) -> {
 				apNavBar.layoutXProperty().set(newValue.doubleValue() - apNavBar.getPrefWidth());
 
 			});*/

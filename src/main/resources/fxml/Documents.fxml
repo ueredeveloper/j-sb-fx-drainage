@@ -1,17 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import java.net.URL?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" style="-fx-background-color: green;" styleClass="apDoc" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.DocumentController">
    <children>
-      <AnchorPane layoutX="10.0" layoutY="14.0" prefHeight="190.0" prefWidth="235.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="355.0" AnchorPane.topAnchor="10.0" />
-      <AnchorPane layoutX="6.0" layoutY="215.0" prefHeight="175.0" prefWidth="580.0" style="-fx-background-color: purple;" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" />
-      <AnchorPane layoutX="255.0" layoutY="10.0" prefHeight="200.0" prefWidth="500.0" style="-fx-background-color: blue;" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+      <AnchorPane layoutX="47.0" layoutY="14.0" prefHeight="155.0" prefWidth="706.0" AnchorPane.topAnchor="14.0">
          <children>
-            <Label layoutX="105.0" layoutY="22.0" text="Cadastro de Documentos" AnchorPane.leftAnchor="105.0" AnchorPane.rightAnchor="105.0" />
+            <Label layoutX="237.0" layoutY="38.0" prefHeight="17.0" prefWidth="135.0" text="Número" />
+            <Label layoutX="393.0" layoutY="38.0" prefHeight="17.0" prefWidth="135.0" text="Processo" />
+            <Label layoutX="551.0" layoutY="38.0" prefHeight="17.0" prefWidth="135.0" text="Número SEI" />
+            <JFXComboBox layoutX="21.0" layoutY="55.0" prefHeight="25.0" prefWidth="175.0" />
+            <JFXTextField layoutX="238.0" layoutY="55.0" />
+            <JFXTextField layoutX="394.0" layoutY="55.0" />
+            <JFXTextField layoutX="549.0" layoutY="55.0" />
+            <Label layoutX="21.0" layoutY="38.0" prefHeight="17.0" prefWidth="175.0" text="Tipo de Documento" />
+            <JFXButton layoutX="144.0" layoutY="102.0" prefHeight="25.0" prefWidth="135.0" text="Salvar" />
+            <JFXButton layoutX="306.0" layoutY="102.0" prefHeight="25.0" prefWidth="135.0" text="Editar" />
+            <JFXButton layoutX="466.0" layoutY="102.0" prefHeight="25.0" prefWidth="135.0" text="Deletar" />
+         </children></AnchorPane>
+      <AnchorPane fx:id="apListDocuments" layoutX="47.0" layoutY="182.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="297.0" prefWidth="706.0" styleClass="ap-list">
+         <children>
+            <JFXButton fx:id="btnSearchDocuments" layoutX="586.0" layoutY="14.0" onAction="#handleListDocuments" prefHeight="30.0" prefWidth="100.0" styleClass="btnList" text="Buscar" />
+            <TableView id="tab-view-list" fx:id="tabViewDocuments" layoutX="10.0" layoutY="53.0" prefHeight="216.0" prefWidth="681.0">
+               <columns>
+                  <TableColumn fx:id="tcId" prefWidth="75.0" text="id" />
+                  <TableColumn fx:id="tcNum" prefWidth="75.0" text="numero" />
+                  <TableColumn fx:id="tcProc" prefWidth="75.0" text="processo" />
+                  <TableColumn fx:id="tcNumSei" prefWidth="75.0" text="sei" />
+               </columns>
+            </TableView>
+            <JFXTextField layoutX="337.0" layoutY="17.0" prefHeight="25.0" prefWidth="228.0" />
          </children>
+         <stylesheets>
+            <URL value="@css/colors.css" />
+            <URL value="@css/list-documents.css" />
+         </stylesheets>
       </AnchorPane>
    </children>
+   <stylesheets>
+      <URL value="@css/colors.css" />
+      <URL value="@css/documents.css" />
+   </stylesheets>
 </AnchorPane>

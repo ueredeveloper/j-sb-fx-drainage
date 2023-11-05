@@ -13,6 +13,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import utilities.ResizePaneAnimation;
 
 public class NavBarController implements Initializable {
@@ -46,13 +47,15 @@ public class NavBarController implements Initializable {
 
 
 				// Redimensiona o mapa através do acMap no MainController (Pai)
-				if (mainController.getAnchorPaneMap().getParent() instanceof AnchorPane) {
+				if (mainController.getAnchorPaneContent().getParent() instanceof AnchorPane) {
 
-					ResizePaneAnimation resizer = new ResizePaneAnimation();
-					resizer.animateResize(mainController.getAnchorPaneMap());
+					double width = mainController.getMapWidth();
+					Pane paneToResize = mainController.getMapPane();
+                    ResizePaneAnimation resizer = new ResizePaneAnimation(width);
+                    resizer.animateResize(paneToResize);
 				}
 
-				loadListDocuments();
+				loadPaneManager();
 
 			}
 		});
@@ -64,15 +67,23 @@ public class NavBarController implements Initializable {
 
 	}
 
-	private void loadListDocuments() {
+	private void loadPaneManager () {
+		System.out.println("load pane manager ");
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Documents.fxml"));
 
-			AnchorPane apListDocuments = loader.load();
+			Pane paneManager = mainController.getPaneManager();
 			
-			mainController.getAnchorPaneMain().getChildren().add(apListDocuments);
-			mainController.setAnchorPositions (apListDocuments, 0.0);
+			Pane paneDocuments = new Pane();
 			
+			paneDocuments = loader.load();
+			
+			//apDocuments.setPrefWidth(mainController.getAnchorPaneMain().getPrefWidth()/2);
+			//paneDocuments.setId("pd");
+		paneManager.getChildren().add(paneDocuments);
+			// setar apDocuments à direita
+			//mainController.setAnchorPositions(apDocuments, 0.0);
+			//AnchorPane.setRightAnchor(apDocuments, 0.0);
 
 		} catch (IOException e) {
 			e.printStackTrace();

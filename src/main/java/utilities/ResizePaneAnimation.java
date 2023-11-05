@@ -18,20 +18,22 @@ import javafx.util.Duration;
  * @brief Classe para animação de redimensionamento de painel.
  */
 public class ResizePaneAnimation {
-
+	
 	// 031123 os valores target right e target bottom devem ser dinâmicos 705 para tela pequena é
 	//muito mas não é para um tela grande
     /**
      * @var targetRight
      * Largura alvo do painel.
      */
-    private final double targetRight = 750.0;
+    private double targetRight;
 
-    /**
-     * @var targetBottom
-     * Altura alvo do painel.
-     */
-    private final double targetBottom = 350.0;
+	public ResizePaneAnimation (double width) {
+		super();
+        this.targetRight = width/2;
+		
+	}
+
+	
 
     /**
      * @var step
@@ -56,31 +58,24 @@ public class ResizePaneAnimation {
      * @brief Inicia a animação de redimensionamento do painel.
      * @param pane O painel a ser redimensionado.
      */
-    public void animateResize(Pane pane) {
-        if (pane.getParent() instanceof AnchorPane) {
-            AnchorPane anchorPane = (AnchorPane) pane.getParent();
+    public void animateResize(Pane paneToResize) {
+        if (paneToResize.getParent() instanceof AnchorPane) {
+            AnchorPane anchorPane = (AnchorPane) paneToResize.getParent();
 
             DoubleProperty rightAnchorProperty = new SimpleDoubleProperty();
-            DoubleProperty bottomAnchorProperty = new SimpleDoubleProperty();
 
-            rightAnchorProperty.bind(anchorPane.widthProperty().subtract(pane.widthProperty()));
-            bottomAnchorProperty.bind(anchorPane.heightProperty().subtract(pane.heightProperty()));
+            rightAnchorProperty.bind(anchorPane.widthProperty().subtract(paneToResize.widthProperty()));
 
             timeline = new Timeline(new KeyFrame(Duration.millis(duration), event -> {
                 double currentWidth = rightAnchorProperty.get();
-                double currentHeight = bottomAnchorProperty.get();
-
+                
                 if (currentWidth < targetRight) {
                     currentWidth += step;
-                    AnchorPane.setRightAnchor(pane, currentWidth);
+                    AnchorPane.setRightAnchor(paneToResize, currentWidth);
                 }
 
-                if (currentHeight < targetBottom) {
-                    currentHeight += step;
-                    AnchorPane.setBottomAnchor(pane, currentHeight);
-                }
 
-                if (currentWidth >= targetRight && currentHeight >= targetBottom) {
+                if (currentWidth >= targetRight) {
                     // Para a animação quando o tamanho alvo é atingido
                     timeline.stop();
                 }
