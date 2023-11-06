@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -14,102 +16,87 @@ import javafx.scene.web.WebView;
 
 public class MainController implements Initializable {
 
-	@FXML
+
+    @FXML
     private AnchorPane apMain;
 
     @FXML
-    private AnchorPane acTop;
+    private AnchorPane apTop;
 
     @FXML
     private AnchorPane apContent;
 
     @FXML
-    private Pane pMap;
+    private AnchorPane apMap;
 
+    @FXML
+    private AnchorPane apManager;
+    
     @FXML
     private WebView wvMap;
-
-    @FXML
-    private Pane pManager;
-   
-
+    
 	public AnchorPane getAnchorPaneContent () {
 		return this.apContent;
 	}
-	public void setRightAnchorPaneContent(Pane pane) {
-		AnchorPane.setRightAnchor(pane, 0.0);
+	public Pane getAnchorPaneManager () {
+		return this.apManager;
 	}
-	public AnchorPane getAnchorPaneMain () {
-		return this.apMain;
-	}
-	public Pane getPaneManager () {
-		return this.pManager;
-	}
-	public Pane getMapPane () {
-		return this.pMap;
+	public Pane getAnchorPaneMap () {
+		return this.apMap;
 	}
 	
-	double mapWidth = 0;
 	
-	public void setMapWidth (double width) {
-		this.mapWidth = width;
-	}
-	public double getMapWidth () {
-		return this.mapWidth;
-	}
-
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
 		WebEngine webEngine = wvMap.getEngine();
 		webEngine.load(getClass().getResource("/map/index.html").toExternalForm());
 
-		// setar pManager à direita
-		AnchorPane.setRightAnchor(pManager, 0.0);
+		// Add a listener to the width property of the AnchorPane
+        apContent.widthProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                double newWidth = newValue.doubleValue();
+                apMap.setPrefWidth(newWidth / 2);
+                apManager.setPrefWidth(newWidth / 2);
+            }
+        });
 
-		// Torna as dimensões do WebView (wvMap) semelhantes ao do pai (apMap)
-		pMap.widthProperty().addListener((observable, oldValue, newValue) -> {
-			// setar largura do mapa
-			setMapWidth(newValue.doubleValue());
+		// Torna as dimensões do WebView (wvMap) semelhantes ao do pai (aapMap)
+		apMap.widthProperty().addListener((observable, oldValue, newValue) -> {
 			// setar prefwidth no mapa
 			wvMap.setPrefWidth(newValue.doubleValue());
-			// setar prefWidth no pane pManager
-			//pManager.setPrefWidth(newValue.doubleValue()/2);
-			// direcionar pManager para a direita
-			
-
 		});
 
-		pMap.heightProperty().addListener((observable, oldValue, newValue) -> {
+		apMap.heightProperty().addListener((observable, oldValue, newValue) -> {
 			wvMap.setPrefHeight(newValue.doubleValue());
 		});
 		
-		loadNavBar();
+		loadNavigationBar();
+		
 
 	}
 
-	private void loadNavBar() {
+	private void loadNavigationBar () {
 		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/NavBar.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Navigation.fxml"));
 			AnchorPane apNavBar = loader.load();
 		
 			// acesso ao MainController dentro do NavBarController
-			NavBarController navBarController = loader.getController();
+			NavigationController navBarController = loader.getController();
 			navBarController.setMainController(this);
 			
 
-			acTop.getChildren().add(apNavBar);
+			apTop.getChildren().add(apNavBar);
 			// seta apNavBar no lado direito da tela
 			AnchorPane.setRightAnchor(apNavBar, 0.0);
+			
 
-			// Seta pane com barra de navegação (p do lado direito do pane (aacTop)
-		/*	aacTop.widthProperty().addListener((observable, oldValue, newValue) -> {
-				apNavBar.layoutXProperty().set(newValue.doubleValue() - apNavBar.getPrefWidth());
-
-			});*/
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
+	
+	
 
 }

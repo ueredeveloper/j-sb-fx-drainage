@@ -8,7 +8,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 public class Main extends Application {
     public static void main(String[] args) {
-    
         launch(args);
     }
     
@@ -17,14 +16,15 @@ public class Main extends Application {
     	
     	Parent root = null;
 		try {
-			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Login.fxml"));
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Main.fxml"));
 			root = fxmlLoader.load();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
         
-        Scene scene = new Scene(root, 900, 450);
+       // Scene scene = new Scene(root, 900, 450);
+		Scene scene = new Scene (root, 1780, 1040);
     
         stage.setTitle("Login");
         stage.setScene(scene);

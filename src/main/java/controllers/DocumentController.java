@@ -10,19 +10,19 @@ import java.util.ResourceBundle;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXTextField;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import models.Documento;
-import utilities.ResizePaneAnimation;
 
 public class DocumentController implements Initializable {
 
@@ -31,13 +31,43 @@ public class DocumentController implements Initializable {
 	public static final String url = "https://j-sb-drainage.ueredeveloper.repl.co";
 
 	@FXML
-	private AnchorPane apListDocuments;
+	private AnchorPane apContent;
 
 	@FXML
-	private JFXButton btnSearchDocuments;
+	private Pane pTop;
 
 	@FXML
-	private TableView<Documento> tabViewDocuments;
+	private JFXComboBox<?> cdDocType;
+
+	@FXML
+	private JFXTextField tfNumber;
+
+	@FXML
+	private JFXTextField tfProcess;
+
+	@FXML
+	private JFXTextField tfNumberSEI;
+
+	@FXML
+	private JFXButton btnSave;
+
+	@FXML
+	private JFXButton btnEdit;
+
+	@FXML
+	private JFXButton btnDelete;
+
+	@FXML
+	private Pane pSearchList;
+
+	@FXML
+	private JFXTextField tfSearch;
+
+	@FXML
+	private JFXButton btnSearch;
+
+	@FXML
+	private TableView<Documento> tableViewDocs;
 
 	@FXML
 	private TableColumn<Documento, Integer> tcId;
@@ -51,8 +81,11 @@ public class DocumentController implements Initializable {
 	@FXML
 	private TableColumn<Documento, String> tcNumSei;
 
-	public AnchorPane getAnchorPane () {
-		return apListDocuments;
+	@FXML
+	private MainController mainController;
+
+	public void setMainController(MainController mainController) {
+		this.mainController = mainController;
 	}
 
 	@Override
@@ -61,13 +94,13 @@ public class DocumentController implements Initializable {
 		tcNum.setCellValueFactory(new PropertyValueFactory<Documento, String>("doc_numero"));
 		tcProc.setCellValueFactory(new PropertyValueFactory<Documento, String>("doc_processo"));
 		tcNumSei.setCellValueFactory(new PropertyValueFactory<Documento, String>("doc_sei"));
-		
-		//AnchorPane.setRightAnchor(apListDocuments, 1.0);
+
+		AnchorPane.setRightAnchor(apContent, 0.0); 
+		AnchorPane.setLeftAnchor(apContent, 0.0);
 
 	}
 
 	public void handleListDocuments() {
-		System.out.println("Get list of documents ");
 
 		try {
 			// Create a URL object with the given URL
@@ -122,7 +155,7 @@ public class DocumentController implements Initializable {
 				ObservableList<Documento> documentList = FXCollections.observableArrayList(documentos);
 
 				// Set the items in the TableView
-				tabViewDocuments.setItems(documentList);
+				tableViewDocs.setItems(documentList);
 
 			} else {
 				// System.out.println("Error: " + responseCode);

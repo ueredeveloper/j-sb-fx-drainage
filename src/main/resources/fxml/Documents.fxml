@@ -8,27 +8,34 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" style="-fx-background-color: green;" styleClass="apDoc" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.DocumentController">
+<AnchorPane fx:id="apContent" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.DocumentController">
+   <stylesheets>
+      <URL value="@css/colors.css" />
+      <URL value="@css/documents.css" />
+   </stylesheets>
    <children>
-      <AnchorPane layoutX="47.0" layoutY="14.0" prefHeight="155.0" prefWidth="706.0" AnchorPane.topAnchor="14.0">
+      <Pane fx:id="pTop" layoutX="17.0" layoutY="27.0" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="150.0" prefWidth="800.0" style="-fx-background-color: blue;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
-            <Label layoutX="237.0" layoutY="38.0" prefHeight="17.0" prefWidth="135.0" text="Número" />
-            <Label layoutX="393.0" layoutY="38.0" prefHeight="17.0" prefWidth="135.0" text="Processo" />
-            <Label layoutX="551.0" layoutY="38.0" prefHeight="17.0" prefWidth="135.0" text="Número SEI" />
-            <JFXComboBox layoutX="21.0" layoutY="55.0" prefHeight="25.0" prefWidth="175.0" />
-            <JFXTextField layoutX="238.0" layoutY="55.0" />
-            <JFXTextField layoutX="394.0" layoutY="55.0" />
-            <JFXTextField layoutX="549.0" layoutY="55.0" />
-            <Label layoutX="21.0" layoutY="38.0" prefHeight="17.0" prefWidth="175.0" text="Tipo de Documento" />
-            <JFXButton layoutX="144.0" layoutY="102.0" prefHeight="25.0" prefWidth="135.0" text="Salvar" />
-            <JFXButton layoutX="306.0" layoutY="102.0" prefHeight="25.0" prefWidth="135.0" text="Editar" />
-            <JFXButton layoutX="466.0" layoutY="102.0" prefHeight="25.0" prefWidth="135.0" text="Deletar" />
-         </children></AnchorPane>
-      <AnchorPane fx:id="apListDocuments" layoutX="47.0" layoutY="182.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="297.0" prefWidth="706.0" styleClass="ap-list">
+            <Label layoutX="59.0" layoutY="28.0" prefHeight="17.0" prefWidth="175.0" text="Tipo de Documento" />
+            <JFXComboBox fx:id="cdDocType" layoutX="59.0" layoutY="45.0" prefHeight="25.0" prefWidth="175.0" AnchorPane.leftAnchor="59.0" AnchorPane.rightAnchor="566.0" />
+            <Label layoutX="250.0" layoutY="28.0" prefHeight="17.0" prefWidth="165.0" text="Número" />
+            <JFXTextField fx:id="tfNumber" layoutX="245.0" layoutY="45.0" prefHeight="25.0" prefWidth="165.0" AnchorPane.leftAnchor="245.0" AnchorPane.rightAnchor="390.0" />
+            <Label layoutX="423.0" layoutY="28.0" prefHeight="17.0" prefWidth="152.0" text="Processo" />
+            <JFXTextField fx:id="tfProcess" layoutX="423.0" layoutY="45.0" prefHeight="25.0" prefWidth="152.0" AnchorPane.leftAnchor="423.0" AnchorPane.rightAnchor="225.0" />
+            <Label layoutX="589.0" layoutY="28.0" prefHeight="17.0" prefWidth="152.0" text="Número SEI" />
+            <JFXTextField fx:id="tfNumberSEI" layoutX="589.0" layoutY="45.0" prefHeight="25.0" prefWidth="152.0" AnchorPane.leftAnchor="589.0" AnchorPane.rightAnchor="59.0" />
+            <JFXButton fx:id="btnSave" layoutX="173.0" layoutY="98.0" prefHeight="30.0" prefWidth="135.0" text="Salvar" />
+            <JFXButton fx:id="btnEdit" layoutX="333.0" layoutY="98.0" prefHeight="30.0" prefWidth="135.0" text="Editar" />
+            <JFXButton fx:id="btnDelete" layoutX="493.0" layoutY="98.0" prefHeight="30.0" prefWidth="135.0" text="Deletar" />
+         </children>
+      </Pane>
+      <Pane fx:id="pSearchList" layoutX="19.0" layoutY="176.0" maxWidth="1.7976931348623157E308" prefHeight="300.0" prefWidth="800.0" style="-fx-background-color: green;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
-            <JFXButton fx:id="btnSearchDocuments" layoutX="586.0" layoutY="14.0" onAction="#handleListDocuments" prefHeight="30.0" prefWidth="100.0" styleClass="btnList" text="Buscar" />
-            <TableView id="tab-view-list" fx:id="tabViewDocuments" layoutX="10.0" layoutY="53.0" prefHeight="216.0" prefWidth="681.0">
+              <JFXTextField fx:id="tfSearch" layoutX="320.0" layoutY="18.0" prefHeight="25.0" prefWidth="300.0" AnchorPane.leftAnchor="320.0" AnchorPane.rightAnchor="147.0" />
+            <JFXButton fx:id="btnSearch" layoutX="632.0" layoutY="15.0" onAction="#handleListDocuments" prefHeight="30.0" prefWidth="100.0" styleClass="btnList" text="Buscar" />
+            <TableView id="tab-view-list" fx:id="tableViewDocs" layoutX="60.0" layoutY="61.0" prefHeight="216.0" prefWidth="681.0">
                <columns>
                   <TableColumn fx:id="tcId" prefWidth="75.0" text="id" />
                   <TableColumn fx:id="tcNum" prefWidth="75.0" text="numero" />
@@ -36,16 +43,7 @@
                   <TableColumn fx:id="tcNumSei" prefWidth="75.0" text="sei" />
                </columns>
             </TableView>
-            <JFXTextField layoutX="337.0" layoutY="17.0" prefHeight="25.0" prefWidth="228.0" />
          </children>
-         <stylesheets>
-            <URL value="@css/colors.css" />
-            <URL value="@css/list-documents.css" />
-         </stylesheets>
-      </AnchorPane>
+      </Pane>
    </children>
-   <stylesheets>
-      <URL value="@css/colors.css" />
-      <URL value="@css/documents.css" />
-   </stylesheets>
 </AnchorPane>

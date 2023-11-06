@@ -106,13 +106,16 @@ public class LoginController implements Initializable {
                     Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
                     
                     // Tela cheia
-                    stage.setX(primaryScreenBounds.getMinX());
+                   stage.setX(primaryScreenBounds.getMinX());
                     stage.setY(primaryScreenBounds.getMinY());
                     stage.setWidth(primaryScreenBounds.getWidth());
                     stage.setHeight(primaryScreenBounds.getHeight());
                     // Minímo de tamanho e largura da tela principal
                     stage.setMinHeight(668);
                     stage.setMinWidth(1266);
+                //    stage.setHeight(668);
+               //     stage.setWidth(1266);
+                    
                     // título
                     stage.setTitle("SAD/DF - Geo - Cadastro");
                     
