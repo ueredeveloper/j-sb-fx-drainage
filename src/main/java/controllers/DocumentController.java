@@ -1,10 +1,13 @@
 package controllers;
 
 import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
+import java.util.Properties;
 import java.util.ResourceBundle;
 
 import com.google.gson.Gson;
@@ -26,9 +29,20 @@ import models.Documento;
 
 public class DocumentController implements Initializable {
 
-	// static String url_server = System.getenv("URL_SEVER");
-	// private static final String url = "http://localhost:8080";
-	public static final String url = "https://j-sb-drainage.ueredeveloper.repl.co";
+	  private String localUrl;
+	    private String remoteUrl;
+
+	    public DocumentController() {
+	        try {
+	            Properties prop = new Properties();
+	            InputStream inputStream = getClass().getClassLoader().getResourceAsStream("config.properties");
+	            prop.load(inputStream);
+	            localUrl = prop.getProperty("local.url");
+	            remoteUrl = prop.getProperty("remote.url");
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	    }
 
 	@FXML
 	private AnchorPane apContent;
@@ -104,7 +118,7 @@ public class DocumentController implements Initializable {
 
 		try {
 			// Create a URL object with the given URL
-			URL apiUrl = new URL(url + "/documento");
+			URL apiUrl = new URL(localUrl + "/documento");
 
 			// Open a connection to the URL
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();

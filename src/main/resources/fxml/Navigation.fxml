@@ -13,14 +13,11 @@
             <JFXButton fx:id="btnModels" prefHeight="25.0" prefWidth="174.0" styleClass="buttons" text="Modelos" />
             <JFXButton fx:id="btnMap" prefHeight="25.0" prefWidth="169.0" styleClass="buttons" text="Mapa" />
          </children>
-         <stylesheets>
-            <URL value="@css/colors.css" />
-            <URL value="@css/nav-bar.css" />
-         </stylesheets>
+         
       </HBox>
    </children>
    <stylesheets>
       <URL value="@css/colors.css" />
-      <URL value="@css/nav-bar.css" />
+      <URL value="@css/navigation.css" />
    </stylesheets>
 </AnchorPane>

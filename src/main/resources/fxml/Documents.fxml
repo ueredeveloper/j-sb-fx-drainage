@@ -3,47 +3,112 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import java.lang.String?>
 <?import java.net.URL?>
-<?import javafx.scene.control.Label?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 
-<AnchorPane fx:id="apContent" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.DocumentController">
+<AnchorPane fx:id="apContent" prefHeight="579.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.DocumentController">
    <stylesheets>
       <URL value="@css/colors.css" />
       <URL value="@css/documents.css" />
    </stylesheets>
    <children>
-      <Pane fx:id="pTop" layoutX="17.0" layoutY="27.0" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="150.0" prefWidth="800.0" style="-fx-background-color: blue;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+      <HBox layoutY="28.0" prefHeight="50.0" prefWidth="800.0" styleClass="hbox-top" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
          <children>
-            <Label layoutX="59.0" layoutY="28.0" prefHeight="17.0" prefWidth="175.0" text="Tipo de Documento" />
-            <JFXComboBox fx:id="cdDocType" layoutX="59.0" layoutY="45.0" prefHeight="25.0" prefWidth="175.0" AnchorPane.leftAnchor="59.0" AnchorPane.rightAnchor="566.0" />
-            <Label layoutX="250.0" layoutY="28.0" prefHeight="17.0" prefWidth="165.0" text="Número" />
-            <JFXTextField fx:id="tfNumber" layoutX="245.0" layoutY="45.0" prefHeight="25.0" prefWidth="165.0" AnchorPane.leftAnchor="245.0" AnchorPane.rightAnchor="390.0" />
-            <Label layoutX="423.0" layoutY="28.0" prefHeight="17.0" prefWidth="152.0" text="Processo" />
-            <JFXTextField fx:id="tfProcess" layoutX="423.0" layoutY="45.0" prefHeight="25.0" prefWidth="152.0" AnchorPane.leftAnchor="423.0" AnchorPane.rightAnchor="225.0" />
-            <Label layoutX="589.0" layoutY="28.0" prefHeight="17.0" prefWidth="152.0" text="Número SEI" />
-            <JFXTextField fx:id="tfNumberSEI" layoutX="589.0" layoutY="45.0" prefHeight="25.0" prefWidth="152.0" AnchorPane.leftAnchor="589.0" AnchorPane.rightAnchor="59.0" />
-            <JFXButton fx:id="btnSave" layoutX="173.0" layoutY="98.0" prefHeight="30.0" prefWidth="135.0" text="Salvar" />
-            <JFXButton fx:id="btnEdit" layoutX="333.0" layoutY="98.0" prefHeight="30.0" prefWidth="135.0" text="Editar" />
-            <JFXButton fx:id="btnDelete" layoutX="493.0" layoutY="98.0" prefHeight="30.0" prefWidth="135.0" text="Deletar" />
+            <JFXComboBox labelFloat="true" prefWidth="300.0" promptText="Tipo de Documento" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </HBox.margin>
+               <styleClass>
+                  <String fx:value="combo-box" />
+                  <String fx:value="combo-box-base" />
+               </styleClass>
+            </JFXComboBox>
+            <JFXTextField alignment="TOP_LEFT" labelFloat="true" prefWidth="300.0" promptText="Número" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </HBox.margin>
+               <styleClass>
+                  <String fx:value="text-field" />
+                  <String fx:value="jfx-text-field-custom" />
+               </styleClass>
+            </JFXTextField>
+            <JFXTextField alignment="TOP_LEFT" labelFloat="true" prefWidth="300.0" promptText="Número SEI" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </HBox.margin>
+               <styleClass>
+                  <String fx:value="text-field" />
+                  <String fx:value="jfx-text-field-custom" />
+               </styleClass>
+            </JFXTextField>
+            <JFXTextField alignment="TOP_LEFT" labelFloat="true" prefWidth="300.0" promptText="Processo" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </HBox.margin>
+               <styleClass>
+                  <String fx:value="text-field" />
+                  <String fx:value="jfx-text-field-custom" />
+               </styleClass>
+            </JFXTextField>
          </children>
-      </Pane>
-      <Pane fx:id="pSearchList" layoutX="19.0" layoutY="176.0" maxWidth="1.7976931348623157E308" prefHeight="300.0" prefWidth="800.0" style="-fx-background-color: green;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+      </HBox>
+      <HBox layoutX="10.0" layoutY="102.0" prefHeight="50.0" prefWidth="800.0" styleClass="hbox-actions" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
          <children>
-              <JFXTextField fx:id="tfSearch" layoutX="320.0" layoutY="18.0" prefHeight="25.0" prefWidth="300.0" AnchorPane.leftAnchor="320.0" AnchorPane.rightAnchor="147.0" />
-            <JFXButton fx:id="btnSearch" layoutX="632.0" layoutY="15.0" onAction="#handleListDocuments" prefHeight="30.0" prefWidth="100.0" styleClass="btnList" text="Buscar" />
-            <TableView id="tab-view-list" fx:id="tableViewDocs" layoutX="60.0" layoutY="61.0" prefHeight="216.0" prefWidth="681.0">
+            <JFXButton prefHeight="50.0" prefWidth="300.0" styleClass="button-secondary" text="Salvar">
+               <HBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </HBox.margin>
+            </JFXButton>
+            <JFXButton prefHeight="50.0" prefWidth="300.0" styleClass="button-secondary" text="Editar">
+               <HBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </HBox.margin>
+            </JFXButton>
+            <JFXButton prefHeight="50.0" prefWidth="300.0" styleClass="button-secondary" text="Deletar">
+               <HBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </HBox.margin>
+            </JFXButton>
+         </children>
+      </HBox>
+      <HBox layoutX="10.0" layoutY="152.0" prefHeight="50.0" prefWidth="800.0" styleClass="hbox-search" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+         <children>
+            <Pane prefWidth="100.0" HBox.hgrow="ALWAYS" />
+            <Pane prefWidth="100.0" HBox.hgrow="ALWAYS" />
+              <JFXTextField fx:id="tfSearch" alignment="TOP_LEFT" labelFloat="true" prefWidth="300.0" promptText="Pesquisar" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </HBox.margin>
+               <styleClass>
+                  <String fx:value="text-field" />
+                  <String fx:value="jfx-text-field-custom" />
+               </styleClass></JFXTextField>
+            <JFXButton fx:id="btnSearch" minWidth="100.0" onAction="#handleListDocuments" prefHeight="50.0" styleClass="button-secondary" text="Buscar" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </HBox.margin></JFXButton>
+         </children>
+      </HBox>
+      <HBox layoutX="14.0" layoutY="235.0" prefHeight="300.0" prefWidth="800.0" styleClass="table-view" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+         <children>
+            <TableView fx:id="tableViewDocs" HBox.hgrow="ALWAYS">
                <columns>
                   <TableColumn fx:id="tcId" prefWidth="75.0" text="id" />
                   <TableColumn fx:id="tcNum" prefWidth="75.0" text="numero" />
                   <TableColumn fx:id="tcProc" prefWidth="75.0" text="processo" />
                   <TableColumn fx:id="tcNumSei" prefWidth="75.0" text="sei" />
                </columns>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
             </TableView>
          </children>
-      </Pane>
+      </HBox>
    </children>
 </AnchorPane>

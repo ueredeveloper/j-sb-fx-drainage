@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.ueredeveloper</groupId>
 	<artifactId>j-sb-fx-drainage</artifactId>
-	<version>1.5.0</version>
+	<version>1.6.0</version>
 
 	<dependencies>
 		<!--  Load Json Responses -->

@@ -6,6 +6,6 @@
     -fx-background-color: orange;
 }
 .buttons{
-	-fx-text-fill: -fx-secondary-color;
+	-fx-text-fill: -fx-primary-color;
 	-fx-pref-width:100;
 }

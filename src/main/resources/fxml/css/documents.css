@@ -1,0 +1,64 @@
+
+
+/* Base styling for labels, buttons, and text fields */
+.label-text {
+    -fx-text-fill: -fx-primary-color;
+}
+
+.button-secondary {
+    -fx-background-color: -fx-primary-color;
+    -fx-text-fill: -fx-text-color;
+}
+
+.text-field {
+    -fx-prompt-text-fill: -fx-primary-color;
+}
+
+.text-field:focused {
+    -fx-text-fill: -fx-primary-color; /* Set text color when in focus */
+}
+/* Custom style for your specific JFXTextField */
+.jfx-text-field-custom {
+    -jfx-unfocus-color: -fx-secondary-color; /* Set the unfocus color */
+}
+/* Custom styles for specific elements */
+#apContent {
+    -fx-pref-height: 600.0;
+    -fx-pref-width: 800.0;
+}
+
+.hbox-top {
+    -fx-layout-y: 30.0;
+    -fx-pref-height: 50.0;
+    -fx-pref-width: 800.0;
+    -fx-anchor-pane-left: 10.0;
+    -fx-anchor-pane-right: 10.0;
+}
+
+.hbox-actions {
+    -fx-layout-x: 10.0;
+    -fx-layout-y: 102.0;
+    -fx-pref-height: 50.0;
+    -fx-pref-width: 800.0;
+    -fx-anchor-pane-left: 10.0;
+    -fx-anchor-pane-right: 10.0;
+}
+
+.hbox-search {
+    -fx-layout-x: 10.0;
+    -fx-layout-y: 152.0;
+    -fx-pref-height: 50.0;
+    -fx-pref-width: 800.0;
+    -fx-anchor-pane-left: 10.0;
+    -fx-anchor-pane-right: 10.0;
+}
+/* ComboBox styles */
+.combo-box {
+    -fx-prompt-text-fill: -fx-primary-color; /* Set prompt text color */
+}
+
+.combo-box .combo-box-base {
+    -fx-focus-color: -fx-primary-color; /* Set focus color */
+}
+
+
