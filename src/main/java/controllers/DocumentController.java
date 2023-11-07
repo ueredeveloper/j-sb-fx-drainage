@@ -1,17 +1,12 @@
 package controllers;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
@@ -26,23 +21,24 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import models.Documento;
+import services.DocumentService;
 
 public class DocumentController implements Initializable {
 
-	  private String localUrl;
-	    private String remoteUrl;
+	private String localUrl;
+	private String remoteUrl;
 
-	    public DocumentController() {
-	        try {
-	            Properties prop = new Properties();
-	            InputStream inputStream = getClass().getClassLoader().getResourceAsStream("config.properties");
-	            prop.load(inputStream);
-	            localUrl = prop.getProperty("local.url");
-	            remoteUrl = prop.getProperty("remote.url");
-	        } catch (IOException e) {
-	            e.printStackTrace();
-	        }
-	    }
+	public DocumentController() {
+		try {
+			Properties prop = new Properties();
+			InputStream inputStream = getClass().getClassLoader().getResourceAsStream("config.properties");
+			prop.load(inputStream);
+			localUrl = prop.getProperty("local.url");
+			remoteUrl = prop.getProperty("remote.url");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 	@FXML
 	private AnchorPane apContent;
@@ -109,7 +105,7 @@ public class DocumentController implements Initializable {
 		tcProc.setCellValueFactory(new PropertyValueFactory<Documento, String>("doc_processo"));
 		tcNumSei.setCellValueFactory(new PropertyValueFactory<Documento, String>("doc_sei"));
 
-		AnchorPane.setRightAnchor(apContent, 0.0); 
+		AnchorPane.setRightAnchor(apContent, 0.0);
 		AnchorPane.setLeftAnchor(apContent, 0.0);
 
 	}
@@ -117,68 +113,17 @@ public class DocumentController implements Initializable {
 	public void handleListDocuments() {
 
 		try {
-			// Create a URL object with the given URL
-			URL apiUrl = new URL(localUrl + "/documento");
 
-			// Open a connection to the URL
-			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
+			DocumentService documentService = new DocumentService(localUrl);
 
-			// Set the request method to GET
-			connection.setRequestMethod("GET");
+			List<Documento> documentos = documentService.fetchDocuments();
 
-			// Get the response code
-			int responseCode = connection.getResponseCode();
+			// Create a list of Document objects
+			ObservableList<Documento> documentList = FXCollections.observableArrayList(documentos);
 
-			// If the response code is 200 (HTTP_OK), read the response
-			if (responseCode == HttpURLConnection.HTTP_OK) {
-				System.out.println("http ok ---------------------");
-			} else if (responseCode == HttpURLConnection.HTTP_CREATED) {
-				// Handle the 201 response code (resource created)
-				System.out.println("Resource created successfully.");
-				// You can also parse the JSON response if it's available in the response body
-				// You can also parse the JSON response if it's available in the response body
+			// Set the items in the TableView
+			tableViewDocs.setItems(documentList);
 
-				// Read and parse the JSON response in the body
-				BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-
-				StringBuilder response = new StringBuilder();
-				String line;
-				while ((line = reader.readLine()) != null) {
-					System.out.println("line");
-					System.out.println(line);
-					response.append(line);
-				}
-				reader.close();
-
-				Gson gson = new Gson();
-				// JsonObject jsonObject =
-				// JsonParser.parseString(response.toString()).getAsJsonObject();
-				// System.out.println(jsonObject);
-				List<Documento> documentos = gson.fromJson(response.toString(), new TypeToken<List<Documento>>() {
-				}.getType());
-
-				/*
-				 * for (Documento documento : documentos) { System.out.println("doc_numero: " +
-				 * documento.getDoc_numero()); System.out.println("doc_processo: " +
-				 * documento.getDoc_processo()); System.out.println("doc_sei: " +
-				 * documento.getDoc_sei()); // System.out.println("doc_tipo: " +
-				 * documento.getDoc_tipo().getDt_descricao()); }
-				 */
-
-				// Create a list of Document objects
-				ObservableList<Documento> documentList = FXCollections.observableArrayList(documentos);
-
-				// Set the items in the TableView
-				tableViewDocs.setItems(documentList);
-
-			} else {
-				// System.out.println("Error: " + responseCode);
-				String responseMessage = connection.getResponseMessage();
-				System.out.println("Error: " + responseMessage);
-			}
-
-			// Close the connection
-			connection.disconnect();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
