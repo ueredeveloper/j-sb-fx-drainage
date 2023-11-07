@@ -7,20 +7,26 @@ import java.util.List;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
+import javax.swing.plaf.InternalFrameUI;
+
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXListCell;
 import com.jfoenix.controls.JFXTextField;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
 import models.Documento;
+import models.DocumentoTipo;
 import services.DocumentService;
 
 public class DocumentController implements Initializable {
@@ -44,40 +50,34 @@ public class DocumentController implements Initializable {
 	private AnchorPane apContent;
 
 	@FXML
-	private Pane pTop;
+	private JFXComboBox<DocumentoTipo> cbDocTipo;
 
 	@FXML
-	private JFXComboBox<?> cdDocType;
+	private JFXTextField tfNumero;
 
 	@FXML
-	private JFXTextField tfNumber;
+	private JFXTextField tfNumeroSei;
 
 	@FXML
-	private JFXTextField tfProcess;
+	private JFXTextField tfProcesso;
 
 	@FXML
-	private JFXTextField tfNumberSEI;
+	private JFXButton btnSalvar;
 
 	@FXML
-	private JFXButton btnSave;
+	private JFXButton btnEditar;
 
 	@FXML
-	private JFXButton btnEdit;
+	private JFXButton btnDeletar;
 
 	@FXML
-	private JFXButton btnDelete;
+	private JFXTextField tfBuscar;
 
 	@FXML
-	private Pane pSearchList;
+	private JFXButton btnBuscar;
 
 	@FXML
-	private JFXTextField tfSearch;
-
-	@FXML
-	private JFXButton btnSearch;
-
-	@FXML
-	private TableView<Documento> tableViewDocs;
+	private TableView<Documento> tvDocumentos;
 
 	@FXML
 	private TableColumn<Documento, Integer> tcId;
@@ -108,9 +108,85 @@ public class DocumentController implements Initializable {
 		AnchorPane.setRightAnchor(apContent, 0.0);
 		AnchorPane.setLeftAnchor(apContent, 0.0);
 
+		cbDocTipo.getItems().addAll(new DocumentoTipo(1, "Requerimento"), new DocumentoTipo(2, "Ofício"));
+
+		cbDocTipo.setValue(cbDocTipo.getItems().get(0));
+
+		// Customize the cell factory to display the custom object's description
+		cbDocTipo.setCellFactory(param -> new JFXListCell<DocumentoTipo>() {
+			@Override
+			public void updateItem(DocumentoTipo item, boolean empty) {
+				super.updateItem(item, empty);
+				if (empty || item == null) {
+					setText(null);
+				} else {
+					setText(item.getDt_descricao());
+				}
+			}
+		});
+		// Customize the list cell for the dropdown (optional)
+		cbDocTipo.setButtonCell(new JFXListCell<DocumentoTipo>() {
+			@Override
+			public void updateItem(DocumentoTipo item, boolean empty) {
+				super.updateItem(item, empty);
+				if (empty || item == null) {
+					setText(null);
+				} else {
+					setText(item.getDt_descricao());
+				}
+			}
+		});
+
+		// Add a listener to the JFXComboBox's valueProperty
+		cbDocTipo.valueProperty().addListener(new ChangeListener<DocumentoTipo>() {
+			public void changed(ObservableValue<? extends DocumentoTipo> observable, DocumentoTipo oldValue,
+					DocumentoTipo newValue) {
+				/*
+				 * if (newValue != null) { System.out.println("Selected Documento Tipo: " +
+				 * newValue.getDt_id() + ": " + newValue.getDt_descricao() ); }
+				 */
+			}
+		});
+
+		// Add a listener to the TextField's textProperty
+		tfNumero.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				// System.out.println("TextField changed from: " + oldValue + " to: " +
+				// newValue);
+			}
+		});
+		tfNumeroSei.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				// System.out.println("TextField changed from: " + oldValue + " to: " +
+				// newValue);
+			}
+		});
+		// Create a regular expression pattern to allow only numeric input
+		String numericPattern = "^[0-9]*$";
+
+		// Create a TextFormatter with the numeric pattern
+		TextFormatter<String> textFormatter = new TextFormatter<String>(change -> {
+			if (change.getControlNewText().matches(numericPattern)) {
+				return change;
+			} else {
+				return null; // Reject the change (non-numeric input)
+			}
+		});
+		tfNumeroSei.setTextFormatter(textFormatter);
+
+		tfProcesso.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				// System.out.println("TextField changed from: " + oldValue + " to: " +
+				// newValue);
+			}
+		});
+
 	}
 
-	public void handleListDocuments() {
+	public void handleList() {
 
 		try {
 
@@ -122,11 +198,37 @@ public class DocumentController implements Initializable {
 			ObservableList<Documento> documentList = FXCollections.observableArrayList(documentos);
 
 			// Set the items in the TableView
-			tableViewDocs.setItems(documentList);
+			tvDocumentos.setItems(documentList);
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
+	public void handleSave() {
+		// System.out.println(cbDocTipo.getValue().getDt_descricao());
+		System.out.println(tfNumero.getText());
+
+		String text = tfNumeroSei.getText();
+		int numeroSei = 0;
+		try {
+			numeroSei = Integer.parseInt(text);
+			// Use the 'numeroSei' integer as needed
+		} catch (NumberFormatException e) {
+			// Handle the case where the input is not a valid integer
+			System.out.println("Input is not a valid integer.");
+		}
+
+		Documento doc = new Documento(tfNumero.getText(), tfProcesso.getText(), numeroSei, cbDocTipo.getValue());
+
+		System.out.println(doc.toString());
+	}
+
+	public void handleEdit() {
+		System.out.println(cbDocTipo.getValue());
+	}
+
+	public void handleDelete() {
+		System.out.println(cbDocTipo.getValue());
+	}
 }

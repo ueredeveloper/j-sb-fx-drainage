@@ -1,13 +1,14 @@
 # To Do List
 
 ## November 5, 2023
-- [ ] Task 1 A classe ResizeAnimation deve funcionar em um ouvinte que, ao verificar que 
+- [X] Task 1 - Class
+	A classe ResizeAnimation deve funcionar em um ouvinte que, ao verificar que 
 o apMap mudou a largura, redimensiona a largura do mapa.
-- [ ] Task 2
-
-## November 6, 2023
-- [ ] Task 3
+	07/11/2023 - Resolvido.
+		Retirado a class ResizeAnimation, criado a classe ResizeMap.
 
 ## November 7, 2023
-- [ ] Task 4
-- [ ] Task 5
+- [ ] Task 1 - DocumentoController - Css
+	Adicionar on focu, cor secundária ao combobox.
+- [ ] Task 2 - DocumentoController - Css
+	O Combobox está desalinhado com os textfields.
