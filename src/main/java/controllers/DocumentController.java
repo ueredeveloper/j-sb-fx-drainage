@@ -23,6 +23,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextFormatter;
@@ -239,10 +241,10 @@ public class DocumentController implements Initializable {
 	}
 
 	public void handleSave() {
-		// System.out.println(cbDocType.getValue().getDt_descricao());
-		System.out.println(tfNumber.getText());
-
+	
 		String text = tfNumberSEI.getText();
+		
+		// verjo que este método é desnecessário pois o textfield já está aceitando apenas números
 		int numeroSei = 0;
 		try {
 			numeroSei = Integer.parseInt(text);
@@ -251,10 +253,21 @@ public class DocumentController implements Initializable {
 			// Handle the case where the input is not a valid integer
 			System.out.println("Input is not a valid integer.");
 		}
+		
+		try {
 
-	//	Documento doc = new Documento(tfNumber.getText(), tfProcess.getText(), numeroSei, cbDocType.getValue());
+			DocumentService documentService = new DocumentService(localUrl);
 
-	//	System.out.println(doc.toString());
+			Documento documento = new Documento(tfNumber.getText(), tfProcess.getText(), numeroSei, cbDocType.getValue());
+			
+			documentService.saveDocument(documento);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	
+
 	}
 
 	public void handleEdit() {
@@ -264,4 +277,6 @@ public class DocumentController implements Initializable {
 	public void handleDelete() {
 		System.out.println(cbDocType.getValue());
 	}
+	
+	
 }

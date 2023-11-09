@@ -25,9 +25,14 @@ public class Documento {
 		this.doc_tipo = doc_tipo;
 		this.doc_endereco = doc_endereco;
 	}
-
-
-
+	
+	public Documento(String doc_numero, String doc_processo, int doc_sei, DocumentoTipo doc_tipo) {
+		super();
+		this.doc_numero = doc_numero;
+		this.doc_processo = doc_processo;
+		this.doc_sei = doc_sei;
+		this.doc_tipo = doc_tipo;
+	}
 
 	public int getDoc_id() {
 		return doc_id;
