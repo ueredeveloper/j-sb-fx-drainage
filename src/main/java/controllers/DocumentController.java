@@ -23,8 +23,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextFormatter;
@@ -97,7 +95,7 @@ public class DocumentController implements Initializable {
 
 	@FXML
 	private TableColumn<Documento, String> tcNumSei;
-	
+
 	@FXML
 	private JFXButton btnViews;
 
@@ -193,41 +191,42 @@ public class DocumentController implements Initializable {
 				// newValue);
 			}
 		});
-		
+
 		btnViews.setOnAction(new EventHandler<ActionEvent>() {
-			
+
 			@Override
 			public void handle(ActionEvent event) {
 
 				try {
-		            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/views/Document.fxml"));
-		            Parent root = loader.load();
+					FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/views/Document.fxml"));
+					Parent root = loader.load();
 
-		            Stage popupStage = new Stage();
-		            popupStage.initModality(Modality.APPLICATION_MODAL);
-		            popupStage.setTitle("Edições e Diagramas");
+					Stage popupStage = new Stage();
+					popupStage.initModality(Modality.APPLICATION_MODAL);
+					popupStage.setTitle("Edições e Diagramas");
 
-		            Scene scene = new Scene(root);
-		            popupStage.setScene(scene);
+					Scene scene = new Scene(root);
+					popupStage.setScene(scene);
 
-		            popupStage.showAndWait();
-		        } catch (Exception e) {
-		            e.printStackTrace();
-		        }
-				
+					popupStage.showAndWait();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
 			}
 		});
-		
 
 	}
 
-	public void handleList() {
+	public void handleListByParam() {
 
 		try {
 
 			DocumentService documentService = new DocumentService(localUrl);
 
-			List<Documento> documentos = documentService.fetchDocuments();
+			String keyword = tfSearch.getText();
+
+			List<Documento> documentos = documentService.fetchByParam(keyword);
 
 			// Create a list of Document objects
 			ObservableList<Documento> documentList = FXCollections.observableArrayList(documentos);
@@ -241,10 +240,11 @@ public class DocumentController implements Initializable {
 	}
 
 	public void handleSave() {
-	
+
 		String text = tfNumberSEI.getText();
-		
-		// verjo que este método é desnecessário pois o textfield já está aceitando apenas números
+
+		// verjo que este método é desnecessário pois o textfield já está aceitando
+		// apenas números
 		int numeroSei = 0;
 		try {
 			numeroSei = Integer.parseInt(text);
@@ -253,20 +253,21 @@ public class DocumentController implements Initializable {
 			// Handle the case where the input is not a valid integer
 			System.out.println("Input is not a valid integer.");
 		}
-		
+
 		try {
 
 			DocumentService documentService = new DocumentService(localUrl);
 
-			Documento documento = new Documento(tfNumber.getText(), tfProcess.getText(), numeroSei, cbDocType.getValue());
-			
+			Documento documento = new Documento(
+					tfNumber.getText(), 
+					tfProcess.getText(), numeroSei,
+					cbDocType.getValue());
+
 			documentService.saveDocument(documento);
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-	
 
 	}
 
@@ -274,9 +275,20 @@ public class DocumentController implements Initializable {
 		System.out.println(cbDocType.getValue());
 	}
 
-	public void handleDelete() {
-		System.out.println(cbDocType.getValue());
+	public void handleDeleteById() {
+		
+		
+		Documento doc = tvDocs.getSelectionModel().getSelectedItem();
+		
+		System.out.println("delete by id " + doc.getDoc_id());
+
+		try {
+			DocumentService documentService = new DocumentService(localUrl);
+			documentService.deleteById(doc.getDoc_id());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 	}
-	
-	
+
 }

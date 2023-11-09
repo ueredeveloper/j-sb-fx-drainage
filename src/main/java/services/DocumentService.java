@@ -14,6 +14,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.List;
 
 public class DocumentService {
@@ -23,9 +24,9 @@ public class DocumentService {
 		this.localUrl = localUrl;
 	}
 
-	public List<Documento> fetchDocuments() {
+	public List<Documento> fetchByParam(String keyword) {
 		try {
-			URL apiUrl = new URL(localUrl + "/documento");
+			URL apiUrl = new URL(localUrl + "/documento/pesquisa?keyword=" + URLEncoder.encode(keyword, "UTF-8"));
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
 			connection.setRequestMethod("GET");
 
@@ -44,29 +45,9 @@ public class DocumentService {
 			connection.disconnect();
 		} catch (Exception e) {
 			e.printStackTrace();
+			showAlert("Erro na busca de algum documento", AlertType.ERROR);
 		}
 		return null;
-	}
-
-	private List<Documento> handleSuccessResponse(HttpURLConnection connection) throws IOException {
-		BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-		StringBuilder response = new StringBuilder();
-		String line;
-
-		while ((line = reader.readLine()) != null) {
-			System.out.println(line);
-			response.append(line);
-		}
-
-		reader.close();
-
-		return new Gson().fromJson(response.toString(), new TypeToken<List<Documento>>() {
-		}.getType());
-	}
-
-	private void handleErrorResponse(HttpURLConnection connection) throws IOException {
-		String responseMessage = connection.getResponseMessage();
-		System.out.println("Error: " + responseMessage);
 	}
 
 	public void saveDocument(Documento documento) {
@@ -102,6 +83,28 @@ public class DocumentService {
 		}
 	}
 
+	public void deleteById (int id) {
+		try {
+			URL apiUrl = new URL(localUrl + "/documento/?id=" + id);
+			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
+			connection.setRequestMethod("DELETE");
+
+			int responseCode = connection.getResponseCode();
+
+			if (responseCode == HttpURLConnection.HTTP_OK) {
+				showAlert("Sucesso ao deletar um documento", AlertType.INFORMATION);
+			} else {
+				handleErrorResponse(connection);
+			}
+
+			connection.disconnect();
+		} catch (Exception e) {
+			e.printStackTrace();
+			showAlert("Erro ao deletar um documento!", AlertType.ERROR);
+		}
+
+	}
+
 	private String convertObjectToJson(Object object) {
 		Gson gson = new Gson();
 		return gson.toJson(object);
@@ -114,5 +117,28 @@ public class DocumentService {
 		alert.setContentText(message);
 		alert.showAndWait();
 	}
+	
+
+	private List<Documento> handleSuccessResponse(HttpURLConnection connection) throws IOException {
+		BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+		StringBuilder response = new StringBuilder();
+		String line;
+
+		while ((line = reader.readLine()) != null) {
+			System.out.println(line);
+			response.append(line);
+		}
+
+		reader.close();
+
+		return new Gson().fromJson(response.toString(), new TypeToken<List<Documento>>() {
+		}.getType());
+	}
+
+	private void handleErrorResponse(HttpURLConnection connection) throws IOException {
+		String responseMessage = connection.getResponseMessage();
+		System.out.println("Error: " + responseMessage);
+	}
+
 
 }
