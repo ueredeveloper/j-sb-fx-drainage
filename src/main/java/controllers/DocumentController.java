@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
-import javax.swing.plaf.InternalFrameUI;
-
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXListCell;
@@ -18,13 +16,20 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import models.Documento;
 import models.DocumentoTipo;
 import services.DocumentService;
@@ -50,34 +55,34 @@ public class DocumentController implements Initializable {
 	private AnchorPane apContent;
 
 	@FXML
-	private JFXComboBox<DocumentoTipo> cbDocTipo;
+	private JFXComboBox<DocumentoTipo> cbDocType;
 
 	@FXML
-	private JFXTextField tfNumero;
+	private JFXTextField tfNumber;
 
 	@FXML
-	private JFXTextField tfNumeroSei;
+	private JFXTextField tfNumberSEI;
 
 	@FXML
-	private JFXTextField tfProcesso;
+	private JFXTextField tfProcess;
 
 	@FXML
-	private JFXButton btnSalvar;
+	private JFXButton btnSave;
 
 	@FXML
-	private JFXButton btnEditar;
+	private JFXButton btnEdit;
 
 	@FXML
-	private JFXButton btnDeletar;
+	private JFXButton btnDelete;
 
 	@FXML
-	private JFXTextField tfBuscar;
+	private JFXTextField tfSearch;
 
 	@FXML
-	private JFXButton btnBuscar;
+	private JFXButton btnSearch;
 
 	@FXML
-	private TableView<Documento> tvDocumentos;
+	private TableView<Documento> tvDocs;
 
 	@FXML
 	private TableColumn<Documento, Integer> tcId;
@@ -90,6 +95,9 @@ public class DocumentController implements Initializable {
 
 	@FXML
 	private TableColumn<Documento, String> tcNumSei;
+	
+	@FXML
+	private JFXButton btnViews;
 
 	@FXML
 	private MainController mainController;
@@ -108,12 +116,12 @@ public class DocumentController implements Initializable {
 		AnchorPane.setRightAnchor(apContent, 0.0);
 		AnchorPane.setLeftAnchor(apContent, 0.0);
 
-		cbDocTipo.getItems().addAll(new DocumentoTipo(1, "Requerimento"), new DocumentoTipo(2, "Ofício"));
+		cbDocType.getItems().addAll(new DocumentoTipo(1, "Requerimento"), new DocumentoTipo(2, "Ofício"));
 
-		cbDocTipo.setValue(cbDocTipo.getItems().get(0));
+		cbDocType.setValue(cbDocType.getItems().get(0));
 
 		// Customize the cell factory to display the custom object's description
-		cbDocTipo.setCellFactory(param -> new JFXListCell<DocumentoTipo>() {
+		cbDocType.setCellFactory(param -> new JFXListCell<DocumentoTipo>() {
 			@Override
 			public void updateItem(DocumentoTipo item, boolean empty) {
 				super.updateItem(item, empty);
@@ -125,7 +133,7 @@ public class DocumentController implements Initializable {
 			}
 		});
 		// Customize the list cell for the dropdown (optional)
-		cbDocTipo.setButtonCell(new JFXListCell<DocumentoTipo>() {
+		cbDocType.setButtonCell(new JFXListCell<DocumentoTipo>() {
 			@Override
 			public void updateItem(DocumentoTipo item, boolean empty) {
 				super.updateItem(item, empty);
@@ -138,7 +146,7 @@ public class DocumentController implements Initializable {
 		});
 
 		// Add a listener to the JFXComboBox's valueProperty
-		cbDocTipo.valueProperty().addListener(new ChangeListener<DocumentoTipo>() {
+		cbDocType.valueProperty().addListener(new ChangeListener<DocumentoTipo>() {
 			public void changed(ObservableValue<? extends DocumentoTipo> observable, DocumentoTipo oldValue,
 					DocumentoTipo newValue) {
 				/*
@@ -149,14 +157,14 @@ public class DocumentController implements Initializable {
 		});
 
 		// Add a listener to the TextField's textProperty
-		tfNumero.textProperty().addListener(new ChangeListener<String>() {
+		tfNumber.textProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
 				// System.out.println("TextField changed from: " + oldValue + " to: " +
 				// newValue);
 			}
 		});
-		tfNumeroSei.textProperty().addListener(new ChangeListener<String>() {
+		tfNumberSEI.textProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
 				// System.out.println("TextField changed from: " + oldValue + " to: " +
@@ -174,15 +182,40 @@ public class DocumentController implements Initializable {
 				return null; // Reject the change (non-numeric input)
 			}
 		});
-		tfNumeroSei.setTextFormatter(textFormatter);
+		tfNumberSEI.setTextFormatter(textFormatter);
 
-		tfProcesso.textProperty().addListener(new ChangeListener<String>() {
+		tfProcess.textProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
 				// System.out.println("TextField changed from: " + oldValue + " to: " +
 				// newValue);
 			}
 		});
+		
+		btnViews.setOnAction(new EventHandler<ActionEvent>() {
+			
+			@Override
+			public void handle(ActionEvent event) {
+
+				try {
+		            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/views/Document.fxml"));
+		            Parent root = loader.load();
+
+		            Stage popupStage = new Stage();
+		            popupStage.initModality(Modality.APPLICATION_MODAL);
+		            popupStage.setTitle("Edições e Diagramas");
+
+		            Scene scene = new Scene(root);
+		            popupStage.setScene(scene);
+
+		            popupStage.showAndWait();
+		        } catch (Exception e) {
+		            e.printStackTrace();
+		        }
+				
+			}
+		});
+		
 
 	}
 
@@ -198,7 +231,7 @@ public class DocumentController implements Initializable {
 			ObservableList<Documento> documentList = FXCollections.observableArrayList(documentos);
 
 			// Set the items in the TableView
-			tvDocumentos.setItems(documentList);
+			tvDocs.setItems(documentList);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -206,10 +239,10 @@ public class DocumentController implements Initializable {
 	}
 
 	public void handleSave() {
-		// System.out.println(cbDocTipo.getValue().getDt_descricao());
-		System.out.println(tfNumero.getText());
+		// System.out.println(cbDocType.getValue().getDt_descricao());
+		System.out.println(tfNumber.getText());
 
-		String text = tfNumeroSei.getText();
+		String text = tfNumberSEI.getText();
 		int numeroSei = 0;
 		try {
 			numeroSei = Integer.parseInt(text);
@@ -219,16 +252,16 @@ public class DocumentController implements Initializable {
 			System.out.println("Input is not a valid integer.");
 		}
 
-		Documento doc = new Documento(tfNumero.getText(), tfProcesso.getText(), numeroSei, cbDocTipo.getValue());
+	//	Documento doc = new Documento(tfNumber.getText(), tfProcess.getText(), numeroSei, cbDocType.getValue());
 
-		System.out.println(doc.toString());
+	//	System.out.println(doc.toString());
 	}
 
 	public void handleEdit() {
-		System.out.println(cbDocTipo.getValue());
+		System.out.println(cbDocType.getValue());
 	}
 
 	public void handleDelete() {
-		System.out.println(cbDocTipo.getValue());
+		System.out.println(cbDocType.getValue());
 	}
 }

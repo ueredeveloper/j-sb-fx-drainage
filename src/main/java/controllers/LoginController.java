@@ -78,17 +78,16 @@ public class LoginController implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 
 		iconGoogle.setSize("2em");
-		iconGoogle.setId("icon-google"); 
-		
+		iconGoogle.setId("icon-google");
+
 		Label lblGoogle = new Label("Google");
-		lblGoogle.setId("lbl-google"); 
+		lblGoogle.setId("lbl-google");
 		HBox hbox = new HBox(10);
 		hbox.getChildren().addAll(iconGoogle, lblGoogle);
 		hbox.setAlignment(Pos.CENTER);
-		
 
 		btnSignUpGoogle.setGraphic(hbox);
-		
+
 		btnSignUp.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
@@ -100,25 +99,24 @@ public class LoginController implements Initializable {
 
 					// stage.close();
 					Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/fxml/Main.fxml")));
-					
-					
+
 					// Redimensionamento da do stage de acordo com as dimensões do monitor
-                    Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
-                    
-                    // Tela cheia
-                   stage.setX(primaryScreenBounds.getMinX());
-                    stage.setY(primaryScreenBounds.getMinY());
-                    stage.setWidth(primaryScreenBounds.getWidth());
-                    stage.setHeight(primaryScreenBounds.getHeight());
-                    // Minímo de tamanho e largura da tela principal
-                    stage.setMinHeight(668);
-                    stage.setMinWidth(1266);
-                //    stage.setHeight(668);
-               //     stage.setWidth(1266);
-                    
-                    // título
-                    stage.setTitle("SAD/DF - Geo - Cadastro");
-                    
+					Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+
+					// Tela cheia
+					stage.setX(primaryScreenBounds.getMinX());
+					stage.setY(primaryScreenBounds.getMinY());
+					stage.setWidth(primaryScreenBounds.getWidth());
+					stage.setHeight(primaryScreenBounds.getHeight());
+					// Minímo de tamanho e largura da tela principal
+					stage.setMinHeight(668);
+					stage.setMinWidth(1266);
+					// stage.setHeight(668);
+					// stage.setWidth(1266);
+
+					// título
+					stage.setTitle("SAD/DF - Geo - Cadastro");
+
 					stage.setScene(scene);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block

@@ -50,7 +50,7 @@ public class MainController implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 
 		WebEngine webEngine = wvMap.getEngine();
-		webEngine.load(getClass().getResource("/map/index.html").toExternalForm());
+		webEngine.load(getClass().getResource("/html/map/index.html").toExternalForm());
 
 		// Add a listener to the width property of the AnchorPane
         apContent.widthProperty().addListener(new ChangeListener<Number>() {

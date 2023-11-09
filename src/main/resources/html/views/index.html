@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <meta charset="UTF-8"/>
+  </head>
+    <style>
+table {
+  	border: 1px solid #dddddd;
+  	padding: 8px;
+}
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+  
+  </style>
+  <body>
+
+    <div id="mydiv"></div>
+
+    <script type="text/babel">
+    
+    let documento = ${json};
+    
+      function Documento({documento}) {
+        return (
+          <div>
+			<h1>Documento</h1>
+            <p>Tipo: {documento.doc_tipo.dt_descricao}</p>
+            <p>ID: {documento.doc_id}</p>
+            <p>Número: {documento.doc_numero}</p>
+            <p>Processo: {documento.doc_processo}</p>
+            <p>Número SEI: {documento.doc_sei}</p>
+       	  </div>
+		);
+      }
+      
+      const container = document.getElementById('mydiv');
+      const root = ReactDOM.createRoot(container);
+      root.render(<Documento documento={documento} />)
+    </script>
+
+  </body>
+</html>
