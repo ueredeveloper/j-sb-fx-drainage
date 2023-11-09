@@ -1,0 +1,10 @@
+* {
+	/* cores */
+	-fx-primary-color: #000750;
+	-fx-secondary-color: #9FC773;
+	-fx-text-color: #FEFFFE;
+	-fx-button-google: #FF3B00;
+	/* tamanho da fonte */
+	-fx-font-size: 14px;
+
+}

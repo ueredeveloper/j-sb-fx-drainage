@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.web.WebView?>
 
@@ -17,4 +18,8 @@
          </children>
       </AnchorPane>
    </children>
+   <stylesheets>
+      <URL value="@css/root.css" />
+      <URL value="@css/main.css" />
+   </stylesheets>
 </AnchorPane>

@@ -29,7 +29,7 @@
 
 .hbox-top {
     -fx-layout-y: 30.0;
-    -fx-pref-height: 50.0;
+    -fx-pref-height: 60.0;
     -fx-pref-width: 800.0;
     -fx-anchor-pane-left: 10.0;
     -fx-anchor-pane-right: 10.0;

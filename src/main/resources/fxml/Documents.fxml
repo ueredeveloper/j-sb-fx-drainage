@@ -13,14 +13,10 @@
 <?import javafx.scene.layout.Pane?>
 
 <AnchorPane fx:id="apContent" prefHeight="579.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.DocumentController">
-   <stylesheets>
-      <URL value="@css/colors.css" />
-      <URL value="@css/documents.css" />
-   </stylesheets>
    <children>
-      <HBox layoutY="28.0" prefHeight="50.0" prefWidth="800.0" styleClass="hbox-top" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+      <HBox layoutY="15.0" prefHeight="60.0" prefWidth="780.0" styleClass="hbox-top" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
          <children>
-            <JFXComboBox fx:id="cbDocType" labelFloat="true" prefWidth="300.0" promptText="Tipo de Documento" HBox.hgrow="ALWAYS">
+            <JFXComboBox fx:id="cbDocType" labelFloat="true" prefHeight="70.0" prefWidth="350.0" promptText="Tipo de Documento" HBox.hgrow="ALWAYS">
                <HBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin>
@@ -29,7 +25,7 @@
                   <String fx:value="combo-box-base" />
                </styleClass>
             </JFXComboBox>
-            <JFXTextField fx:id="tfNumber" alignment="TOP_LEFT" labelFloat="true" prefWidth="300.0" promptText="Número" HBox.hgrow="ALWAYS">
+            <JFXTextField fx:id="tfNumber" alignment="TOP_LEFT" labelFloat="true" prefHeight="70.0" prefWidth="300.0" promptText="Número" HBox.hgrow="ALWAYS">
                <HBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin>
@@ -38,7 +34,7 @@
                   <String fx:value="jfx-text-field-custom" />
                </styleClass>
             </JFXTextField>
-            <JFXTextField fx:id="tfNumberSEI" alignment="TOP_LEFT" labelFloat="true" prefWidth="300.0" promptText="Número SEI" HBox.hgrow="ALWAYS">
+            <JFXTextField fx:id="tfNumberSEI" alignment="TOP_LEFT" labelFloat="true" prefHeight="70.0" prefWidth="300.0" promptText="Número SEI" HBox.hgrow="ALWAYS">
                <HBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin>
@@ -47,7 +43,7 @@
                   <String fx:value="jfx-text-field-custom" />
                </styleClass>
             </JFXTextField>
-            <JFXTextField fx:id="tfProcess" alignment="TOP_LEFT" labelFloat="true" prefWidth="300.0" promptText="Processo" HBox.hgrow="ALWAYS">
+            <JFXTextField fx:id="tfProcess" alignment="TOP_LEFT" labelFloat="true" prefHeight="70.0" prefWidth="350.0" promptText="Processo" HBox.hgrow="ALWAYS">
                <HBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin>
@@ -58,7 +54,7 @@
             </JFXTextField>
          </children>
       </HBox>
-      <HBox layoutX="10.0" layoutY="102.0" prefHeight="50.0" prefWidth="800.0" styleClass="hbox-actions" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+      <HBox layoutX="10.0" layoutY="106.0" prefHeight="50.0" prefWidth="800.0" styleClass="hbox-actions" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
          <children>
             <JFXButton fx:id="btnSave" onAction="#handleSave" prefHeight="50.0" prefWidth="300.0" styleClass="button-secondary" text="Salvar">
                <HBox.margin>
@@ -77,11 +73,11 @@
             </JFXButton>
          </children>
       </HBox>
-      <HBox layoutX="10.0" layoutY="152.0" prefHeight="50.0" prefWidth="800.0" styleClass="hbox-search" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+      <HBox layoutX="10.0" layoutY="174.0" prefHeight="50.0" prefWidth="800.0" styleClass="hbox-search" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
          <children>
             <Pane prefWidth="100.0" HBox.hgrow="ALWAYS" />
             <Pane prefWidth="100.0" HBox.hgrow="ALWAYS" />
-              <JFXTextField fx:id="tfSearch" alignment="TOP_LEFT" labelFloat="true" prefWidth="300.0" promptText="Pesquisar" HBox.hgrow="ALWAYS">
+              <JFXTextField fx:id="tfSearch" alignment="TOP_LEFT" labelFloat="true" prefHeight="50.0" prefWidth="300.0" promptText="Pesquisar" HBox.hgrow="ALWAYS">
                <HBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin>
@@ -110,6 +106,14 @@
             </TableView>
          </children>
       </HBox>
-      <JFXButton fx:id="btnViews" layoutX="697.0" layoutY="550.0" prefHeight="25.0" prefWidth="93.0" styleClass="button-secondary" text="view" AnchorPane.rightAnchor="10.0" />
+      <JFXButton fx:id="btnViews" layoutX="697.0" layoutY="550.0" prefHeight="25.0" prefWidth="93.0" styleClass="button-secondary" text="view" AnchorPane.rightAnchor="10.0">
+         <stylesheets>
+            <URL value="@css/root.css" />
+            <URL value="@css/documents.css" />
+         </stylesheets></JFXButton>
    </children>
+   <stylesheets>
+      <URL value="@css/root.css" />
+      <URL value="@css/documents.css" />
+   </stylesheets>
 </AnchorPane>

@@ -43,7 +43,7 @@
       </Pane>
    </children>
    <stylesheets>
-      <URL value="@css/colors.css" />
+      <URL value="@css/root.css" />
       <URL value="@css/login.css" />
    </stylesheets>
 </AnchorPane>

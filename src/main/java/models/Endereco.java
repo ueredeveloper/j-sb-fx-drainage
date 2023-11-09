@@ -1,18 +1,18 @@
 package models;
 
 public class Endereco {
-	
+
 	private int end_id;
-	private String end_endereco;
-	
+	private String end_logradouro;
+
 	public Endereco() {
 		super();
 	}
-	
-	public Endereco(int end_id, String end_endereco) {
+
+	public Endereco(int end_id, String end_logradouro) {
 		super();
 		this.end_id = end_id;
-		this.end_endereco = end_endereco;
+		this.end_logradouro = end_logradouro;
 	}
 
 	public int getEnd_id() {
@@ -23,15 +23,12 @@ public class Endereco {
 		this.end_id = end_id;
 	}
 
-	public String getEnd_endereco() {
-		return end_endereco;
+	public String getEnd_logradouro() {
+		return end_logradouro;
 	}
 
-	public void setEnd_endereco(String end_endereco) {
-		this.end_endereco = end_endereco;
+	public void setEnd_logradouro(String end_logradouro) {
+		this.end_logradouro = end_logradouro;
 	}
-	
-	
-	
 
 }
