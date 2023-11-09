@@ -23,7 +23,7 @@ public class Main extends Application {
 			e.printStackTrace();
 		}
         
-       Scene scene = new Scene(root, 900, 450);
+        Scene scene = new Scene(root, 900, 450);
 		//Scene scene = new Scene (root, 1780, 1040);
     
         stage.setTitle("Login");

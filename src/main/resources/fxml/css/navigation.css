@@ -3,9 +3,9 @@
     -fx-padding : 0 10 0 0 ;
     -fx-alignment: CENTER_RIGHT;
     -fx-font-weight: bold;
-    -fx-background-color: orange;
+    -fx-background-color: -fx-primary-color;
 }
 .buttons{
-	-fx-text-fill: -fx-primary-color;
+	-fx-text-fill: -fx-terciary-color;
 	-fx-pref-width:100;
 }

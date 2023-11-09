@@ -2,20 +2,24 @@
 
 /* Base styling for labels, buttons, and text fields */
 .label-text {
-    -fx-text-fill: -fx-primary-color;
+    -fx-text-fill: -fx-terciary-color;
 }
 
 .button-secondary {
-    -fx-background-color: -fx-primary-color;
-    -fx-text-fill: -fx-text-color;
+    -fx-background-color: -fx-terciary-color;
+    -fx-text-fill: -fx-on-terciary-color;
+}
+.button-addictional{
+	-fx-background-color: -fx-addictional-color;
+	-fx-text-fill: -fx-on-addictional-color;
 }
 
 .text-field {
-    -fx-prompt-text-fill: -fx-primary-color;
+    -fx-prompt-text-fill: -fx-terciary-color;
 }
 
 .text-field:focused {
-    -fx-text-fill: -fx-primary-color; /* Set text color when in focus */
+    -fx-text-fill: -fx-terciary-color; /* Set text color when in focus */
 }
 /* Custom style for your specific JFXTextField */
 .jfx-text-field-custom {
