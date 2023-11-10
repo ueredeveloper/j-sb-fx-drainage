@@ -1,5 +1,6 @@
 package controllers;
 
+import java.awt.font.GlyphJustificationInfo;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -7,6 +8,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
+import com.google.gson.Gson;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXListCell;
@@ -35,6 +37,7 @@ import javafx.stage.Stage;
 import models.Documento;
 import models.DocumentoTipo;
 import services.DocumentService;
+import services.ServiceResponse;
 
 public class DocumentController implements Initializable {
 
@@ -198,16 +201,6 @@ public class DocumentController implements Initializable {
 
 			@Override
 			public void handle(ActionEvent event) {
-				
-				// Testando toast alert, ok.
-				Node source = (Node) event.getSource();
-			    Stage ownerStage = (Stage) source.getScene().getWindow();
-			
-			    String toastMsg = "This is a warning alert!";
-			    
-			    
-			    
-			    utilities.Toast.makeText(ownerStage, toastMsg, ToastType.WARNING);
 
 				try {
 					FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/views/Document.fxml"));
@@ -228,9 +221,26 @@ public class DocumentController implements Initializable {
 			}
 		});
 
+		btnSave.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				handleSave(event);
+
+			}
+		});
+		
+		btnSearch.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				handleListByParam(event);
+				
+			}
+		});
 	}
 
-	public void handleListByParam() {
+	public void handleListByParam(ActionEvent event) {
 
 		try {
 
@@ -251,7 +261,7 @@ public class DocumentController implements Initializable {
 		}
 	}
 
-	public void handleSave() {
+	public void handleSave(ActionEvent event) {
 
 		String text = tfNumberSEI.getText();
 
@@ -270,16 +280,28 @@ public class DocumentController implements Initializable {
 
 			DocumentService documentService = new DocumentService(localUrl);
 
-			Documento documento = new Documento(
-					tfNumber.getText(), 
-					tfProcess.getText(), numeroSei,
-					cbDocType.getValue());
+			Documento reqDoc = new Documento(tfNumber.getText(), tfProcess.getText(), numeroSei, cbDocType.getValue());
 
-			documentService.saveDocument(documento);
-			
-			
+			ServiceResponse<?> serRes = documentService.saveDocument(reqDoc);
+
+			if (serRes.getResponseCode() == 201) {
+				
+				// Informa salvamento com sucesso
+				Node source = (Node) event.getSource();
+				Stage ownerStage = (Stage) source.getScene().getWindow();
+				String toastMsg = "Documento salvo com sucesso!";
+				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.SUCCESS);
+				// Adiciona resposta na tabela
+				Documento responseDoc = new Gson().fromJson((String) serRes.getResponseBody(), Documento.class);
+				tvDocs.getItems().add(responseDoc);
+
+			} else {
+				// adiconar alerta (Toast) de erro
+				System.out.println(serRes.getResponseCode());
+			}
 
 		} catch (Exception e) {
+			// adicionar Toast de erro
 			e.printStackTrace();
 		}
 
@@ -290,10 +312,9 @@ public class DocumentController implements Initializable {
 	}
 
 	public void handleDeleteById() {
-		
-		
+
 		Documento doc = tvDocs.getSelectionModel().getSelectedItem();
-		
+
 		System.out.println("delete by id " + doc.getDoc_id());
 
 		try {

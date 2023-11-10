@@ -9,8 +9,8 @@
    <children>
       <Pane fx:id="pToast" maxHeight="80.0" maxWidth="600.0" prefHeight="80.0" prefWidth="600.0" styleClass="pane" StackPane.alignment="TOP_CENTER">
          <children>
-            <Text fx:id="textToast" layoutX="146.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="This is a success alert" wrappingWidth="320.828125" />
-            <FontAwesomeIconView fx:id="iconView" layoutX="116.0" layoutY="34.0" />
+            <Text fx:id="textToast" layoutX="146.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="This is a success alert" textAlignment="CENTER" wrappingWidth="320.828125" />
+            <FontAwesomeIconView fx:id="iconView" glyphSize="26" layoutX="102.0" layoutY="37.0" textAlignment="CENTER" />
          </children>
       </Pane>
    </children>

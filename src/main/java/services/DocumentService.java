@@ -1,12 +1,5 @@
 package services;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-import models.Documento;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -16,6 +9,12 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.List;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import models.Documento;
+
 
 public class DocumentService {
 	private String localUrl;
@@ -45,42 +44,57 @@ public class DocumentService {
 			connection.disconnect();
 		} catch (Exception e) {
 			e.printStackTrace();
-			showAlert("Erro na busca de algum documento", AlertType.ERROR);
+			System.out.println("serv save e print ");
+			
+			//showAlert("Erro na busca de algum documento", AlertType.ERROR);
 		}
 		return null;
 	}
 
-	public void saveDocument(Documento documento) {
-		try {
-			URL apiUrl = new URL(localUrl + "/documento");
-			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
-			connection.setRequestMethod("POST");
-			connection.setRequestProperty("Content-Type", "application/json");
-			connection.setDoOutput(true);
+	public ServiceResponse saveDocument(Documento documento) {
+	    try {
+	        URL apiUrl = new URL(localUrl + "/documento");
+	        HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
+	        connection.setRequestMethod("POST");
+	        connection.setRequestProperty("Content-Type", "application/json");
+	        connection.setDoOutput(true);
 
-			// Convert Documento object to JSON
-			String jsonInputString = convertObjectToJson(documento);
+	        // Convert Documento object to JSON
+	        String jsonInputString = convertObjectToJson(documento);
 
-			// Write JSON to request body
-			try (OutputStream os = connection.getOutputStream();
-					OutputStreamWriter osw = new OutputStreamWriter(os, "UTF-8")) {
-				osw.write(jsonInputString);
-				osw.flush();
-			}
+	        // Write JSON to request body
+	        try (OutputStream os = connection.getOutputStream();
+	             OutputStreamWriter osw = new OutputStreamWriter(os, "UTF-8")) {
+	            osw.write(jsonInputString);
+	            osw.flush();
+	        }
 
-			int responseCode = connection.getResponseCode();
+	        int responseCode = connection.getResponseCode();
+	        
 
-			if (responseCode == HttpURLConnection.HTTP_CREATED) {
-				showAlert("Document saved successfully", AlertType.INFORMATION);
-			} else {
-				handleErrorResponse(connection);
-			}
+	        String responseBody;
+	        if (responseCode == HttpURLConnection.HTTP_CREATED) {
+	        	System.out.println("service created");
+	            try (BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+	                StringBuilder response = new StringBuilder();
+	                String responseLine;
+	                while ((responseLine = br.readLine()) != null) {
+	                    response.append(responseLine);
+	                }
+	                responseBody = response.toString();
+	            }
+	        } else {
+	            handleErrorResponse(connection);
+	            responseBody = readErrorStream(connection);
+	        }
 
-			connection.disconnect();
-		} catch (Exception e) {
-			e.printStackTrace();
-			showAlert("Error saving document", AlertType.ERROR);
-		}
+	        connection.disconnect();
+	        return new ServiceResponse(responseCode, responseBody);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	       // showAlert("Error saving document", AlertType.ERROR);
+	        return null; // Return null if an error occurs
+	    }
 	}
 
 	public void deleteById (int id) {
@@ -92,7 +106,7 @@ public class DocumentService {
 			int responseCode = connection.getResponseCode();
 
 			if (responseCode == HttpURLConnection.HTTP_OK) {
-				showAlert("Sucesso ao deletar um documento", AlertType.INFORMATION);
+				//showAlert("Sucesso ao deletar um documento", AlertType.INFORMATION);
 			} else {
 				handleErrorResponse(connection);
 			}
@@ -100,7 +114,7 @@ public class DocumentService {
 			connection.disconnect();
 		} catch (Exception e) {
 			e.printStackTrace();
-			showAlert("Erro ao deletar um documento!", AlertType.ERROR);
+			//showAlert("Erro ao deletar um documento!", AlertType.ERROR);
 		}
 
 	}
@@ -110,14 +124,6 @@ public class DocumentService {
 		return gson.toJson(object);
 	}
 
-	private void showAlert(String message, AlertType alertType) {
-		Alert alert = new Alert(alertType);
-		alert.setTitle("Alert");
-		alert.setHeaderText(null);
-		alert.setContentText(message);
-		alert.showAndWait();
-	}
-	
 
 	private List<Documento> handleSuccessResponse(HttpURLConnection connection) throws IOException {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
@@ -125,7 +131,7 @@ public class DocumentService {
 		String line;
 
 		while ((line = reader.readLine()) != null) {
-			System.out.println(line);
+			//System.out.println(line);
 			response.append(line);
 		}
 
@@ -138,6 +144,16 @@ public class DocumentService {
 	private void handleErrorResponse(HttpURLConnection connection) throws IOException {
 		String responseMessage = connection.getResponseMessage();
 		System.out.println("Error: " + responseMessage);
+	}
+	private String readErrorStream(HttpURLConnection connection) throws IOException {
+	    try (BufferedReader br = new BufferedReader(new InputStreamReader(connection.getErrorStream()))) {
+	        StringBuilder response = new StringBuilder();
+	        String responseLine;
+	        while ((responseLine = br.readLine()) != null) {
+	            response.append(responseLine);
+	        }
+	        return response.toString();
+	    }
 	}
 
 
