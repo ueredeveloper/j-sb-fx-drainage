@@ -12,6 +12,7 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXListCell;
 import com.jfoenix.controls.JFXTextField;
 
+import enums.ToastType;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -21,6 +22,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
@@ -196,6 +198,16 @@ public class DocumentController implements Initializable {
 
 			@Override
 			public void handle(ActionEvent event) {
+				
+				// Testando toast alert, ok.
+				Node source = (Node) event.getSource();
+			    Stage ownerStage = (Stage) source.getScene().getWindow();
+			
+			    String toastMsg = "This is a warning alert!";
+			    
+			    
+			    
+			    utilities.Toast.makeText(ownerStage, toastMsg, ToastType.WARNING);
 
 				try {
 					FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/views/Document.fxml"));
@@ -264,6 +276,8 @@ public class DocumentController implements Initializable {
 					cbDocType.getValue());
 
 			documentService.saveDocument(documento);
+			
+			
 
 		} catch (Exception e) {
 			e.printStackTrace();

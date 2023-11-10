@@ -1,0 +1,29 @@
+.stack-pane {
+	-fx-background-color: transparent;
+	-fx-font-size: 14px;
+}
+.pane {
+	-fx-background-color: #4CAF50; /* Green */
+	-fx-background-radius: 5px;
+}
+.success {
+    -fx-background-color: #C5E1A5; /* Very Light Green */
+    -fx-text-fill: #000000; /* Black text */
+}
+
+.warning {
+    -fx-background-color: #FFF176; /* Very Light Yellow */
+    -fx-text-fill: #000000; /* Black text */
+}
+
+.info {
+    -fx-background-color: #BBDEFB; /* Very Light Blue */
+    -fx-text-fill: #000000; /* Black text */
+}
+
+.error {
+    -fx-background-color: #EF9A9A; /* Very Light Red */
+    -fx-text-fill: #000000; /* Black text */
+}
+
+
