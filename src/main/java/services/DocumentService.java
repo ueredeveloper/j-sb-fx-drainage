@@ -2,6 +2,7 @@ package services;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -9,6 +10,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -97,27 +99,27 @@ public class DocumentService {
 	    }
 	}
 
-	public void deleteById (int id) {
-		try {
-			URL apiUrl = new URL(localUrl + "/documento/?id=" + id);
-			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
-			connection.setRequestMethod("DELETE");
+	public ServiceResponse deleteById(int id) {
+        try {
+            URL apiUrl = new URL(localUrl + "/documento/?id=" + id); // Updated URL
+            HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
+            connection.setRequestMethod("DELETE");
 
-			int responseCode = connection.getResponseCode();
+            int responseCode = connection.getResponseCode();
+            
+            // Read the response body if needed
+            InputStream inputStream = connection.getInputStream();
+            String responseBody = new BufferedReader(new InputStreamReader(inputStream)).lines().collect(Collectors.joining("\n"));
 
-			if (responseCode == HttpURLConnection.HTTP_OK) {
-				//showAlert("Sucesso ao deletar um documento", AlertType.INFORMATION);
-			} else {
-				handleErrorResponse(connection);
-			}
+            connection.disconnect();
 
-			connection.disconnect();
-		} catch (Exception e) {
-			e.printStackTrace();
-			//showAlert("Erro ao deletar um documento!", AlertType.ERROR);
-		}
-
-	}
+            return new ServiceResponse<>(responseCode, responseBody); // Change null to the actual response body if needed
+        } catch (Exception e) {
+            e.printStackTrace();
+            // Handle the exception if needed
+            return new ServiceResponse<>(-1, null); // You might want to use a different code for errors
+        }
+    }
 
 	private String convertObjectToJson(Object object) {
 		Gson gson = new Gson();

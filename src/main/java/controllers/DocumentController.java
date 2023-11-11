@@ -238,6 +238,14 @@ public class DocumentController implements Initializable {
 				
 			}
 		});
+		btnDelete.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				handleDeleteById(event);
+				
+			}
+		});
 	}
 
 	public void handleListByParam(ActionEvent event) {
@@ -282,9 +290,9 @@ public class DocumentController implements Initializable {
 
 			Documento reqDoc = new Documento(tfNumber.getText(), tfProcess.getText(), numeroSei, cbDocType.getValue());
 
-			ServiceResponse<?> serRes = documentService.saveDocument(reqDoc);
+			ServiceResponse<?> serviceResponse = documentService.saveDocument(reqDoc);
 
-			if (serRes.getResponseCode() == 201) {
+			if (serviceResponse.getResponseCode() == 201) {
 				
 				// Informa salvamento com sucesso
 				Node source = (Node) event.getSource();
@@ -292,12 +300,12 @@ public class DocumentController implements Initializable {
 				String toastMsg = "Documento salvo com sucesso!";
 				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.SUCCESS);
 				// Adiciona resposta na tabela
-				Documento responseDoc = new Gson().fromJson((String) serRes.getResponseBody(), Documento.class);
+				Documento responseDoc = new Gson().fromJson((String) serviceResponse.getResponseBody(), Documento.class);
 				tvDocs.getItems().add(responseDoc);
 
 			} else {
 				// adiconar alerta (Toast) de erro
-				System.out.println(serRes.getResponseCode());
+				System.out.println(serviceResponse.getResponseCode());
 			}
 
 		} catch (Exception e) {
@@ -311,15 +319,35 @@ public class DocumentController implements Initializable {
 		System.out.println(cbDocType.getValue());
 	}
 
-	public void handleDeleteById() {
+	public void handleDeleteById(ActionEvent event) {
 
-		Documento doc = tvDocs.getSelectionModel().getSelectedItem();
-
-		System.out.println("delete by id " + doc.getDoc_id());
+		Documento selectedDocumento = tvDocs.getSelectionModel().getSelectedItem();
 
 		try {
 			DocumentService documentService = new DocumentService(localUrl);
-			documentService.deleteById(doc.getDoc_id());
+			
+			ServiceResponse<?> serviceResponse = documentService.deleteById(selectedDocumento.getDoc_id());
+			
+			if (serviceResponse.getResponseCode() == 200) {
+				
+				// Informa sucesso em deletar
+				Node source = (Node) event.getSource();
+				Stage ownerStage = (Stage) source.getScene().getWindow();
+				String toastMsg = "Documento deletado com sucesso!";
+				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.SUCCESS);
+				// Objecto removido
+				//Documento responseDoc = new Gson().fromJson((String) serviceResponse.getResponseBody(), Documento.class);
+				
+				// retira objecto da tabela de documentos tvDocs
+				tvDocs.getItems().remove(selectedDocumento);
+
+			} else {
+				// Informa erro em deletar
+				Node source = (Node) event.getSource();
+				Stage ownerStage = (Stage) source.getScene().getWindow();
+				String toastMsg = "Erro ao deletar documento!";
+				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
