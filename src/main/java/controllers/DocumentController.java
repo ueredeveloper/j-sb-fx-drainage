@@ -1,6 +1,5 @@
 package controllers;
 
-import java.awt.font.GlyphJustificationInfo;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -34,10 +33,12 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
 import models.Documento;
 import models.DocumentoTipo;
 import services.DocumentService;
 import services.ServiceResponse;
+import utilities.ConvertToUTF8;
 
 public class DocumentController implements Initializable {
 
@@ -121,12 +122,15 @@ public class DocumentController implements Initializable {
 		AnchorPane.setRightAnchor(apContent, 0.0);
 		AnchorPane.setLeftAnchor(apContent, 0.0);
 
-		cbDocType.getItems().addAll(new DocumentoTipo(1, "Requerimento"), new DocumentoTipo(2, "Ofício"));
+		cbDocType.getItems().addAll(
+				new DocumentoTipo(1, "Requerimento"), 
+				new DocumentoTipo(2, "OfÃ­cio")
+				);
 
-		cbDocType.setValue(cbDocType.getItems().get(0));
+		//cbDocType.setValue(cbDocType.getItems().get(0));
 
 		// Customize the cell factory to display the custom object's description
-		cbDocType.setCellFactory(param -> new JFXListCell<DocumentoTipo>() {
+		/*cbDocType.setCellFactory(param -> new JFXListCell<DocumentoTipo>() {
 			@Override
 			public void updateItem(DocumentoTipo item, boolean empty) {
 				super.updateItem(item, empty);
@@ -136,7 +140,20 @@ public class DocumentController implements Initializable {
 					setText(item.getDt_descricao());
 				}
 			}
-		});
+		});*/
+		cbDocType.setConverter(new StringConverter<DocumentoTipo>() {
+	        @Override
+	        public String toString(DocumentoTipo documentoTipo) {
+	            return documentoTipo == null ? null : new ConvertToUTF8(documentoTipo.getDt_descricao()).convertToUTF8();
+	        }
+
+	        @Override
+	        public DocumentoTipo fromString(String string) {
+	            // You can implement this method if needed
+	            // It converts a string back to a DocumentoTipo object
+	            return null;
+	        }
+	    });
 		// Customize the list cell for the dropdown (optional)
 		cbDocType.setButtonCell(new JFXListCell<DocumentoTipo>() {
 			@Override
@@ -145,7 +162,7 @@ public class DocumentController implements Initializable {
 				if (empty || item == null) {
 					setText(null);
 				} else {
-					setText(item.getDt_descricao());
+					setText(new ConvertToUTF8(item.getDt_descricao()).convertToUTF8());
 				}
 			}
 		});
@@ -154,13 +171,30 @@ public class DocumentController implements Initializable {
 		cbDocType.valueProperty().addListener(new ChangeListener<DocumentoTipo>() {
 			public void changed(ObservableValue<? extends DocumentoTipo> observable, DocumentoTipo oldValue,
 					DocumentoTipo newValue) {
-				/*
-				 * if (newValue != null) { System.out.println("Selected Documento Tipo: " +
-				 * newValue.getDt_id() + ": " + newValue.getDt_descricao() ); }
-				 */
+				 // if (newValue != null) { System.out.println("Selected Documento Tipo: " +
+				//newValue.getDt_id() + ": " + newValue.getDt_descricao() ); }
+				 
 			}
 		});
 
+		tvDocs.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+	        if (newSelection != null) {
+	            // Update your text fields with the selected document
+	        	
+	            tfNumber.setText(newSelection.getDoc_numero());
+	            tfNumberSEI.setText(String.valueOf(newSelection.getDoc_sei()));
+	            tfProcess.setText(newSelection.getDoc_processo());
+	            
+	            // Update the ComboBox with the selected document's doc_tipo
+	            cbDocType.getSelectionModel().select(newSelection.getDoc_tipo());
+	        } else {
+	            // Clear text fields if no selection
+	            tfNumber.clear();
+	            tfNumberSEI.clear();
+	            tfProcess.clear();
+	            cbDocType.getSelectionModel().clearSelection();
+	        }
+	    });
 		// Add a listener to the TextField's textProperty
 		tfNumber.textProperty().addListener(new ChangeListener<String>() {
 			@Override
@@ -246,6 +280,14 @@ public class DocumentController implements Initializable {
 				
 			}
 		});
+		btnEdit.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				handleEdit(event);
+				
+			}
+		});
 	}
 
 	public void handleListByParam(ActionEvent event) {
@@ -290,7 +332,7 @@ public class DocumentController implements Initializable {
 
 			Documento reqDoc = new Documento(tfNumber.getText(), tfProcess.getText(), numeroSei, cbDocType.getValue());
 
-			ServiceResponse<?> serviceResponse = documentService.saveDocument(reqDoc);
+			ServiceResponse<?> serviceResponse = documentService.save(reqDoc);
 
 			if (serviceResponse.getResponseCode() == 201) {
 				
@@ -305,7 +347,7 @@ public class DocumentController implements Initializable {
 
 			} else {
 				// adiconar alerta (Toast) de erro
-				System.out.println(serviceResponse.getResponseCode());
+				//System.out.println(serviceResponse.getResponseCode());
 			}
 
 		} catch (Exception e) {
@@ -315,9 +357,67 @@ public class DocumentController implements Initializable {
 
 	}
 
-	public void handleEdit() {
-		System.out.println(cbDocType.getValue());
+	public void handleEdit(ActionEvent event) {
+	    // Get the selected document from the TableView
+	    Documento selectedDoc = tvDocs.getSelectionModel().getSelectedItem();
+
+	    if (selectedDoc == null) {
+	        // Display an alert or toast message indicating that no document is selected
+	        System.out.println("No document selected for editing.");
+	        return;
+	    }
+
+	    // Retrieve values from text fields
+	    String updatedNumero = tfNumber.getText();
+	    String updatedProcess = tfProcess.getText();
+	    String updatedNumeroSEI = tfNumberSEI.getText();
+	    DocumentoTipo updateDocumentoTipo = cbDocType.getValue();
+
+	    int updatedSei = 0;
+	    try {
+	        updatedSei = Integer.parseInt(updatedNumeroSEI);
+	    } catch (NumberFormatException e) {
+	        // Handle the case where the input is not a valid integer
+	        System.out.println("Input is not a valid integer for SEI.");
+	        // You may want to display a toast or alert here
+	        return;
+	    }
+
+	    // Update the selected document with new values
+	    selectedDoc.setDoc_numero(updatedNumero);
+	    selectedDoc.setDoc_processo(updatedProcess);
+	    selectedDoc.setDoc_sei(updatedSei);
+	    selectedDoc.setDoc_tipo(updateDocumentoTipo);
+
+	    try {
+	        DocumentService documentService = new DocumentService(localUrl);
+
+	        // Send a PUT request to update the document
+	        ServiceResponse<?> serviceResponse = documentService.update(selectedDoc);
+
+	        if (serviceResponse.getResponseCode() == 200) {
+	            // Display a success toast or alert
+	            Node source = (Node) event.getSource();
+	            Stage ownerStage = (Stage) source.getScene().getWindow();
+	            String toastMsg = "Documento editado com sucesso!";
+	            utilities.Toast.makeText(ownerStage, toastMsg, ToastType.SUCCESS);
+	            
+	            tvDocs.getItems().remove(selectedDoc);
+	         // Adiciona resposta na tabela
+				Documento responseDocumento = new Gson().fromJson((String) serviceResponse.getResponseBody(), Documento.class);
+				tvDocs.getItems().add(0, responseDocumento);
+				
+	        } else {
+	            // Display an error toast or alert
+	            // System.out.println(serviceResponse.getResponseCode());
+	        }
+
+	    } catch (Exception e) {
+	        // Display an error toast or alert
+	        e.printStackTrace();
+	    }
 	}
+
 
 	public void handleDeleteById(ActionEvent event) {
 
