@@ -14,6 +14,10 @@ public class DocumentoTipo {
 		this.dt_descricao = dt_descricao;
 	}
 
+	public DocumentoTipo(int dt_id) {
+		this.dt_id = dt_id;
+	}
+
 	// getters and setters
 	public int getDt_id() {
 		return dt_id;
@@ -30,5 +34,12 @@ public class DocumentoTipo {
 	public void setDt_descricao(String dt_descricao) {
 		this.dt_descricao = dt_descricao;
 	}
+
+	@Override
+	public String toString() {
+		return dt_descricao;
+	}
+	
+	
 
 }

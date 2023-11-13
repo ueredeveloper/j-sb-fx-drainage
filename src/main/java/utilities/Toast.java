@@ -8,7 +8,6 @@ import enums.ToastType;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
-import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -77,7 +76,7 @@ public final class Toast {
 		}
 	}
 	
-	  private Stage getPrimaryStage() {
+	/* private Stage getPrimaryStage() {
 	        Stage[] primaryStage = new Stage[1];
 
 	        try {
@@ -90,5 +89,5 @@ public final class Toast {
 	        }
 
 	        return primaryStage[0];
-	    }
+	    }*/
 }

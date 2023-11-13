@@ -10,7 +10,6 @@ import java.util.ResourceBundle;
 import com.google.gson.Gson;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXListCell;
 import com.jfoenix.controls.JFXTextField;
 
 import enums.ToastType;
@@ -37,13 +36,14 @@ import javafx.util.StringConverter;
 import models.Documento;
 import models.DocumentoTipo;
 import services.DocumentService;
+import services.DocumentoTipoService;
 import services.ServiceResponse;
 import utilities.ConvertToUTF8;
 
 public class DocumentController implements Initializable {
 
 	private String localUrl;
-	private String remoteUrl;
+	// private String remoteUrl;
 
 	public DocumentController() {
 		try {
@@ -51,7 +51,7 @@ public class DocumentController implements Initializable {
 			InputStream inputStream = getClass().getClassLoader().getResourceAsStream("config.properties");
 			prop.load(inputStream);
 			localUrl = prop.getProperty("local.url");
-			remoteUrl = prop.getProperty("remote.url");
+			// remoteUrl = prop.getProperty("remote.url");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -62,6 +62,7 @@ public class DocumentController implements Initializable {
 
 	@FXML
 	private JFXComboBox<DocumentoTipo> cbDocType;
+		ObservableList<DocumentoTipo> obsListDocTypes = FXCollections.observableArrayList();
 
 	@FXML
 	private JFXTextField tfNumber;
@@ -89,6 +90,7 @@ public class DocumentController implements Initializable {
 
 	@FXML
 	private TableView<Documento> tvDocs;
+		ObservableList<Documento> obsListDocs = FXCollections.observableArrayList();
 
 	@FXML
 	private TableColumn<Documento, Integer> tcId;
@@ -122,79 +124,46 @@ public class DocumentController implements Initializable {
 		AnchorPane.setRightAnchor(apContent, 0.0);
 		AnchorPane.setLeftAnchor(apContent, 0.0);
 
-		cbDocType.getItems().addAll(
-				new DocumentoTipo(1, "Requerimento"), 
-				new DocumentoTipo(2, "OfÃ­cio")
-				);
+		tvDocs.setItems(obsListDocs);
+		
+		obsListDocTypes = FXCollections
+			.observableArrayList(listDocTypes()); 
+		cbDocType.setItems(obsListDocTypes);
+		cbDocType.setValue(obsListDocTypes.get(0));
 
-		//cbDocType.setValue(cbDocType.getItems().get(0));
-
-		// Customize the cell factory to display the custom object's description
-		/*cbDocType.setCellFactory(param -> new JFXListCell<DocumentoTipo>() {
-			@Override
-			public void updateItem(DocumentoTipo item, boolean empty) {
-				super.updateItem(item, empty);
-				if (empty || item == null) {
-					setText(null);
-				} else {
-					setText(item.getDt_descricao());
-				}
-			}
-		});*/
 		cbDocType.setConverter(new StringConverter<DocumentoTipo>() {
-	        @Override
-	        public String toString(DocumentoTipo documentoTipo) {
-	            return documentoTipo == null ? null : new ConvertToUTF8(documentoTipo.getDt_descricao()).convertToUTF8();
-	        }
-
-	        @Override
-	        public DocumentoTipo fromString(String string) {
-	            // You can implement this method if needed
-	            // It converts a string back to a DocumentoTipo object
-	            return null;
-	        }
-	    });
-		// Customize the list cell for the dropdown (optional)
-		cbDocType.setButtonCell(new JFXListCell<DocumentoTipo>() {
 			@Override
-			public void updateItem(DocumentoTipo item, boolean empty) {
-				super.updateItem(item, empty);
-				if (empty || item == null) {
-					setText(null);
-				} else {
-					setText(new ConvertToUTF8(item.getDt_descricao()).convertToUTF8());
-				}
+			public String toString(DocumentoTipo documentoTipo) {
+				return documentoTipo == null ? null
+						: new ConvertToUTF8(documentoTipo.getDt_descricao()).convertToUTF8();
+			}
+
+			@Override
+			public DocumentoTipo fromString(String string) {
+				return null;
 			}
 		});
-
-		// Add a listener to the JFXComboBox's valueProperty
-		cbDocType.valueProperty().addListener(new ChangeListener<DocumentoTipo>() {
-			public void changed(ObservableValue<? extends DocumentoTipo> observable, DocumentoTipo oldValue,
-					DocumentoTipo newValue) {
-				 // if (newValue != null) { System.out.println("Selected Documento Tipo: " +
-				//newValue.getDt_id() + ": " + newValue.getDt_descricao() ); }
-				 
-			}
-		});
-
+	
 		tvDocs.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
-	        if (newSelection != null) {
-	            // Update your text fields with the selected document
-	        	
-	            tfNumber.setText(newSelection.getDoc_numero());
-	            tfNumberSEI.setText(String.valueOf(newSelection.getDoc_sei()));
-	            tfProcess.setText(newSelection.getDoc_processo());
-	            
-	            // Update the ComboBox with the selected document's doc_tipo
-	            cbDocType.getSelectionModel().select(newSelection.getDoc_tipo());
-	        } else {
-	            // Clear text fields if no selection
-	            tfNumber.clear();
-	            tfNumberSEI.clear();
-	            tfProcess.clear();
-	            cbDocType.getSelectionModel().clearSelection();
-	        }
-	    });
+			if (newSelection != null) {
+				// Update your text fields with the selected document
+
+				tfNumber.setText(newSelection.getDoc_numero());
+				tfNumberSEI.setText(String.valueOf(newSelection.getDoc_sei()));
+				tfProcess.setText(newSelection.getDoc_processo());
+
+				// Update the ComboBox with the selected document's doc_tipo
+				cbDocType.getSelectionModel().select(newSelection.getDoc_tipo());
+			} else {
+				
+				System.out.println("else clear");
+				// Clear text fields if no selection
+				tfNumber.clear();
+				tfNumberSEI.clear();
+				tfProcess.clear();
+				cbDocType.getSelectionModel().clearSelection();
+			}
+		});
 		// Add a listener to the TextField's textProperty
 		tfNumber.textProperty().addListener(new ChangeListener<String>() {
 			@Override
@@ -263,13 +232,13 @@ public class DocumentController implements Initializable {
 
 			}
 		});
-		
+
 		btnSearch.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent event) {
 				handleListByParam(event);
-				
+
 			}
 		});
 		btnDelete.setOnAction(new EventHandler<ActionEvent>() {
@@ -277,7 +246,7 @@ public class DocumentController implements Initializable {
 			@Override
 			public void handle(ActionEvent event) {
 				handleDeleteById(event);
-				
+
 			}
 		});
 		btnEdit.setOnAction(new EventHandler<ActionEvent>() {
@@ -285,7 +254,7 @@ public class DocumentController implements Initializable {
 			@Override
 			public void handle(ActionEvent event) {
 				handleEdit(event);
-				
+
 			}
 		});
 	}
@@ -301,10 +270,13 @@ public class DocumentController implements Initializable {
 			List<Documento> documentos = documentService.fetchByParam(keyword);
 
 			// Create a list of Document objects
-			ObservableList<Documento> documentList = FXCollections.observableArrayList(documentos);
+			obsListDocs.clear();
+			obsListDocs.addAll(documentos);
+			cbDocType.setValue(obsListDocTypes.get(0));
 
 			// Set the items in the TableView
-			tvDocs.setItems(documentList);
+			//tvDocs.getItems().clear();
+			//tvDocs.getItems().addAll(documentList);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -335,19 +307,20 @@ public class DocumentController implements Initializable {
 			ServiceResponse<?> serviceResponse = documentService.save(reqDoc);
 
 			if (serviceResponse.getResponseCode() == 201) {
-				
+
 				// Informa salvamento com sucesso
 				Node source = (Node) event.getSource();
 				Stage ownerStage = (Stage) source.getScene().getWindow();
 				String toastMsg = "Documento salvo com sucesso!";
 				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.SUCCESS);
 				// Adiciona resposta na tabela
-				Documento responseDoc = new Gson().fromJson((String) serviceResponse.getResponseBody(), Documento.class);
+				Documento responseDoc = new Gson().fromJson((String) serviceResponse.getResponseBody(),
+						Documento.class);
 				tvDocs.getItems().add(responseDoc);
 
 			} else {
 				// adiconar alerta (Toast) de erro
-				//System.out.println(serviceResponse.getResponseCode());
+				// System.out.println(serviceResponse.getResponseCode());
 			}
 
 		} catch (Exception e) {
@@ -358,66 +331,72 @@ public class DocumentController implements Initializable {
 	}
 
 	public void handleEdit(ActionEvent event) {
-	    // Get the selected document from the TableView
-	    Documento selectedDoc = tvDocs.getSelectionModel().getSelectedItem();
+		// Get the selected document from the TableView
+		Documento selectedDoc = tvDocs.getSelectionModel().getSelectedItem();
 
-	    if (selectedDoc == null) {
-	        // Display an alert or toast message indicating that no document is selected
-	        System.out.println("No document selected for editing.");
-	        return;
-	    }
+		if (selectedDoc == null) {
+			// Display an alert or toast message indicating that no document is selected
+			System.out.println("No document selected for editing.");
+			return;
+		}
 
-	    // Retrieve values from text fields
-	    String updatedNumero = tfNumber.getText();
-	    String updatedProcess = tfProcess.getText();
-	    String updatedNumeroSEI = tfNumberSEI.getText();
-	    DocumentoTipo updateDocumentoTipo = cbDocType.getValue();
+		// Retrieve values from text fields
+		String updatedNumero = tfNumber.getText();
+		String updatedProcess = tfProcess.getText();
+		String updatedNumeroSEI = tfNumberSEI.getText();
+		DocumentoTipo updateDocumentoTipo = new DocumentoTipo(cbDocType.getValue().getDt_id(),
+				new ConvertToUTF8(cbDocType.getValue().getDt_descricao()).convertToUTF8());
 
-	    int updatedSei = 0;
-	    try {
-	        updatedSei = Integer.parseInt(updatedNumeroSEI);
-	    } catch (NumberFormatException e) {
-	        // Handle the case where the input is not a valid integer
-	        System.out.println("Input is not a valid integer for SEI.");
-	        // You may want to display a toast or alert here
-	        return;
-	    }
+		int updatedSei = 0;
+		try {
+			updatedSei = Integer.parseInt(updatedNumeroSEI);
+		} catch (NumberFormatException e) {
+			// Handle the case where the input is not a valid integer
+			System.out.println("Input is not a valid integer for SEI.");
+			// You may want to display a toast or alert here
+			return;
+		}
 
-	    // Update the selected document with new values
-	    selectedDoc.setDoc_numero(updatedNumero);
-	    selectedDoc.setDoc_processo(updatedProcess);
-	    selectedDoc.setDoc_sei(updatedSei);
-	    selectedDoc.setDoc_tipo(updateDocumentoTipo);
+		// Edita objeto com novos valores
+		selectedDoc.setDoc_numero(updatedNumero);
+		selectedDoc.setDoc_processo(updatedProcess);
+		selectedDoc.setDoc_sei(updatedSei);
 
-	    try {
-	        DocumentService documentService = new DocumentService(localUrl);
+		selectedDoc.setDoc_tipo(updateDocumentoTipo);
+		System.out.println("edit method " + selectedDoc.getDoc_tipo().getDt_descricao());
 
-	        // Send a PUT request to update the document
-	        ServiceResponse<?> serviceResponse = documentService.update(selectedDoc);
+		try {
+			DocumentService documentService = new DocumentService(localUrl);
 
-	        if (serviceResponse.getResponseCode() == 200) {
-	            // Display a success toast or alert
-	            Node source = (Node) event.getSource();
-	            Stage ownerStage = (Stage) source.getScene().getWindow();
-	            String toastMsg = "Documento editado com sucesso!";
-	            utilities.Toast.makeText(ownerStage, toastMsg, ToastType.SUCCESS);
-	            
-	            tvDocs.getItems().remove(selectedDoc);
-	         // Adiciona resposta na tabela
-				Documento responseDocumento = new Gson().fromJson((String) serviceResponse.getResponseBody(), Documento.class);
+			// Requisição de resposta de edição
+			ServiceResponse<?> serviceResponse = documentService.update(selectedDoc);
+
+			if (serviceResponse.getResponseCode() == 200) {
+				// Alerta (Toast) de sucesso na edição
+				Node source = (Node) event.getSource();
+				Stage ownerStage = (Stage) source.getScene().getWindow();
+				String toastMsg = "Documento editado com sucesso!";
+				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.SUCCESS);
+
+				tvDocs.getItems().remove(selectedDoc);
+				// Converte objeto editado para Json
+				Documento responseDocumento = new Gson().fromJson((String) serviceResponse.getResponseBody(),
+						Documento.class);
+				// Adiciona objeto editado como primeiro ítem ma fila na table view
 				tvDocs.getItems().add(0, responseDocumento);
-				
-	        } else {
-	            // Display an error toast or alert
-	            // System.out.println(serviceResponse.getResponseCode());
-	        }
+				// Seleciona o objeto editado na table view
+				tvDocs.getSelectionModel().select(responseDocumento);
 
-	    } catch (Exception e) {
-	        // Display an error toast or alert
-	        e.printStackTrace();
-	    }
+			} else {
+				// Display an error toast or alert
+				// System.out.println(serviceResponse.getResponseCode());
+			}
+
+		} catch (Exception e) {
+			// Display an error toast or alert
+			e.printStackTrace();
+		}
 	}
-
 
 	public void handleDeleteById(ActionEvent event) {
 
@@ -425,19 +404,20 @@ public class DocumentController implements Initializable {
 
 		try {
 			DocumentService documentService = new DocumentService(localUrl);
-			
+
 			ServiceResponse<?> serviceResponse = documentService.deleteById(selectedDocumento.getDoc_id());
-			
+
 			if (serviceResponse.getResponseCode() == 200) {
-				
+
 				// Informa sucesso em deletar
 				Node source = (Node) event.getSource();
 				Stage ownerStage = (Stage) source.getScene().getWindow();
 				String toastMsg = "Documento deletado com sucesso!";
 				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.SUCCESS);
 				// Objecto removido
-				//Documento responseDoc = new Gson().fromJson((String) serviceResponse.getResponseBody(), Documento.class);
-				
+				// Documento responseDoc = new Gson().fromJson((String)
+				// serviceResponse.getResponseBody(), Documento.class);
+
 				// retira objecto da tabela de documentos tvDocs
 				tvDocs.getItems().remove(selectedDocumento);
 
@@ -454,4 +434,19 @@ public class DocumentController implements Initializable {
 
 	}
 
+	public List<DocumentoTipo> listDocTypes() {
+
+		try {
+
+			DocumentoTipoService dtService = new DocumentoTipoService(localUrl);
+
+			List<DocumentoTipo> docTypes = dtService.fetchAll();
+
+			return docTypes;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 }
