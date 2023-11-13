@@ -12,6 +12,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 
+import controllers.views.DocumentControllerView;
 import enums.ToastType;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -154,6 +155,8 @@ public class DocumentController implements Initializable {
 
 				// Update the ComboBox with the selected document's doc_tipo
 				cbDocType.getSelectionModel().select(newSelection.getDoc_tipo());
+				
+				System.out.println(newSelection.getDoc_id());
 			} else {
 				
 				System.out.println("else clear");
@@ -209,6 +212,11 @@ public class DocumentController implements Initializable {
 					FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/views/Document.fxml"));
 					Parent root = loader.load();
 
+					// Selecionar documento e mostrar na view
+					DocumentControllerView dcView = loader.getController();
+					Documento documento = tvDocs.getSelectionModel().getSelectedItem();
+					dcView.setDocument(documento);
+					
 					Stage popupStage = new Stage();
 					popupStage.initModality(Modality.APPLICATION_MODAL);
 					popupStage.setTitle("Edições e Diagramas");

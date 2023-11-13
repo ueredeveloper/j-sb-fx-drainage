@@ -12,3 +12,5 @@ o apMap mudou a largura, redimensiona a largura do mapa.
 	Adicionar on focu, cor secundária ao combobox.
 - [ ] Task 2 - DocumentoController - Css
 	O Combobox está desalinhado com os textfields.
+## November 13, 2023
+- [] Task 1 - Adicionar atualização da visualização do documento com o ítem selecionado pelo usuário.
