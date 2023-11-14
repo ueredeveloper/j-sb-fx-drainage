@@ -25,107 +25,110 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
+/**
+ * Controlador para a interface de login.
+ */
 public class LoginController implements Initializable {
 
-	@FXML
-	private AnchorPane anchorPane;
+    // Injetando elementos do arquivo FXML
+    @FXML
+    private AnchorPane anchorPane;
 
-	@FXML
-	private Label createAccountLabel;
+    @FXML
+    private Label createAccountLabel;
 
-	@FXML
-	private Pane greenPane;
+    @FXML
+    private Pane greenPane;
 
-	@FXML
-	private Label loginLabel;
+    @FXML
+    private Label loginLabel;
 
-	@FXML
-	private Label emailLabel;
+    @FXML
+    private Label emailLabel;
 
-	@FXML
-	private JFXTextField tfSignInEmail;
+    @FXML
+    private JFXTextField tfSignInEmail;
 
-	@FXML
-	private JFXButton btnSignUp2;
+    @FXML
+    private JFXButton btnSignUp2;
 
-	@FXML
-	private Label passwordLabel;
+    @FXML
+    private Label passwordLabel;
 
-	@FXML
-	private JFXTextField tfSignInPassword;
+    @FXML
+    private JFXTextField tfSignInPassword;
 
-	@FXML
-	private Label emailLabel2;
+    @FXML
+    private Label emailLabel2;
 
-	@FXML
-	private JFXTextField tfSignUpEmail;
+    @FXML
+    private JFXTextField tfSignUpEmail;
 
-	@FXML
-	private JFXButton btnSignUp;
+    @FXML
+    private JFXButton btnSignUp;
 
-	@FXML
-	private Label passwordLabel2;
+    @FXML
+    private Label passwordLabel2;
 
-	@FXML
-	private JFXTextField tfSiginUpPassWord;
+    @FXML
+    private JFXTextField tfSiginUpPassWord;
 
-	@FXML
-	private JFXButton btnSignUpGoogle;
+    @FXML
+    private JFXButton btnSignUpGoogle;
 
-	FontAwesomeIconView iconGoogle = new FontAwesomeIconView(FontAwesomeIcon.GOOGLE_PLUS);
+    // Ícone do Google para login
+    FontAwesomeIconView iconGoogle = new FontAwesomeIconView(FontAwesomeIcon.GOOGLE_PLUS);
 
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
 
-		iconGoogle.setSize("2em");
-		iconGoogle.setId("icon-google");
+        // Configurando o ícone do Google
+        iconGoogle.setSize("2em");
+        iconGoogle.setId("icon-google");
 
-		Label lblGoogle = new Label("Google");
-		lblGoogle.setId("lbl-google");
-		HBox hbox = new HBox(10);
-		hbox.getChildren().addAll(iconGoogle, lblGoogle);
-		hbox.setAlignment(Pos.CENTER);
+        Label lblGoogle = new Label("Google");
+        lblGoogle.setId("lbl-google");
+        HBox hbox = new HBox(10);
+        hbox.getChildren().addAll(iconGoogle, lblGoogle);
+        hbox.setAlignment(Pos.CENTER);
 
-		btnSignUpGoogle.setGraphic(hbox);
+        btnSignUpGoogle.setGraphic(hbox);
 
-		btnSignUp.setOnAction(new EventHandler<ActionEvent>() {
+        // Configurando a ação do botão de SignUp
+        btnSignUp.setOnAction(new EventHandler<ActionEvent>() {
 
-			@Override
-			public void handle(ActionEvent event) {
+            @Override
+            public void handle(ActionEvent event) {
 
-				try {
-					Node node = (Node) event.getSource();
-					Stage stage = (Stage) node.getScene().getWindow();
+                try {
+                    Node node = (Node) event.getSource();
+                    Stage stage = (Stage) node.getScene().getWindow();
 
-					// stage.close();
-					Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/fxml/Main.fxml")));
+                    // Carregando a cena principal
+                    Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/fxml/Main.fxml")));
 
-					// Redimensionamento da do stage de acordo com as dimens�es do monitor
-					Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+                    // Redimensionando o stage de acordo com as dimensões do monitor
+                    Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
 
-					// Tela cheia
-					stage.setX(primaryScreenBounds.getMinX());
-					stage.setY(primaryScreenBounds.getMinY());
-					stage.setWidth(primaryScreenBounds.getWidth());
-					stage.setHeight(primaryScreenBounds.getHeight());
-					// Min�mo de tamanho e largura da tela principal
-					stage.setMinHeight(668);
-					stage.setMinWidth(1266);
-					// stage.setHeight(668);
-					// stage.setWidth(1266);
+                    // Configurando o stage para tela cheia
+                    stage.setX(primaryScreenBounds.getMinX());
+                    stage.setY(primaryScreenBounds.getMinY());
+                    stage.setWidth(primaryScreenBounds.getWidth());
+                    stage.setHeight(primaryScreenBounds.getHeight());
 
-					// t�tulo
-					stage.setTitle("SAD/DF - Geo - Cadastro");
+                    // Configurando o tamanho mínimo do stage
+                    stage.setMinHeight(668);
+                    stage.setMinWidth(1266);
 
-					stage.setScene(scene);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+                    // Configurando o título da janela
+                    stage.setTitle("SAD/DF - Geo - Cadastro");
 
-			}
-
-		});
-	}
-
+                    // Definindo a cena no stage
+                    stage.setScene(scene);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 }

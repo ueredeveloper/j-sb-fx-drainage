@@ -19,7 +19,6 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -39,11 +38,17 @@ import services.DocumentService;
 import services.DocumentoTipoService;
 import services.ServiceResponse;
 
+/**
+ * Controlador para lidar com operações relacionadas aos documentos.
+ */
 public class DocumentController implements Initializable {
-
+	// URL local para os recursos
 	private String localUrl;
 	// private String remoteUrl;
 
+	/**
+	 * Construtor da classe DocumentController.
+	 */
 	public DocumentController() {
 		try {
 			Properties prop = new Properties();
@@ -61,7 +66,7 @@ public class DocumentController implements Initializable {
 
 	@FXML
 	private JFXComboBox<DocumentoTipo> cbDocType;
-		ObservableList<DocumentoTipo> obsListDocTypes = FXCollections.observableArrayList();
+	ObservableList<DocumentoTipo> obsListDocTypes = FXCollections.observableArrayList();
 
 	@FXML
 	private JFXTextField tfNumber;
@@ -89,7 +94,7 @@ public class DocumentController implements Initializable {
 
 	@FXML
 	private TableView<Documento> tvDocs;
-		ObservableList<Documento> obsListDocs = FXCollections.observableArrayList();
+	ObservableList<Documento> obsListDocs = FXCollections.observableArrayList();
 
 	@FXML
 	private TableColumn<Documento, Integer> tcId;
@@ -113,9 +118,20 @@ public class DocumentController implements Initializable {
 		this.mainController = mainController;
 	}
 
-	
+	/**
+	 * Inicializa o controlador e configura a interface.
+	 *
+	 * @param location
+	 *            O URL para localização do recurso.
+	 * @param resources
+	 *            Os recursos utilizados pelo controlador.
+	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		// Configura as colunas da TableView
+		// Configura as ComboBoxes, TextFields e botões
+		// Adiciona listeners aos componentes
+
 		tcId.setCellValueFactory(new PropertyValueFactory<Documento, Integer>("doc_id"));
 		tcNum.setCellValueFactory(new PropertyValueFactory<Documento, String>("doc_numero"));
 		tcProc.setCellValueFactory(new PropertyValueFactory<Documento, String>("doc_processo"));
@@ -125,32 +141,31 @@ public class DocumentController implements Initializable {
 		AnchorPane.setLeftAnchor(apContent, 0.0);
 
 		tvDocs.setItems(obsListDocs);
-		
-		obsListDocTypes = FXCollections.observableArrayList(listDocTypes()); 
-	
+
+		obsListDocTypes = FXCollections.observableArrayList(fetchDocTypes());
+
 		cbDocType.setItems(obsListDocTypes);
 		cbDocType.setValue(obsListDocTypes.get(0));
-	
+
 		tvDocs.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
 			if (newSelection != null) {
-				// Update your text fields with the selected document
-
+				// Atualizar componentes de acordo com o documento selecionado
 				tfNumber.setText(newSelection.getDoc_numero());
 				tfNumberSEI.setText(String.valueOf(newSelection.getDoc_sei()));
 				tfProcess.setText(newSelection.getDoc_processo());
 
-				// Update the ComboBox with the selected document's doc_tipo
+				// Atualiza ComboBox (Tipo de Documento) a partir do documento selecionado
 				cbDocType.getSelectionModel().select(newSelection.getDoc_tipo());
-				
+
 			} else {
-				// Clear text fields if no selection
+				// Se documento nulo limpa componentes
 				tfNumber.clear();
 				tfNumberSEI.clear();
 				tfProcess.clear();
 				cbDocType.getSelectionModel().clearSelection();
 			}
 		});
-		// Add a listener to the TextField's textProperty
+		// Listener do TextField
 		tfNumber.textProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
@@ -158,6 +173,7 @@ public class DocumentController implements Initializable {
 				// newValue);
 			}
 		});
+		// Listener do TextField
 		tfNumberSEI.textProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
@@ -165,10 +181,10 @@ public class DocumentController implements Initializable {
 				// newValue);
 			}
 		});
-		// Create a regular expression pattern to allow only numeric input
+		// Expressão que aceita somente números
 		String numericPattern = "^[0-9]*$";
 
-		// Create a TextFormatter with the numeric pattern
+		// Formata texto do TextField para número
 		TextFormatter<String> textFormatter = new TextFormatter<String>(change -> {
 			if (change.getControlNewText().matches(numericPattern)) {
 				return change;
@@ -177,7 +193,7 @@ public class DocumentController implements Initializable {
 			}
 		});
 		tfNumberSEI.setTextFormatter(textFormatter);
-
+		// Listener
 		tfProcess.textProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
@@ -186,66 +202,40 @@ public class DocumentController implements Initializable {
 			}
 		});
 
-		btnViews.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				showDocumentView ();
-			}
-		});
-
-		btnSave.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent event) {
-				handleSave(event);
-
-			}
-		});
-
-		btnSearch.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent event) {
-				handleListByParam(event);
-
-			}
-		});
-		btnDelete.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent event) {
-				handleDeleteById(event);
-
-			}
-		});
-		btnEdit.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent event) {
-				handleEdit(event);
-
-			}
-		});
+		btnViews.setOnAction(event -> showDocumentView());
+		btnSave.setOnAction(event -> handleSave(event));
+		btnSearch.setOnAction(event -> handleSave(event));
+		btnDelete.setOnAction(event -> handleSave(event));
+		btnEdit.setOnAction(event -> handleSave(event));
 	}
-	
-	public Documento getSelectedDocument () {
+
+	/**
+	 * Retorna o documento selecionado na TableView.
+	 *
+	 * @return O documento selecionado.
+	 */
+
+	public Documento getSelectedDocument() {
 		Documento documento = tvDocs.getSelectionModel().getSelectedItem();
 		return documento;
 	}
-	
-	public void showDocumentView () {
+
+	/**
+	 * Exibe a visualização do documento selecionado em uma nova janela.
+	 */
+	public void showDocumentView() {
 		try {
 			Documento selectedDocument = tvDocs.getSelectionModel().getSelectedItem();
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/views/DocumentView.fxml"));
-            DocumentViewController docViewController = new DocumentViewController(selectedDocument);
-            loader.setController(docViewController);
-			
-            Parent root = loader.load();
-			
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/views/DocumentView.fxml"));
+			DocumentViewController docViewController = new DocumentViewController(selectedDocument);
+			loader.setController(docViewController);
+
+			Parent root = loader.load();
+
 			Stage popupStage = new Stage();
 			popupStage.initModality(Modality.APPLICATION_MODAL);
-			popupStage.setTitle("Edi��es e Diagramas");
+			popupStage.setTitle("Edições e Diagramas");
 
 			Scene scene = new Scene(root);
 			popupStage.setScene(scene);
@@ -253,9 +243,16 @@ public class DocumentController implements Initializable {
 			popupStage.showAndWait();
 		} catch (Exception e) {
 			e.printStackTrace();
+
 		}
 	}
 
+	/**
+	 * Manipula a ação de pesquisa de documentos por parâmetro.
+	 *
+	 * @param event
+	 *            O evento de ação associado à pesquisa.
+	 */
 	public void handleListByParam(ActionEvent event) {
 
 		try {
@@ -276,12 +273,18 @@ public class DocumentController implements Initializable {
 		}
 	}
 
+	/**
+	 * Manipula a ação de salvar um documento.
+	 *
+	 * @param event
+	 *            O evento de ação associado à edição do documento.
+	 */
 	public void handleSave(ActionEvent event) {
 
 		String text = tfNumberSEI.getText();
 
-		// verjo que este m�todo � desnecess�rio pois o textfield j� est� aceitando
-		// apenas n�meros
+		// verjo que este m�todo � desnecess�rio pois o textfield j� est� aceitando
+		// apenas n�meros
 		int numeroSei = 0;
 		try {
 			numeroSei = Integer.parseInt(text);
@@ -310,7 +313,7 @@ public class DocumentController implements Initializable {
 				Documento responseDocumento = new Gson().fromJson((String) serviceResponse.getResponseBody(),
 						Documento.class);
 				// Adiciona com primeiro na lista
-				tvDocs.getItems().add(0,responseDocumento);
+				tvDocs.getItems().add(0, responseDocumento);
 				// Seleciona o objeto salvo na table view
 				tvDocs.getSelectionModel().select(responseDocumento);
 
@@ -326,6 +329,12 @@ public class DocumentController implements Initializable {
 
 	}
 
+	/**
+	 * Manipula a ação de editar um documento existente.
+	 *
+	 * @param event
+	 *            O evento de ação associado à edição do documento.
+	 */
 	public void handleEdit(ActionEvent event) {
 		// Get the selected document from the TableView
 		Documento selectedDoc = tvDocs.getSelectionModel().getSelectedItem();
@@ -340,9 +349,9 @@ public class DocumentController implements Initializable {
 		String updatedNumero = tfNumber.getText();
 		String updatedProcess = tfProcess.getText();
 		String updatedNumeroSEI = tfNumberSEI.getText();
-		
+
 		DocumentoTipo updateDocumentoTipo = cbDocType.getValue();
-		
+
 		// converter para integer
 		int updatedSei = 0;
 		try {
@@ -360,15 +369,15 @@ public class DocumentController implements Initializable {
 		selectedDoc.setDoc_sei(updatedSei);
 
 		selectedDoc.setDoc_tipo(updateDocumentoTipo);
-	
+
 		try {
 			DocumentService documentService = new DocumentService(localUrl);
 
-			// Requisi��o de resposta de edi��o
+			// Requisi��o de resposta de edi��o
 			ServiceResponse<?> serviceResponse = documentService.update(selectedDoc);
 
 			if (serviceResponse.getResponseCode() == 200) {
-				// Alerta (Toast) de sucesso na edi��o
+				// Alerta (Toast) de sucesso na edi��o
 				Node source = (Node) event.getSource();
 				Stage ownerStage = (Stage) source.getScene().getWindow();
 				String toastMsg = "Documento editado com sucesso!";
@@ -378,7 +387,7 @@ public class DocumentController implements Initializable {
 				// Converte objeto editado para Json
 				Documento responseDocumento = new Gson().fromJson((String) serviceResponse.getResponseBody(),
 						Documento.class);
-				// Adiciona objeto editado como primeiro �tem ma fila na table view
+				// Adiciona objeto editado como primeiro �tem ma fila na table view
 				tvDocs.getItems().add(0, responseDocumento);
 				// Seleciona o objeto editado na table view
 				tvDocs.getSelectionModel().select(responseDocumento);
@@ -394,6 +403,12 @@ public class DocumentController implements Initializable {
 		}
 	}
 
+	/**
+	 * Manipula a ação de deletar um documento existente.
+	 *
+	 * @param event
+	 *            O evento de ação associado à exclusão do documento.
+	 */
 	public void handleDeleteById(ActionEvent event) {
 
 		Documento selectedDocumento = tvDocs.getSelectionModel().getSelectedItem();
@@ -410,7 +425,7 @@ public class DocumentController implements Initializable {
 				Stage ownerStage = (Stage) source.getScene().getWindow();
 				String toastMsg = "Documento deletado com sucesso!";
 				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.SUCCESS);
-				
+
 				// retira objecto da tabela de documentos tvDocs
 				tvDocs.getItems().remove(selectedDocumento);
 
@@ -427,7 +442,12 @@ public class DocumentController implements Initializable {
 
 	}
 
-	public List<DocumentoTipo> listDocTypes() {
+	/**
+	 * Lista os tipos de documento disponíveis (Requerimento, Ofício, ...).
+	 *
+	 * @return Uma lista contendo os tipos de documento disponíveis.
+	 */
+	public List<DocumentoTipo> fetchDocTypes() {
 
 		try {
 

@@ -16,34 +16,36 @@ import javafx.scene.web.WebView;
 
 public class MainController implements Initializable {
 
-    @FXML
-    private AnchorPane apMain;
+	@FXML
+	private AnchorPane apMain;
 
-    @FXML
-    private AnchorPane apTop;
+	@FXML
+	private AnchorPane apTop;
 
-    @FXML
-    private AnchorPane apContent;
+	@FXML
+	private AnchorPane apContent;
 
-    @FXML
-    private AnchorPane apMap;
+	@FXML
+	private AnchorPane apMap;
 
-    @FXML
-    private AnchorPane apManager;
-    
-    @FXML
-    private WebView wvMap;
-    
-	public AnchorPane getAnchorPaneContent () {
+	@FXML
+	private AnchorPane apManager;
+
+	@FXML
+	private WebView wvMap;
+
+	public AnchorPane getAnchorPaneContent() {
 		return this.apContent;
 	}
-	public Pane getAnchorPaneManager () {
+
+	public Pane getAnchorPaneManager() {
 		return this.apManager;
 	}
-	public Pane getAnchorPaneMap () {
+
+	public Pane getAnchorPaneMap() {
 		return this.apMap;
 	}
-	
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
@@ -51,14 +53,14 @@ public class MainController implements Initializable {
 		webEngine.load(getClass().getResource("/html/map/index.html").toExternalForm());
 
 		// Add a listener to the width property of the AnchorPane
-        apContent.widthProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                double newWidth = newValue.doubleValue();
-                apMap.setPrefWidth(newWidth / 2);
-                apManager.setPrefWidth(newWidth / 2);
-            }
-        });
+		apContent.widthProperty().addListener(new ChangeListener<Number>() {
+			@Override
+			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+				double newWidth = newValue.doubleValue();
+				apMap.setPrefWidth(newWidth / 2);
+				apManager.setPrefWidth(newWidth / 2);
+			}
+		});
 
 		// Torna as dimensões do WebView (wvMap) semelhantes ao do pai (aapMap)
 		apMap.widthProperty().addListener((observable, oldValue, newValue) -> {
@@ -69,32 +71,48 @@ public class MainController implements Initializable {
 		apMap.heightProperty().addListener((observable, oldValue, newValue) -> {
 			wvMap.setPrefHeight(newValue.doubleValue());
 		});
-		
+
 		loadNavigationBar();
-		
 
 	}
+	
+	private DocumentController docController;
+	private AnchorPane apDocument; // Store the AnchorPane of Documents.fxml
 
-	private void loadNavigationBar () {
+	private void loadNavigationBar() {
 		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Navigation.fxml"));
-			AnchorPane apNavBar = loader.load();
-		
+
+			// Abrir a barra de navegação
+
+			FXMLLoader loader1 = new FXMLLoader(getClass().getResource("/fxml/Navigation.fxml"));
+			AnchorPane apNavBar = loader1.load();
 			// acesso ao MainController dentro do NavBarController
-			NavigationController navBarController = loader.getController();
+			NavigationController navBarController = loader1.getController();
 			navBarController.setMainController(this);
-			
 
 			apTop.getChildren().add(apNavBar);
 			// seta apNavBar no lado direito da tela
 			AnchorPane.setRightAnchor(apNavBar, 0.0);
 			
 
+	        if (apDocument == null) {
+	            // Open the DocumentController
+	            FXMLLoader loader2 = new FXMLLoader(getClass().getResource("/fxml/Documents.fxml"));
+	            apDocument = loader2.load();
+
+	            docController = loader2.getController();
+	            docController.setMainController(this);
+
+	            apManager.getChildren().add(apDocument);
+	        } else {
+	            // Close the DocumentController
+	            apManager.setVisible(!apDocument.isVisible());
+	        }
+			
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	
-	
 
 }

@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.ueredeveloper</groupId>
 	<artifactId>j-sb-fx-drainage</artifactId>
-	<version>1.10.3</version>
+	<version>1.10.4</version>
 
 	<dependencies>
 		<!--  Load Json Responses -->
@@ -24,5 +24,27 @@
 			<version>8.9</version> <!-- Use the latest version available -->
 		</dependency>
 	</dependencies>
+	
+	<build>
+    <plugins>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <version>3.3.1</version> <!-- Versão atual do plugin (verifique se há atualizações) -->
+            <configuration>
+                <source>1.8</source> <!-- Versão do Java que você está usando -->
+                <encoding>UTF-8</encoding>
+            </configuration>
+            <executions>
+                <execution>
+                    <id>attach-javadocs</id>
+                    <goals>
+                        <goal>jar</goal>
+                    </goals>
+                </execution>
+            </executions>
+        </plugin>
+    </plugins>
+</build>
 
 </project>

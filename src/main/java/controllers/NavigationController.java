@@ -45,15 +45,15 @@ public class NavigationController implements Initializable {
 		btnRegistration.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
+				
+				
 				AnchorPane apc = (AnchorPane) mainController.getAnchorPaneContent();
 				AnchorPane apMap = (AnchorPane) mainController.getAnchorPaneMap();
 				AnchorPane apManager = (AnchorPane) mainController.getAnchorPaneManager();
 
 				ResizeMap rm = new ResizeMap(apc, apMap, apManager);
 				rm.resetMapSize();
-				
-				loadDocuments();
-
+			
 			}
 		});
 
@@ -68,6 +68,7 @@ public class NavigationController implements Initializable {
 				rm.resizeMapToFullWidth();
 			}
 		});
+		
 
 	}
 
