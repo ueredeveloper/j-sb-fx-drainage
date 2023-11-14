@@ -2,7 +2,9 @@ package controllers;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Properties;
 import java.util.ResourceBundle;
@@ -115,6 +117,7 @@ public class DocumentController implements Initializable {
 		this.mainController = mainController;
 	}
 
+	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		tcId.setCellValueFactory(new PropertyValueFactory<Documento, Integer>("doc_id"));
@@ -127,23 +130,10 @@ public class DocumentController implements Initializable {
 
 		tvDocs.setItems(obsListDocs);
 		
-		obsListDocTypes = FXCollections
-			.observableArrayList(listDocTypes()); 
+		obsListDocTypes = FXCollections.observableArrayList(listDocTypes()); 
+	
 		cbDocType.setItems(obsListDocTypes);
 		cbDocType.setValue(obsListDocTypes.get(0));
-
-		cbDocType.setConverter(new StringConverter<DocumentoTipo>() {
-			@Override
-			public String toString(DocumentoTipo documentoTipo) {
-				return documentoTipo == null ? null
-						: new ConvertToUTF8(documentoTipo.getDt_descricao()).convertToUTF8();
-			}
-
-			@Override
-			public DocumentoTipo fromString(String string) {
-				return null;
-			}
-		});
 	
 		tvDocs.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
 			if (newSelection != null) {
@@ -156,10 +146,7 @@ public class DocumentController implements Initializable {
 				// Update the ComboBox with the selected document's doc_tipo
 				cbDocType.getSelectionModel().select(newSelection.getDoc_tipo());
 				
-				System.out.println(newSelection.getDoc_id());
 			} else {
-				
-				System.out.println("else clear");
 				// Clear text fields if no selection
 				tfNumber.clear();
 				tfNumberSEI.clear();
@@ -354,9 +341,10 @@ public class DocumentController implements Initializable {
 		String updatedNumero = tfNumber.getText();
 		String updatedProcess = tfProcess.getText();
 		String updatedNumeroSEI = tfNumberSEI.getText();
-		DocumentoTipo updateDocumentoTipo = new DocumentoTipo(cbDocType.getValue().getDt_id(),
-				new ConvertToUTF8(cbDocType.getValue().getDt_descricao()).convertToUTF8());
-
+		
+		DocumentoTipo updateDocumentoTipo = cbDocType.getValue();
+		
+		// converter para integer
 		int updatedSei = 0;
 		try {
 			updatedSei = Integer.parseInt(updatedNumeroSEI);

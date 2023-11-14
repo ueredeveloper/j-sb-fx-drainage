@@ -9,6 +9,7 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,7 +17,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import models.Documento;
-
 
 public class DocumentService {
 	private String localUrl;
@@ -34,10 +34,10 @@ public class DocumentService {
 			int responseCode = connection.getResponseCode();
 
 			if (responseCode == HttpURLConnection.HTTP_OK) {
-				//System.out.println("HTTP OK");
+				// System.out.println("HTTP OK");
 				return handleSuccessResponse(connection);
 			} else if (responseCode == HttpURLConnection.HTTP_CREATED) {
-				//System.out.println("HTTP Created");
+				// System.out.println("HTTP Created");
 				return handleSuccessResponse(connection);
 			} else {
 				handleErrorResponse(connection);
@@ -46,123 +46,125 @@ public class DocumentService {
 			connection.disconnect();
 		} catch (Exception e) {
 			e.printStackTrace();
-			//System.out.println("serv save e print ");
-			
-			//showAlert("Erro na busca de algum documento", AlertType.ERROR);
+			// System.out.println("serv save e print ");
+
+			// showAlert("Erro na busca de algum documento", AlertType.ERROR);
 		}
 		return null;
 	}
 
 	public ServiceResponse<?> save(Documento documento) {
-	    try {
-	        URL apiUrl = new URL(localUrl + "/documento");
-	        HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
-	        connection.setRequestMethod("POST");
-	        connection.setRequestProperty("Content-Type", "application/json");
-	        connection.setDoOutput(true);
+		try {
+			URL apiUrl = new URL(localUrl + "/documento");
+			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
+			connection.setRequestMethod("POST");
+			connection.setRequestProperty("Content-Type", "application/json");
+			connection.setDoOutput(true);
 
-	        // Convert Documento object to JSON
-	        String jsonInputString = convertObjectToJson(documento);
+			// Convert Documento object to JSON
+			String jsonInputString = convertObjectToJson(documento);
 
-	        // Write JSON to request body
-	        try (OutputStream os = connection.getOutputStream();
-	             OutputStreamWriter osw = new OutputStreamWriter(os, "UTF-8")) {
-	            osw.write(jsonInputString);
-	            osw.flush();
-	        }
+			// Write JSON to request body
+			try (OutputStream os = connection.getOutputStream();
+					OutputStreamWriter osw = new OutputStreamWriter(os, "UTF-8")) {
+				osw.write(jsonInputString);
+				osw.flush();
+			}
 
-	        int responseCode = connection.getResponseCode();
-	        
+			int responseCode = connection.getResponseCode();
 
-	        String responseBody;
-	        if (responseCode == HttpURLConnection.HTTP_CREATED) {
-	        	//System.out.println("service created");
-	            try (BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
-	                StringBuilder response = new StringBuilder();
-	                String responseLine;
-	                while ((responseLine = br.readLine()) != null) {
-	                    response.append(responseLine);
-	                }
-	                responseBody = response.toString();
-	            }
-	        } else {
-	            handleErrorResponse(connection);
-	            responseBody = readErrorStream(connection);
-	        }
+			String responseBody;
+			if (responseCode == HttpURLConnection.HTTP_CREATED) {
+				// System.out.println("service created");
+				try (BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+					StringBuilder response = new StringBuilder();
+					String responseLine;
+					while ((responseLine = br.readLine()) != null) {
+						response.append(responseLine);
+					}
+					responseBody = response.toString();
+				}
+			} else {
+				handleErrorResponse(connection);
+				responseBody = readErrorStream(connection);
+			}
 
-	        connection.disconnect();
-	        return new ServiceResponse<>(responseCode, responseBody);
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	       // showAlert("Error saving document", AlertType.ERROR);
-	        return null; // Return null if an error occurs
-	    }
+			connection.disconnect();
+			return new ServiceResponse<>(responseCode, responseBody);
+		} catch (Exception e) {
+			e.printStackTrace();
+			// showAlert("Error saving document", AlertType.ERROR);
+			return null; // Return null if an error occurs
+		}
 	}
-	public ServiceResponse<?> update (Documento documento) {
-	    try {
-	        URL apiUrl = new URL(localUrl + "/documento/?id=" +documento.getDoc_id());
-	        HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
-	        connection.setRequestMethod("PUT");
-	        connection.setRequestProperty("Content-Type", "application/json");
-	        connection.setDoOutput(true);
 
-	        // Convert Documento object to JSON
-	        String jsonInputString = convertObjectToJson(documento);
+	public ServiceResponse<?> update(Documento documento) {
+		try {
+			URL apiUrl = new URL(localUrl + "/documento/?id=" + documento.getDoc_id());
+			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
+			connection.setRequestMethod("PUT");
+			connection.setRequestProperty("Content-Type", "application/json");
+			connection.setDoOutput(true);
 
-	        // Write JSON to request body
-	        try (OutputStream os = connection.getOutputStream();
-	             OutputStreamWriter osw = new OutputStreamWriter(os, "UTF-8")) {
-	            osw.write(jsonInputString);
-	            osw.flush();
-	        }
+			// Convert Documento object to JSON
+			String jsonInputString = convertObjectToJson(documento);
 
-	        int responseCode = connection.getResponseCode();
+			// Write JSON to request body
+			try (OutputStream os = connection.getOutputStream();
+					OutputStreamWriter osw = new OutputStreamWriter(os, "UTF-8")) {
+				osw.write(jsonInputString);
+				osw.flush();
+			}
 
-	        String responseBody;
-	        if (responseCode == HttpURLConnection.HTTP_OK) {
-	        	
-	            try (BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
-	                StringBuilder response = new StringBuilder();
-	                String responseLine;
-	                while ((responseLine = br.readLine()) != null) {
-	                    response.append(responseLine);
-	                }
-	                responseBody = response.toString();
-	            }
-	        } else {
-	            handleErrorResponse(connection);
-	            responseBody = readErrorStream(connection);
-	        }
+			int responseCode = connection.getResponseCode();
 
-	        connection.disconnect();
-	        return new ServiceResponse<String>(responseCode, responseBody);
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	        return null; // Return null if an error occurs
-	    }
+			String responseBody;
+			if (responseCode == HttpURLConnection.HTTP_OK) {
+
+				try (BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
+					StringBuilder response = new StringBuilder();
+					String responseLine;
+					while ((responseLine = br.readLine()) != null) {
+						response.append(responseLine);
+					}
+					responseBody = response.toString();
+				}
+			} else {
+				handleErrorResponse(connection);
+				responseBody = readErrorStream(connection);
+			}
+
+			connection.disconnect();
+			return new ServiceResponse<String>(responseCode, responseBody);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null; // Return null if an error occurs
+		}
 	}
 
 	public ServiceResponse<?> deleteById(int id) {
-        try {
-            URL apiUrl = new URL(localUrl + "/documento/?id=" + id); // Updated URL
-            HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
-            connection.setRequestMethod("DELETE");
+		try {
+			URL apiUrl = new URL(localUrl + "/documento/?id=" + id); // Updated URL
+			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
+			connection.setRequestMethod("DELETE");
 
-            int responseCode = connection.getResponseCode();
-            
-            // Read the response body if needed
-            InputStream inputStream = connection.getInputStream();
-            String responseBody = new BufferedReader(new InputStreamReader(inputStream)).lines().collect(Collectors.joining("\n"));
+			int responseCode = connection.getResponseCode();
 
-            connection.disconnect();
+			// Read the response body if needed
+			InputStream inputStream = connection.getInputStream();
+			String responseBody = new BufferedReader(new InputStreamReader(inputStream)).lines()
+					.collect(Collectors.joining("\n"));
 
-            return new ServiceResponse<>(responseCode, responseBody); // Change null to the actual response body if needed
-        } catch (Exception e) {
-            e.printStackTrace();
-            // Handle the exception if needed
-            return new ServiceResponse<>(-1, null); // You might want to use a different code for errors
-        }
-    }
+			connection.disconnect();
+
+			return new ServiceResponse<>(responseCode, responseBody); // Change null to the actual response body if
+																		// needed
+		} catch (Exception e) {
+			e.printStackTrace();
+			// Handle the exception if needed
+			return new ServiceResponse<>(-1, null); // You might want to use a different code for errors
+		}
+	}
 
 	private String convertObjectToJson(Object object) {
 		Gson gson = new Gson();
@@ -170,12 +172,13 @@ public class DocumentService {
 	}
 
 	private List<Documento> handleSuccessResponse(HttpURLConnection connection) throws IOException {
-		BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+		BufferedReader reader = new BufferedReader(
+				new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8));
 		StringBuilder response = new StringBuilder();
 		String line;
 
 		while ((line = reader.readLine()) != null) {
-			
+
 			response.append(line);
 		}
 
@@ -189,16 +192,17 @@ public class DocumentService {
 		String responseMessage = connection.getResponseMessage();
 		System.out.println("Error: " + responseMessage);
 	}
-	private String readErrorStream(HttpURLConnection connection) throws IOException {
-	    try (BufferedReader br = new BufferedReader(new InputStreamReader(connection.getErrorStream()))) {
-	        StringBuilder response = new StringBuilder();
-	        String responseLine;
-	        while ((responseLine = br.readLine()) != null) {
-	            response.append(responseLine);
-	        }
-	        return response.toString();
-	    }
-	}
 
+	private String readErrorStream(HttpURLConnection connection) throws IOException {
+		try (BufferedReader br = new BufferedReader(
+				new InputStreamReader(connection.getErrorStream(), StandardCharsets.UTF_8))) {
+			StringBuilder response = new StringBuilder();
+			String responseLine;
+			while ((responseLine = br.readLine()) != null) {
+				response.append(responseLine);
+			}
+			return response.toString();
+		}
+	}
 
 }
