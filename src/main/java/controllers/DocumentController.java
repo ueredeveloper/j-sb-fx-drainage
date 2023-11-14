@@ -2,9 +2,7 @@ package controllers;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Properties;
 import java.util.ResourceBundle;
@@ -35,13 +33,11 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.util.StringConverter;
 import models.Documento;
 import models.DocumentoTipo;
 import services.DocumentService;
 import services.DocumentoTipoService;
 import services.ServiceResponse;
-import utilities.ConvertToUTF8;
 
 public class DocumentController implements Initializable {
 
@@ -311,9 +307,12 @@ public class DocumentController implements Initializable {
 				String toastMsg = "Documento salvo com sucesso!";
 				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.SUCCESS);
 				// Adiciona resposta na tabela
-				Documento responseDoc = new Gson().fromJson((String) serviceResponse.getResponseBody(),
+				Documento responseDocumento = new Gson().fromJson((String) serviceResponse.getResponseBody(),
 						Documento.class);
-				tvDocs.getItems().add(responseDoc);
+				// Adiciona com primeiro na lista
+				tvDocs.getItems().add(0,responseDocumento);
+				// Seleciona o objeto salvo na table view
+				tvDocs.getSelectionModel().select(responseDocumento);
 
 			} else {
 				// adiconar alerta (Toast) de erro
@@ -361,8 +360,7 @@ public class DocumentController implements Initializable {
 		selectedDoc.setDoc_sei(updatedSei);
 
 		selectedDoc.setDoc_tipo(updateDocumentoTipo);
-		System.out.println("edit method " + selectedDoc.getDoc_tipo().getDt_descricao());
-
+	
 		try {
 			DocumentService documentService = new DocumentService(localUrl);
 

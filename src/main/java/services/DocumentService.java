@@ -76,7 +76,8 @@ public class DocumentService {
 			String responseBody;
 			if (responseCode == HttpURLConnection.HTTP_CREATED) {
 				// System.out.println("service created");
-				try (BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+				try (BufferedReader br = new BufferedReader(
+						new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
 					StringBuilder response = new StringBuilder();
 					String responseLine;
 					while ((responseLine = br.readLine()) != null) {
@@ -121,7 +122,8 @@ public class DocumentService {
 			String responseBody;
 			if (responseCode == HttpURLConnection.HTTP_OK) {
 
-				try (BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
+				try (BufferedReader br = new BufferedReader(
+						new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
 					StringBuilder response = new StringBuilder();
 					String responseLine;
 					while ((responseLine = br.readLine()) != null) {
