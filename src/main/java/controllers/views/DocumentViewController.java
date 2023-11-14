@@ -16,10 +16,16 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import models.Documento;
 import models.DocumentoTipo;
-import models.Endereco;
 import utilities.HTMLFileLoader;
 
-public class DocumentControllerView implements Initializable {
+public class DocumentViewController implements Initializable {
+	
+	private Documento selectedDocument;
+
+    // Constructor that takes the selected document as a parameter
+    public DocumentViewController(Documento selectedDocument) {
+        this.selectedDocument = selectedDocument;
+    }
 	
 	@FXML
     private HTMLEditor htmlEditor;
@@ -30,26 +36,26 @@ public class DocumentControllerView implements Initializable {
     @FXML
     private WebView webView;
     
-    private Documento documento;
+   
     
-
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
 
-		/*// Create a Documento object and set its properties.
+		// Create a Documento object and set its properties.
 		Documento doc = new Documento();
 		doc.setDoc_id(1);
 		doc.setDoc_numero("12/2015");
 		doc.setDoc_processo("197.456789/2013");
 		doc.setDoc_sei(123456789);
 		doc.setDoc_tipo(new DocumentoTipo(1, "Requerimento"));
-		doc.setDoc_endereco(new Endereco (1, "Rua dos Novaes Peres, 1"));
+		//doc.setDoc_endereco(new Endereco (1, "Rua dos Novaes Peres, 1"));
 
+		System.out.println("created - json");
 		// Convert the Documento object to JSON and print it.
-		System.out.println(new Gson().toJson(doc));*/
+		System.out.println(new Gson().toJson(doc));
 		
-		System.out.println(this.documento);
+		
 
 		// Load HTML content from a resource file.
 		String resourcePath = "/html/views/index.html";
@@ -60,9 +66,12 @@ public class DocumentControllerView implements Initializable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
+	
 		// Replace a placeholder in the HTML content with JSON data.
-		String json = new Gson().toJson(this.documento);
+		String json = new Gson().toJson(selectedDocument);
+		
+		System.out.println("selected - json");
+		System.out.println(json);
 		htmlContent = htmlContent.replace("${json}", json);
 		htmlEditor.setHtmlText(htmlContent);
 
@@ -90,9 +99,5 @@ public class DocumentControllerView implements Initializable {
 				we.loadContent(htmlDiagramContent);
 		
 	}
-
-    public void setDocument (Documento documento) {
-    	this.documento = documento;
-    }
 
 }

@@ -34,6 +34,10 @@ public class NavigationController implements Initializable {
 
 	@FXML
 	private MainController mainController;
+	
+	public void setMainController(MainController mainController) {
+		this.mainController = mainController;
+	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -67,9 +71,7 @@ public class NavigationController implements Initializable {
 
 	}
 
-	public void setMainController(MainController mainController) {
-		this.mainController = mainController;
-	}
+	
 
 	public void loadDocuments() {
 		try {

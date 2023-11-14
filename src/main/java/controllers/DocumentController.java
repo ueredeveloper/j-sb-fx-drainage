@@ -12,7 +12,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 
-import controllers.views.DocumentControllerView;
+import controllers.views.DocumentViewController;
 import enums.ToastType;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -204,31 +204,9 @@ public class DocumentController implements Initializable {
 		});
 
 		btnViews.setOnAction(new EventHandler<ActionEvent>() {
-
 			@Override
 			public void handle(ActionEvent event) {
-
-				try {
-					FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/views/Document.fxml"));
-					Parent root = loader.load();
-
-					// Selecionar documento e mostrar na view
-					DocumentControllerView dcView = loader.getController();
-					Documento documento = tvDocs.getSelectionModel().getSelectedItem();
-					dcView.setDocument(documento);
-					
-					Stage popupStage = new Stage();
-					popupStage.initModality(Modality.APPLICATION_MODAL);
-					popupStage.setTitle("Edições e Diagramas");
-
-					Scene scene = new Scene(root);
-					popupStage.setScene(scene);
-
-					popupStage.showAndWait();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-
+				showDocumentView ();
 			}
 		});
 
@@ -266,6 +244,34 @@ public class DocumentController implements Initializable {
 			}
 		});
 	}
+	
+	public Documento getSelectedDocument () {
+		Documento documento = tvDocs.getSelectionModel().getSelectedItem();
+		return documento;
+	}
+	
+	public void showDocumentView () {
+		try {
+			Documento selectedDocument = tvDocs.getSelectionModel().getSelectedItem();
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/views/DocumentView.fxml"));
+            DocumentViewController docViewController = new DocumentViewController(selectedDocument);
+            loader.setController(docViewController);
+			
+            Parent root = loader.load();
+			
+			Stage popupStage = new Stage();
+			popupStage.initModality(Modality.APPLICATION_MODAL);
+			popupStage.setTitle("Edições e Diagramas");
+
+			Scene scene = new Scene(root);
+			popupStage.setScene(scene);
+
+			popupStage.showAndWait();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	public void handleListByParam(ActionEvent event) {
 
@@ -281,10 +287,6 @@ public class DocumentController implements Initializable {
 			obsListDocs.clear();
 			obsListDocs.addAll(documentos);
 			cbDocType.setValue(obsListDocTypes.get(0));
-
-			// Set the items in the TableView
-			//tvDocs.getItems().clear();
-			//tvDocs.getItems().addAll(documentList);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -422,10 +424,7 @@ public class DocumentController implements Initializable {
 				Stage ownerStage = (Stage) source.getScene().getWindow();
 				String toastMsg = "Documento deletado com sucesso!";
 				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.SUCCESS);
-				// Objecto removido
-				// Documento responseDoc = new Gson().fromJson((String)
-				// serviceResponse.getResponseBody(), Documento.class);
-
+				
 				// retira objecto da tabela de documentos tvDocs
 				tvDocs.getItems().remove(selectedDocumento);
 

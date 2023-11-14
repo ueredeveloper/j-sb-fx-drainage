@@ -16,7 +16,6 @@ import javafx.scene.web.WebView;
 
 public class MainController implements Initializable {
 
-
     @FXML
     private AnchorPane apMain;
 
@@ -44,7 +43,6 @@ public class MainController implements Initializable {
 	public Pane getAnchorPaneMap () {
 		return this.apMap;
 	}
-	
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
