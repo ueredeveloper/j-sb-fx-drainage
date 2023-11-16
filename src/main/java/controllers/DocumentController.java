@@ -32,8 +32,10 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
 import models.Documento;
 import models.DocumentoTipo;
+import models.Processo;
 import services.DocumentService;
 import services.DocumentoTipoService;
 import services.ServiceResponse;
@@ -66,7 +68,7 @@ public class DocumentController implements Initializable {
 
 	@FXML
 	private JFXComboBox<DocumentoTipo> cbDocType;
-	ObservableList<DocumentoTipo> obsListDocTypes = FXCollections.observableArrayList();
+		ObservableList<DocumentoTipo> obsListDocTypes = FXCollections.observableArrayList();
 
 	@FXML
 	private JFXTextField tfNumber;
@@ -75,7 +77,12 @@ public class DocumentController implements Initializable {
 	private JFXTextField tfNumberSEI;
 
 	@FXML
-	private JFXTextField tfProcess;
+    private JFXComboBox<Processo> cbMainProcess;
+		ObservableList<Processo> obsMainProcess = FXCollections.observableArrayList();
+
+    @FXML
+    private JFXComboBox<Processo> cbProcess;
+    	ObservableList<Processo> obsProcess = FXCollections.observableArrayList();
 
 	@FXML
 	private JFXButton btnSave;
@@ -94,13 +101,16 @@ public class DocumentController implements Initializable {
 
 	@FXML
 	private TableView<Documento> tvDocs;
-	ObservableList<Documento> obsListDocs = FXCollections.observableArrayList();
+		ObservableList<Documento> obsListDocs = FXCollections.observableArrayList();
 
 	@FXML
 	private TableColumn<Documento, Integer> tcId;
 
 	@FXML
 	private TableColumn<Documento, String> tcNum;
+	
+	@FXML
+	private TableColumn<Documento, String> tcMainProc;
 
 	@FXML
 	private TableColumn<Documento, String> tcProc;
@@ -134,7 +144,6 @@ public class DocumentController implements Initializable {
 
 		tcId.setCellValueFactory(new PropertyValueFactory<Documento, Integer>("doc_id"));
 		tcNum.setCellValueFactory(new PropertyValueFactory<Documento, String>("doc_numero"));
-		tcProc.setCellValueFactory(new PropertyValueFactory<Documento, String>("doc_processo"));
 		tcNumSei.setCellValueFactory(new PropertyValueFactory<Documento, String>("doc_sei"));
 
 		AnchorPane.setRightAnchor(apContent, 0.0);
@@ -145,14 +154,13 @@ public class DocumentController implements Initializable {
 		obsListDocTypes = FXCollections.observableArrayList(fetchDocTypes());
 
 		cbDocType.setItems(obsListDocTypes);
-		cbDocType.setValue(obsListDocTypes.get(0));
+		cbDocType.setValue(null);
 
 		tvDocs.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
 			if (newSelection != null) {
 				// Atualizar componentes de acordo com o documento selecionado
 				tfNumber.setText(newSelection.getDoc_numero());
 				tfNumberSEI.setText(String.valueOf(newSelection.getDoc_sei()));
-				tfProcess.setText(newSelection.getDoc_processo());
 
 				// Atualiza ComboBox (Tipo de Documento) a partir do documento selecionado
 				cbDocType.getSelectionModel().select(newSelection.getDoc_tipo());
@@ -161,7 +169,6 @@ public class DocumentController implements Initializable {
 				// Se documento nulo limpa componentes
 				tfNumber.clear();
 				tfNumberSEI.clear();
-				tfProcess.clear();
 				cbDocType.getSelectionModel().clearSelection();
 			}
 		});
@@ -193,20 +200,69 @@ public class DocumentController implements Initializable {
 			}
 		});
 		tfNumberSEI.setTextFormatter(textFormatter);
-		// Listener
-		tfProcess.textProperty().addListener(new ChangeListener<String>() {
+		// main process
+		obsMainProcess = FXCollections.observableArrayList(
+				new Processo(1, "197.555./2015"),
+				new Processo(2, "198.555.666/2012"));
+		
+		cbMainProcess.setItems(obsMainProcess);
+		
+		utilities.FxUtilComboBoxSearchable.autoCompleteComboBoxPlus(cbMainProcess,
+				(typedText, itemToCompare) -> itemToCompare.getProc_descricao().toLowerCase().contains(typedText.toLowerCase()));
+		
+
+		cbMainProcess.setConverter(new StringConverter<Processo>() {
+
 			@Override
-			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-				// System.out.println("TextField changed from: " + oldValue + " to: " +
-				// newValue);
+			public String toString(Processo object) {
+				return object != null ? object.getProc_descricao() : "";
 			}
+
+			@Override
+			public Processo fromString(String string) {
+				return cbMainProcess.getItems().stream().filter(object -> object.getProc_descricao().equals(string)).findFirst()
+						.orElse(null);
+			}
+
 		});
 
+		utilities.FxUtilComboBoxSearchable.getComboBoxValue(cbMainProcess);
+		
+		
+		// process
+				obsProcess = FXCollections.observableArrayList(
+						new Processo(1, "197.555./2015"),
+						new Processo(2, "198.555.666/2012"));
+				
+				cbProcess.setItems(obsMainProcess);
+				
+				utilities.FxUtilComboBoxSearchable.autoCompleteComboBoxPlus(cbProcess,
+						(typedText, itemToCompare) -> itemToCompare.getProc_descricao().toLowerCase().contains(typedText.toLowerCase()));
+				
+
+				cbProcess.setConverter(new StringConverter<Processo>() {
+
+					@Override
+					public String toString(Processo object) {
+						return object != null ? object.getProc_descricao() : "";
+					}
+
+					@Override
+					public Processo fromString(String string) {
+						return cbProcess.getItems().stream().filter(object -> object.getProc_descricao().equals(string)).findFirst()
+								.orElse(null);
+					}
+
+				});
+
+				utilities.FxUtilComboBoxSearchable.getComboBoxValue(cbProcess);
+		
+		
 		btnViews.setOnAction(event -> showDocumentView());
 		btnSave.setOnAction(event -> handleSave(event));
-		btnSearch.setOnAction(event -> handleSave(event));
-		btnDelete.setOnAction(event -> handleSave(event));
-		btnEdit.setOnAction(event -> handleSave(event));
+		btnSearch.setOnAction(event -> handleSearch(event));
+		btnDelete.setOnAction(event -> handleDelete(event));
+		btnEdit.setOnAction(event -> handleEdit(event));
 	}
 
 	/**
@@ -253,7 +309,7 @@ public class DocumentController implements Initializable {
 	 * @param event
 	 *            O evento de ação associado à pesquisa.
 	 */
-	public void handleListByParam(ActionEvent event) {
+	public void handleSearch(ActionEvent event) {
 
 		try {
 
@@ -298,7 +354,7 @@ public class DocumentController implements Initializable {
 
 			DocumentService documentService = new DocumentService(localUrl);
 
-			Documento reqDoc = new Documento(tfNumber.getText(), tfProcess.getText(), numeroSei, cbDocType.getValue());
+			Documento reqDoc = new Documento(tfNumber.getText(), numeroSei, cbDocType.getValue());
 
 			ServiceResponse<?> serviceResponse = documentService.save(reqDoc);
 
@@ -347,7 +403,6 @@ public class DocumentController implements Initializable {
 
 		// Retrieve values from text fields
 		String updatedNumero = tfNumber.getText();
-		String updatedProcess = tfProcess.getText();
 		String updatedNumeroSEI = tfNumberSEI.getText();
 
 		DocumentoTipo updateDocumentoTipo = cbDocType.getValue();
@@ -365,7 +420,6 @@ public class DocumentController implements Initializable {
 
 		// Edita objeto com novos valores
 		selectedDoc.setDoc_numero(updatedNumero);
-		selectedDoc.setDoc_processo(updatedProcess);
 		selectedDoc.setDoc_sei(updatedSei);
 
 		selectedDoc.setDoc_tipo(updateDocumentoTipo);
@@ -409,7 +463,7 @@ public class DocumentController implements Initializable {
 	 * @param event
 	 *            O evento de ação associado à exclusão do documento.
 	 */
-	public void handleDeleteById(ActionEvent event) {
+	public void handleDelete(ActionEvent event) {
 
 		Documento selectedDocumento = tvDocs.getSelectionModel().getSelectedItem();
 

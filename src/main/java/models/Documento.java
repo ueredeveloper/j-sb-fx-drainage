@@ -34,6 +34,13 @@ public class Documento {
 		this.doc_tipo = doc_tipo;
 	}
 
+	public Documento(String doc_numero, int doc_sei, DocumentoTipo doc_tipo) {
+		super();
+		this.doc_numero = doc_numero;
+		this.doc_sei = doc_sei;
+		this.doc_tipo = doc_tipo;
+	}
+
 	public int getDoc_id() {
 		return doc_id;
 	}

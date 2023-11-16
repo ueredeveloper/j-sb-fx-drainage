@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.ueredeveloper</groupId>
 	<artifactId>j-sb-fx-drainage</artifactId>
-	<version>1.10.4</version>
+	<version>1.11.0</version>
 
 	<dependencies>
 		<!--  Load Json Responses -->
@@ -22,6 +22,20 @@
 			<groupId>de.jensd</groupId>
 			<artifactId>fontawesomefx</artifactId>
 			<version>8.9</version> <!-- Use the latest version available -->
+		</dependency>
+		<!--  Testes  -->
+		<dependency>
+			<groupId>org.testfx</groupId>
+			<artifactId>testfx-core</artifactId>
+			<version>4.0.14-alpha</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.testfx</groupId>
+			<artifactId>testfx-junit</artifactId>
+			<version>4.0.14-alpha</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 	
