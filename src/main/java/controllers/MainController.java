@@ -15,6 +15,7 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 
 public class MainController implements Initializable {
+	
 
 	@FXML
 	private AnchorPane apMain;
@@ -62,7 +63,7 @@ public class MainController implements Initializable {
 			}
 		});
 
-		// Torna as dimensões do WebView (wvMap) semelhantes ao do pai (aapMap)
+		// Torna as dimensï¿½es do WebView (wvMap) semelhantes ao do pai (aapMap)
 		apMap.widthProperty().addListener((observable, oldValue, newValue) -> {
 			// setar prefwidth no mapa
 			wvMap.setPrefWidth(newValue.doubleValue());
@@ -82,7 +83,7 @@ public class MainController implements Initializable {
 	private void loadNavigationBar() {
 		try {
 
-			// Abrir a barra de navegação
+			// Abrir a barra de navegaï¿½ï¿½o
 
 			FXMLLoader loader1 = new FXMLLoader(getClass().getResource("/fxml/Navigation.fxml"));
 			AnchorPane apNavBar = loader1.load();

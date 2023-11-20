@@ -3,6 +3,7 @@ package models;
 import java.util.Objects;
 
 public class DocumentoTipo {
+	
 	private int dtId;
 	private String dtDescricao;
 

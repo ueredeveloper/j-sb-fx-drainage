@@ -8,6 +8,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
 public class FxUtilComboBoxSearchable {
+	
 
     public interface AutoCompleteComparator<T> {
         boolean matches(String typedText, T objectToCompare);

@@ -14,6 +14,7 @@ import com.google.gson.reflect.TypeToken;
 import models.DocumentoTipo;
 
 public class DocumentoTipoService {
+	
 
 	private String localUrl;
 

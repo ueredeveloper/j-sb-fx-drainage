@@ -19,6 +19,7 @@ public class Main extends Application {
      * @param args Argumentos da linha de comando (n�o s�o usados aqui).
      */
     public static void main(String[] args) {
+    	
         launch(args);
     }
     

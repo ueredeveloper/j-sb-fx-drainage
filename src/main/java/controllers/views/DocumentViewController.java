@@ -20,6 +20,7 @@ import models.Processo;
 import utilities.HTMLFileLoader;
 
 public class DocumentViewController implements Initializable {
+	
 
 	private Documento selectedDocument;
 

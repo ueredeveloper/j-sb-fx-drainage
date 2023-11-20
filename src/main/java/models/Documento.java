@@ -1,6 +1,7 @@
 package models;
 
 public class Documento {
+	
 
 	private int docId;
 	private String docNumero;

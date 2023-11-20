@@ -2,6 +2,7 @@ package enums;
 
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 
+
 public enum ToastType {
     SUCCESS("success", FontAwesomeIcon.CHECK_CIRCLE_ALT),
     WARNING("warning", FontAwesomeIcon.EXCLAMATION_TRIANGLE),

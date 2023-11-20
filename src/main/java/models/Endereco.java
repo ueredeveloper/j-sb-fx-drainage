@@ -1,6 +1,7 @@
 package models;
 
 public class Endereco {
+	
 
 	private int endId;
 	private String endLogradouro;

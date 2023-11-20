@@ -1,6 +1,7 @@
 package models;
 
 public class Processo {
+	
 	private int procId;
 	private String procDescricao;
 
