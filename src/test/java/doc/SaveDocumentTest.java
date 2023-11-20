@@ -35,7 +35,7 @@ public class SaveDocumentTest extends ApplicationTest {
 
 		Platform.runLater(() -> {
 			for (DocumentoTipo tipo : cbDocType.getItems()) {
-				if (tipo.getDt_descricao().equals("Ofício")) {
+				if (tipo.getDtDescricao().equals("Ofício")) {
 					cbDocType.getSelectionModel().select(tipo);
 					break;
 				}

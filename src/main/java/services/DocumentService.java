@@ -27,7 +27,7 @@ public class DocumentService {
 
 	public List<Documento> fetchByParam(String keyword) {
 		try {
-			URL apiUrl = new URL(localUrl + "/documento/pesquisa?keyword=" + URLEncoder.encode(keyword, "UTF-8"));
+			URL apiUrl = new URL(localUrl + "/documento/list?keyword=" + URLEncoder.encode(keyword, "UTF-8"));
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
 			connection.setRequestMethod("GET");
 
@@ -55,7 +55,7 @@ public class DocumentService {
 
 	public ServiceResponse<?> save(Documento documento) {
 		try {
-			URL apiUrl = new URL(localUrl + "/documento");
+			URL apiUrl = new URL(localUrl + "/documento/create");
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
 			connection.setRequestMethod("POST");
 			connection.setRequestProperty("Content-Type", "application/json");
@@ -101,7 +101,7 @@ public class DocumentService {
 
 	public ServiceResponse<?> update(Documento documento) {
 		try {
-			URL apiUrl = new URL(localUrl + "/documento/?id=" + documento.getDoc_id());
+			URL apiUrl = new URL(localUrl + "/documento/update?id=" + documento.getDocId());
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
 			connection.setRequestMethod("PUT");
 			connection.setRequestProperty("Content-Type", "application/json");
@@ -146,7 +146,7 @@ public class DocumentService {
 
 	public ServiceResponse<?> deleteById(int id) {
 		try {
-			URL apiUrl = new URL(localUrl + "/documento/?id=" + id); // Updated URL
+			URL apiUrl = new URL(localUrl + "/documento/delete?id=" + id); // Updated URL
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
 			connection.setRequestMethod("DELETE");
 

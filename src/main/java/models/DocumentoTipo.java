@@ -3,43 +3,43 @@ package models;
 import java.util.Objects;
 
 public class DocumentoTipo {
-	private int dt_id;
-	private String dt_descricao;
+	private int dtId;
+	private String dtDescricao;
 
 	// constructor
 	public DocumentoTipo() {
 		super();
 	}
 
-	public DocumentoTipo(int dt_id, String dt_descricao) {
-		this.dt_id = dt_id;
-		this.dt_descricao = dt_descricao;
+	public DocumentoTipo(int dtId, String dtDescricao) {
+		this.dtId = dtId;
+		this.dtDescricao = dtDescricao;
 	}
 
-	public DocumentoTipo(int dt_id) {
-		this.dt_id = dt_id;
+	public DocumentoTipo(int dtId) {
+		this.dtId = dtId;
 	}
 
 	// getters and setters
-	public int getDt_id() {
-		return dt_id;
+	public int getDtId() {
+		return dtId;
 	}
 
-	public void setDt_id(int dt_id) {
-		this.dt_id = dt_id;
+	public void setDtId(int dtId) {
+		this.dtId = dtId;
 	}
 
-	public String getDt_descricao() {
-		return dt_descricao;
+	public String getDtDescricao() {
+		return dtDescricao;
 	}
 
-	public void setDt_descricao(String dt_descricao) {
-		this.dt_descricao = dt_descricao;
+	public void setDtDescricao(String dtDescricao) {
+		this.dtDescricao = dtDescricao;
 	}
 
 	@Override
 	public String toString() {
-		return dt_descricao;
+		return dtDescricao;
 	}
 
 	// Comparação de objetos para testes
@@ -50,8 +50,8 @@ public class DocumentoTipo {
 	 * even if they represent the same item.
 	 * 
 	 * To fix this, you can override the equals method in your DocumentoTipo class
-	 * to define when two instances are considered equal based on their dt_descricao
-	 * or dt_id values. Here's an example:
+	 * to define when two instances are considered equal based on their dtDescricao
+	 * or dtId values. Here's an example:
 	 */
 	@Override
 	public boolean equals(Object obj) {
@@ -62,12 +62,12 @@ public class DocumentoTipo {
 			return false;
 		}
 		DocumentoTipo other = (DocumentoTipo) obj;
-		return dt_id == other.dt_id && Objects.equals(dt_descricao, other.dt_descricao);
+		return dtId == other.dtId && Objects.equals(dtDescricao, other.dtDescricao);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(dt_id, dt_descricao);
+		return Objects.hash(dtId, dtDescricao);
 	}
 
 }

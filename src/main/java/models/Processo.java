@@ -1,35 +1,39 @@
 package models;
 
 public class Processo {
-	private int proc_id;
-	private String proc_descricao;
+	private int procId;
+	private String procDescricao;
 
 	public Processo() {
 		super();
 
 	}
 
-	public Processo(int proc_id, String proc_descricao) {
+	public Processo(int procId, String procDescricao) {
 		super();
-		this.proc_id = proc_id;
-		this.proc_descricao = proc_descricao;
+		this.procId = procId;
+		this.procDescricao = procDescricao;
 	}
 
-	public int getProc_id() {
-		return proc_id;
+	public Processo(String procDescricao) {
+		super();
+		this.procDescricao = procDescricao;
 	}
 
-	public void setProc_id(int proc_id) {
-		this.proc_id = proc_id;
+	public int getProcId() {
+		return procId;
 	}
 
-	public String getProc_descricao() {
-		return proc_descricao;
+	public void setProcId(int procId) {
+		this.procId = procId;
 	}
 
-	public void setProc_descricao(String proc_descricao) {
-		this.proc_descricao = proc_descricao;
+	public String getProcDescricao() {
+		return procDescricao;
 	}
 
+	public void setProcDescricao(String procDescricao) {
+		this.procDescricao = procDescricao;
+	}
 
 }

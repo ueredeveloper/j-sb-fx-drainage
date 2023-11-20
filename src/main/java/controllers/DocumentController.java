@@ -142,9 +142,9 @@ public class DocumentController implements Initializable {
 		// Configura as ComboBoxes, TextFields e botões
 		// Adiciona listeners aos componentes
 
-		tcId.setCellValueFactory(new PropertyValueFactory<Documento, Integer>("doc_id"));
-		tcNum.setCellValueFactory(new PropertyValueFactory<Documento, String>("doc_numero"));
-		tcNumSei.setCellValueFactory(new PropertyValueFactory<Documento, String>("doc_sei"));
+		tcId.setCellValueFactory(new PropertyValueFactory<Documento, Integer>("docId"));
+		tcNum.setCellValueFactory(new PropertyValueFactory<Documento, String>("docNumero"));
+		tcNumSei.setCellValueFactory(new PropertyValueFactory<Documento, String>("docSEI"));
 
 		AnchorPane.setRightAnchor(apContent, 0.0);
 		AnchorPane.setLeftAnchor(apContent, 0.0);
@@ -159,11 +159,11 @@ public class DocumentController implements Initializable {
 		tvDocs.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
 			if (newSelection != null) {
 				// Atualizar componentes de acordo com o documento selecionado
-				tfNumber.setText(newSelection.getDoc_numero());
-				tfNumberSEI.setText(String.valueOf(newSelection.getDoc_sei()));
+				tfNumber.setText(newSelection.getDocNumero());
+				tfNumberSEI.setText(String.valueOf(newSelection.getDocSEI()));
 
 				// Atualiza ComboBox (Tipo de Documento) a partir do documento selecionado
-				cbDocType.getSelectionModel().select(newSelection.getDoc_tipo());
+				cbDocType.getSelectionModel().select(newSelection.getDocTipo());
 
 			} else {
 				// Se documento nulo limpa componentes
@@ -208,19 +208,19 @@ public class DocumentController implements Initializable {
 		cbMainProcess.setItems(obsMainProcess);
 		
 		utilities.FxUtilComboBoxSearchable.autoCompleteComboBoxPlus(cbMainProcess,
-				(typedText, itemToCompare) -> itemToCompare.getProc_descricao().toLowerCase().contains(typedText.toLowerCase()));
+				(typedText, itemToCompare) -> itemToCompare.getProcDescricao().toLowerCase().contains(typedText.toLowerCase()));
 		
 
 		cbMainProcess.setConverter(new StringConverter<Processo>() {
 
 			@Override
 			public String toString(Processo object) {
-				return object != null ? object.getProc_descricao() : "";
+				return object != null ? object.getProcDescricao() : "";
 			}
 
 			@Override
 			public Processo fromString(String string) {
-				return cbMainProcess.getItems().stream().filter(object -> object.getProc_descricao().equals(string)).findFirst()
+				return cbMainProcess.getItems().stream().filter(object -> object.getProcDescricao().equals(string)).findFirst()
 						.orElse(null);
 			}
 
@@ -237,19 +237,19 @@ public class DocumentController implements Initializable {
 				cbProcess.setItems(obsMainProcess);
 				
 				utilities.FxUtilComboBoxSearchable.autoCompleteComboBoxPlus(cbProcess,
-						(typedText, itemToCompare) -> itemToCompare.getProc_descricao().toLowerCase().contains(typedText.toLowerCase()));
+						(typedText, itemToCompare) -> itemToCompare.getProcDescricao().toLowerCase().contains(typedText.toLowerCase()));
 				
 
 				cbProcess.setConverter(new StringConverter<Processo>() {
 
 					@Override
 					public String toString(Processo object) {
-						return object != null ? object.getProc_descricao() : "";
+						return object != null ? object.getProcDescricao() : "";
 					}
 
 					@Override
 					public Processo fromString(String string) {
-						return cbProcess.getItems().stream().filter(object -> object.getProc_descricao().equals(string)).findFirst()
+						return cbProcess.getItems().stream().filter(object -> object.getProcDescricao().equals(string)).findFirst()
 								.orElse(null);
 					}
 
@@ -419,10 +419,10 @@ public class DocumentController implements Initializable {
 		}
 
 		// Edita objeto com novos valores
-		selectedDoc.setDoc_numero(updatedNumero);
-		selectedDoc.setDoc_sei(updatedSei);
+		selectedDoc.setDocNumero(updatedNumero);
+		selectedDoc.setDocSEI(updatedSei);
 
-		selectedDoc.setDoc_tipo(updateDocumentoTipo);
+		selectedDoc.setDocTipo(updateDocumentoTipo);
 
 		try {
 			DocumentService documentService = new DocumentService(localUrl);
@@ -470,7 +470,7 @@ public class DocumentController implements Initializable {
 		try {
 			DocumentService documentService = new DocumentService(localUrl);
 
-			ServiceResponse<?> serviceResponse = documentService.deleteById(selectedDocumento.getDoc_id());
+			ServiceResponse<?> serviceResponse = documentService.deleteById(selectedDocumento.getDocId());
 
 			if (serviceResponse.getResponseCode() == 200) {
 
