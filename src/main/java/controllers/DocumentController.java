@@ -69,7 +69,7 @@ public class DocumentController implements Initializable {
 
 	@FXML
 	private JFXComboBox<DocumentoTipo> cbDocType;
-		ObservableList<DocumentoTipo> obsListDocTypes = FXCollections.observableArrayList();
+		ObservableList<DocumentoTipo> obsDocumentTypes = FXCollections.observableArrayList();
 
 	@FXML
 	private JFXTextField tfNumber;
@@ -152,9 +152,9 @@ public class DocumentController implements Initializable {
 
 		tvDocs.setItems(obsListDocs);
 
-		obsListDocTypes = FXCollections.observableArrayList(fetchDocTypes());
+		obsDocumentTypes = FXCollections.observableArrayList(fetchDocumentTypes());
 
-		cbDocType.setItems(obsListDocTypes);
+		cbDocType.setItems(obsDocumentTypes);
 		cbDocType.setValue(null);
 
 		tvDocs.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
@@ -323,7 +323,7 @@ public class DocumentController implements Initializable {
 			// Create a list of Document objects
 			obsListDocs.clear();
 			obsListDocs.addAll(documentos);
-			cbDocType.setValue(obsListDocTypes.get(0));
+			cbDocType.setValue(obsDocumentTypes.get(0));
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -502,13 +502,13 @@ public class DocumentController implements Initializable {
 	 *
 	 * @return Uma lista contendo os tipos de documento disponíveis.
 	 */
-	public List<DocumentoTipo> fetchDocTypes() {
+	public List<DocumentoTipo> fetchDocumentTypes() {
 
 		try {
 
 			DocumentoTipoService dtService = new DocumentoTipoService(localUrl);
 
-			List<DocumentoTipo> docTypes = dtService.fetchAll();
+			List<DocumentoTipo> docTypes = dtService.fetchDocumentTypes();
 
 			return docTypes;
 

@@ -22,9 +22,9 @@ public class DocumentoTipoService {
 		this.localUrl = localUrl;
 	}
 
-	public List<DocumentoTipo> fetchAll() {
+	public List<DocumentoTipo> fetchDocumentTypes () {
 		try {
-			URL apiUrl = new URL(localUrl + "/documento-tipo");
+			URL apiUrl = new URL(localUrl + "/document-type");
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
 			connection.setRequestMethod("GET");
 
