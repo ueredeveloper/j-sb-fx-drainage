@@ -21,45 +21,8 @@ public class SelectDocumentTypeTest extends ApplicationTest{
 		new Main().start(stage);
 	}
 	
-	/*@Test
-	public void test () {
-		javafx.scene.control.Button btnSignUp = lookup("#btnSignUp").query();
-		assertNotNull(btnSignUp);
-		clickOn(btnSignUp);
-		
-		ComboBox<DocumentoTipo> cbDocType = lookup("#cbDocType").query();
-		assertNotNull(cbDocType);
-		
-		Node item = lookup(".list-cell").nth(0).query();
-		assertNotNull(item);
-		clickOn(item);
-		assert
-		//assertEquals("Ofício", cbDocType.getEditor().getText());
-		
-		System.out.println(cbDocType.getSelectionModel().getSelectedItem());
-		
-	}*/
-	
-	/*
 	@Test
-    public void testSelectComboBoxItem() {
-		javafx.scene.control.Button btnSignUp = lookup("#btnSignUp").query();
-		assertNotNull(btnSignUp);
-		clickOn(btnSignUp);
-		
-		ComboBox<DocumentoTipo> cbDocType = lookup("#cbDocType").query();
-		assertNotNull(cbDocType);
-		
-		DocumentoTipo dt = new DocumentoTipo(2, "Ofício");
-        Platform.runLater(() -> cbDocType.getSelectionModel().select(dt));
-        sleep(500); // Wait for the selection to take effect
-
-        verifyThat(cbDocType, hasSelectedItem(dt));
-        System.out.println("Selected item: " + cbDocType.getSelectionModel().getSelectedItem());
-    }*/
-	
-	@Test
-    public void testSelectOficioInComboBox() {
+    public void testSelectOficioInDocumentTypeComboBox() {
 		
 		javafx.scene.control.Button btnSignUp = lookup("#btnSignUp").query();
 		assertNotNull(btnSignUp);

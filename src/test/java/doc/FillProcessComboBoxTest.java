@@ -14,13 +14,14 @@ import main.Main;
 import models.DocumentoTipo;
 import models.Processo;
 
-public class SaveDocumentTest extends ApplicationTest {
+public class FillProcessComboBoxTest extends ApplicationTest {
+	
 	public void start(Stage stage) throws Exception {
 		new Main().start(stage);
 	}
 
 	@Test
-	public void saveDocument() {
+	public void fillProcessComboBox () {
 		Button btnSignUp = lookup("#btnSignUp").query();
 		assertNotNull(btnSignUp);
 		clickOn(btnSignUp);
@@ -49,7 +50,7 @@ public class SaveDocumentTest extends ApplicationTest {
 		tfNumberSEI.setText("456");
 		sleep(500);
 		ComboBox<Processo> cbMainProcess = lookup("#cbMainProcess").query();
-		clickOn(cbMainProcess).write("1");
+		clickOn(cbMainProcess).write("4");
 		sleep(500);
 
 		Platform.runLater(() -> {
@@ -75,4 +76,5 @@ public class SaveDocumentTest extends ApplicationTest {
 		sleep(2000);
 
 	}
+
 }

@@ -3,23 +3,24 @@ package models;
 public class Processo {
 	
 	private int procId;
-	private String procDescricao;
+	private String procNumero;
 
 	public Processo() {
 		super();
 
 	}
+	
+	public Processo(String procNumero) {
+		super();
+		this.procNumero = procNumero;
+	}
 
-	public Processo(int procId, String procDescricao) {
+	public Processo(int procId, String procNumero) {
 		super();
 		this.procId = procId;
-		this.procDescricao = procDescricao;
+		this.procNumero = procNumero;
 	}
 
-	public Processo(String procDescricao) {
-		super();
-		this.procDescricao = procDescricao;
-	}
 
 	public int getProcId() {
 		return procId;
@@ -29,12 +30,14 @@ public class Processo {
 		this.procId = procId;
 	}
 
-	public String getProcDescricao() {
-		return procDescricao;
+	public String getProcNumero() {
+		return procNumero;
 	}
 
-	public void setProcDescricao(String procDescricao) {
-		this.procDescricao = procDescricao;
+	public void setProcNumero(String procNumero) {
+		this.procNumero = procNumero;
 	}
+
+	
 
 }

@@ -33,18 +33,21 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
+import models.Anexo;
 import models.Documento;
 import models.DocumentoTipo;
 import models.Processo;
+import services.AnexoService;
 import services.DocumentService;
 import services.DocumentoTipoService;
+import services.ProcessoService;
 import services.ServiceResponse;
 
 /**
  * Controlador para lidar com operações relacionadas aos documentos.
  */
 public class DocumentController implements Initializable {
-	
+
 	// URL local para os recursos
 	private String localUrl;
 	// private String remoteUrl;
@@ -69,7 +72,7 @@ public class DocumentController implements Initializable {
 
 	@FXML
 	private JFXComboBox<DocumentoTipo> cbDocType;
-		ObservableList<DocumentoTipo> obsDocumentTypes = FXCollections.observableArrayList();
+	ObservableList<DocumentoTipo> obsDocumentTypes = FXCollections.observableArrayList();
 
 	@FXML
 	private JFXTextField tfNumber;
@@ -78,12 +81,12 @@ public class DocumentController implements Initializable {
 	private JFXTextField tfNumberSEI;
 
 	@FXML
-    private JFXComboBox<Processo> cbMainProcess;
-		ObservableList<Processo> obsMainProcess = FXCollections.observableArrayList();
+	private JFXComboBox<Anexo> cbAttachment;
+	ObservableList<Anexo> obsAttachment = FXCollections.observableArrayList();
 
-    @FXML
-    private JFXComboBox<Processo> cbProcess;
-    	ObservableList<Processo> obsProcess = FXCollections.observableArrayList();
+	@FXML
+	private JFXComboBox<Processo> cbProcess;
+	ObservableList<Processo> obsProcess = FXCollections.observableArrayList();
 
 	@FXML
 	private JFXButton btnSave;
@@ -102,14 +105,14 @@ public class DocumentController implements Initializable {
 
 	@FXML
 	private TableView<Documento> tvDocs;
-		ObservableList<Documento> obsListDocs = FXCollections.observableArrayList();
+	ObservableList<Documento> obsListDocs = FXCollections.observableArrayList();
 
 	@FXML
 	private TableColumn<Documento, Integer> tcId;
 
 	@FXML
 	private TableColumn<Documento, String> tcNum;
-	
+
 	@FXML
 	private TableColumn<Documento, String> tcMainProc;
 
@@ -201,64 +204,71 @@ public class DocumentController implements Initializable {
 			}
 		});
 		tfNumberSEI.setTextFormatter(textFormatter);
-		// main process
-		obsMainProcess = FXCollections.observableArrayList(
-				new Processo(1, "197.555./2015"),
-				new Processo(2, "198.555.666/2012"));
-		
-		cbMainProcess.setItems(obsMainProcess);
-		
-		utilities.FxUtilComboBoxSearchable.autoCompleteComboBoxPlus(cbMainProcess,
-				(typedText, itemToCompare) -> itemToCompare.getProcDescricao().toLowerCase().contains(typedText.toLowerCase()));
-		
 
-		cbMainProcess.setConverter(new StringConverter<Processo>() {
+	
+		cbAttachment.setItems(obsAttachment);
+
+		utilities.FxUtilComboBoxSearchable.autoCompleteComboBoxPlus(cbAttachment, (typedText,
+				itemToCompare) -> itemToCompare.getAnNumero().toLowerCase().contains(typedText.toLowerCase()));
+
+		cbAttachment.setConverter(new StringConverter<Anexo>() {
+
+			@Override
+			public String toString(Anexo object) {
+				return object != null ? object.getAnNumero() : "";
+			}
+
+			@Override
+			public Anexo fromString(String string) {
+				return cbAttachment.getItems().stream().filter(object -> object.getAnNumero().equals(string))
+						.findFirst().orElse(null);
+			}
+
+		});
+
+		utilities.FxUtilComboBoxSearchable.getComboBoxValue(cbAttachment);
+
+		cbProcess.setItems(obsProcess);
+
+		utilities.FxUtilComboBoxSearchable.autoCompleteComboBoxPlus(cbProcess, (typedText,
+				itemToCompare) -> itemToCompare.getProcNumero().toLowerCase().contains(typedText.toLowerCase()));
+
+		cbProcess.setConverter(new StringConverter<Processo>() {
 
 			@Override
 			public String toString(Processo object) {
-				return object != null ? object.getProcDescricao() : "";
+				return object != null ? object.getProcNumero() : "";
 			}
 
 			@Override
 			public Processo fromString(String string) {
-				return cbMainProcess.getItems().stream().filter(object -> object.getProcDescricao().equals(string)).findFirst()
+				return cbProcess.getItems().stream().filter(object -> object.getProcNumero().equals(string)).findFirst()
 						.orElse(null);
 			}
 
 		});
 
-		utilities.FxUtilComboBoxSearchable.getComboBoxValue(cbMainProcess);
-		
-		
-		// process
-				obsProcess = FXCollections.observableArrayList(
-						new Processo(1, "197.555./2015"),
-						new Processo(2, "198.555.666/2012"));
-				
-				cbProcess.setItems(obsMainProcess);
-				
-				utilities.FxUtilComboBoxSearchable.autoCompleteComboBoxPlus(cbProcess,
-						(typedText, itemToCompare) -> itemToCompare.getProcDescricao().toLowerCase().contains(typedText.toLowerCase()));
-				
+		utilities.FxUtilComboBoxSearchable.getComboBoxValue(cbProcess);
 
-				cbProcess.setConverter(new StringConverter<Processo>() {
+		// Preeche com valores do servido atualizando ao digitar
+		cbProcess.getEditor().textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
 
-					@Override
-					public String toString(Processo object) {
-						return object != null ? object.getProcDescricao() : "";
-					}
+				obsProcess.clear();
+				obsProcess.addAll(fetchProcess(newValue));
+			}
+		});
+		// Preeche com valores do servido atualizando ao digitar
+		cbAttachment.getEditor().textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
 
-					@Override
-					public Processo fromString(String string) {
-						return cbProcess.getItems().stream().filter(object -> object.getProcDescricao().equals(string)).findFirst()
-								.orElse(null);
-					}
+				obsAttachment.clear();
+				obsAttachment.addAll(fetAttachments(newValue));
+			}
+		});
 
-				});
-
-				utilities.FxUtilComboBoxSearchable.getComboBoxValue(cbProcess);
-		
-		
 		btnViews.setOnAction(event -> showDocumentView());
 		btnSave.setOnAction(event -> handleSave(event));
 		btnSearch.setOnAction(event -> handleSearch(event));
@@ -354,10 +364,14 @@ public class DocumentController implements Initializable {
 		try {
 
 			DocumentService documentService = new DocumentService(localUrl);
+		
+			Documento requestDocument = new Documento(
+					tfNumber.getText(), 
+					cbProcess.getValue(), 
+					numeroSei,
+					cbDocType.getValue());
 
-			Documento reqDoc = new Documento(tfNumber.getText(), numeroSei, cbDocType.getValue());
-
-			ServiceResponse<?> serviceResponse = documentService.save(reqDoc);
+			ServiceResponse<?> serviceResponse = documentService.save(requestDocument);
 
 			if (serviceResponse.getResponseCode() == 201) {
 
@@ -516,5 +530,39 @@ public class DocumentController implements Initializable {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public List<Processo> fetchProcess(String keyword) {
+
+		System.out.println("fetchProcess" + keyword);
+		try {
+			ProcessoService service = new ProcessoService(localUrl);
+
+			List<Processo> list = service.fetchProcess(keyword);
+
+			return list;
+
+		} catch (Exception e) {
+
+		}
+
+		return null;
+
+	}
+	public List<Anexo> fetAttachments (String keyword) {
+
+		try {
+			AnexoService service = new AnexoService(localUrl);
+
+			List<Anexo> list = service.fetchAttachments(keyword);
+
+			return list;
+
+		} catch (Exception e) {
+
+		}
+
+		return null;
+
 	}
 }

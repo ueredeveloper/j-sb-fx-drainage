@@ -99,41 +99,50 @@
         </rowConstraints>
          <children>
             <JFXComboBox fx:id="cbDocType" labelFloat="true" prefHeight="80.0" prefWidth="350.0" promptText="Tipo de Documento">
-               <styleClass>
-                  <String fx:value="combo-box" />
-                  <String fx:value="combo-box-base" />
-               </styleClass>
                <GridPane.margin>
                   <Insets bottom="60.0" left="10.0" right="10.0" top="60.0" />
                </GridPane.margin>
+               <styleClass>
+                  <String fx:value="combo-box" />
+                  <String fx:value="combo-box-base" />
+                  <String fx:value="text-field" />
+               </styleClass>
             </JFXComboBox>
             <JFXTextField fx:id="tfNumber" alignment="TOP_LEFT" labelFloat="true" prefHeight="80.0" prefWidth="350.0" promptText="Número" GridPane.columnIndex="1">
                <GridPane.margin>
                   <Insets bottom="60.0" left="10.0" right="10.0" top="60.0" />
                </GridPane.margin>
+               <styleClass>
+                  <String fx:value="combo-box" />
+                  <String fx:value="combo-box-base" />
+               </styleClass>
             </JFXTextField>
             <JFXTextField fx:id="tfNumberSEI" alignment="TOP_LEFT" labelFloat="true" prefHeight="80.0" prefWidth="350.0" promptText="Número SEI" GridPane.columnIndex="2">
                <GridPane.margin>
                   <Insets bottom="60.0" left="10.0" right="10.0" top="60.0" />
                </GridPane.margin>
+               <styleClass>
+                  <String fx:value="combo-box" />
+                  <String fx:value="combo-box-base" />
+               </styleClass>
             </JFXTextField>
-            <JFXComboBox fx:id="cbMainProcess" labelFloat="true" prefHeight="80.0" prefWidth="350.0" promptText="Processo Principal" GridPane.rowIndex="1">
+            <JFXComboBox fx:id="cbProcess" labelFloat="true" prefHeight="80.0" prefWidth="350.0" promptText="Processo" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets bottom="60.0" left="10.0" right="10.0" top="60.0" />
+               </GridPane.margin>
                <styleClass>
                   <String fx:value="combo-box" />
                   <String fx:value="combo-box-base" />
                </styleClass>
-               <GridPane.margin>
-                  <Insets bottom="60.0" left="10.0" right="10.0" top="60.0" />
-               </GridPane.margin>
             </JFXComboBox>
-            <JFXComboBox fx:id="cbProcess" labelFloat="true" prefHeight="80.0" prefWidth="350.0" promptText="Processo" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <JFXComboBox fx:id="cbAttachment" labelFloat="true" prefHeight="80.0" prefWidth="350.0" promptText="Processo Anexo" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets bottom="60.0" left="10.0" right="10.0" top="60.0" />
+               </GridPane.margin>
                <styleClass>
                   <String fx:value="combo-box" />
                   <String fx:value="combo-box-base" />
                </styleClass>
-               <GridPane.margin>
-                  <Insets bottom="60.0" left="10.0" right="10.0" top="60.0" />
-               </GridPane.margin>
             </JFXComboBox>
          </children>
       </GridPane>
