@@ -11,30 +11,31 @@ import java.util.List;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import models.DocumentoTipo;
+import models.Processo;
 
-public class DocumentoTipoService {
-	
+public class ProcessoService {
 
 	private String localUrl;
 
-	public DocumentoTipoService(String localUrl) {
+	public ProcessoService(String localUrl) {
 		this.localUrl = localUrl;
 	}
 
-	public List<DocumentoTipo> fetchDocumentTypes () {
+	public List<Processo> fetchProcesses(String keyword) {
+		
+		System.out.println(localUrl + "/process/list?keyword=" + keyword);
 		try {
-			URL apiUrl = new URL(localUrl + "/document-type");
+			URL apiUrl = new URL(localUrl + "/process/list?keyword=" + keyword);
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
 			connection.setRequestMethod("GET");
 
 			int responseCode = connection.getResponseCode();
 
 			if (responseCode == HttpURLConnection.HTTP_OK) {
-				// System.out.println("HTTP OK");
+				 System.out.println("HTTP OK");
 				return handleSuccessResponse(connection);
 			} else if (responseCode == HttpURLConnection.HTTP_CREATED) {
-				// System.out.println("HTTP Created");
+				 System.out.println("HTTP Created");
 				return handleSuccessResponse(connection);
 			} else {
 				handleErrorResponse(connection);
@@ -50,7 +51,7 @@ public class DocumentoTipoService {
 		return null;
 	}
 
-	private List<DocumentoTipo> handleSuccessResponse(HttpURLConnection connection) throws IOException {
+	private List<Processo> handleSuccessResponse(HttpURLConnection connection) throws IOException {
 		BufferedReader reader = new BufferedReader(
 				new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8));
 		StringBuilder response = new StringBuilder();
@@ -63,7 +64,7 @@ public class DocumentoTipoService {
 
 		reader.close();
 
-		return new Gson().fromJson(response.toString(), new TypeToken<List<DocumentoTipo>>() {
+		return new Gson().fromJson(response.toString(), new TypeToken<List<Processo>>() {
 		}.getType());
 	}
 

@@ -1,45 +1,74 @@
 package models;
 
+import java.util.Objects;
+
 public class DocumentoTipo {
-	private int dt_id;
-	private String dt_descricao;
+	
+	private Long dtId;
+	private String dtDescricao;
 
 	// constructor
 	public DocumentoTipo() {
 		super();
 	}
 
-	public DocumentoTipo(int dt_id, String dt_descricao) {
-		this.dt_id = dt_id;
-		this.dt_descricao = dt_descricao;
+	public DocumentoTipo(Long dtId, String dtDescricao) {
+		this.dtId = dtId;
+		this.dtDescricao = dtDescricao;
 	}
 
-	public DocumentoTipo(int dt_id) {
-		this.dt_id = dt_id;
+	public DocumentoTipo(Long dtId) {
+		this.dtId = dtId;
 	}
 
 	// getters and setters
-	public int getDt_id() {
-		return dt_id;
+	public Long getDtId() {
+		return dtId;
 	}
 
-	public void setDt_id(int dt_id) {
-		this.dt_id = dt_id;
+	public void setDtId(Long dtId) {
+		this.dtId = dtId;
 	}
 
-	public String getDt_descricao() {
-		return dt_descricao;
+	public String getDtDescricao() {
+		return dtDescricao;
 	}
 
-	public void setDt_descricao(String dt_descricao) {
-		this.dt_descricao = dt_descricao;
+	public void setDtDescricao(String dtDescricao) {
+		this.dtDescricao = dtDescricao;
 	}
 
 	@Override
 	public String toString() {
-		return dt_descricao;
+		return dtDescricao;
 	}
-	
-	
+
+	// Comparação de objetos para testes
+	/*
+	 * It seems that the verifyThat method in the TestFX test is expecting an exact
+	 * match of the DocumentoTipo object for the selected item, but the assertion
+	 * fails because it's comparing different instances of the DocumentoTipo class,
+	 * even if they represent the same item.
+	 * 
+	 * To fix this, you can override the equals method in your DocumentoTipo class
+	 * to define when two instances are considered equal based on their dtDescricao
+	 * or dtId values. Here's an example:
+	 */
+	/*@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null || getClass() != obj.getClass()) {
+			return false;
+		}
+		DocumentoTipo other = (DocumentoTipo) obj;
+		return dtId == other.dtId && Objects.equals(dtDescricao, other.dtDescricao);
+	}
+
+	@Override
+	public Long hashCode() {
+		return (long) Objects.hash(dtId, dtDescricao);
+	}*/
 
 }

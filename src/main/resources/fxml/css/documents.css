@@ -27,7 +27,7 @@
 }
 /* Custom styles for specific elements */
 #apContent {
-    -fx-pref-height: 600.0;
+    -fx-pref-height: 700.0;
     -fx-pref-width: 800.0;
 }
 
@@ -64,5 +64,6 @@
 .combo-box .combo-box-base {
     -fx-focus-color: -fx-primary-color; /* Set focus color */
 }
+
 
 

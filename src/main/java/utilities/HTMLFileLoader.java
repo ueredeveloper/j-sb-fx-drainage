@@ -7,6 +7,7 @@ import java.util.Scanner;
 public class HTMLFileLoader {
 	
 	
+	
     public static String loadHTMLResourceToString(String resourcePath) throws IOException {
         InputStream inputStream = HTMLFileLoader.class.getResourceAsStream(resourcePath);
         if (inputStream != null) {

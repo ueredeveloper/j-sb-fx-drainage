@@ -7,9 +7,10 @@ import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
 
 /**
- * Classe para redimensionar painéis com animações suaves.
+ * Classe para redimensionar painï¿½is com animaï¿½ï¿½es suaves.
  */
 public class ResizeMap {
+	
 	
 	private AnchorPane apContent;
 	private AnchorPane apMap;
@@ -28,25 +29,25 @@ public class ResizeMap {
 	public void resizeMapToFullWidth () {
 		double newWidth = this.apContent.getWidth();
 
-		// Cria uma linha do tempo para a animação
+		// Cria uma linha do tempo para a animaï¿½ï¿½o
 		Timeline timeline = new Timeline();
 		
 		timeline.setOnFinished(event -> this.apManager.setVisible(false));
 
-		// Define os keyframes para a animação
+		// Define os keyframes para a animaï¿½ï¿½o
 		KeyFrame keyFrame = new KeyFrame(Duration.seconds(0.1), new KeyValue(this.apMap.prefWidthProperty(), newWidth));
 		timeline.getKeyFrames().add(keyFrame);
 	
 		// Define a visibilidade do painel de gerenciador como falso no final da
-		// animação
+		// animaï¿½ï¿½o
 		
 
-		// Inicia a animação
+		// Inicia a animaï¿½ï¿½o
 		timeline.play();
 	}
 
 	/**
-	 * Redefine os painéis para seus tamanhos padrão.
+	 * Redefine os painï¿½is para seus tamanhos padrï¿½o.
 	 */
 	public void resetMapSize() {
         double newWidth = apContent.getWidth() / 2;

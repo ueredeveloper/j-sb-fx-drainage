@@ -9,8 +9,14 @@ o apMap mudou a largura, redimensiona a largura do mapa.
 
 ## November 7, 2023
 - [ ] Task 1 - DocumentoController - Css
-	Adicionar on focu, cor secundária ao combobox.
+	Adicionar on focu, cor secundï¿½ria ao combobox.
 - [ ] Task 2 - DocumentoController - Css
-	O Combobox está desalinhado com os textfields.
+	O Combobox estï¿½ desalinhado com os textfields.
 ## November 13, 2023
-- [] Task 1 - Adicionar atualização da visualização do documento com o ítem selecionado pelo usuário.
+- [] Task 1 - Adicionar atualizaï¿½ï¿½o da visualizaï¿½ï¿½o do documento com o ï¿½tem selecionado pelo usuï¿½rio.
+
+## November 19, 2023
+- [ ]  Task 1
+	Avaliar o erro "Connection refused". Talves mostrar somente o mapa, sem a tela de cadastro e um tooltip de erro de conexÃ£o.
+	
+	

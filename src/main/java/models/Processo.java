@@ -1,15 +1,46 @@
 package models;
 
 public class Processo {
-	private int proc_id;
 
-	public int getProc_id() {
-		return proc_id;
+	private Long procId;
+	private String procNumero;
+
+	public Processo() {
+		super();
+
 	}
 
-	public void setProc_id(int proc_id) {
-		this.proc_id = proc_id;
+	public Processo(String procNumero) {
+		super();
+		this.procNumero = procNumero;
+	}
+
+	public Processo(Long procId, String procNumero) {
+		super();
+		this.procId = procId;
+		this.procNumero = procNumero;
+	}
+
+	public Long getProcId() {
+		return procId;
+	}
+
+	public void setProcId(Long procId) {
+		this.procId = procId;
+	}
+
+	public String getProcNumero() {
+		return procNumero;
+	}
+
+	public void setProcNumero(String procNumero) {
+		this.procNumero = procNumero;
 	}
 	
-	
+	 // Override toString() method to display procNumero in ComboBox
+    @Override
+    public String toString() {
+        return procNumero;
+    }
+
 }

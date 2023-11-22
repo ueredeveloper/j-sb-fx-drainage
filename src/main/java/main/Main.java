@@ -9,23 +9,24 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
- * Classe principal que inicia a aplicação JavaFX.
+ * Classe principal que inicia a aplicaï¿½ï¿½o JavaFX.
  */
 public class Main extends Application {
 
     /**
-     * Método principal que inicia a aplicação.
+     * Mï¿½todo principal que inicia a aplicaï¿½ï¿½o.
      *
-     * @param args Argumentos da linha de comando (não são usados aqui).
+     * @param args Argumentos da linha de comando (nï¿½o sï¿½o usados aqui).
      */
     public static void main(String[] args) {
+    	
         launch(args);
     }
     
     /**
-     * Método de inicialização da aplicação JavaFX.
+     * Mï¿½todo de inicializaï¿½ï¿½o da aplicaï¿½ï¿½o JavaFX.
      *
-     * @param stage O palco principal da aplicação.
+     * @param stage O palco principal da aplicaï¿½ï¿½o.
      */
     @Override
     public void start(Stage stage) {
@@ -41,7 +42,7 @@ public class Main extends Application {
         
         // Cria uma cena com a raiz carregada a partir do arquivo FXML.
         Scene scene = new Scene(root, 900, 450);
-        // Define o título da janela de aplicação.
+        // Define o tï¿½tulo da janela de aplicaï¿½ï¿½o.
         stage.setTitle("Login");
         // Define a cena no palco e exibe a janela.
         stage.setScene(scene);

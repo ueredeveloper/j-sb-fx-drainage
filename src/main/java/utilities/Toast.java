@@ -16,6 +16,7 @@ import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 public final class Toast {
+	
 	public static void makeText(Stage ownerStage, String toastMsg, ToastType toastType) {
 		
 		

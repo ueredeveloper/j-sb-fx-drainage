@@ -1,98 +1,113 @@
 package models;
 
+/**
+ * Classe que representa um Documento.
+ */
 public class Documento {
 
-	private int doc_id;
-	private String doc_numero;
-	private String doc_processo;
-	private int doc_sei;
-	private DocumentoTipo doc_tipo;
-	private Endereco doc_endereco;
-	
-	
-	// constructor
+	private Long docId;
+	private String docNumero;
+	private Processo docProcesso;
+	private Long docSEI;
+	private DocumentoTipo docTipo;
+	private Anexo docAnexo;
+	private Endereco docEndereco;
+
+	// Construtor padrão
 	public Documento() {
 		super();
 	}
-	
-	public Documento(int doc_id, String doc_numero, String doc_processo, int doc_sei, DocumentoTipo doc_tipo,
-			Endereco doc_endereco) {
+
+	public Documento(Long docId, String docNumero, Processo docProcesso, Long docSEI, DocumentoTipo docTipo,
+			Anexo docAnexo, Endereco docEndereco) {
 		super();
-		this.doc_id = doc_id;
-		this.doc_numero = doc_numero;
-		this.doc_processo = doc_processo;
-		this.doc_sei = doc_sei;
-		this.doc_tipo = doc_tipo;
-		this.doc_endereco = doc_endereco;
+		this.docId = docId;
+		this.docNumero = docNumero;
+		this.docProcesso = docProcesso;
+		this.docSEI = docSEI;
+		this.docTipo = docTipo;
+		this.docAnexo = docAnexo;
+		this.docEndereco = docEndereco;
 	}
-	
-	public Documento(String doc_numero, String doc_processo, int doc_sei, DocumentoTipo doc_tipo) {
+
+	public Documento(Long docId, String docNumero) {
 		super();
-		this.doc_numero = doc_numero;
-		this.doc_processo = doc_processo;
-		this.doc_sei = doc_sei;
-		this.doc_tipo = doc_tipo;
+		this.docId = docId;
+		this.docNumero = docNumero;
 	}
-
-	public int getDoc_id() {
-		return doc_id;
-	}
-
-
-	public void setDoc_id(int doc_id) {
-		this.doc_id = doc_id;
-	}
-
-
-	public String getDoc_numero() {
-		return doc_numero;
-	}
-
-
-	public void setDoc_numero(String doc_numero) {
-		this.doc_numero = doc_numero;
-	}
-
-
-	public String getDoc_processo() {
-		return doc_processo;
-	}
-
-
-	public void setDoc_processo(String doc_processo) {
-		this.doc_processo = doc_processo;
-	}
-
-
-	public int getDoc_sei() {
-		return doc_sei;
-	}
-
-
-	public void setDoc_sei(int doc_sei) {
-		this.doc_sei = doc_sei;
-	}
-
-
-	public DocumentoTipo getDoc_tipo() {
-		return doc_tipo;
-	}
-
-
-	public void setDoc_tipo(DocumentoTipo doc_tipo) {
-		this.doc_tipo = doc_tipo;
-	}
-
-
-	public Endereco getDoc_endereco() {
-		return doc_endereco;
-	}
-
-
-	public void setDoc_endereco(Endereco doc_endereco) {
-		this.doc_endereco = doc_endereco;
-	}
-
 	
+	public Documento(String docNumero, Processo docProcesso, Long docSEI, DocumentoTipo docTipo) {
+		super();
+		this.docNumero = docNumero;
+		this.docProcesso = docProcesso;
+		this.docSEI = docSEI;
+		this.docTipo = docTipo;
+	}
+	
+	public Documento(String docNumero, Processo docProcesso, Long docSEI, DocumentoTipo docTipo, Anexo docAnexo) {
+		super();
+		this.docNumero = docNumero;
+		this.docProcesso = docProcesso;
+		this.docSEI = docSEI;
+		this.docTipo = docTipo;
+		this.docAnexo = docAnexo;
+	}
 
+	public Long getDocId() {
+		return docId;
+	}
+
+	public void setDocId(Long docId) {
+		this.docId = docId;
+	}
+
+	public String getDocNumero() {
+		return docNumero;
+	}
+
+	public void setDocNumero(String docNumero) {
+		this.docNumero = docNumero;
+	}
+
+	public Processo getDocProcesso() {
+		return docProcesso;
+	}
+
+	public void setDocProcesso(Processo docProcesso) {
+		this.docProcesso = docProcesso;
+	}
+
+	public Long getDocSEI() {
+		return docSEI;
+	}
+
+	public void setDocSEI(Long docSEI) {
+		this.docSEI = docSEI;
+	}
+
+	public DocumentoTipo getDocTipo() {
+		return docTipo;
+	}
+
+	public void setDocTipo(DocumentoTipo docTipo) {
+		this.docTipo = docTipo;
+	}
+
+	public Anexo getDocAnexo() {
+		return docAnexo;
+	}
+
+	public void setDocAnexo(Anexo docAnexo) {
+		this.docAnexo = docAnexo;
+	}
+
+	public Endereco getDocEndereco() {
+		return docEndereco;
+	}
+
+	public void setDocEndereco(Endereco docEndereco) {
+		this.docEndereco = docEndereco;
+	}
+	
+	
 }
