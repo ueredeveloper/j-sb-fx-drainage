@@ -49,7 +49,7 @@ public class FillProcessComboBoxTest extends ApplicationTest {
 		javafx.scene.control.TextField tfNumberSEI = lookup("#tfNumberSEI").query();
 		tfNumberSEI.setText("456");
 		sleep(500);
-		ComboBox<Processo> cbMainProcess = lookup("#cbMainProcess").query();
+		ComboBox<Processo> cbMainProcess = lookup("#cbProcess").query();
 		clickOn(cbMainProcess).write("4");
 		sleep(500);
 
@@ -61,7 +61,7 @@ public class FillProcessComboBoxTest extends ApplicationTest {
 
 		sleep(500);
 
-		ComboBox<Processo> cbProcess = lookup("#cbProcess").query();
+		ComboBox<Processo> cbProcess = lookup("#cbAttachment").query();
 		clickOn(cbProcess).write("1");
 		sleep(500);
 		Platform.runLater(() -> {

@@ -4,7 +4,7 @@ import java.util.Objects;
 
 public class DocumentoTipo {
 	
-	private int dtId;
+	private Long dtId;
 	private String dtDescricao;
 
 	// constructor
@@ -12,21 +12,21 @@ public class DocumentoTipo {
 		super();
 	}
 
-	public DocumentoTipo(int dtId, String dtDescricao) {
+	public DocumentoTipo(Long dtId, String dtDescricao) {
 		this.dtId = dtId;
 		this.dtDescricao = dtDescricao;
 	}
 
-	public DocumentoTipo(int dtId) {
+	public DocumentoTipo(Long dtId) {
 		this.dtId = dtId;
 	}
 
 	// getters and setters
-	public int getDtId() {
+	public Long getDtId() {
 		return dtId;
 	}
 
-	public void setDtId(int dtId) {
+	public void setDtId(Long dtId) {
 		this.dtId = dtId;
 	}
 
@@ -54,7 +54,7 @@ public class DocumentoTipo {
 	 * to define when two instances are considered equal based on their dtDescricao
 	 * or dtId values. Here's an example:
 	 */
-	@Override
+	/*@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
 			return true;
@@ -67,8 +67,8 @@ public class DocumentoTipo {
 	}
 
 	@Override
-	public int hashCode() {
-		return Objects.hash(dtId, dtDescricao);
-	}
+	public Long hashCode() {
+		return (long) Objects.hash(dtId, dtDescricao);
+	}*/
 
 }

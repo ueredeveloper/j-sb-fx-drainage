@@ -3,6 +3,8 @@ package services;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -19,6 +21,51 @@ public class AnexoService {
 
 	public AnexoService(String localUrl) {
 		this.localUrl = localUrl;
+	}
+	public ServiceResponse<?> save(Anexo anexo) {
+		try {
+			URL apiUrl = new URL(localUrl + "/attachment/create");
+			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
+			connection.setRequestMethod("POST");
+			connection.setRequestProperty("Content-Type", "application/json");
+			connection.setDoOutput(true);
+
+			// Convert Documento object to JSON
+			String jsonInputString = convertObjectToJson(anexo);
+		
+			// Write JSON to request body
+			try (OutputStream os = connection.getOutputStream();
+					OutputStreamWriter osw = new OutputStreamWriter(os, "UTF-8")) {
+				osw.write(jsonInputString);
+				osw.flush();
+			}
+
+			int responseCode = connection.getResponseCode();
+
+			String responseBody;
+			if (responseCode == HttpURLConnection.HTTP_CREATED) {
+				// System.out.println("service created");
+				try (BufferedReader br = new BufferedReader(
+						new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
+					StringBuilder response = new StringBuilder();
+					String responseLine;
+					while ((responseLine = br.readLine()) != null) {
+						response.append(responseLine);
+					}
+					responseBody = response.toString();
+				}
+			} else {
+				handleErrorResponse(connection);
+				responseBody = readErrorStream(connection);
+			}
+
+			connection.disconnect();
+			return new ServiceResponse<>(responseCode, responseBody);
+		} catch (Exception e) {
+			e.printStackTrace();
+			// showAlert("Error saving document", AlertType.ERROR);
+			return null; // Return null if an error occurs
+		}
 	}
 
 	public List<Anexo> fetchAttachments (String keyword) {
@@ -84,4 +131,8 @@ public class AnexoService {
 		}
 	}
 
+	private String convertObjectToJson(Object object) {
+		Gson gson = new Gson();
+		return gson.toJson(object);
+	}
 }

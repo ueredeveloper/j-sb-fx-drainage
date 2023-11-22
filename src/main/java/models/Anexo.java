@@ -21,6 +21,11 @@ public class Anexo {
 		this.anPrincipal = anPrincipal;
 	}
 
+	public Anexo(String anNumero) {
+		super();
+		this.anNumero = anNumero;
+	}
+
 	public Long getAnId() {
 		return anId;
 	}
@@ -44,6 +49,12 @@ public class Anexo {
 	public void setAnPrincipal(Processo anPrincipal) {
 		this.anPrincipal = anPrincipal;
 	}
+
+	@Override
+	public String toString() {
+		return anNumero;
+	}
 	
 	
+
 }

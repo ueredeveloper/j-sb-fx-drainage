@@ -21,7 +21,7 @@ public class ProcessoService {
 		this.localUrl = localUrl;
 	}
 
-	public List<Processo> fetchProcess(String keyword) {
+	public List<Processo> fetchProcesses(String keyword) {
 		
 		System.out.println(localUrl + "/process/list?keyword=" + keyword);
 		try {

@@ -5,11 +5,12 @@ package models;
  */
 public class Documento {
 
-	private int docId;
+	private Long docId;
 	private String docNumero;
 	private Processo docProcesso;
-	private int docSEI;
+	private Long docSEI;
 	private DocumentoTipo docTipo;
+	private Anexo docAnexo;
 	private Endereco docEndereco;
 
 	// Construtor padrão
@@ -17,103 +18,53 @@ public class Documento {
 		super();
 	}
 
-	/**
-	 * Construtor com todos os atributos.
-	 *
-	 * @param docId
-	 *            Identificador do documento.
-	 * @param docNumero
-	 *            Número do documento.
-	 * @param docProcesso
-	 *            Processo relacionado ao documento.
-	 * @param docSEI
-	 *            Número SEI do documento.
-	 * @param docTipo
-	 *            Tipo do documento.
-	 * @param docEndereco
-	 *            Endereço do documento.
-	 */
-	public Documento(int docId, String docNumero, Processo docProcesso, int docSEI, DocumentoTipo docTipo,
-			Endereco docEndereco) {
+	public Documento(Long docId, String docNumero, Processo docProcesso, Long docSEI, DocumentoTipo docTipo,
+			Anexo docAnexo, Endereco docEndereco) {
 		super();
 		this.docId = docId;
 		this.docNumero = docNumero;
 		this.docProcesso = docProcesso;
 		this.docSEI = docSEI;
 		this.docTipo = docTipo;
+		this.docAnexo = docAnexo;
 		this.docEndereco = docEndereco;
 	}
+
+	public Documento(Long docId, String docNumero) {
+		super();
+		this.docId = docId;
+		this.docNumero = docNumero;
+	}
 	
-	
-	public Documento(String docNumero, Processo docProcesso, int docSEI, DocumentoTipo docTipo) {
+	public Documento(String docNumero, Processo docProcesso, Long docSEI, DocumentoTipo docTipo) {
 		super();
 		this.docNumero = docNumero;
 		this.docProcesso = docProcesso;
 		this.docSEI = docSEI;
 		this.docTipo = docTipo;
 	}
-
-	public Documento(String docNumero, Processo docProcesso, int docSEI, DocumentoTipo docTipo, Endereco docEndereco) {
+	
+	public Documento(String docNumero, Processo docProcesso, Long docSEI, DocumentoTipo docTipo, Anexo docAnexo) {
 		super();
 		this.docNumero = docNumero;
 		this.docProcesso = docProcesso;
 		this.docSEI = docSEI;
 		this.docTipo = docTipo;
-		this.docEndereco = docEndereco;
+		this.docAnexo = docAnexo;
 	}
 
-	/**
-	 * Construtor para criar um documento com número, número SEI e tipo do
-	 * documento.
-	 *
-	 * @param docNumero
-	 *            Número do documento.
-	 * @param docSEI
-	 *            Número SEI do documento.
-	 * @param docTipo
-	 *            Tipo do documento.
-	 */
-	public Documento(String docNumero, int docSEI, DocumentoTipo docTipo) {
-		super();
-		this.docNumero = docNumero;
-		this.docSEI = docSEI;
-		this.docTipo = docTipo;
-	}
-
-	/**
-	 * Obtém o identificador do documento.
-	 *
-	 * @return O identificador do documento.
-	 */
-	public int getDocId() {
+	public Long getDocId() {
 		return docId;
 	}
 
-	/**
-	 * Define o identificador do documento.
-	 *
-	 * @param docId
-	 *            O identificador do documento.
-	 */
-	public void setDocId(int docId) {
+	public void setDocId(Long docId) {
 		this.docId = docId;
 	}
 
-	/**
-	 * Obtém o número do documento.
-	 *
-	 * @return O número do documento.
-	 */
 	public String getDocNumero() {
 		return docNumero;
 	}
 
-	/**
-	 * Define o número do documento.
-	 *
-	 * @param docNumero
-	 *            O número do documento.
-	 */
 	public void setDocNumero(String docNumero) {
 		this.docNumero = docNumero;
 	}
@@ -126,11 +77,11 @@ public class Documento {
 		this.docProcesso = docProcesso;
 	}
 
-	public int getDocSEI() {
+	public Long getDocSEI() {
 		return docSEI;
 	}
 
-	public void setDocSEI(int docSEI) {
+	public void setDocSEI(Long docSEI) {
 		this.docSEI = docSEI;
 	}
 
@@ -142,6 +93,14 @@ public class Documento {
 		this.docTipo = docTipo;
 	}
 
+	public Anexo getDocAnexo() {
+		return docAnexo;
+	}
+
+	public void setDocAnexo(Anexo docAnexo) {
+		this.docAnexo = docAnexo;
+	}
+
 	public Endereco getDocEndereco() {
 		return docEndereco;
 	}
@@ -149,5 +108,6 @@ public class Documento {
 	public void setDocEndereco(Endereco docEndereco) {
 		this.docEndereco = docEndereco;
 	}
-
+	
+	
 }

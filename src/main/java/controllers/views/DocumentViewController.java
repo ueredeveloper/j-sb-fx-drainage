@@ -43,11 +43,11 @@ public class DocumentViewController implements Initializable {
 
 		// Create a Documento object and set its properties.
 		Documento doc = new Documento();
-		doc.setDocId(1);
+		doc.setDocId(1L);
 		doc.setDocNumero("12/2015");
 		doc.setDocProcesso(new Processo("197.456789/2013"));
-		doc.setDocSEI(123456789);
-		doc.setDocTipo(new DocumentoTipo(1, "Requerimento"));
+		doc.setDocSEI(123456789L);
+		doc.setDocTipo(new DocumentoTipo(1L, "Requerimento"));
 		// doc.setDoc_endereco(new Endereco (1, "Rua dos Novaes Peres, 1"));
 
 		// Convert the Documento object to JSON and print it.

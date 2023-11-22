@@ -44,7 +44,7 @@ public class SelectDocumentTypeTest extends ApplicationTest{
         });
         sleep(500); // Wait for the selection to take effect
 
-        verifyThat(cbDocType, hasSelectedItem(new DocumentoTipo(2, "Ofício")));
+        verifyThat(cbDocType, hasSelectedItem(new DocumentoTipo(2L, "Ofício")));
         sleep(1000);
         System.out.println("Selected item: " + cbDocType.getSelectionModel().getSelectedItem());
     }

@@ -64,6 +64,8 @@ public class DocumentService {
 
 			// Convert Documento object to JSON
 			String jsonInputString = convertObjectToJson(documento);
+			
+			System.out.println(jsonInputString);
 
 			// Write JSON to request body
 			try (OutputStream os = connection.getOutputStream();
@@ -145,7 +147,7 @@ public class DocumentService {
 		}
 	}
 
-	public ServiceResponse<?> deleteById(int id) {
+	public ServiceResponse<?> deleteById(Long id) {
 		try {
 			URL apiUrl = new URL(localUrl + "/document/delete?id=" + id); // Updated URL
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();

@@ -82,7 +82,7 @@ public class DocumentController implements Initializable {
 
 	@FXML
 	private JFXComboBox<Anexo> cbAttachment;
-	ObservableList<Anexo> obsAttachment = FXCollections.observableArrayList();
+	ObservableList<Anexo> obsAttachments = FXCollections.observableArrayList();
 
 	@FXML
 	private JFXComboBox<Processo> cbProcess;
@@ -205,48 +205,11 @@ public class DocumentController implements Initializable {
 		});
 		tfNumberSEI.setTextFormatter(textFormatter);
 
-	
-		cbAttachment.setItems(obsAttachment);
-
-		utilities.FxUtilComboBoxSearchable.autoCompleteComboBoxPlus(cbAttachment, (typedText,
-				itemToCompare) -> itemToCompare.getAnNumero().toLowerCase().contains(typedText.toLowerCase()));
-
-		cbAttachment.setConverter(new StringConverter<Anexo>() {
-
-			@Override
-			public String toString(Anexo object) {
-				return object != null ? object.getAnNumero() : "";
-			}
-
-			@Override
-			public Anexo fromString(String string) {
-				return cbAttachment.getItems().stream().filter(object -> object.getAnNumero().equals(string))
-						.findFirst().orElse(null);
-			}
-
-		});
-
-		utilities.FxUtilComboBoxSearchable.getComboBoxValue(cbAttachment);
-
 		cbProcess.setItems(obsProcess);
+		cbProcess.setEditable(true);
 
 		utilities.FxUtilComboBoxSearchable.autoCompleteComboBoxPlus(cbProcess, (typedText,
 				itemToCompare) -> itemToCompare.getProcNumero().toLowerCase().contains(typedText.toLowerCase()));
-
-		cbProcess.setConverter(new StringConverter<Processo>() {
-
-			@Override
-			public String toString(Processo object) {
-				return object != null ? object.getProcNumero() : "";
-			}
-
-			@Override
-			public Processo fromString(String string) {
-				return cbProcess.getItems().stream().filter(object -> object.getProcNumero().equals(string)).findFirst()
-						.orElse(null);
-			}
-
-		});
 
 		utilities.FxUtilComboBoxSearchable.getComboBoxValue(cbProcess);
 
@@ -254,18 +217,51 @@ public class DocumentController implements Initializable {
 		cbProcess.getEditor().textProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-
 				obsProcess.clear();
-				obsProcess.addAll(fetchProcess(newValue));
+				List<Processo> list = fetchProcesses(newValue);
+				boolean containsSearchTerm = list.stream()
+						.anyMatch(processo -> processo.getProcNumero().contains(newValue));
+				/*
+				 * Se o que foi digitado está contido, não adicina novo processo, porém, se o
+				 * que foi digitado não está contido na lista, adiciona novo processo com id
+				 * nulo.
+				 */
+				if (containsSearchTerm) {
+					obsProcess.addAll(list);
+				} else {
+					obsProcess.add(new Processo(newValue));
+					obsProcess.addAll(list);
+				}
+
 			}
 		});
+
+		cbAttachment.setItems(obsAttachments);
+		cbAttachment.setEditable(true);
+
+		utilities.FxUtilComboBoxSearchable.autoCompleteComboBoxPlus(cbAttachment, (typedText,
+				itemToCompare) -> itemToCompare.getAnNumero().toLowerCase().contains(typedText.toLowerCase()));
+
+		utilities.FxUtilComboBoxSearchable.getComboBoxValue(cbAttachment);
+
 		// Preeche com valores do servido atualizando ao digitar
 		cbAttachment.getEditor().textProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				obsAttachments.clear();
+				List<Anexo> list = fetchAttachments(newValue);
+				boolean containsSearchTerm = list.stream().anyMatch(anexo -> anexo.getAnNumero().contains(newValue));
+				/*
+				 * Se o que foi digitado está contido, não adicina novo anexo, porém, se o que
+				 * foi digitado não está contido na lista, adiciona novo anexo com id nulo.
+				 */
+				if (containsSearchTerm) {
+					obsAttachments.addAll(list);
+				} else {
+					obsAttachments.add(new Anexo(newValue));
+					obsAttachments.addAll(list);
+				}
 
-				obsAttachment.clear();
-				obsAttachment.addAll(fetAttachments(newValue));
 			}
 		});
 
@@ -352,9 +348,9 @@ public class DocumentController implements Initializable {
 
 		// verjo que este m�todo � desnecess�rio pois o textfield j� est� aceitando
 		// apenas n�meros
-		int numeroSei = 0;
+		Long numeroSei = 0L;
 		try {
-			numeroSei = Integer.parseInt(text);
+			numeroSei = Long.parseLong(text);
 			// Use the 'numeroSei' integer as needed
 		} catch (NumberFormatException e) {
 			// Handle the case where the input is not a valid integer
@@ -364,16 +360,26 @@ public class DocumentController implements Initializable {
 		try {
 
 			DocumentService documentService = new DocumentService(localUrl);
-		
+
 			Documento requestDocument = new Documento(
 					tfNumber.getText(), 
-					cbProcess.getValue(), 
+					// Processo
+					obsProcess.get(0), 
 					numeroSei,
-					cbDocType.getValue());
+					cbDocType.getValue(),
+					// Anexo
+					new Anexo(
+							obsAttachments.get(0).getAnId(), 
+							obsAttachments.get(0).getAnNumero(),
+							// Processo Anexado
+							obsProcess.get(0)
+							)
+					);
 
-			ServiceResponse<?> serviceResponse = documentService.save(requestDocument);
 
-			if (serviceResponse.getResponseCode() == 201) {
+			ServiceResponse<?> documentoServiceResponse = documentService.save(requestDocument);
+
+			if (documentoServiceResponse.getResponseCode() == 201) {
 
 				// Informa salvamento com sucesso
 				Node source = (Node) event.getSource();
@@ -381,7 +387,7 @@ public class DocumentController implements Initializable {
 				String toastMsg = "Documento salvo com sucesso!";
 				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.SUCCESS);
 				// Adiciona resposta na tabela
-				Documento responseDocumento = new Gson().fromJson((String) serviceResponse.getResponseBody(),
+				Documento responseDocumento = new Gson().fromJson((String) documentoServiceResponse.getResponseBody(),
 						Documento.class);
 				// Adiciona com primeiro na lista
 				tvDocs.getItems().add(0, responseDocumento);
@@ -423,9 +429,9 @@ public class DocumentController implements Initializable {
 		DocumentoTipo updateDocumentoTipo = cbDocType.getValue();
 
 		// converter para integer
-		int updatedSei = 0;
+		Long updatedSei = 0L;
 		try {
-			updatedSei = Integer.parseInt(updatedNumeroSEI);
+			updatedSei = Long.parseLong(updatedNumeroSEI);
 		} catch (NumberFormatException e) {
 			// Handle the case where the input is not a valid integer
 			System.out.println("Input is not a valid integer for SEI.");
@@ -532,13 +538,13 @@ public class DocumentController implements Initializable {
 		return null;
 	}
 
-	public List<Processo> fetchProcess(String keyword) {
+	public List<Processo> fetchProcesses(String keyword) {
 
-		System.out.println("fetchProcess" + keyword);
+		System.out.println("fetchProcesses" + keyword);
 		try {
 			ProcessoService service = new ProcessoService(localUrl);
 
-			List<Processo> list = service.fetchProcess(keyword);
+			List<Processo> list = service.fetchProcesses(keyword);
 
 			return list;
 
@@ -549,7 +555,8 @@ public class DocumentController implements Initializable {
 		return null;
 
 	}
-	public List<Anexo> fetAttachments (String keyword) {
+
+	public List<Anexo> fetchAttachments(String keyword) {
 
 		try {
 			AnexoService service = new AnexoService(localUrl);
