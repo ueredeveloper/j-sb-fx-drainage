@@ -29,7 +29,7 @@ public class SaveDocumentTest extends ApplicationTest {
 		Node item = lookup(".list-cell").nth(0).query();
 		assertNotNull(item);
 		clickOn(item);
-		sleep(500);
+		sleep(1500);
 
 		Platform.runLater(() -> {
 			for (DocumentoTipo tipo : cbDocType.getItems()) {
@@ -44,30 +44,34 @@ public class SaveDocumentTest extends ApplicationTest {
 
 		javafx.scene.control.TextField tfNumber = lookup("#tfNumber").query();
 		tfNumber.setText("123");
-		sleep(500);
+		sleep(1000);
 		javafx.scene.control.TextField tfNumberSEI = lookup("#tfNumberSEI").query();
 		tfNumberSEI.setText("456");
-		sleep(500);
-		ComboBox<Processo> cbMainProcess = lookup("#cbMainProcess").query();
-		clickOn(cbMainProcess).write("1");
-		sleep(500);
-
-		Platform.runLater(() -> {
-
-			clickOn(cbMainProcess);
-			cbMainProcess.getSelectionModel().select(1);
-		});
-
-		sleep(500);
-
+		sleep(1000);
+		
 		ComboBox<Processo> cbProcess = lookup("#cbProcess").query();
 		clickOn(cbProcess).write("1");
-		sleep(500);
+	
+		sleep(1000);
+
 		Platform.runLater(() -> {
 
 			clickOn(cbProcess);
 			cbProcess.getSelectionModel().select(1);
 		});
+		
+		ComboBox<Processo> cbAttachment = lookup("#cbAttachment").query();
+		clickOn(cbAttachment).write("1");
+	
+		sleep(1000);
+
+		Platform.runLater(() -> {
+
+			clickOn(cbAttachment);
+			cbAttachment.getSelectionModel().select(1);
+		});
+
+		sleep(1500);
 
 		Button btnSave = lookup("#btnSave").query();
 		clickOn(btnSave);
