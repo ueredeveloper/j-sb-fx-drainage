@@ -23,7 +23,7 @@ public class ProcessoService {
 
 	public List<Processo> fetchProcesses(String keyword) {
 		
-		System.out.println(localUrl + "/process/list?keyword=" + keyword);
+		//System.out.println(localUrl + "/process/list?keyword=" + keyword);
 		try {
 			URL apiUrl = new URL(localUrl + "/process/list?keyword=" + keyword);
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();

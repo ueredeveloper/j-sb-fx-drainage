@@ -10,7 +10,6 @@ public class Documento {
 	private Processo docProcesso;
 	private Long docSEI;
 	private DocumentoTipo docTipo;
-	private Anexo docAnexo;
 	private Endereco docEndereco;
 
 	// Construtor padrão
@@ -26,7 +25,6 @@ public class Documento {
 		this.docProcesso = docProcesso;
 		this.docSEI = docSEI;
 		this.docTipo = docTipo;
-		this.docAnexo = docAnexo;
 		this.docEndereco = docEndereco;
 	}
 
@@ -50,8 +48,20 @@ public class Documento {
 		this.docProcesso = docProcesso;
 		this.docSEI = docSEI;
 		this.docTipo = docTipo;
-		this.docAnexo = docAnexo;
 	}
+	
+	
+
+	public Documento(String docNumero, Processo docProcesso, Long docSEI, DocumentoTipo docTipo, Endereco docEndereco) {
+		super();
+		this.docNumero = docNumero;
+		this.docProcesso = docProcesso;
+		this.docSEI = docSEI;
+		this.docTipo = docTipo;
+		this.docEndereco = docEndereco;
+	}
+	
+	
 
 	public Long getDocId() {
 		return docId;
@@ -91,14 +101,6 @@ public class Documento {
 
 	public void setDocTipo(DocumentoTipo docTipo) {
 		this.docTipo = docTipo;
-	}
-
-	public Anexo getDocAnexo() {
-		return docAnexo;
-	}
-
-	public void setDocAnexo(Anexo docAnexo) {
-		this.docAnexo = docAnexo;
 	}
 
 	public Endereco getDocEndereco() {
