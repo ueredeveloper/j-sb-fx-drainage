@@ -14,6 +14,7 @@ import com.jfoenix.controls.JFXTextField;
 
 import controllers.views.DocumentViewController;
 import enums.ToastType;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -116,7 +117,7 @@ public class DocumentController implements Initializable {
 	ObservableList<Documento> obsListDocs = FXCollections.observableArrayList();
 
 	@FXML
-	private TableColumn<Documento, Integer> tcId;
+	private TableColumn<Documento, String> tcTipo;
 
 	@FXML
 	private TableColumn<Documento, String> tcNum;
@@ -128,7 +129,7 @@ public class DocumentController implements Initializable {
 	private TableColumn<Documento, String> tcProc;
 
 	@FXML
-	private TableColumn<Endereco, String> tcAddress;
+	private TableColumn<Documento, String> tcAddress;
 
 	@FXML
 	private JFXButton btnViews;
@@ -154,10 +155,11 @@ public class DocumentController implements Initializable {
 		// Configura as ComboBoxes, TextFields e botões
 		// Adiciona listeners aos componentes
 
-		tcId.setCellValueFactory(new PropertyValueFactory<Documento, Integer>("docId"));
+		tcTipo.setCellValueFactory(cellData -> cellData.getValue().getProperty(Documento::getDocTipoDescricao));
 		tcNum.setCellValueFactory(new PropertyValueFactory<Documento, String>("docNumero"));
 		tcNumSei.setCellValueFactory(new PropertyValueFactory<Documento, String>("docSEI"));
-		tcAddress.setCellValueFactory(new PropertyValueFactory<Endereco, String>("endLogradouro"));
+		tcProc.setCellValueFactory(cellData -> cellData.getValue().getProperty(Documento::getDocProcessoProcNumero));
+		tcAddress.setCellValueFactory(cellData -> cellData.getValue().getProperty(Documento::getDocEnderecoLogradouro));
 
 		AnchorPane.setRightAnchor(apContent, 0.0);
 		AnchorPane.setLeftAnchor(apContent, 0.0);
@@ -228,6 +230,7 @@ public class DocumentController implements Initializable {
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
 
 				if (newValue != null) {
+
 					obsProcess.clear();
 					List<Processo> list = fetchProcesses(newValue);
 					boolean containsSearchTerm = list.stream()
@@ -262,6 +265,7 @@ public class DocumentController implements Initializable {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
 
+				System.out.println("lenght " + (newValue + "").length() + " v != null " + newValue != null);
 				if (newValue != null) {
 					System.out.println("if newValue  > 0");
 					obsAddress.clear();

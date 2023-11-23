@@ -29,7 +29,7 @@ public class SaveDocumentTest extends ApplicationTest {
 		Node item = lookup(".list-cell").nth(0).query();
 		assertNotNull(item);
 		clickOn(item);
-		sleep(1500);
+		sleep(500);
 
 		Platform.runLater(() -> {
 			for (DocumentoTipo tipo : cbDocType.getItems()) {
@@ -44,15 +44,15 @@ public class SaveDocumentTest extends ApplicationTest {
 
 		javafx.scene.control.TextField tfNumber = lookup("#tfNumber").query();
 		tfNumber.setText("123");
-		sleep(1000);
+		sleep(500);
 		javafx.scene.control.TextField tfNumberSEI = lookup("#tfNumberSEI").query();
 		tfNumberSEI.setText("456");
-		sleep(1000);
+		sleep(500);
 		
 		ComboBox<Processo> cbProcess = lookup("#cbProcess").query();
 		clickOn(cbProcess).write("1");
 	
-		sleep(1000);
+		sleep(500);
 
 		Platform.runLater(() -> {
 
@@ -60,23 +60,30 @@ public class SaveDocumentTest extends ApplicationTest {
 			cbProcess.getSelectionModel().select(1);
 		});
 		
-		ComboBox<Processo> cbAttachment = lookup("#cbAttachment").query();
-		clickOn(cbAttachment).write("1");
+		ComboBox<Processo> cbAddress = lookup("#cbAddress").query();
+		clickOn(cbAddress).write("Rua");
 	
-		sleep(1000);
+		sleep(500);
 
 		Platform.runLater(() -> {
 
-			clickOn(cbAttachment);
-			cbAttachment.getSelectionModel().select(1);
+			clickOn(cbAddress);
+			cbAddress.getSelectionModel().select(1);
 		});
 
-		sleep(1500);
-
+		sleep(500);
+		javafx.scene.control.TextField tfCity = lookup("#tfCity").query();
+		tfCity.setText("Brasília");
+		sleep(500);
+		
+		javafx.scene.control.TextField tfCEP = lookup("#tfCEP").query();
+		tfCEP.setText("72130-040");
+		sleep(500);
+		
 		Button btnSave = lookup("#btnSave").query();
 		clickOn(btnSave);
 
-		sleep(2000);
+		sleep(3000);
 
 	}
 }

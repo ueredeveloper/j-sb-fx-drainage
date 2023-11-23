@@ -65,7 +65,7 @@
 			<children>
 				<TableView fx:id="tvDocs" HBox.hgrow="ALWAYS">
 					<columns>
-						<TableColumn fx:id="tcId" prefWidth="100.0" text="Id" />
+						<TableColumn fx:id="tcTipo" prefWidth="100.0" text="Tipo" />
 						<TableColumn fx:id="tcNum" prefWidth="100.0" text="Número" />
 						<TableColumn fx:id="tcNumSei" prefWidth="100.0" text="SEI" />
 						<TableColumn fx:id="tcProc" prefWidth="100.0" text="Processo" />
