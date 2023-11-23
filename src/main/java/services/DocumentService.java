@@ -27,6 +27,7 @@ public class DocumentService {
 	}
 
 	public List<Documento> fetchByParam(String keyword) {
+		
 		try {
 			URL apiUrl = new URL(localUrl + "/document/list?keyword=" + URLEncoder.encode(keyword, "UTF-8"));
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();

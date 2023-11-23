@@ -13,25 +13,25 @@ import java.util.List;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import models.Anexo;
+import models.Endereco;
 
-public class AnexoService {
-
+public class EnderecoService {
+	
 	private String localUrl;
 
-	public AnexoService(String localUrl) {
+	public EnderecoService(String localUrl) {
 		this.localUrl = localUrl;
 	}
-	public ServiceResponse<?> save(Anexo anexo) {
+	public ServiceResponse<?> save(Endereco Endereco) {
 		try {
-			URL apiUrl = new URL(localUrl + "/attachment/create");
+			URL apiUrl = new URL(localUrl + "/address/create");
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
 			connection.setRequestMethod("POST");
 			connection.setRequestProperty("Content-Type", "application/json");
 			connection.setDoOutput(true);
 
 			// Convert Documento object to JSON
-			String jsonInputString = convertObjectToJson(anexo);
+			String jsonInputString = convertObjectToJson(Endereco);
 		
 			// Write JSON to request body
 			try (OutputStream os = connection.getOutputStream();
@@ -55,6 +55,7 @@ public class AnexoService {
 					responseBody = response.toString();
 				}
 			} else {
+				System.out.println("ERROOOROR");
 				handleErrorResponse(connection);
 				responseBody = readErrorStream(connection);
 			}
@@ -63,25 +64,29 @@ public class AnexoService {
 			return new ServiceResponse<>(responseCode, responseBody);
 		} catch (Exception e) {
 			e.printStackTrace();
+			System.out.println("EEEEE EXCETION");
 			// showAlert("Error saving document", AlertType.ERROR);
 			return null; // Return null if an error occurs
 		}
 	}
 
-	public List<Anexo> fetchAttachments (String keyword) {
+	public List<Endereco> fetchAddress (String keyword) {
+		
+		// Retirar espaços da keyword
+		String modifiedString = keyword.trim().replaceAll(" ", "%20");
 	
 		try {
-			URL apiUrl = new URL(localUrl + "/attachment/list?keyword=" + keyword);
+			URL apiUrl = new URL(localUrl + "/address/list?keyword=" + modifiedString);
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
 			connection.setRequestMethod("GET");
 
 			int responseCode = connection.getResponseCode();
 
 			if (responseCode == HttpURLConnection.HTTP_OK) {
-				 System.out.println("HTTP OK");
+				 
 				return handleSuccessResponse(connection);
 			} else if (responseCode == HttpURLConnection.HTTP_CREATED) {
-				 System.out.println("HTTP Created");
+				
 				return handleSuccessResponse(connection);
 			} else {
 				handleErrorResponse(connection);
@@ -97,26 +102,25 @@ public class AnexoService {
 		return null;
 	}
 
-	private List<Anexo> handleSuccessResponse(HttpURLConnection connection) throws IOException {
+	private List<Endereco> handleSuccessResponse(HttpURLConnection connection) throws IOException {
 		BufferedReader reader = new BufferedReader(
 				new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8));
 		StringBuilder response = new StringBuilder();
 		String line;
 
 		while ((line = reader.readLine()) != null) {
-
 			response.append(line);
 		}
 
 		reader.close();
 
-		return new Gson().fromJson(response.toString(), new TypeToken<List<Anexo>>() {
+		return new Gson().fromJson(response.toString(), new TypeToken<List<Endereco>>() {
 		}.getType());
 	}
 
 	private void handleErrorResponse(HttpURLConnection connection) throws IOException {
 		String responseMessage = connection.getResponseMessage();
-		System.out.println("Error: " + responseMessage);
+		System.out.println("Error (method handleErrorRespose, Service Class: " + responseMessage);
 	}
 
 	private String readErrorStream(HttpURLConnection connection) throws IOException {
@@ -135,6 +139,7 @@ public class AnexoService {
 		Gson gson = new Gson();
 		return gson.toJson(object);
 	}
+
 
 
 }

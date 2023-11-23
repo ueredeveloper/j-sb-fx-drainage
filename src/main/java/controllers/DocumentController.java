@@ -32,14 +32,14 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.util.StringConverter;
 import models.Anexo;
 import models.Documento;
 import models.DocumentoTipo;
+import models.Endereco;
 import models.Processo;
-import services.AnexoService;
 import services.DocumentService;
 import services.DocumentoTipoService;
+import services.EnderecoService;
 import services.ProcessoService;
 import services.ServiceResponse;
 
@@ -81,12 +81,20 @@ public class DocumentController implements Initializable {
 	private JFXTextField tfNumberSEI;
 
 	@FXML
-	private JFXComboBox<Anexo> cbAttachment;
-	ObservableList<Anexo> obsAttachments = FXCollections.observableArrayList();
-
-	@FXML
 	private JFXComboBox<Processo> cbProcess;
 	ObservableList<Processo> obsProcess = FXCollections.observableArrayList();
+	@FXML
+	private JFXComboBox<Endereco> cbAddress;
+	ObservableList<Endereco> obsAddress = FXCollections.observableArrayList();
+
+	@FXML
+	private JFXTextField tfCity;
+
+	@FXML
+	private JFXTextField tfCEP;
+
+	@FXML
+	private JFXButton btnNew;
 
 	@FXML
 	private JFXButton btnSave;
@@ -114,13 +122,13 @@ public class DocumentController implements Initializable {
 	private TableColumn<Documento, String> tcNum;
 
 	@FXML
-	private TableColumn<Documento, String> tcMainProc;
+	private TableColumn<Documento, String> tcNumSei;
 
 	@FXML
 	private TableColumn<Documento, String> tcProc;
 
 	@FXML
-	private TableColumn<Documento, String> tcNumSei;
+	private TableColumn<Endereco, String> tcAddress;
 
 	@FXML
 	private JFXButton btnViews;
@@ -149,6 +157,7 @@ public class DocumentController implements Initializable {
 		tcId.setCellValueFactory(new PropertyValueFactory<Documento, Integer>("docId"));
 		tcNum.setCellValueFactory(new PropertyValueFactory<Documento, String>("docNumero"));
 		tcNumSei.setCellValueFactory(new PropertyValueFactory<Documento, String>("docSEI"));
+		tcAddress.setCellValueFactory(new PropertyValueFactory<Endereco, String>("endLogradouro"));
 
 		AnchorPane.setRightAnchor(apContent, 0.0);
 		AnchorPane.setLeftAnchor(apContent, 0.0);
@@ -217,49 +226,58 @@ public class DocumentController implements Initializable {
 		cbProcess.getEditor().textProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-				obsProcess.clear();
-				List<Processo> list = fetchProcesses(newValue);
-				boolean containsSearchTerm = list.stream()
-						.anyMatch(processo -> processo.getProcNumero().contains(newValue));
-				/*
-				 * Se o que foi digitado está contido, não adicina novo processo, porém, se o
-				 * que foi digitado não está contido na lista, adiciona novo processo com id
-				 * nulo.
-				 */
-				if (containsSearchTerm) {
-					obsProcess.addAll(list);
-				} else {
-					obsProcess.add(new Processo(newValue));
-					obsProcess.addAll(list);
+
+				if (newValue != null) {
+					obsProcess.clear();
+					List<Processo> list = fetchProcesses(newValue);
+					boolean containsSearchTerm = list.stream()
+							.anyMatch(processo -> processo.getProcNumero().contains(newValue));
+					/*
+					 * Se o que foi digitado está contido, não adicina novo processo, porém, se o
+					 * que foi digitado não está contido na lista, adiciona novo processo com id
+					 * nulo.
+					 */
+					if (containsSearchTerm) {
+						obsProcess.addAll(list);
+					} else {
+						obsProcess.add(new Processo(newValue));
+						obsProcess.addAll(list);
+					}
+
 				}
 
 			}
 		});
 
-		cbAttachment.setItems(obsAttachments);
-		cbAttachment.setEditable(true);
+		cbAddress.setItems(obsAddress);
+		cbAddress.setEditable(true);
 
-		utilities.FxUtilComboBoxSearchable.autoCompleteComboBoxPlus(cbAttachment, (typedText,
-				itemToCompare) -> itemToCompare.getAnNumero().toLowerCase().contains(typedText.toLowerCase()));
+		utilities.FxUtilComboBoxSearchable.autoCompleteComboBoxPlus(cbAddress, (typedText,
+				itemToCompare) -> itemToCompare.getEndLogradouro().toLowerCase().contains(typedText.toLowerCase()));
 
-		utilities.FxUtilComboBoxSearchable.getComboBoxValue(cbAttachment);
+		utilities.FxUtilComboBoxSearchable.getComboBoxValue(cbAddress);
 
 		// Preeche com valores do servido atualizando ao digitar
-		cbAttachment.getEditor().textProperty().addListener(new ChangeListener<String>() {
+		cbAddress.getEditor().textProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-				obsAttachments.clear();
-				List<Anexo> list = fetchAttachments(newValue);
-				boolean containsSearchTerm = list.stream().anyMatch(anexo -> anexo.getAnNumero().contains(newValue));
-				/*
-				 * Se o que foi digitado está contido, não adicina novo anexo, porém, se o que
-				 * foi digitado não está contido na lista, adiciona novo anexo com id nulo.
-				 */
-				if (containsSearchTerm) {
-					obsAttachments.addAll(list);
-				} else {
-					obsAttachments.add(new Anexo(newValue));
-					obsAttachments.addAll(list);
+
+				if (newValue != null) {
+					System.out.println("if newValue  > 0");
+					obsAddress.clear();
+					List<Endereco> list = fetchAddress(newValue);
+					boolean containsSearchTerm = list.stream()
+							.anyMatch(endereco -> endereco.getEndLogradouro().contains(newValue));
+					/*
+					 * Se o que foi digitado está contido, não adicina novo anexo, porém, se o que
+					 * foi digitado não está contido na lista, adiciona novo anexo com id nulo.
+					 */
+					if (containsSearchTerm) {
+						obsAddress.addAll(list);
+					} else {
+						obsAddress.add(new Endereco(newValue));
+						obsAddress.addAll(list);
+					}
 				}
 
 			}
@@ -361,21 +379,11 @@ public class DocumentController implements Initializable {
 
 			DocumentService documentService = new DocumentService(localUrl);
 
-			Documento requestDocument = new Documento(
-					tfNumber.getText(), 
+			Documento requestDocument = new Documento(tfNumber.getText(),
 					// Processo
-					obsProcess.get(0), 
-					numeroSei,
-					cbDocType.getValue(),
+					obsProcess.get(0), numeroSei, cbDocType.getValue(),
 					// Anexo
-					new Anexo(
-							obsAttachments.get(0).getAnId(), 
-							obsAttachments.get(0).getAnNumero(),
-							// Processo Anexado
-							obsProcess.get(0)
-							)
-					);
-
+					new Endereco(obsAddress.get(0).getEndId(), obsAddress.get(0).getEndLogradouro()));
 
 			ServiceResponse<?> documentoServiceResponse = documentService.save(requestDocument);
 
@@ -556,12 +564,12 @@ public class DocumentController implements Initializable {
 
 	}
 
-	public List<Anexo> fetchAttachments(String keyword) {
+	public List<Endereco> fetchAddress(String keyword) {
 
 		try {
-			AnexoService service = new AnexoService(localUrl);
+			EnderecoService service = new EnderecoService(localUrl);
 
-			List<Anexo> list = service.fetchAttachments(keyword);
+			List<Endereco> list = service.fetchAddress(keyword);
 
 			return list;
 

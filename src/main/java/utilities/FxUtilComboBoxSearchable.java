@@ -31,40 +31,40 @@ public class FxUtilComboBoxSearchable {
 			@Override
 			public void handle(KeyEvent event) {
 				if (event.getCode() == KeyCode.UP) {
-					System.out.println("if key up");
+
 					caretPos = -1;
 					if (comboBox.getEditor().getText() != null) {
-						System.out.println("if key up , text !=null");
+
 						moveCaret(comboBox.getEditor().getText().length());
 					}
 					return;
 				} else if (event.getCode() == KeyCode.DOWN) {
-					System.out.println("if key down");
+
 					if (!comboBox.isShowing()) {
 						comboBox.show();
 					}
 					caretPos = -1;
 					if (comboBox.getEditor().getText() != null) {
-						System.out.println("if key down, text != null");
+
 						moveCaret(comboBox.getEditor().getText().length());
 					}
 					return;
 				} else if (event.getCode() == KeyCode.BACK_SPACE) {
-					System.out.println("if backspace ");
+
 					if (comboBox.getEditor().getText() != null) {
-						System.out.println("if backspace, text != null ");
+
 						moveCaretToPos = true;
 						caretPos = comboBox.getEditor().getCaretPosition();
 					}
 				} else if (event.getCode() == KeyCode.DELETE) {
-					System.out.println("if delete");
+
 					if (comboBox.getEditor().getText() != null) {
-						System.out.println("if delete, text != null");
+
 						moveCaretToPos = true;
 						caretPos = comboBox.getEditor().getCaretPosition();
 					}
 				} else if (event.getCode() == KeyCode.ENTER) {
-					System.out.println("if enter");
+
 					return;
 				}
 
@@ -72,7 +72,7 @@ public class FxUtilComboBoxSearchable {
 						|| event.getCode().equals(KeyCode.SHIFT) || event.getCode().equals(KeyCode.CONTROL)
 						|| event.isControlDown() || event.getCode() == KeyCode.HOME || event.getCode() == KeyCode.END
 						|| event.getCode() == KeyCode.TAB) {
-					System.out.println("if right left shift end tab");
+
 					return;
 				}
 
