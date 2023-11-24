@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
@@ -23,9 +24,8 @@ public class ProcessoService {
 
 	public List<Processo> fetchProcesses(String keyword) {
 		
-		//System.out.println(localUrl + "/process/list?keyword=" + keyword);
 		try {
-			URL apiUrl = new URL(localUrl + "/process/list?keyword=" + keyword);
+			URL apiUrl = new URL(localUrl + "/process/list?keyword=" + URLEncoder.encode(keyword, "UTF-8"));
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
 			connection.setRequestMethod("GET");
 

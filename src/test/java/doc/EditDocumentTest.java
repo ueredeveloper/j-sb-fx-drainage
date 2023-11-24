@@ -10,10 +10,12 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableView;
+import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import main.Main;
 import models.Documento;
 import models.DocumentoTipo;
+import models.Endereco;
 import models.Processo;
 
 public class EditDocumentTest extends ApplicationTest {
@@ -60,10 +62,10 @@ public class EditDocumentTest extends ApplicationTest {
 		clickOn(item);
 
 		javafx.scene.control.TextField tfNumber = lookup("#tfNumber").query();
-		tfNumber.setText("12/2024");
+		tfNumber.setText("11111/2024");
 		sleep(500);
 		javafx.scene.control.TextField tfNumberSEI = lookup("#tfNumberSEI").query();
-		tfNumberSEI.setText("122024");
+		tfNumberSEI.setText("111112024");
 		sleep(500);
 		
 		ComboBox<Processo> cbProcess = lookup("#cbProcess").query();
@@ -78,23 +80,25 @@ public class EditDocumentTest extends ApplicationTest {
 		});
 		
 		ComboBox<Processo> cbAddress = lookup("#cbAddress").query();
-		clickOn(cbAddress).write("Avenida");
+		clickOn(cbAddress).write("Sorriso");
 	
-		sleep(500);
+		sleep(1500);
+		selectFirstItemInComboBox(cbAddress);
 
+		/*
 		Platform.runLater(() -> {
 
 			clickOn(cbAddress);
-			cbAddress.getSelectionModel().select(1);
-		});
+			cbAddress.getSelectionModel().select(0);
+		});*/
 
 		sleep(500);
 		javafx.scene.control.TextField tfCity = lookup("#tfCity").query();
-		tfCity.setText("Goiânia Edição");
+		tfCity.setText("Goiânia Junit ");
 		sleep(500);
 		
 		javafx.scene.control.TextField tfCEP = lookup("#tfCEP").query();
-		tfCEP.setText("72130- Edi");
+		tfCEP.setText("72130- Junit");
 		sleep(500);
 		
 		Button btnEdit = lookup("#btnEdit").query();
@@ -105,5 +109,11 @@ public class EditDocumentTest extends ApplicationTest {
 		
 		
 	}
+	
+	private void selectFirstItemInComboBox(ComboBox<Processo> comboBox) {
+		  interact(() -> comboBox.show());
+	        type(KeyCode.DOWN); // Simulate pressing the DOWN arrow key
+	        type(KeyCode.TAB); // Simulate pressing the ENTER key 
+    }
 
 }

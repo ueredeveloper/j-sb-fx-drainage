@@ -102,40 +102,52 @@
 
           let treedata = [];
           
-          var documento = ${json}
+          var documento = {"docId":3,"docNumero":"45/2019","docProcesso":{"procId":4,"procNumero":"197.455.888/2015"},"docSEI":123456789,"docTipo":{"dtId":1,"dtDescricao":"Requerimento"},"docEndereco":{"endId":10,"endLogradouro":"Vicente Pires, Quadra 14","endCidade":"Vicente II","endCEP":"78.555-569"}}
+
 
 
           var parent = convertDocumentoToGoJSFormat(documento, parentKey);
-          console.log(parent)
+          //console.log(parent)
           treedata.push({
             ...parent,
             key: 1,
-            text: documento.doc_numero
+            text: documento.docNumero
           })
 
           var parentKey = 1; // You need to set the appropriate parent key
 
-          if (documento.doc_tipo !== undefined) {
-            var convertedDocTipo = convertDocumentoToGoJSFormat(documento.doc_tipo, parentKey);
+          if (documento.docTipo !== undefined) {
+            var convertedDocTipo = convertDocumentoToGoJSFormat(documento.docTipo, parentKey);
             console.log(convertedDocTipo);
             treedata.push({
               ...convertedDocTipo,
               key: 2,
-              text: documento.doc_tipo.dt_descricao
+              text: documento.docTipo.dtDescricao
             })
           }
 
-          if (documento.doc_endereco !== undefined) {
-            var convertedDocEndereco = convertDocumentoToGoJSFormat(documento.doc_endereco, parentKey);
+          if (documento.docEndereco !== undefined) {
+            var convertedDocEndereco = convertDocumentoToGoJSFormat(documento.docEndereco, parentKey);
             console.log(convertedDocEndereco);
             treedata.push({
               ...convertedDocEndereco,
               key: 3,
-              text: documento.doc_endereco.end_logradouro
+              text: documento.docEndereco.endLogradouro
+            })
+          }
+		  
+		   if (documento.docProcesso !== undefined) {
+            var convertedDocProcesso = convertDocumentoToGoJSFormat(documento.docProcesso, parentKey);
+            console.log(convertedDocProcesso);
+            treedata.push({
+              ...convertedDocProcesso,
+              key: 3,
+              text: documento.docProcesso.procNumero
             })
           }
 
-          console.log(treedata)
+          
+		  console.log(treedata)
           return new go.TreeModel(treedata);
         }
         window.addEventListener('DOMContentLoaded', init);

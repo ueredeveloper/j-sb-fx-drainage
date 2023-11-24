@@ -30,11 +30,12 @@ td, th {
         return (
           <div>
 			<h1>Documento</h1>
-            <p>Tipo: {documento.doc_tipo.dt_descricao}</p>
-            <p>ID: {documento.doc_id}</p>
-            <p>Número: {documento.doc_numero}</p>
-            <p>Processo: {documento.doc_processo}</p>
-            <p>Número SEI: {documento.doc_sei}</p>
+            <p>Tipo: {documento.docTipo.dtDescricao}</p>
+            <p>ID: {documento.docId}</p>
+            <p>Número: {documento.docNumero}</p>
+            <p>Processo: {documento.docProcesso.procNumero}</p>
+            <p>Número SEI: {documento.docSEI}</p>
+			<p>Endereço: {documento.docEndereco.endLogradouro}</p>
        	  </div>
 		);
       }

@@ -7,6 +7,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
@@ -16,12 +17,13 @@ import com.google.gson.reflect.TypeToken;
 import models.Endereco;
 
 public class EnderecoService {
-	
+
 	private String localUrl;
 
 	public EnderecoService(String localUrl) {
 		this.localUrl = localUrl;
 	}
+
 	public ServiceResponse<?> save(Endereco Endereco) {
 		try {
 			URL apiUrl = new URL(localUrl + "/address/create");
@@ -32,7 +34,7 @@ public class EnderecoService {
 
 			// Convert Documento object to JSON
 			String jsonInputString = convertObjectToJson(Endereco);
-		
+
 			// Write JSON to request body
 			try (OutputStream os = connection.getOutputStream();
 					OutputStreamWriter osw = new OutputStreamWriter(os, "UTF-8")) {
@@ -70,23 +72,20 @@ public class EnderecoService {
 		}
 	}
 
-	public List<Endereco> fetchAddress (String keyword) {
-		
-		// Retirar espaços da keyword
-		String modifiedString = keyword.trim().replaceAll(" ", "%20");
-	
+	public List<Endereco> fetchAddress(String keyword) {
+
 		try {
-			URL apiUrl = new URL(localUrl + "/address/list?keyword=" + modifiedString);
+			URL apiUrl = new URL(localUrl + "/address/list?keyword=" + URLEncoder.encode(keyword, "UTF-8"));
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
 			connection.setRequestMethod("GET");
 
 			int responseCode = connection.getResponseCode();
 
 			if (responseCode == HttpURLConnection.HTTP_OK) {
-				 
+
 				return handleSuccessResponse(connection);
 			} else if (responseCode == HttpURLConnection.HTTP_CREATED) {
-				
+
 				return handleSuccessResponse(connection);
 			} else {
 				handleErrorResponse(connection);
@@ -139,7 +138,5 @@ public class EnderecoService {
 		Gson gson = new Gson();
 		return gson.toJson(object);
 	}
-
-
 
 }

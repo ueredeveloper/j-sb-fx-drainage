@@ -14,7 +14,6 @@ import com.jfoenix.controls.JFXTextField;
 
 import controllers.views.DocumentViewController;
 import enums.ToastType;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -33,7 +32,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import models.Anexo;
 import models.Documento;
 import models.DocumentoTipo;
 import models.Endereco;
@@ -181,6 +179,7 @@ public class DocumentController implements Initializable {
 				cbProcess.getSelectionModel().select(newSelection.getDocProcesso());
 				cbAddress.getSelectionModel().select(newSelection.getDocEndereco());
 				if (newSelection.getDocEndereco()!= null) {
+					System.out.println("selection" + newSelection.getDocEndereco().getEndCidade());
 					tfCity.setText(newSelection.getDocEndereco().getEndCidade());
 					tfCEP.setText(newSelection.getDocEndereco().getEndCEP());
 				} else {
@@ -189,14 +188,8 @@ public class DocumentController implements Initializable {
 				}
 
 			} else {
-				// Se documento nulo limpa componentes
-				cbDocType.getSelectionModel().clearSelection();
-				tfNumber.clear();
-				tfNumberSEI.clear();
-				cbProcess.getSelectionModel().clearSelection();
-				cbAddress.getSelectionModel().clearSelection();
-				tfCity.clear();
-				tfCEP.clear();
+
+				clearAllComponents ();
 				
 			}
 		});
@@ -277,31 +270,50 @@ public class DocumentController implements Initializable {
 		cbAddress.getEditor().textProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				
 				if (newValue != null) {
 					obsAddress.clear();
 					List<Endereco> list = fetchAddress(newValue);
-					boolean containsSearchTerm = list.stream()
-							.anyMatch(endereco -> endereco.getEndLogradouro().contains(newValue));
-					/*
-					 * Se o que foi digitado está contido, não adicina novo anexo, porém, se o que
-					 * foi digitado não está contido na lista, adiciona novo anexo com id nulo.
-					 */
-					if (containsSearchTerm) {
-						obsAddress.addAll(list);
-					} else {
-						obsAddress.add(new Endereco(newValue));
-						obsAddress.addAll(list);
+					if (list !=null) {
+						
+						boolean containsSearchTerm = list.stream()
+								.anyMatch(endereco -> endereco.getEndLogradouro().contains(newValue));
+						/*
+						 * Se o que foi digitado está contido, não adicina novo anexo, porém, se o que
+						 * foi digitado não está contido na lista, adiciona novo anexo com id nulo.
+						 */
+						if (containsSearchTerm) {
+							obsAddress.addAll(list);
+						} else {
+							obsAddress.add(new Endereco(newValue));
+							obsAddress.addAll(list);
+						}
+						
 					}
+					
 				}
-
 			}
+
 		});
 
+		btnNew.setOnAction(e-> clearAllComponents());
 		btnViews.setOnAction(event -> showDocumentView());
 		btnSave.setOnAction(event -> handleSave(event));
 		btnSearch.setOnAction(event -> handleSearch(event));
 		btnDelete.setOnAction(event -> handleDelete(event));
 		btnEdit.setOnAction(event -> handleEdit(event));
+	}
+	
+	public void clearAllComponents () {
+		cbDocType.getSelectionModel().clearSelection();
+		tfNumber.clear();
+		tfNumberSEI.clear();
+		obsProcess.clear();
+		cbProcess.getSelectionModel().clearSelection();
+		obsAddress.clear();
+		cbAddress.getSelectionModel().clearSelection();
+		tfCity.clear();
+		tfCEP.clear();
 	}
 
 	/**
@@ -349,8 +361,11 @@ public class DocumentController implements Initializable {
 	 *            O evento de ação associado à pesquisa.
 	 */
 	public void handleSearch(ActionEvent event) {
-
+		
+	
 		try {
+			
+			clearAllComponents();
 
 			DocumentService documentService = new DocumentService(localUrl);
 
@@ -594,7 +609,7 @@ public class DocumentController implements Initializable {
 
 			List<Endereco> list = service.fetchAddress(keyword);
 
-
+			return list;
 		} catch (Exception e) {
 
 		}
