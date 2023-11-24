@@ -21,10 +21,7 @@
 .text-field:focused {
     -fx-text-fill: -fx-terciary-color; /* Set text color when in focus */
 }
-/* Custom style for your specific JFXTextField */
-.jfx-text-field-custom {
-    -jfx-unfocus-color: -fx-secondary-color; /* Set the unfocus color */
-}
+
 /* Custom styles for specific elements */
 #apContent {
     -fx-pref-height: 700.0;
@@ -57,13 +54,18 @@
     -fx-anchor-pane-right: 10.0;
 }
 /* ComboBox styles */
-.combo-box {
-    -fx-prompt-text-fill: -fx-primary-color; /* Set prompt text color */
+
+/* Apply this CSS to show prompt text in red color */
+.jfx-combo-box .list-cell:empty {
+    -fx-text-fill: -fx-primary-color /* Change the text color to red */
 }
 
-.combo-box .combo-box-base {
-    -fx-focus-color: -fx-primary-color; /* Set focus color */
+.jfx-combo-box .list-cell {
+    -fx-text-fill: -fx-text-inner-color;
 }
-
+/* Custom style for your specific JFXTextField */
+.jfx-text-field-custom {
+    -jfx-unfocus-color: -fx-secondary-color; /* Set the unfocus color */
+}
 
 
