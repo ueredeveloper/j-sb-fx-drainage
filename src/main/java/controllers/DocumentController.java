@@ -173,18 +173,31 @@ public class DocumentController implements Initializable {
 
 		tvDocs.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
 			if (newSelection != null) {
+				// Atualiza ComboBox (Tipo de Documento) a partir do documento selecionado
+				cbDocType.getSelectionModel().select(newSelection.getDocTipo());
 				// Atualizar componentes de acordo com o documento selecionado
 				tfNumber.setText(newSelection.getDocNumero());
 				tfNumberSEI.setText(String.valueOf(newSelection.getDocSEI()));
-
-				// Atualiza ComboBox (Tipo de Documento) a partir do documento selecionado
-				cbDocType.getSelectionModel().select(newSelection.getDocTipo());
+				cbProcess.getSelectionModel().select(newSelection.getDocProcesso());
+				cbAddress.getSelectionModel().select(newSelection.getDocEndereco());
+				if (newSelection.getDocEndereco()!= null) {
+					tfCity.setText(newSelection.getDocEndereco().getEndCidade());
+					tfCEP.setText(newSelection.getDocEndereco().getEndCEP());
+				} else {
+					tfCity.clear();
+					tfCEP.clear();
+				}
 
 			} else {
 				// Se documento nulo limpa componentes
+				cbDocType.getSelectionModel().clearSelection();
 				tfNumber.clear();
 				tfNumberSEI.clear();
-				cbDocType.getSelectionModel().clearSelection();
+				cbProcess.getSelectionModel().clearSelection();
+				cbAddress.getSelectionModel().clearSelection();
+				tfCity.clear();
+				tfCEP.clear();
+				
 			}
 		});
 		// Listener do TextField
@@ -264,10 +277,7 @@ public class DocumentController implements Initializable {
 		cbAddress.getEditor().textProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-
-				System.out.println("lenght " + (newValue + "").length() + " v != null " + newValue != null);
 				if (newValue != null) {
-					System.out.println("if newValue  > 0");
 					obsAddress.clear();
 					List<Endereco> list = fetchAddress(newValue);
 					boolean containsSearchTerm = list.stream()
@@ -376,18 +386,22 @@ public class DocumentController implements Initializable {
 			// Use the 'numeroSei' integer as needed
 		} catch (NumberFormatException e) {
 			// Handle the case where the input is not a valid integer
-			System.out.println("Input is not a valid integer.");
+			System.out.println("Número SEI inválido.");
 		}
 
 		try {
-
+		
 			DocumentService documentService = new DocumentService(localUrl);
 
 			Documento requestDocument = new Documento(tfNumber.getText(),
 					// Processo
 					obsProcess.get(0), numeroSei, cbDocType.getValue(),
-					// Anexo
-					new Endereco(obsAddress.get(0).getEndId(), obsAddress.get(0).getEndLogradouro()));
+					// Endereço
+					new Endereco(
+							obsAddress.get(0).getEndId(), 
+							obsAddress.get(0).getEndLogradouro(),
+							tfCity.getText(), 
+							tfCEP.getText()));
 
 			ServiceResponse<?> documentoServiceResponse = documentService.save(requestDocument);
 
@@ -430,7 +444,7 @@ public class DocumentController implements Initializable {
 
 		if (selectedDoc == null) {
 			// Display an alert or toast message indicating that no document is selected
-			System.out.println("No document selected for editing.");
+			System.out.println("Nenhum documento selecionado para edição.");
 			return;
 		}
 
@@ -446,16 +460,22 @@ public class DocumentController implements Initializable {
 			updatedSei = Long.parseLong(updatedNumeroSEI);
 		} catch (NumberFormatException e) {
 			// Handle the case where the input is not a valid integer
-			System.out.println("Input is not a valid integer for SEI.");
+			System.out.println("Número SEI Inválido.");
 			// You may want to display a toast or alert here
 			return;
 		}
 
 		// Edita objeto com novos valores
+		selectedDoc.setDocTipo(updateDocumentoTipo);
 		selectedDoc.setDocNumero(updatedNumero);
 		selectedDoc.setDocSEI(updatedSei);
-
-		selectedDoc.setDocTipo(updateDocumentoTipo);
+		selectedDoc.setDocProcesso(obsProcess.get(0));
+		selectedDoc.setDocEndereco(new Endereco(
+				obsAddress.get(0).getEndId(),
+				obsAddress.get(0).getEndLogradouro(),
+				tfCity.getText(), 
+				tfCEP.getText()));
+		
 
 		try {
 			DocumentService documentService = new DocumentService(localUrl);
@@ -552,7 +572,6 @@ public class DocumentController implements Initializable {
 
 	public List<Processo> fetchProcesses(String keyword) {
 
-		System.out.println("fetchProcesses" + keyword);
 		try {
 			ProcessoService service = new ProcessoService(localUrl);
 
@@ -575,7 +594,6 @@ public class DocumentController implements Initializable {
 
 			List<Endereco> list = service.fetchAddress(keyword);
 
-			return list;
 
 		} catch (Exception e) {
 
