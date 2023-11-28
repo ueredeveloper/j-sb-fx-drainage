@@ -1,11 +1,13 @@
 package controllers.views;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 import com.google.gson.Gson;
 
+import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -17,10 +19,10 @@ import javafx.scene.web.WebView;
 import models.Documento;
 import models.DocumentoTipo;
 import models.Processo;
+import netscape.javascript.JSObject;
 import utilities.HTMLFileLoader;
 
 public class DocumentViewController implements Initializable {
-	
 
 	private Documento selectedDocument;
 
@@ -79,7 +81,7 @@ public class DocumentViewController implements Initializable {
 		});
 
 		// Load HTML content from a resource file.
-		String gojsDiagramPath = "/html/views/gojs-real-time-diagram.html";
+		String gojsDiagramPath = "/html/views/e-chart-tree/index.html";
 		String htmlDiagramContent = null;
 
 		try {
@@ -90,8 +92,24 @@ public class DocumentViewController implements Initializable {
 
 		htmlDiagramContent = htmlDiagramContent.replace("${json}", json);
 
-		WebEngine we = webView.getEngine();
-		we.loadContent(htmlDiagramContent);
+		WebEngine webEngine = webView.getEngine();
+
+		webEngine.load(getClass().getResource("/html/views/e-chart-tree/index.html").toExternalForm());
+
+		webEngine.getLoadWorker().stateProperty().addListener((obs, oldState, newState) -> {
+
+			if (newState == Worker.State.SUCCEEDED) {
+				System.out.println("succeeded");
+
+				JSObject jsObject = (JSObject) webEngine.executeScript("window");
+
+				String sJson = json.replace("\"", "'");
+	
+				JSObject updatedData = (JSObject) webEngine.executeScript("(" + sJson + ")");
+
+				jsObject.call("updateSeriesData", updatedData);
+			}
+		});
 
 	}
 
