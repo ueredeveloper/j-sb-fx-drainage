@@ -30,6 +30,7 @@ public class OpenViewDiagramTest extends ApplicationTest {
 		clickOn(btnSearch);
 		sleep(500);
 		
+		
 		TableView<Documento> tvDocs = lookup("#tvDocs").query();
 		assertNotNull(tvDocs);
 		// Clica no primeiro resultado da lista de  documentos
@@ -39,7 +40,7 @@ public class OpenViewDiagramTest extends ApplicationTest {
 		assertNotNull(btnViews);
 		clickOn(btnViews);
 		
-		sleep(10000);
+		sleep(5000);
 		
 		
 	}

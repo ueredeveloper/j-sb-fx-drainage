@@ -56,6 +56,7 @@ public class DocumentController implements Initializable {
 	 */
 	public DocumentController() {
 		try {
+			
 			Properties prop = new Properties();
 			InputStream inputStream = getClass().getClassLoader().getResourceAsStream("config.properties");
 			prop.load(inputStream);
@@ -149,10 +150,7 @@ public class DocumentController implements Initializable {
 	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		// Configura as colunas da TableView
-		// Configura as ComboBoxes, TextFields e botões
-		// Adiciona listeners aos componentes
-
+	
 		tcTipo.setCellValueFactory(cellData -> cellData.getValue().getProperty(Documento::getDocTipoDescricao));
 		tcNum.setCellValueFactory(new PropertyValueFactory<Documento, String>("docNumero"));
 		tcNumSei.setCellValueFactory(new PropertyValueFactory<Documento, String>("docSEI"));

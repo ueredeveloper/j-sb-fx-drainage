@@ -13,6 +13,7 @@ import javafx.stage.Stage;
  */
 public class Main extends Application {
 
+	
     /**
      * M�todo principal que inicia a aplica��o.
      *

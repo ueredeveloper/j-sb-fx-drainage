@@ -1,30 +1,33 @@
-# To Do List
+# Lista de Tarefas
 
-## November 5, 2023
-- [X] Task 1 - Class
-	A classe ResizeAnimation deve funcionar em um ouvinte que, ao verificar que 
-o apMap mudou a largura, redimensiona a largura do mapa.
-	07/11/2023 - Resolvido.
-		Retirado a class ResizeAnimation, criado a classe ResizeMap.
+## 5 de novembro de 2023
 
-## November 7, 2023
-- [ ] Task 1 - DocumentoController - Css
-	Adicionar on focu, cor secund�ria ao combobox.
-- [ ] Task 2 - DocumentoController - Css
-	O Combobox est� desalinhado com os textfields.
-## November 13, 2023
-- [] Task 1 - Adicionar atualiza��o da visualiza��o do documento com o �tem selecionado pelo usu�rio.
+* **[X] Tarefa 1 - Classe**
+    * A classe `ResizeAnimation` deve funcionar em um ouvinte que, ao verificar que o `apMap` mudou a largura, redimensiona a largura do mapa.
+    * 07/11/2023 - Resolvido.
+        * Retirada a classe `ResizeAnimation`, criada a classe `ResizeMap`.
 
-## November 19, 2023
-- [ ]  Task 1
-	Avaliar o erro "Connection refused". Talves mostrar somente o mapa, sem a tela de cadastro e um tooltip de erro de conexão.
-	
-	
-	
-## Novembrer 28, 2023
-- [ ] Task 1 - Criar tooltips para todos os componentes da tela documentos
+## 7 de novembro de 2023
 
-- [X] Task 2 - Adicionar e-chart substituindo Gojs nos diagramas.
+* **[X] Tarefa 1 - DocumentoController - CSS**
+    * Adicionar `on focus`, cor secundária ao combobox.
 
-- [ ] Task 3 - Cadastrar documento sem alguns dados, como SEI. Não está funcionando na edição, por exemplo.
+* **[ ] Tarefa 2 - DocumentoController - CSS**
+    * O Combobox está desalinhado com os textfields.
 
+## 13 de novembro de 2023
+
+* **[ ] Tarefa 1 - Adicionar atualização da visualização do documento com o item selecionado pelo usuário.**
+
+## 19 de novembro de 2023
+
+* **[ ] Tarefa 1**
+    * Avaliar o erro "Connection refused". Talvez mostrar somente o mapa, sem a tela de cadastro e um tooltip de erro de conexão.
+
+## 28 de novembro de 2023
+
+* **[X] Tarefa 1 - Criar tooltips para todos os componentes da tela documentos**
+
+* **[X] Tarefa 2 - Adicionar e-chart substituindo Gojs nos diagramas.**
+
+* **[ ] Tarefa 3 - Cadastrar documento sem alguns dados, como SEI. Não está funcionando na edição, por exemplo.**

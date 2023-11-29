@@ -8,6 +8,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -17,27 +18,39 @@
 
 <AnchorPane fx:id="apContent" prefHeight="579.0" prefWidth="800.0" AnchorPane.bottomAnchor="5.0" AnchorPane.topAnchor="5.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.DocumentController">
 	<children>
-		<HBox layoutX="10.0" layoutY="142.0" prefHeight="50.0" prefWidth="800.0" styleClass="hbox-actions" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+		<HBox layoutX="10.0" layoutY="150.0" prefHeight="50.0" prefWidth="800.0" styleClass="hbox-actions" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
 			<children>
 				<JFXButton fx:id="btnNew" prefHeight="50.0" prefWidth="300.0" styleClass="button-secondary" text="Novo">
 					<HBox.margin>
 						<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
 					</HBox.margin>
+               <tooltip>
+                  <Tooltip text="Criar novo documento" />
+               </tooltip>
 				</JFXButton>
 				<JFXButton fx:id="btnSave" prefHeight="50.0" prefWidth="300.0" styleClass="button-secondary" text="Salvar">
 					<HBox.margin>
 						<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
 					</HBox.margin>
+               <tooltip>
+                  <Tooltip text="Salvar documento" />
+               </tooltip>
 				</JFXButton>
 				<JFXButton fx:id="btnEdit" prefHeight="50.0" prefWidth="300.0" styleClass="button-secondary" text="Editar">
 					<HBox.margin>
 						<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
 					</HBox.margin>
+               <tooltip>
+                  <Tooltip text="Editar documento" />
+               </tooltip>
 				</JFXButton>
 				<JFXButton fx:id="btnDelete" prefHeight="50.0" prefWidth="300.0" styleClass="button-secondary" text="Deletar">
 					<HBox.margin>
 						<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
 					</HBox.margin>
+               <tooltip>
+                  <Tooltip text="Deletar documento" />
+               </tooltip>
 				</JFXButton>
 			</children>
 		</HBox>
@@ -53,11 +66,17 @@
 						<String fx:value="text-field" />
 						<String fx:value="jfx-text-field-custom" />
 					</styleClass>
+               <tooltip>
+                  <Tooltip text="Digite uma  busca" />
+               </tooltip>
 				</JFXTextField>
 				<JFXButton fx:id="btnSearch" minWidth="100.0" prefHeight="50.0" styleClass="button-secondary" text="Buscar" HBox.hgrow="ALWAYS">
 					<HBox.margin>
 						<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
 					</HBox.margin>
+               <tooltip>
+                  <Tooltip text="Buscar documento" />
+               </tooltip>
 				</JFXButton>
 			</children>
 		</HBox>
@@ -91,6 +110,9 @@
 					<HBox.margin>
 						<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
 					</HBox.margin>
+               <tooltip>
+                  <Tooltip text="Visualizar diagrama" />
+               </tooltip>
 				</JFXButton>
 			</children>
 		</HBox>
@@ -114,16 +136,25 @@
                   <String fx:value="jfx-combo-box" />
                   <String fx:value="jfx-text-field-custom" />
                </styleClass>
+               <tooltip>
+                  <Tooltip text="Escolha o tipo de documento" />
+               </tooltip>
 				</JFXComboBox>
 				<JFXTextField fx:id="tfNumber" alignment="TOP_LEFT" labelFloat="true" prefHeight="80.0" prefWidth="370.0" promptText="Número" styleClass="jfx-text-field-custom" GridPane.columnIndex="1">
 					<GridPane.margin>
 						<Insets bottom="60.0" left="10.0" right="10.0" top="60.0" />
 					</GridPane.margin>
+               <tooltip>
+                  <Tooltip text="Número do documento, ex: 12/2015" />
+               </tooltip>
 				</JFXTextField>
 				<JFXTextField fx:id="tfNumberSEI" alignment="TOP_LEFT" labelFloat="true" prefHeight="80.0" prefWidth="370.0" promptText="Número SEI" styleClass="jfx-text-field-custom" GridPane.columnIndex="2">
 					<GridPane.margin>
 						<Insets bottom="60.0" left="10.0" right="10.0" top="60.0" />
 					</GridPane.margin>
+               <tooltip>
+                  <Tooltip text="Número no SEI, ex: 123456789" />
+               </tooltip>
 				</JFXTextField>
 				<JFXComboBox fx:id="cbProcess" labelFloat="true" prefHeight="80.0" prefWidth="370.0" promptText="Processo" GridPane.columnIndex="3">
 					<GridPane.margin>
@@ -133,6 +164,9 @@
                   <String fx:value="jfx-combo-box" />
                   <String fx:value="jfx-text-field-custom" />
                </styleClass>
+               <tooltip>
+                  <Tooltip text="Processo em que o documento se econtra" />
+               </tooltip>
 				</JFXComboBox>
 				<JFXComboBox fx:id="cbAddress" labelFloat="true" prefHeight="80.0" prefWidth="370.0" promptText="Logradouro" GridPane.columnSpan="4" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
 					<GridPane.margin>
@@ -142,16 +176,25 @@
                   <String fx:value="jfx-combo-box" />
                   <String fx:value="jfx-text-field-custom" />
                </styleClass>
+               <tooltip>
+                  <Tooltip text="Endereço relacionado" />
+               </tooltip>
 				</JFXComboBox>
 				<JFXTextField fx:id="tfCity" alignment="TOP_LEFT" labelFloat="true" prefHeight="80.0" prefWidth="370.0" promptText="Cidade" styleClass="jfx-text-field-custom" GridPane.columnIndex="2" GridPane.rowIndex="1">
 					<GridPane.margin>
 						<Insets bottom="60.0" left="10.0" right="10.0" top="60.0" />
 					</GridPane.margin>
+               <tooltip>
+                  <Tooltip text="Digite a cidade, ex: Brasília" />
+               </tooltip>
 				</JFXTextField>
       				<JFXTextField fx:id="tfCEP" alignment="TOP_LEFT" labelFloat="true" prefHeight="80.0" prefWidth="370.0" promptText="CEP" styleClass="jfx-text-field-custom" GridPane.columnIndex="3" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets bottom="60.0" left="10.0" right="10.0" top="60.0" />
                </GridPane.margin>
+               <tooltip>
+                  <Tooltip text="Digite o CEP, ex 72.145-986" />
+               </tooltip>
       				</JFXTextField>
 			</children>
 		</GridPane>
