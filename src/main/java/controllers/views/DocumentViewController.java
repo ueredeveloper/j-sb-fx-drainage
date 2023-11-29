@@ -106,6 +106,8 @@ public class DocumentViewController implements Initializable {
 				String sJson = json.replace("\"", "'");
 	
 				JSObject updatedData = (JSObject) webEngine.executeScript("(" + sJson + ")");
+				
+				System.out.println(updatedData);
 
 				jsObject.call("updateSeriesData", updatedData);
 			}

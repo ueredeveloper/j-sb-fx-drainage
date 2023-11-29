@@ -48,7 +48,7 @@ function convertDocumentoToEChartTree(jsonData) {
         children: [
           {
             name: 'Número',
-            value: jsonData.docNumero
+            value: jsonData.docNumero || 'desconhecido'
           },
           {
             name: 'Processo',
@@ -56,15 +56,15 @@ function convertDocumentoToEChartTree(jsonData) {
           },
           {
             name: 'SEI',
-            value: jsonData.docSEI
+            value: jsonData.docSEI  || 'desconhecido'
           },
           {
             name: 'Tipo',
-            value: jsonData.docTipo.dtDescricao
+            value: jsonData.docTipo.dtDescricao  || 'desconhecido'
           },
           {
               name: 'Endereço',
-              value: jsonData.docEndereco.endLogradouro
+              value: jsonData.docEndereco.endLogradouro  || 'desconhecido'
             }
         ]
       }

@@ -23,7 +23,7 @@ o apMap mudou a largura, redimensiona a largura do mapa.
 ## Novembrer 28, 2023
 - [ ] Task 1 - Criar tooltips para todos os componentes da tela documentos
 
-- [ ]  Taske 2 - Adicionar e-chart substituindo Gojs nos diagramas.
+- [X] Task 2 - Adicionar e-chart substituindo Gojs nos diagramas.
 
-
+- [ ] Task 3 - Cadastrar documento sem alguns dados, como SEI. Não está funcionando na edição, por exemplo.
 
