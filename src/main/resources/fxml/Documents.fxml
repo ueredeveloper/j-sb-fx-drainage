@@ -18,43 +18,137 @@
 
 <AnchorPane fx:id="apContent" prefWidth="800.0" styleClass="content" AnchorPane.bottomAnchor="5.0" AnchorPane.topAnchor="5.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.DocumentController">
 	<children>
-		<HBox layoutX="10.0" layoutY="150.0" prefHeight="50.0" prefWidth="800.0" styleClass="hbox-actions" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+		<GridPane layoutX="12.0" layoutY="24.0" prefHeight="94.0" prefWidth="780.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+			<columnConstraints>
+				<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+				<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+				<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+				<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+			</columnConstraints>
+			<rowConstraints>
+				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+			</rowConstraints>
 			<children>
-				<JFXButton fx:id="btnNew" prefHeight="50.0" prefWidth="300.0" styleClass="buttons" text="Novo">
-					<HBox.margin>
-						<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-					</HBox.margin>
+				<JFXComboBox fx:id="cbDocType" labelFloat="true" maxWidth="1.7976931348623157E308" prefHeight="80.0" prefWidth="370.0" promptText="Tipo de Documento" GridPane.hgrow="ALWAYS">
+					<GridPane.margin>
+						<Insets bottom="60.0" left="10.0" right="10.0" top="60.0" />
+					</GridPane.margin>
+               <styleClass>
+                  <String fx:value="jfx-combo-box" />
+                  <String fx:value="jfx-text-field-custom" />
+               </styleClass>
+               <tooltip>
+                  <Tooltip text="Escolha o tipo de documento" />
+               </tooltip>
+				</JFXComboBox>
+				<JFXTextField fx:id="tfNumber" alignment="TOP_LEFT" labelFloat="true" prefHeight="80.0" prefWidth="370.0" promptText="Número" styleClass="jfx-text-field" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS">
+					<GridPane.margin>
+						<Insets bottom="60.0" left="10.0" right="10.0" top="60.0" />
+					</GridPane.margin>
+               <tooltip>
+                  <Tooltip text="Número do documento, ex: 12/2015" />
+               </tooltip>
+				</JFXTextField>
+				<JFXTextField fx:id="tfNumberSEI" alignment="TOP_LEFT" labelFloat="true" prefHeight="80.0" prefWidth="370.0" promptText="Número SEI" styleClass="jfx-text-field-custom" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS">
+					<GridPane.margin>
+						<Insets bottom="60.0" left="10.0" right="10.0" top="60.0" />
+					</GridPane.margin>
+               <tooltip>
+                  <Tooltip text="Número no SEI, ex: 123456789" />
+               </tooltip>
+				</JFXTextField>
+				<JFXComboBox fx:id="cbProcess" labelFloat="true" maxWidth="1.7976931348623157E308" prefHeight="80.0" prefWidth="370.0" promptText="Processo" GridPane.columnIndex="3" GridPane.hgrow="ALWAYS">
+					<GridPane.margin>
+						<Insets bottom="60.0" left="10.0" right="-40.0" top="60.0" />
+					</GridPane.margin>
+               <styleClass>
+                  <String fx:value="jfx-combo-box" />
+                  <String fx:value="jfx-text-field-custom" />
+               </styleClass>
+               <tooltip>
+                  <Tooltip text="Processo em que o documento se econtra" />
+               </tooltip>
+               <padding>
+                  <Insets right="50.0" />
+               </padding>
+				</JFXComboBox>
+				<JFXComboBox fx:id="cbAddress" labelFloat="true" maxWidth="1.7976931348623157E308" prefHeight="80.0" prefWidth="370.0" promptText="Logradouro" GridPane.columnSpan="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
+					<GridPane.margin>
+						<Insets bottom="60.0" left="10.0" right="10.0" top="60.0" />
+					</GridPane.margin>
+               <styleClass>
+                  <String fx:value="jfx-combo-box" />
+                  <String fx:value="jfx-text-field-custom" />
+               </styleClass>
+               <tooltip>
+                  <Tooltip text="Endereço relacionado" />
+               </tooltip>
+				</JFXComboBox>
+				<JFXTextField fx:id="tfCity" alignment="TOP_LEFT" labelFloat="true" prefHeight="80.0" prefWidth="370.0" promptText="Cidade" styleClass="jfx-text-field-custom" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1">
+					<GridPane.margin>
+						<Insets bottom="60.0" left="10.0" right="10.0" top="60.0" />
+					</GridPane.margin>
+               <tooltip>
+                  <Tooltip text="Digite a cidade, ex: Brasília" />
+               </tooltip>
+				</JFXTextField>
+      				<JFXTextField fx:id="tfCEP" alignment="TOP_LEFT" labelFloat="true" prefHeight="80.0" prefWidth="370.0" promptText="CEP" styleClass="jfx-text-field-custom" GridPane.columnIndex="3" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets bottom="60.0" left="10.0" right="10.0" top="60.0" />
+               </GridPane.margin>
+               <tooltip>
+                  <Tooltip text="Digite o CEP, ex 72.145-986" />
+               </tooltip>
+      				</JFXTextField>
+			</children>
+		</GridPane>
+      <GridPane layoutX="10.0" layoutY="150.0" prefHeight="40.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+				<JFXButton fx:id="btnNew" maxWidth="1.7976931348623157E308" prefHeight="20.0" prefWidth="100.0" styleClass="buttons" text="Novo" GridPane.hgrow="ALWAYS">
                <tooltip>
                   <Tooltip text="Criar novo documento" />
                </tooltip>
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" />
+               </GridPane.margin>
 				</JFXButton>
-				<JFXButton fx:id="btnSave" prefHeight="50.0" prefWidth="300.0" styleClass="buttons" text="Salvar">
-					<HBox.margin>
-						<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-					</HBox.margin>
+				<JFXButton fx:id="btnSave" maxWidth="1.7976931348623157E308" prefHeight="20.0" prefWidth="100.0" styleClass="buttons" text="Salvar" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
                <tooltip>
                   <Tooltip text="Salvar documento" />
                </tooltip>
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" />
+               </GridPane.margin>
 				</JFXButton>
-				<JFXButton fx:id="btnEdit" prefHeight="50.0" prefWidth="300.0" styleClass="buttons" text="Editar">
-					<HBox.margin>
-						<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-					</HBox.margin>
+				<JFXButton fx:id="btnEdit" maxWidth="1.7976931348623157E308" prefHeight="20.0" prefWidth="100.0" styleClass="buttons" text="Editar" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
                <tooltip>
                   <Tooltip text="Editar documento" />
                </tooltip>
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" />
+               </GridPane.margin>
 				</JFXButton>
-				<JFXButton fx:id="btnDelete" prefHeight="50.0" prefWidth="300.0" styleClass="buttons" text="Deletar">
-					<HBox.margin>
-						<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-					</HBox.margin>
+				<JFXButton fx:id="btnDelete" maxWidth="1.7976931348623157E308" prefHeight="20.0" prefWidth="100.0" styleClass="buttons" text="Deletar" GridPane.columnIndex="3" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
                <tooltip>
                   <Tooltip text="Deletar documento" />
                </tooltip>
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" />
+               </GridPane.margin>
 				</JFXButton>
-			</children>
-		</HBox>
-		<HBox layoutX="20.0" layoutY="200.0" prefHeight="50.0" prefWidth="800.0" styleClass="hbox-search" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+         </children>
+      </GridPane>
+		<HBox layoutX="20.0" layoutY="220.0" prefHeight="50.0" prefWidth="800.0" styleClass="hbox-search" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
 			<children>
 				<Pane prefWidth="100.0" HBox.hgrow="ALWAYS" />
 				<Pane prefWidth="100.0" HBox.hgrow="ALWAYS" />
@@ -112,88 +206,6 @@
 				</JFXButton>
 			</children>
 		</HBox>
-		<GridPane layoutX="12.0" layoutY="24.0" prefHeight="94.0" prefWidth="780.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
-			<columnConstraints>
-				<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-				<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-				<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-				<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-			</columnConstraints>
-			<rowConstraints>
-				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-			</rowConstraints>
-			<children>
-				<JFXComboBox fx:id="cbDocType" labelFloat="true" prefHeight="80.0" prefWidth="370.0" promptText="Tipo de Documento">
-					<GridPane.margin>
-						<Insets bottom="60.0" left="10.0" right="10.0" top="60.0" />
-					</GridPane.margin>
-               <styleClass>
-                  <String fx:value="jfx-combo-box" />
-                  <String fx:value="jfx-text-field-custom" />
-               </styleClass>
-               <tooltip>
-                  <Tooltip text="Escolha o tipo de documento" />
-               </tooltip>
-				</JFXComboBox>
-				<JFXTextField fx:id="tfNumber" alignment="TOP_LEFT" labelFloat="true" prefHeight="80.0" prefWidth="370.0" promptText="Número" styleClass="jfx-text-field-custom" GridPane.columnIndex="1">
-					<GridPane.margin>
-						<Insets bottom="60.0" left="10.0" right="10.0" top="60.0" />
-					</GridPane.margin>
-               <tooltip>
-                  <Tooltip text="Número do documento, ex: 12/2015" />
-               </tooltip>
-				</JFXTextField>
-				<JFXTextField fx:id="tfNumberSEI" alignment="TOP_LEFT" labelFloat="true" prefHeight="80.0" prefWidth="370.0" promptText="Número SEI" styleClass="jfx-text-field-custom" GridPane.columnIndex="2">
-					<GridPane.margin>
-						<Insets bottom="60.0" left="10.0" right="10.0" top="60.0" />
-					</GridPane.margin>
-               <tooltip>
-                  <Tooltip text="Número no SEI, ex: 123456789" />
-               </tooltip>
-				</JFXTextField>
-				<JFXComboBox fx:id="cbProcess" labelFloat="true" prefHeight="80.0" prefWidth="370.0" promptText="Processo" GridPane.columnIndex="3">
-					<GridPane.margin>
-						<Insets bottom="60.0" left="10.0" right="10.0" top="60.0" />
-					</GridPane.margin>
-               <styleClass>
-                  <String fx:value="jfx-combo-box" />
-                  <String fx:value="jfx-text-field-custom" />
-               </styleClass>
-               <tooltip>
-                  <Tooltip text="Processo em que o documento se econtra" />
-               </tooltip>
-				</JFXComboBox>
-				<JFXComboBox fx:id="cbAddress" labelFloat="true" prefHeight="80.0" prefWidth="370.0" promptText="Logradouro" GridPane.columnSpan="4" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
-					<GridPane.margin>
-						<Insets bottom="60.0" left="10.0" right="10.0" top="60.0" />
-					</GridPane.margin>
-               <styleClass>
-                  <String fx:value="jfx-combo-box" />
-                  <String fx:value="jfx-text-field-custom" />
-               </styleClass>
-               <tooltip>
-                  <Tooltip text="Endereço relacionado" />
-               </tooltip>
-				</JFXComboBox>
-				<JFXTextField fx:id="tfCity" alignment="TOP_LEFT" labelFloat="true" prefHeight="80.0" prefWidth="370.0" promptText="Cidade" styleClass="jfx-text-field-custom" GridPane.columnIndex="2" GridPane.rowIndex="1">
-					<GridPane.margin>
-						<Insets bottom="60.0" left="10.0" right="10.0" top="60.0" />
-					</GridPane.margin>
-               <tooltip>
-                  <Tooltip text="Digite a cidade, ex: Brasília" />
-               </tooltip>
-				</JFXTextField>
-      				<JFXTextField fx:id="tfCEP" alignment="TOP_LEFT" labelFloat="true" prefHeight="80.0" prefWidth="370.0" promptText="CEP" styleClass="jfx-text-field-custom" GridPane.columnIndex="3" GridPane.rowIndex="1">
-               <GridPane.margin>
-                  <Insets bottom="60.0" left="10.0" right="10.0" top="60.0" />
-               </GridPane.margin>
-               <tooltip>
-                  <Tooltip text="Digite o CEP, ex 72.145-986" />
-               </tooltip>
-      				</JFXTextField>
-			</children>
-		</GridPane>
 	</children>
    <stylesheets>
       <URL value="@css/root.css" />

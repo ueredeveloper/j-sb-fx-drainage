@@ -6,19 +6,14 @@
 .buttons {
   -fx-background-color: -fx-accent-color; /* #b2a600 */
   -fx-text-fill: -fx-primary-color; /* #fdfffa */
+  -fx-font-weight: BOLD;
+  
 }
 
 .addictional-buttons {
   -fx-background-color: -fx-addictional-color; /* #58581a */
   -fx-text-fill: -fx-primary-color; /* #fdfffa */
-}
-
-.text-field {
-  -fx-prompt-text-fill: -fx-primary-color; /* #161515 */
-}
-
-.text-field:focused {
-  -fx-text-fill: -fx-primary-color; /* #161515 */
+  -fx-font-weight: BOLD;
 }
 
 /* Styling for combo box list cells */
@@ -29,12 +24,26 @@
 
 .jfx-combo-box .list-cell {
   -fx-text-fill: -fx-text-inner-color;
-  -fx-prompt-text-fill: -fx-primary-color; /* #161515 */
+}
+.jfx-combo-box {
+  -jfx-unfocus-color: -fx-secondary-color; /* cor da borda inferior ao clicar (un focus) */
+  -fx-text-fill: -fx-accent-color; /*cor da escrita */
+  -jfx-unfocus-color: -fx-primary-color; /* cor da borda inferior */
+  -fx-prompt-text-fill: -fx-primary-color; /* cor do prompt  */
+  -jfx-focus-color: -fx-addictional-color; /* cor do prompt text ao subir no text field */
 }
 
 /* Custom styling for text fields */
-.jfx-text-field-custom {
-  -jfx-unfocus-color: -fx-primary-color; /* #161515 */
+.jfx-text-field {
+  -jfx-unfocus-color: -fx-primary-color; /* cor da borda inferior */
+  -fx-prompt-text-fill: -fx-primary-color; /* cor do prompt  */
+  -jfx-focus-color: -fx-addictional-color; /* cor do prompt text ao subir no text field */
+  -fx-font-weight: BOLD;
+ 
+}
+.jfx-text-field:focused {
+  -jfx-unfocus-color: -fx-secondary-color; /* cor da borda inferior ao clicar (un focus) */
+  -fx-text-fill: -fx-accent-color; /*cor da escrita */
 }
 
 
