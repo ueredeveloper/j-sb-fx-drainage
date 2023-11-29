@@ -99,15 +99,13 @@ public class DocumentViewController implements Initializable {
 		webEngine.getLoadWorker().stateProperty().addListener((obs, oldState, newState) -> {
 
 			if (newState == Worker.State.SUCCEEDED) {
-				System.out.println("succeeded");
-
+		
 				JSObject jsObject = (JSObject) webEngine.executeScript("window");
 
 				String sJson = json.replace("\"", "'");
 	
 				JSObject updatedData = (JSObject) webEngine.executeScript("(" + sJson + ")");
-				
-				System.out.println(updatedData);
+
 
 				jsObject.call("updateSeriesData", updatedData);
 			}

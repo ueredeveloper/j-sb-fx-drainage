@@ -20,6 +20,7 @@ var option;
 myChart.showLoading();
 var json;
 
+
 /**
  * Updates the series data of the chart.
  * @param {Object} newData - The new data to be updated in the chart.

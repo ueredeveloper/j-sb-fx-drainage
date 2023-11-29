@@ -20,6 +20,7 @@ o apMap mudou a largura, redimensiona a largura do mapa.
 	Avaliar o erro "Connection refused". Talves mostrar somente o mapa, sem a tela de cadastro e um tooltip de erro de conexão.
 	
 	
+	
 ## Novembrer 28, 2023
 - [ ] Task 1 - Criar tooltips para todos os componentes da tela documentos
 
