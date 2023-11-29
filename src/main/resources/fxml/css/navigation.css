@@ -6,6 +6,6 @@
     -fx-background-color: -fx-primary-color;
 }
 .buttons{
-	-fx-text-fill: -fx-terciary-color;
+	-fx-text-fill: -fx-accent-color;
 	-fx-pref-width:100;
 }

@@ -1,71 +1,40 @@
 
-
-/* Base styling for labels, buttons, and text fields */
 .label-text {
-    -fx-text-fill: -fx-terciary-color;
+  -fx-text-fill: -fx-primary-color; /* #161515 */
 }
 
-.button-secondary {
-    -fx-background-color: -fx-terciary-color;
-    -fx-text-fill: -fx-on-terciary-color;
+.buttons {
+  -fx-background-color: -fx-accent-color; /* #b2a600 */
+  -fx-text-fill: -fx-primary-color; /* #fdfffa */
 }
-.button-addictional{
-	-fx-background-color: -fx-addictional-color;
-	-fx-text-fill: -fx-on-addictional-color;
+
+.addictional-buttons {
+  -fx-background-color: -fx-addictional-color; /* #58581a */
+  -fx-text-fill: -fx-primary-color; /* #fdfffa */
 }
 
 .text-field {
-    -fx-prompt-text-fill: -fx-terciary-color;
+  -fx-prompt-text-fill: -fx-primary-color; /* #161515 */
 }
 
 .text-field:focused {
-    -fx-text-fill: -fx-terciary-color; /* Set text color when in focus */
+  -fx-text-fill: -fx-primary-color; /* #161515 */
 }
 
-/* Custom styles for specific elements */
-#apContent {
-    -fx-pref-height: 700.0;
-    -fx-pref-width: 800.0;
-}
-
-.hbox-top {
-    -fx-layout-y: 30.0;
-    -fx-pref-height: 60.0;
-    -fx-pref-width: 800.0;
-    -fx-anchor-pane-left: 10.0;
-    -fx-anchor-pane-right: 10.0;
-}
-
-.hbox-actions {
-    -fx-layout-x: 10.0;
-    -fx-layout-y: 102.0;
-    -fx-pref-height: 50.0;
-    -fx-pref-width: 800.0;
-    -fx-anchor-pane-left: 10.0;
-    -fx-anchor-pane-right: 10.0;
-}
-
-.hbox-search {
-    -fx-layout-x: 10.0;
-    -fx-layout-y: 152.0;
-    -fx-pref-height: 50.0;
-    -fx-pref-width: 800.0;
-    -fx-anchor-pane-left: 10.0;
-    -fx-anchor-pane-right: 10.0;
-}
-/* ComboBox styles */
-
-/* Apply this CSS to show prompt text in red color */
+/* Styling for combo box list cells */
 .jfx-combo-box .list-cell:empty {
-    -fx-text-fill: -fx-primary-color /* Change the text color to red */
+  -fx-text-fill: -fx-primary-color; /* #161515 */
+  -fx-prompt-text-fill: -fx-primary-color; /* #161515 */
 }
 
 .jfx-combo-box .list-cell {
-    -fx-text-fill: -fx-text-inner-color;
+  -fx-text-fill: -fx-text-inner-color;
+  -fx-prompt-text-fill: -fx-primary-color; /* #161515 */
 }
-/* Custom style for your specific JFXTextField */
+
+/* Custom styling for text fields */
 .jfx-text-field-custom {
-    -jfx-unfocus-color: -fx-secondary-color; /* Set the unfocus color */
+  -jfx-unfocus-color: -fx-primary-color; /* #161515 */
 }
 
 
