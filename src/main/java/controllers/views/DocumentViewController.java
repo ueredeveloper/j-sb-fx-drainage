@@ -43,18 +43,6 @@ public class DocumentViewController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
-		// Create a Documento object and set its properties.
-		Documento doc = new Documento();
-		doc.setDocId(1L);
-		doc.setDocNumero("12/2015");
-		doc.setDocProcesso(new Processo("197.456789/2013"));
-		doc.setDocSEI(123456789L);
-		doc.setDocTipo(new DocumentoTipo(1L, "Requerimento"));
-		// doc.setDoc_endereco(new Endereco (1, "Rua dos Novaes Peres, 1"));
-
-		// Convert the Documento object to JSON and print it.
-		System.out.println(new Gson().toJson(doc));
-
 		// Load HTML content from a resource file.
 		String resourcePath = "/html/views/index.html";
 		String htmlContent = null;

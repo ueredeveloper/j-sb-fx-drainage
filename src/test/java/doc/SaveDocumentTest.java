@@ -83,7 +83,7 @@ public class SaveDocumentTest extends ApplicationTest {
 		Button btnSave = lookup("#btnSave").query();
 		clickOn(btnSave);
 
-		sleep(3000);
+		//sleep(3000);
 
 	}
 }

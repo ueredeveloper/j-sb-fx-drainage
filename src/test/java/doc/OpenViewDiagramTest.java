@@ -20,6 +20,8 @@ public class OpenViewDiagramTest extends ApplicationTest {
 	@Test
 	public void editDocument () {
 		
+		sleep(2000);
+		
 		Button btnSignUp = lookup("#btnSignUp").query();
 		assertNotNull(btnSignUp);
 		clickOn(btnSignUp);
@@ -40,7 +42,7 @@ public class OpenViewDiagramTest extends ApplicationTest {
 		assertNotNull(btnViews);
 		clickOn(btnViews);
 		
-		sleep(5000);
+		//sleep(5000);
 		
 		
 	}

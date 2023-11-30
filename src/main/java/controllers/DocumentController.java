@@ -153,7 +153,7 @@ public class DocumentController implements Initializable {
 	
 		tcTipo.setCellValueFactory(cellData -> cellData.getValue().getProperty(Documento::getDocTipoDescricao));
 		tcNum.setCellValueFactory(new PropertyValueFactory<Documento, String>("docNumero"));
-		tcNumSei.setCellValueFactory(new PropertyValueFactory<Documento, String>("docSEI"));
+		tcNumSei.setCellValueFactory(new PropertyValueFactory<Documento, String>("docSei"));
 		tcProc.setCellValueFactory(cellData -> cellData.getValue().getProperty(Documento::getDocProcessoProcNumero));
 		tcAddress.setCellValueFactory(cellData -> cellData.getValue().getProperty(Documento::getDocEnderecoLogradouro));
 
@@ -173,7 +173,7 @@ public class DocumentController implements Initializable {
 				cbDocType.getSelectionModel().select(newSelection.getDocTipo());
 				// Atualizar componentes de acordo com o documento selecionado
 				tfNumber.setText(newSelection.getDocNumero());
-				tfNumberSEI.setText(String.valueOf(newSelection.getDocSEI()));
+				tfNumberSEI.setText(String.valueOf(newSelection.getDocSei()));
 				cbProcess.getSelectionModel().select(newSelection.getDocProcesso());
 				cbAddress.getSelectionModel().select(newSelection.getDocEndereco());
 				if (newSelection.getDocEndereco()!= null) {
@@ -406,9 +406,12 @@ public class DocumentController implements Initializable {
 		
 			DocumentService documentService = new DocumentService(localUrl);
 
-			Documento requestDocument = new Documento(tfNumber.getText(),
+			Documento requestDocument = new Documento(
+					tfNumber.getText(),
 					// Processo
-					obsProcess.get(0), numeroSei, cbDocType.getValue(),
+					obsProcess.get(0), 
+					numeroSei, 
+					cbDocType.getValue(),
 					// Endereço
 					new Endereco(
 							obsAddress.get(0).getEndId(), 
@@ -481,7 +484,7 @@ public class DocumentController implements Initializable {
 		// Edita objeto com novos valores
 		selectedDoc.setDocTipo(updateDocumentoTipo);
 		selectedDoc.setDocNumero(updatedNumero);
-		selectedDoc.setDocSEI(updatedSei);
+		selectedDoc.setDocSei(updatedSei);
 		selectedDoc.setDocProcesso(obsProcess.get(0));
 		selectedDoc.setDocEndereco(new Endereco(
 				obsAddress.get(0).getEndId(),

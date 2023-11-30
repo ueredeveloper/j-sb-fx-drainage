@@ -13,7 +13,7 @@ public class Documento {
 	private Long docId;
 	private String docNumero;
 	private Processo docProcesso;
-	private Long docSEI;
+	private Long docSei;
 	private DocumentoTipo docTipo;
 	private Endereco docEndereco;
 
@@ -22,47 +22,16 @@ public class Documento {
 		super();
 	}
 
-	public Documento(Long docId, String docNumero, Processo docProcesso, Long docSEI, DocumentoTipo docTipo,
-			Anexo docAnexo, Endereco docEndereco) {
+	public Documento(String docNumero, Processo docProcesso, Long docSei, DocumentoTipo docTipo, Endereco docEndereco) {
 		super();
-		this.docId = docId;
 		this.docNumero = docNumero;
 		this.docProcesso = docProcesso;
-		this.docSEI = docSEI;
+		this.docSei = docSei;
 		this.docTipo = docTipo;
 		this.docEndereco = docEndereco;
 	}
 
-	public Documento(Long docId, String docNumero) {
-		super();
-		this.docId = docId;
-		this.docNumero = docNumero;
-	}
 
-	public Documento(String docNumero, Processo docProcesso, Long docSEI, DocumentoTipo docTipo) {
-		super();
-		this.docNumero = docNumero;
-		this.docProcesso = docProcesso;
-		this.docSEI = docSEI;
-		this.docTipo = docTipo;
-	}
-
-	public Documento(String docNumero, Processo docProcesso, Long docSEI, DocumentoTipo docTipo, Anexo docAnexo) {
-		super();
-		this.docNumero = docNumero;
-		this.docProcesso = docProcesso;
-		this.docSEI = docSEI;
-		this.docTipo = docTipo;
-	}
-
-	public Documento(String docNumero, Processo docProcesso, Long docSEI, DocumentoTipo docTipo, Endereco docEndereco) {
-		super();
-		this.docNumero = docNumero;
-		this.docProcesso = docProcesso;
-		this.docSEI = docSEI;
-		this.docTipo = docTipo;
-		this.docEndereco = docEndereco;
-	}
 
 	public StringProperty getEnderecoLogradouroProperty() {
 		StringProperty enderecoLogradouroProperty = new SimpleStringProperty("");
@@ -138,13 +107,7 @@ public class Documento {
 		this.docProcesso = docProcesso;
 	}
 
-	public Long getDocSEI() {
-		return docSEI;
-	}
-
-	public void setDocSEI(Long docSEI) {
-		this.docSEI = docSEI;
-	}
+	
 
 	public DocumentoTipo getDocTipo() {
 		return docTipo;
@@ -161,5 +124,15 @@ public class Documento {
 	public void setDocEndereco(Endereco docEndereco) {
 		this.docEndereco = docEndereco;
 	}
+
+	public Long getDocSei() {
+		return docSei;
+	}
+
+	public void setDocSei(Long docSei) {
+		this.docSei = docSei;
+	}
+	
+	
 
 }
