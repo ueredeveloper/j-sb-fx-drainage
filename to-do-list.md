@@ -41,7 +41,13 @@
 * **[ ] Tarefa 1 - Poder inserir processo novo com apenas um número.**
 	* Se digitar 3 não aparece este número na lista do combobox, mas apenas aqueles processos que tem o número 3 em algum lugar do número completo. Desta forma não posso inserir um processo novo digitando apenas um número.
 
-
+## 01 de dezembro de 2023
+* **[] Tarefa 1 - Número Sei - Tela Documentos
+	* Quando temos um documento sem o número sei e outro com o número sei, ao escolher na table list o documento sem o número sei o número que aparece no textfield é o do documento com número. Não deveria aparecer nada, mas continua o número do documento anterior, que tem o número.
+	
+* ** [] Tarefa 2 - Pesquisa número sei
+	* A pesquisa só está sendo pelo número completo do sei, deveria ser  qualquer parte do número. Converter então o docSei para string e pesquisar semelhanças, parte do número etc.
+	
 
 
 
