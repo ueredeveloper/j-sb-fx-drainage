@@ -183,6 +183,7 @@
 						<TableColumn fx:id="tcNumSei" prefWidth="100.0" text="SEI" />
 						<TableColumn fx:id="tcProc" prefWidth="100.0" text="Processo" />
 						<TableColumn fx:id="tcAddress" minWidth="200.0" prefWidth="300.0" text="Endereço" />
+                  <TableColumn fx:id="tcActions" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" text="Acões" />
 					</columns>
 					<columnResizePolicy>
 						<TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

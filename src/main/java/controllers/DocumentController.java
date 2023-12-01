@@ -13,7 +13,9 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 
 import controllers.views.DocumentViewController;
+import controllers.views.EditAddressController;
 import enums.ToastType;
+import javafx.animation.TranslateTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -25,6 +27,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextFormatter;
@@ -32,6 +35,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Callback;
+import javafx.util.Duration;
 import models.Documento;
 import models.DocumentoTipo;
 import models.Endereco;
@@ -56,7 +61,7 @@ public class DocumentController implements Initializable {
 	 */
 	public DocumentController() {
 		try {
-			
+
 			Properties prop = new Properties();
 			InputStream inputStream = getClass().getClassLoader().getResourceAsStream("config.properties");
 			prop.load(inputStream);
@@ -131,10 +136,15 @@ public class DocumentController implements Initializable {
 	private TableColumn<Documento, String> tcAddress;
 
 	@FXML
+	private TableColumn<Documento, String> tcActions;
+
+	@FXML
 	private JFXButton btnViews;
 
 	@FXML
 	private MainController mainController;
+
+	AnchorPane apEditAddress;
 
 	public void setMainController(MainController mainController) {
 		this.mainController = mainController;
@@ -150,12 +160,44 @@ public class DocumentController implements Initializable {
 	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-	
+
 		tcTipo.setCellValueFactory(cellData -> cellData.getValue().getProperty(Documento::getDocTipoDescricao));
 		tcNum.setCellValueFactory(new PropertyValueFactory<Documento, String>("docNumero"));
 		tcNumSei.setCellValueFactory(new PropertyValueFactory<Documento, String>("docSei"));
 		tcProc.setCellValueFactory(cellData -> cellData.getValue().getProperty(Documento::getDocProcessoProcNumero));
 		tcAddress.setCellValueFactory(cellData -> cellData.getValue().getProperty(Documento::getDocEnderecoLogradouro));
+
+		Callback<TableColumn<Documento, String>, TableCell<Documento, String>> cellFactory = new Callback<TableColumn<Documento, String>, TableCell<Documento, String>>() {
+			@Override
+			public TableCell call(final TableColumn<Documento, String> param) {
+				final TableCell<Documento, String> cell = new TableCell<Documento, String>() {
+
+					JFXComboBox<String> cbDocsAttributes = new JFXComboBox<>(
+							FXCollections.observableArrayList("Tipo", "Documento", "Processo", "Endereço"));
+
+					@Override
+					public void updateItem(String item, boolean empty) {
+						super.updateItem(item, empty);
+						if (empty) {
+							setGraphic(null);
+							setText(null);
+						} else {
+
+							// Id utilizado para os testes JUnit
+							cbDocsAttributes.setId("cbDocsAttributes");
+							// Action
+							cbDocsAttributes.setOnAction(e -> openapEditAddress());
+
+							setGraphic(cbDocsAttributes);
+							setText(null);
+						}
+					}
+				};
+				return cell;
+			}
+		};
+
+		tcActions.setCellFactory(cellFactory);
 
 		AnchorPane.setRightAnchor(apContent, 0.0);
 		AnchorPane.setLeftAnchor(apContent, 0.0);
@@ -176,7 +218,7 @@ public class DocumentController implements Initializable {
 				tfNumberSEI.setText(String.valueOf(newSelection.getDocSei()));
 				cbProcess.getSelectionModel().select(newSelection.getDocProcesso());
 				cbAddress.getSelectionModel().select(newSelection.getDocEndereco());
-				if (newSelection.getDocEndereco()!= null) {
+				if (newSelection.getDocEndereco() != null) {
 					System.out.println("selection" + newSelection.getDocEndereco().getEndCidade());
 					tfCity.setText(newSelection.getDocEndereco().getEndCidade());
 					tfCEP.setText(newSelection.getDocEndereco().getEndCEP());
@@ -187,8 +229,8 @@ public class DocumentController implements Initializable {
 
 			} else {
 
-				clearAllComponents ();
-				
+				clearAllComponents();
+
 			}
 		});
 		// Listener do TextField
@@ -268,12 +310,12 @@ public class DocumentController implements Initializable {
 		cbAddress.getEditor().textProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-				
+
 				if (newValue != null) {
 					obsAddress.clear();
 					List<Endereco> list = fetchAddress(newValue);
-					if (list !=null) {
-						
+					if (list != null) {
+
 						boolean containsSearchTerm = list.stream()
 								.anyMatch(endereco -> endereco.getEndLogradouro().contains(newValue));
 						/*
@@ -286,23 +328,76 @@ public class DocumentController implements Initializable {
 							obsAddress.add(new Endereco(newValue));
 							obsAddress.addAll(list);
 						}
-						
+
 					}
-					
+
 				}
 			}
 
 		});
 
-		btnNew.setOnAction(e-> clearAllComponents());
+		btnNew.setOnAction(e -> clearAllComponents());
 		btnViews.setOnAction(event -> showDocumentView());
 		btnSave.setOnAction(event -> handleSave(event));
 		btnSearch.setOnAction(event -> handleSearch(event));
 		btnDelete.setOnAction(event -> handleDelete(event));
 		btnEdit.setOnAction(event -> handleEdit(event));
 	}
-	
-	public void clearAllComponents () {
+
+	/**
+	 * Abre o painel de edição do endereço. Cria um novo AnchorPane e carrega um
+	 * arquivo FXML para exibir o painel de edição. Realiza uma transição de
+	 * tradução para exibir o painel na tela.
+	 */
+	public void openapEditAddress() {
+
+		// Cria um novo AnchorPane
+		apEditAddress = new AnchorPane();
+
+		// Carrega o arquivo FXML para o painel de edição
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/components/edit-address.fxml"));
+
+		loader.setRoot(apEditAddress);
+		loader.setController(new EditAddressController(this));
+
+		try {
+			loader.load();
+		} catch (IOException e) {
+			System.out.println("erro na abertura do pane atendimento");
+			e.printStackTrace();
+		}
+		// Adiciona o painel de edição ao conteúdo atual
+		apContent.getChildren().add(apEditAddress);
+		// Define a translação inicial para exibir o painel na tela
+		apEditAddress.setTranslateX(400.0);
+		TranslateTransition tt = new TranslateTransition(new Duration(300), apEditAddress);
+
+		tt.setToX(0.0);
+		tt.play();
+
+	}
+
+	/**
+	 * Fecha o painel de edição do endereço. Realiza uma transição para mover o
+	 * anchorpane para a direita e depois o remove do conteúdo.
+	 */
+	public void closeEditAddress() {
+		TranslateTransition tt = new TranslateTransition(Duration.millis(300), apEditAddress);
+
+		tt.setToX(400.0);
+		tt.setOnFinished(event -> {
+			// Remover a tela de edição
+			apContent.getChildren().remove(apEditAddress);
+		});
+
+		tt.play();
+	}
+
+	/**
+	 * Limpa todos os componentes da interface de edição. Limpa seleções e campos de
+	 * texto, além de limpar listas e caixas de combinação.
+	 */
+	public void clearAllComponents() {
 		cbDocType.getSelectionModel().clearSelection();
 		tfNumber.clear();
 		tfNumberSEI.clear();
@@ -359,10 +454,9 @@ public class DocumentController implements Initializable {
 	 *            O evento de ação associado à pesquisa.
 	 */
 	public void handleSearch(ActionEvent event) {
-		
-	
+
 		try {
-			
+
 			clearAllComponents();
 
 			DocumentService documentService = new DocumentService(localUrl);
@@ -403,20 +497,14 @@ public class DocumentController implements Initializable {
 		}
 
 		try {
-		
+
 			DocumentService documentService = new DocumentService(localUrl);
 
-			Documento requestDocument = new Documento(
-					tfNumber.getText(),
+			Documento requestDocument = new Documento(tfNumber.getText(),
 					// Processo
-					obsProcess.get(0), 
-					numeroSei, 
-					cbDocType.getValue(),
+					obsProcess.get(0), numeroSei, cbDocType.getValue(),
 					// Endereço
-					new Endereco(
-							obsAddress.get(0).getEndId(), 
-							obsAddress.get(0).getEndLogradouro(),
-							tfCity.getText(), 
+					new Endereco(obsAddress.get(0).getEndId(), obsAddress.get(0).getEndLogradouro(), tfCity.getText(),
 							tfCEP.getText()));
 
 			ServiceResponse<?> documentoServiceResponse = documentService.save(requestDocument);
@@ -486,12 +574,8 @@ public class DocumentController implements Initializable {
 		selectedDoc.setDocNumero(updatedNumero);
 		selectedDoc.setDocSei(updatedSei);
 		selectedDoc.setDocProcesso(obsProcess.get(0));
-		selectedDoc.setDocEndereco(new Endereco(
-				obsAddress.get(0).getEndId(),
-				obsAddress.get(0).getEndLogradouro(),
-				tfCity.getText(), 
-				tfCEP.getText()));
-		
+		selectedDoc.setDocEndereco(new Endereco(obsAddress.get(0).getEndId(), obsAddress.get(0).getEndLogradouro(),
+				tfCity.getText(), tfCEP.getText()));
 
 		try {
 			DocumentService documentService = new DocumentService(localUrl);

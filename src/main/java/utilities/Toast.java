@@ -30,8 +30,7 @@ public final class Toast {
 		
 			ToastController controller = loader.getController();
 			controller.showToast(toastMsg, toastType);
-			//controller.setToastMessage(toastMsg);
-
+		
 			Stage toastStage = new Stage();
 			
 			double centerX = ownerStage.getX();
@@ -77,18 +76,4 @@ public final class Toast {
 		}
 	}
 	
-	/* private Stage getPrimaryStage() {
-	        Stage[] primaryStage = new Stage[1];
-
-	        try {
-	            Platform.runLater(() -> {
-	                primaryStage[0] = new Stage();
-	                // Additional setup for the stage if needed
-	            });
-	        } catch (Exception e) {
-	            e.printStackTrace(); // Handle exceptions appropriately
-	        }
-
-	        return primaryStage[0];
-	    }*/
 }

@@ -15,7 +15,6 @@ import javafx.util.Duration;
 
 public class ToastController implements Initializable {
 	
-
 	@FXML
 	private StackPane spContainer;
 
@@ -37,19 +36,9 @@ public class ToastController implements Initializable {
 		
 	}
 
-	// FontAwesomeIconView icon = new
-	// FontAwesomeIconView(FontAwesomeIcon.CHECK_CIRCLE_ALT);
-	// FontAwesomeIconView icon = new FontAwesomeIconView(FontAwesomeIcon.WARNING);
-	// FontAwesomeIconView icon = new
-	// FontAwesomeIconView(FontAwesomeIcon.INFO_CIRCLE);
-	// FontAwesomeIconView icon = new
-	// FontAwesomeIconView(FontAwesomeIcon.EXCLAMATION_CIRCLE);
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		
-		
-		//iconView.setIcon(FontAwesomeIcon.EXCLAMATION_CIRCLE);
-		// Toast: deslize para baixo.
 		TranslateTransition tt = new TranslateTransition(new Duration(400.0), spContainer);
 		System.out.println(spContainer.getTranslateY());
 		tt.setToY(40.0);
