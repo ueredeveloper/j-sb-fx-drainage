@@ -160,6 +160,9 @@ public class DocumentController implements Initializable {
 	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		
+		apContent.getStylesheets().clear();
+		apContent.getStylesheets().add(getClass().getResource("/fxml/css/root-light.css").toExternalForm());
 
 		tcTipo.setCellValueFactory(cellData -> cellData.getValue().getProperty(Documento::getDocTipoDescricao));
 		tcNum.setCellValueFactory(new PropertyValueFactory<Documento, String>("docNumero"));

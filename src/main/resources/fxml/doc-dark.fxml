@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane fx:id="apContent" prefWidth="800.0" styleClass="content" stylesheets="@css/root-light.css" AnchorPane.bottomAnchor="5.0" AnchorPane.topAnchor="5.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.DocumentController">
+<AnchorPane fx:id="apContent" prefWidth="800.0" stylesheets="@css/root-dark.css" AnchorPane.bottomAnchor="5.0" AnchorPane.topAnchor="5.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.DocumentController">
 	<children>
 		<GridPane layoutX="12.0" layoutY="24.0" prefHeight="94.0" prefWidth="780.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
 			<columnConstraints>
@@ -41,29 +41,21 @@
                   <Tooltip text="Escolha o tipo de documento" />
                </tooltip>
 				</JFXComboBox>
-				<JFXTextField fx:id="tfNumber" alignment="TOP_LEFT" labelFloat="true" prefHeight="80.0" prefWidth="370.0" promptText="Número" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS">
+				<JFXTextField fx:id="tfNumber" alignment="TOP_LEFT" labelFloat="true" prefHeight="80.0" prefWidth="370.0" promptText="Número" styleClass="jfx-text-field" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS">
 					<GridPane.margin>
 						<Insets bottom="60.0" left="10.0" right="10.0" top="60.0" />
 					</GridPane.margin>
                <tooltip>
                   <Tooltip text="Número do documento, ex: 12/2015" />
                </tooltip>
-               <styleClass>
-                  <String fx:value="jfx-text-field" />
-                  <String fx:value="jfx-text-field-custom" />
-               </styleClass>
 				</JFXTextField>
-				<JFXTextField fx:id="tfNumberSEI" alignment="TOP_LEFT" labelFloat="true" prefHeight="80.0" prefWidth="370.0" promptText="Número SEI" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS">
+				<JFXTextField fx:id="tfNumberSEI" alignment="TOP_LEFT" labelFloat="true" prefHeight="80.0" prefWidth="370.0" promptText="Número SEI" styleClass="jfx-text-field-custom" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS">
 					<GridPane.margin>
 						<Insets bottom="60.0" left="10.0" right="10.0" top="60.0" />
 					</GridPane.margin>
                <tooltip>
                   <Tooltip text="Número no SEI, ex: 123456789" />
                </tooltip>
-               <styleClass>
-                  <String fx:value="jfx-text-field" />
-                  <String fx:value="jfx-text-field-custom" />
-               </styleClass>
 				</JFXTextField>
 				<JFXComboBox fx:id="cbProcess" labelFloat="true" maxWidth="1.7976931348623157E308" prefHeight="80.0" prefWidth="370.0" promptText="Processo" GridPane.columnIndex="3" GridPane.hgrow="ALWAYS">
 					<GridPane.margin>
@@ -72,10 +64,6 @@
                <tooltip>
                   <Tooltip text="Processo em que o documento se econtra" />
                </tooltip>
-               <styleClass>
-                  <String fx:value="jfx-combo-box" />
-                  <String fx:value="jfx-text-field-custom" />
-               </styleClass>
 				</JFXComboBox>
 				<JFXComboBox fx:id="cbAddress" labelFloat="true" maxWidth="1.7976931348623157E308" prefHeight="80.0" prefWidth="370.0" promptText="Logradouro" GridPane.columnSpan="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
 					<GridPane.margin>
@@ -89,29 +77,21 @@
                   <Tooltip text="Endereço relacionado" />
                </tooltip>
 				</JFXComboBox>
-				<JFXTextField fx:id="tfCity" alignment="TOP_LEFT" labelFloat="true" prefHeight="80.0" prefWidth="370.0" promptText="Cidade" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1">
+				<JFXTextField fx:id="tfCity" alignment="TOP_LEFT" labelFloat="true" prefHeight="80.0" prefWidth="370.0" promptText="Cidade" styleClass="jfx-text-field-custom" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1">
 					<GridPane.margin>
 						<Insets bottom="60.0" left="10.0" right="10.0" top="60.0" />
 					</GridPane.margin>
                <tooltip>
                   <Tooltip text="Digite a cidade, ex: Brasília" />
                </tooltip>
-               <styleClass>
-                  <String fx:value="jfx-text-field" />
-                  <String fx:value="jfx-text-field-custom" />
-               </styleClass>
 				</JFXTextField>
-      				<JFXTextField fx:id="tfCEP" alignment="TOP_LEFT" labelFloat="true" prefHeight="80.0" prefWidth="370.0" promptText="CEP" GridPane.columnIndex="3" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1">
+      				<JFXTextField fx:id="tfCEP" alignment="TOP_LEFT" labelFloat="true" prefHeight="80.0" prefWidth="370.0" promptText="CEP" styleClass="jfx-text-field-custom" GridPane.columnIndex="3" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets bottom="60.0" left="10.0" right="10.0" top="60.0" />
                </GridPane.margin>
                <tooltip>
                   <Tooltip text="Digite o CEP, ex 72.145-986" />
                </tooltip>
-               <styleClass>
-                  <String fx:value="jfx-text-field" />
-                  <String fx:value="jfx-text-field-custom" />
-               </styleClass>
       				</JFXTextField>
 			</children>
 		</GridPane>

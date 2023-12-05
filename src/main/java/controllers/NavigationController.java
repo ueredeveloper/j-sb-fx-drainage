@@ -6,17 +6,21 @@ import java.util.ResourceBundle;
 
 import com.jfoenix.controls.JFXButton;
 
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 import utilities.ResizeMap;
 
 public class NavigationController implements Initializable {
-	
 
 	@FXML
 	private AnchorPane apContent;
@@ -34,10 +38,51 @@ public class NavigationController implements Initializable {
 	private JFXButton btnMap;
 
 	@FXML
+	private FontAwesomeIconView iconLightDark;
+
+	private boolean isDarkMode = false;
+
+	@FXML
 	private MainController mainController;
-	
+
 	public void setMainController(MainController mainController) {
 		this.mainController = mainController;
+	}
+
+	@FXML
+	private void toggleMode(MouseEvent event) {
+		
+		System.out.println("ICON");
+		Node source = (Node) event.getSource();
+        Scene scene = source.getScene();
+
+		isDarkMode = !isDarkMode; // Toggle mode
+		
+		System.out.println(isDarkMode);
+
+		if (isDarkMode) {
+			applyDarkMode(scene);
+		} else {
+			applyLightMode(scene);
+		}
+	}
+
+	private void applyDarkMode(Scene scene) {
+		// Load the root-dark.css file
+		scene.getStylesheets().clear();
+		scene.getStylesheets().add(getClass().getResource("/fxml/css/root-dark.css").toExternalForm());
+
+		// Change icon to indicate light mode
+		iconLightDark.setGlyphName("MOON_ALT");
+	}
+
+	private void applyLightMode(Scene scene) {
+		// Load the root-light.css file
+		scene.getStylesheets().clear();
+		scene.getStylesheets().add(getClass().getResource("/fxml/css/root-light.css").toExternalForm());
+
+		// Change icon to indicate dark mode
+		iconLightDark.setGlyphName("SUN_ALT");
 	}
 
 	@Override
@@ -46,15 +91,14 @@ public class NavigationController implements Initializable {
 		btnRegistration.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				
-				
+
 				AnchorPane apc = (AnchorPane) mainController.getAnchorPaneContent();
 				AnchorPane apMap = (AnchorPane) mainController.getAnchorPaneMap();
 				AnchorPane apManager = (AnchorPane) mainController.getAnchorPaneManager();
 
 				ResizeMap rm = new ResizeMap(apc, apMap, apManager);
 				rm.resetMapSize();
-			
+
 			}
 		});
 
@@ -69,11 +113,8 @@ public class NavigationController implements Initializable {
 				rm.resizeMapToFullWidth();
 			}
 		});
-		
 
 	}
-
-	
 
 	public void loadDocuments() {
 		try {
