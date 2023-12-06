@@ -19,6 +19,7 @@ import javafx.animation.TranslateTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -161,8 +162,9 @@ public class DocumentController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		
+		// Retira o link com a stilização light ou dark, assim fica a estilização do componente pai (MainController)
 		apContent.getStylesheets().clear();
-		apContent.getStylesheets().add(getClass().getResource("/fxml/css/root-light.css").toExternalForm());
+		
 
 		tcTipo.setCellValueFactory(cellData -> cellData.getValue().getProperty(Documento::getDocTipoDescricao));
 		tcNum.setCellValueFactory(new PropertyValueFactory<Documento, String>("docNumero"));
@@ -347,6 +349,7 @@ public class DocumentController implements Initializable {
 		btnEdit.setOnAction(event -> handleEdit(event));
 	}
 
+	
 	/**
 	 * Abre o painel de edição do endereço. Cria um novo AnchorPane e carrega um
 	 * arquivo FXML para exibir o painel de edição. Realiza uma transição de

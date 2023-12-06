@@ -9,6 +9,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.web.WebEngine;
@@ -19,6 +20,16 @@ public class MainController implements Initializable {
 
 	@FXML
 	private AnchorPane apMain;
+	
+	public void applyDarkMode() {
+		apMain.getStylesheets().clear();
+		apMain.getStylesheets().add(getClass().getResource("/fxml/css/root-dark.css").toExternalForm());
+	}
+
+	public void applyLightMode() {
+		apMain.getStylesheets().clear();
+		apMain.getStylesheets().add(getClass().getResource("/fxml/css/root-light.css").toExternalForm());
+	}
 
 	@FXML
 	private AnchorPane apTop;

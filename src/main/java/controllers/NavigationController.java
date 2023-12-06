@@ -61,12 +61,15 @@ public class NavigationController implements Initializable {
 		System.out.println(isDarkMode);
 
 		if (isDarkMode) {
-			applyDarkMode(scene);
+			mainController.applyDarkMode();
+			iconLightDark.setGlyphName("MOON_ALT");
 		} else {
-			applyLightMode(scene);
+			mainController.applyLightMode();
+			iconLightDark.setGlyphName("SUN_ALT");
 		}
 	}
 
+	/*
 	private void applyDarkMode(Scene scene) {
 		// Load the root-dark.css file
 		scene.getStylesheets().clear();
@@ -83,10 +86,12 @@ public class NavigationController implements Initializable {
 
 		// Change icon to indicate dark mode
 		iconLightDark.setGlyphName("SUN_ALT");
-	}
+	}*/
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		// Retira o link com a stilização light ou dark, assim fica a estilização do componente pai (MainController)
+		apContent.getStylesheets().clear();
 
 		btnRegistration.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
