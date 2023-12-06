@@ -361,7 +361,7 @@ public class DocumentController implements Initializable {
 		apEditAddress = new AnchorPane();
 
 		// Carrega o arquivo FXML para o painel de edição
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/components/edit-address.fxml"));
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/components/EditAddress.fxml"));
 
 		loader.setRoot(apEditAddress);
 		loader.setController(new EditAddressController(this));

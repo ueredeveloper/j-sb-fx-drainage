@@ -45,6 +45,8 @@ public class EditAddressController implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 		// Retira o link com a stilização light ou dark, assim fica a estilização do componente pai (MainController)
 		apContainer.getStylesheets().clear();
+		// Retira o link com a stilização light ou dark, assim fica a estilização do componente pai (MainController)
+		apContainer.getStylesheets().clear();
 		btnClose.setOnAction(e-> {this.documentController.closeEditAddress();});
 		
 	}

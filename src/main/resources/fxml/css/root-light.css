@@ -10,41 +10,39 @@
 	
 }
 
-.root{
-    -fx-background-color: -fx-primary-color;
-    background-color: -fx-secondary-color;
-}
 
 .container {
 	-fx-background-color: -fx-primary-color;
+}
+.container .title{
+        -fx-font: normal bold 22px 'serif';
+        -fx-text-fill: -fx-addictional-color;
+}
+.container .text-color {
+	-fx-text-fill: -fx-addictional-color;
 }
 .container .button{
   -fx-background-color: -fx-addictional-color;
   -fx-text-fill: -fx-secondary-color;
   -fx-font-weight: BOLD;
 }
-.container .on-prompt-move {
-        -jfx-focus-color: -fx-secondary-color; /* prompt text ao subir no text field */
+.container .jfx-text-field {
+  -jfx-unfocus-color: red; /* borda inferior */
+  -jfx-focus-color: -fx-addictional-color; /* prompt text ao subir no text field */
+
 }
-.container .bottom-border {
-         -jfx-unfocus-color: -fx-addictional-color; /* borda inferior */
+.container .jfx-text-field:focused {
+  -jfx-unfocus-color: -fx-secondary-color; /* borda inferior ao clicar (un focus) */
+  -fx-text-fill: -fx-accent-color; /* texto que o usário escreve */
 }
-.container .text-color {
-        -fx-text-fill: -fx-addictional-color;
-}
-.container .prompt-text {
-        -fx-prompt-text-fill: -fx-addictional-color; /* label de descriçaõ */
-}
-.container .title{
-        -fx-font: normal bold 22px 'serif';
-}
+
 .content {
 	-fx-background-color: -fx-secondary-color;
 }
 /* Styling for combo box list cells */
 .content .jfx-combo-box .list-cell:empty {
-  /*-fx-text-fill: -fx-primary-color;*/ 
-  /*-fx-prompt-text-fill: red;*/
+  -fx-text-fill: -fx-primary-color;
+  -fx-prompt-text-fill: red;
 }
 
 .content .jfx-combo-box .list-cell {
@@ -91,43 +89,13 @@
 .button {
   	-fx-font-weight: BOLD;
 }
-.primary-button {
+.content .primary-button {
 	-fx-background-color: -fx-accent-color;
 	-fx-text-fill: -fx-primary-color; 
 }
-.addictional-button {
-  -fx-background-color: -fx-additional-color;
+.content .addictional-button {
+  -fx-background-color: -fx-addictional-color;
   -fx-text-fill: -fx-primary-color;
-  -fx-font-weight: BOLD;
-}
-
-
-/* Styling for combo box list cells */
-.jfx-combo-box .list-cell:empty {
-  /*-fx-text-fill: -fx-primary-color;*/ 
-  /*-fx-prompt-text-fill: red;*/
-}
-
-.jfx-combo-box .list-cell {
-  -fx-text-fill: -fx-text-inner-color; /* texto na lista do combobox */
-}
-.jfx-combo-box {
-  -jfx-unfocus-color: -fx-secondary-color; /* cor da borda inferior ao clicar (un focus) */
-  -fx-text-fill: -fx-accent-color; /*cor da escrita */
-  -jfx-unfocus-color: -fx-primary-color; /* cor da borda inferior */
-  /*-fx-prompt-text-fill: -fx-primary-color;*/ /* cor do prompt  */
-  -jfx-focus-color: -fx-addictional-color; /* cor do prompt text ao subir no text field */
-}
-
-.jfx-text-field {
-  -jfx-unfocus-color: -fx-primary-color; /* borda inferior */
-  /*-fx-prompt-text-fill: -fx-primary-color;*/ /* prompt text */
-  -jfx-focus-color: -fx-addictional-color; /* prompt text ao subir no text field */
-
-}
-.jfx-text-field:focused {
-  -jfx-unfocus-color: -fx-secondary-color; /* borda inferior ao clicar (un focus) */
-  -fx-text-fill: -fx-accent-color; /* texto que o usário escreve */
 }
 
 /* TableView */
@@ -139,31 +107,31 @@
     -fx-border-color: -fx-primary-color;
     border-color: -fx-primary-color;
     -fx-background-radius: 0;
-    -fx-background-color: #1A1A1A;
-    background-color: #1A1A1A;
-    -fx-table-cell-border-color: -fx-primary-color;
+    -fx-background-color: -fx-secondary-color; /* fundo */
+    background-color: -fx-secondary-color;
+    -fx-table-cell-border-color: -fx-primary-color; /* linhas verticais */
 }
 .table-view:focused{
     -fx-border-width: 1;
     border-width: 1;
     -fx-border-radius: 0;
     border-radius: 0;
-    -fx-border-color: #4e4e4e;
-    border-color: #4e4e4e;
+    -fx-border-color: -fx-primary-color; /* borda ao clicar */
+    border-color: -fx-primary-color;
     -fx-background-insets: 1;
     -fx-background-radius: 0;
-    -fx-background-color: #1A1A1A;
-    background-color: #1A1A1A;
+    -fx-background-color: -fx-secondary-color;
+    background-color: -fx-secondary-color;
 }
 .table-view .column-header-background{
     -fx-border-width: 0 0 1 0;
     border-width: 0 0 1 0;
-    -fx-border-color: -fx-primary-color;
+    -fx-border-color: -fx-primary-color; /* borda inferiro da coluna */
     border-color: -fx-primary-color;
     -fx-background-radius: 0;
-    -fx-background-color: #1A1A1A;
-    background-color: #1A1A1A;
-    -fx-text-fill: #AFB1B3;
+    -fx-background-color: -fx-secondary-color; /* fundo da coluna */
+    background-color: -fx-secondary-color;
+    -fx-text-fill: -fx-addictional-color;
 }
 .table-view .column-header {
     -fx-background-color: transparent;
@@ -172,33 +140,33 @@
     border-color: -fx-primary-color;
 }
 .table-view .column-resize-line {
-    -fx-background-color: #4e4e4e;
-    background-color: #4e4e4e;
+    -fx-background-color: -fx-secondary-color;
+    background-color: -fx-secondary-color;
     -fx-pref-width: 1;
 }
 .table-row-cell{
-    -fx-background-color: #1A1A1A;
-    background-color: #1A1A1A;
+    -fx-background-color: -fx-secondary-color;
+    background-color: -fx-secondary-color;
     -fx-text-background-color: #AFB1B3;
     -fx-margin: 1;
     margin: 1;
 }
 .table-row-cell:hover {
-    -fx-background-color: #3E3E40;
-    background-color: #3E3E40;
+    -fx-background-color: -fx-addictional-color;
+    background-color: -fx-primary-color;
     -fx-background-insets: 0;
     -fx-background-radius: 0;
 }
 .table-row-cell:selected {
-    -fx-table-cell-border-color: -fx-primary-color;
-    -fx-background-color: #3E3E40;
-    background-color: #3E3E40;
+    -fx-table-cell-border-color: -fx-accent-color;
+    -fx-background-color: -fx-addictional-color;
+    background-color: -fx-addictional-color;
     -fx-background-insets: 0;
     -fx-background-radius: 0;
 }
 .table-row-cell:pressed {
-    -fx-background-color: #4e4e4e;
-    background-color: #4e4e4e;
+    -fx-background-color: -fx-primary-color; /* cor ao pressionar */
+    background-color: -fx-primary-color;
     -fx-background-insets: 0;
     -fx-background-radius: 0;
 }
@@ -211,14 +179,66 @@
     background-color: transparent;
 }
 .table-view .column-drag-header{
-    -fx-background-color: #4e4e4e;
-    background-color: #4e4e4e;
+    -fx-background-color: -fx-primary-color;
+    background-color: -fx-primary-color;
 }
 .icon-light-dark {
 	-fx-font-size: 28px;
-	-fx-fill: -fx-addictional-color; /*cor da escrita */
+	-fx-fill: -fx-addictional-color; /*cor do ícone */
 }
 .nav-buttons {
 	-fx-background-color: transparent;
+}
+
+.login #pLogin{
+	-fx-background-color: -fx-addictional-color;
+}
+.login #lblSignIn {
+  -fx-text-fill: -fx-secondary-color;
+  -fx-font-weight: BOLD;
+}
+
+.login #lblSignInEmail {
+  -fx-text-fill: -fx-secondary-color;
+}
+
+.login #lblSignInPassword {
+  -fx-text-fill: -fx-secondary-color;
+}
+
+.login #btnSignIn {
+  -fx-background-color: -fx-secondary-color;
+  -fx-text-fill: -fx-accent-color;
+}
+
+.login #lblSignUp {
+  -fx-text-fill: -fx-accent-color;
+  -fx-font-weight: BOLD;
+}
+
+.login #lblSignUpEmail {
+  -fx-text-fill: -fx-accent-color;
+}
+
+.login #lblSignUpPassword {
+  -fx-text-fill: -fx-accent-color;
+}
+
+.login #btnSignUp {
+  -fx-background-color: -fx-accent-color;
+  -fx-text-fill: -fx-secondary-color;
+}
+
+.login #btnSignUpGoogle {
+  -fx-background-color: -fx-google-color;
+  -fx-text-fill: -fx-secondary-color;
+  
+}
+.login #lbl-google{
+	-fx-text-fill: -fx-primary-color;
+}
+.login #icon-google {
+	-fx-fill: -fx-secondary-color;
+	-fx-font-size: 1.5em;
 }
 

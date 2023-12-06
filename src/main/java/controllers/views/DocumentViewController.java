@@ -13,6 +13,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.web.HTMLEditor;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
@@ -30,6 +31,9 @@ public class DocumentViewController implements Initializable {
 	public DocumentViewController(Documento selectedDocument) {
 		this.selectedDocument = selectedDocument;
 	}
+	
+    @FXML
+    private AnchorPane apContainer;
 
 	@FXML
 	private HTMLEditor htmlEditor;
@@ -42,6 +46,9 @@ public class DocumentViewController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		
+		// Retira o link com a stilização light ou dark, assim fica a estilização do componente pai (MainController)
+		apContainer.getStylesheets().clear();
 
 		// Load HTML content from a resource file.
 		String resourcePath = "/html/views/index.html";

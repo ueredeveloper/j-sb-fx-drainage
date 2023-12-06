@@ -12,36 +12,18 @@
    <children>
       <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
          <children>
-            <JFXTextField fx:id="tfAddress" labelFloat="true" layoutX="10.0" layoutY="126.0" prefHeight="25.0" promptText="Logradouro" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+            <JFXTextField fx:id="tfAddress" labelFloat="true" layoutX="10.0" layoutY="126.0" prefHeight="25.0" promptText="Logradouro" styleClass="jfx-text-field" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
                <padding>
                   <Insets left="10.0" right="10.0" />
-               </padding>
-               <styleClass>
-                  <String fx:value="on-prompt-move" />
-                  <String fx:value="bottom-border" />
-                  <String fx:value="text-color" />
-                  <String fx:value="prompt-text" />
-               </styleClass></JFXTextField>
-            <JFXTextField fx:id="tfCity" labelFloat="true" layoutX="10.0" layoutY="201.0" prefHeight="25.0" prefWidth="150.0" promptText="Cidade" text="Brasília" AnchorPane.leftAnchor="10.0">
+               </padding></JFXTextField>
+            <JFXTextField fx:id="tfCity" labelFloat="true" layoutX="10.0" layoutY="201.0" prefHeight="25.0" prefWidth="150.0" promptText="Cidade" styleClass="jfx-text-field" text="Brasília" AnchorPane.leftAnchor="10.0">
                <padding>
                   <Insets left="10.0" right="10.0" />
-               </padding>
-               <styleClass>
-                  <String fx:value="on-prompt-move" />
-                  <String fx:value="bottom-border" />
-                  <String fx:value="text-color" />
-                  <String fx:value="prompt-text" />
-               </styleClass></JFXTextField>
-            <JFXTextField fx:id="tfZipCode" labelFloat="true" layoutX="180.0" layoutY="201.0" prefHeight="25.0" prefWidth="150.0" promptText="Cep" AnchorPane.leftAnchor="180.0">
+               </padding></JFXTextField>
+            <JFXTextField fx:id="tfZipCode" labelFloat="true" layoutX="180.0" layoutY="201.0" prefHeight="25.0" prefWidth="150.0" promptText="Cep" styleClass="jfx-text-field" AnchorPane.leftAnchor="180.0">
                <padding>
                   <Insets left="10.0" right="10.0" />
-               </padding>
-               <styleClass>
-                  <String fx:value="on-prompt-move" />
-                  <String fx:value="bottom-border" />
-                  <String fx:value="text-color" />
-                  <String fx:value="prompt-text" />
-               </styleClass></JFXTextField>
+               </padding></JFXTextField>
             <WebView fx:id="wvArea" layoutX="26.0" layoutY="236.0" prefHeight="200.0" prefWidth="-1.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="300.0" />
             <Label alignment="TOP_CENTER" contentDisplay="TOP" layoutX="10.0" layoutY="50.0" text="Editar" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
                <styleClass>
@@ -50,7 +32,7 @@
                </styleClass></Label>
             <JFXButton fx:id="btnEdit" layoutX="250.0" layoutY="239.0" prefWidth="70.0" text="Editar" AnchorPane.rightAnchor="10.0" />
             <JFXButton fx:id="btnClose" layoutX="255.0" layoutY="12.0" prefWidth="70.0" text="Sair" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
-            <Label layoutX="14.0" layoutY="271.0" styleClass="lbl-container-text-color" text="Área" AnchorPane.leftAnchor="10.0">
+            <Label layoutX="14.0" layoutY="271.0" styleClass="text-color" text="Área" AnchorPane.leftAnchor="10.0">
                <padding>
                   <Insets left="10.0" right="10.0" />
                </padding>
