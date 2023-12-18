@@ -50,11 +50,13 @@
 	
 
 ## 18 de dezembro de 2023
+
 * **[] Tarefa 1 - Tipo de Documento
 	* O Combobox tipo de documento está desalinhado com os outros componentes.
 * **[] Tarefa 2 - Lista de Documentos
 	* Os valores na linha da tabela está mais alto do que os valores no combobox Ações, na lista de documentos.
 	
+* **[] Tarefa 3 - De alguma forma o sistema está salvando um documento sem endereço selcionado como endId = 1.
 
 
 

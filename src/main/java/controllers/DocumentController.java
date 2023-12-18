@@ -56,6 +56,7 @@ import utilities.URLUtility;
  */
 public class DocumentController implements Initializable {
 
+	
 	// URL local para os recursos
 	private String localUrl;
 	// private String remoteUrl;
@@ -410,7 +411,7 @@ public class DocumentController implements Initializable {
 		obsProcess.clear();
 		cbProcess.getSelectionModel().clearSelection();
 		obsAddress.clear();
-		System.out.println(obsAddress.get(0).getEndLogradouro());
+	
 		cbProcess.setValue(null);
 
 		cbAddress.getSelectionModel().clearSelection();
@@ -510,8 +511,6 @@ public class DocumentController implements Initializable {
 		try {
 
 			DocumentService documentService = new DocumentService(localUrl);
-
-			//System.out.println(obsAddress.get(0).getEndLogradouro());
 
 			Documento requestDocument = new Documento(tfNumber.getText(),
 

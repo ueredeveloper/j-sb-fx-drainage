@@ -31,6 +31,7 @@ public class Main extends Application {
      */
     @Override
     public void start(Stage stage) {
+    	
         Parent root = null;
         try {
             // Carrega o arquivo FXML que define a interface de login.

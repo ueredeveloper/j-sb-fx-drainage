@@ -64,7 +64,6 @@ public class EditAddressController implements Initializable {
 		// componente pai (MainController)
 		apContainer.getStylesheets().clear();
 		
-		
 		this.endereco = this.documentController.getDocAddress();
 		
 		tfAddress.setText(endereco.getEndLogradouro());
@@ -104,6 +103,7 @@ public class EditAddressController implements Initializable {
 				Stage ownerStage = (Stage) source.getScene().getWindow();
 				String toastMsg = "Endereço editado com sucesso!";
 				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.SUCCESS);
+				
 				
 				// é preciso voltar com o endereço editado e atualizar a lista de documentos
 
