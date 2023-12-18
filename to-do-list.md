@@ -49,7 +49,12 @@
 	* A pesquisa só está sendo pelo número completo do sei, deveria ser  qualquer parte do número. Converter então o docSei para string e pesquisar semelhanças, parte do número etc.
 	
 
-
+## 18 de dezembro de 2023
+* **[] Tarefa 1 - Tipo de Documento
+	* O Combobox tipo de documento está desalinhado com os outros componentes.
+* **[] Tarefa 2 - Lista de Documentos
+	* Os valores na linha da tabela está mais alto do que os valores no combobox Ações, na lista de documentos.
+	
 
 
 

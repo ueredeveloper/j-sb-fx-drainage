@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
+import javax.swing.plaf.synth.SynthScrollBarUI;
+
 import com.google.gson.Gson;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
@@ -47,6 +49,7 @@ import services.DocumentoTipoService;
 import services.EnderecoService;
 import services.ProcessoService;
 import services.ServiceResponse;
+import utilities.URLUtility;
 
 /**
  * Controlador para lidar com operações relacionadas aos documentos.
@@ -61,16 +64,7 @@ public class DocumentController implements Initializable {
 	 * Construtor da classe DocumentController.
 	 */
 	public DocumentController() {
-		try {
-
-			Properties prop = new Properties();
-			InputStream inputStream = getClass().getClassLoader().getResourceAsStream("config.properties");
-			prop.load(inputStream);
-			localUrl = prop.getProperty("local.url");
-			// remoteUrl = prop.getProperty("remote.url");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		this.localUrl = URLUtility.getURLService();
 	}
 
 	@FXML
@@ -147,6 +141,13 @@ public class DocumentController implements Initializable {
 
 	AnchorPane apEditAddress;
 
+	public Endereco getDocAddress() {
+		// Get the selected document from the TableView
+		Endereco address = tvDocs.getSelectionModel().getSelectedItem().getDocEndereco();
+
+		return address;
+	}
+
 	public void setMainController(MainController mainController) {
 		this.mainController = mainController;
 	}
@@ -161,10 +162,10 @@ public class DocumentController implements Initializable {
 	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		
-		// Retira o link com a stilização light ou dark, assim fica a estilização do componente pai (MainController)
+
+		// Retira o link com a stilização light ou dark, assim fica a estilização do
+		// componente pai (MainController)
 		apContent.getStylesheets().clear();
-		
 
 		tcTipo.setCellValueFactory(cellData -> cellData.getValue().getProperty(Documento::getDocTipoDescricao));
 		tcNum.setCellValueFactory(new PropertyValueFactory<Documento, String>("docNumero"));
@@ -349,7 +350,6 @@ public class DocumentController implements Initializable {
 		btnEdit.setOnAction(event -> handleEdit(event));
 	}
 
-	
 	/**
 	 * Abre o painel de edição do endereço. Cria um novo AnchorPane e carrega um
 	 * arquivo FXML para exibir o painel de edição. Realiza uma transição de
@@ -410,9 +410,14 @@ public class DocumentController implements Initializable {
 		obsProcess.clear();
 		cbProcess.getSelectionModel().clearSelection();
 		obsAddress.clear();
+		System.out.println(obsAddress.get(0).getEndLogradouro());
+		cbProcess.setValue(null);
+
 		cbAddress.getSelectionModel().clearSelection();
+		cbAddress.setValue(null);
 		tfCity.clear();
 		tfCEP.clear();
+
 	}
 
 	/**
@@ -506,12 +511,19 @@ public class DocumentController implements Initializable {
 
 			DocumentService documentService = new DocumentService(localUrl);
 
+			//System.out.println(obsAddress.get(0).getEndLogradouro());
+
 			Documento requestDocument = new Documento(tfNumber.getText(),
-					// Processo
-					obsProcess.get(0), numeroSei, cbDocType.getValue(),
-					// Endereço
-					new Endereco(obsAddress.get(0).getEndId(), obsAddress.get(0).getEndLogradouro(), tfCity.getText(),
-							tfCEP.getText()));
+
+					// Verifica se o usuário cadastrou algum processo
+
+					obsProcess.size() == 0 ? null : obsProcess.get(0), numeroSei, cbDocType.getValue(),
+
+					// Verifica se o usuário cadastrou algum endereço
+
+					obsAddress.size() == 0 ? null
+							: new Endereco(obsAddress.get(0).getEndId(), obsAddress.get(0).getEndLogradouro(),
+									tfCity.getText(), tfCEP.getText()));
 
 			ServiceResponse<?> documentoServiceResponse = documentService.save(requestDocument);
 

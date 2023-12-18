@@ -14,6 +14,7 @@ import java.util.List;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import models.Documento;
 import models.Endereco;
 
 public class EnderecoService {
@@ -24,7 +25,7 @@ public class EnderecoService {
 		this.localUrl = localUrl;
 	}
 
-	public ServiceResponse<?> save(Endereco Endereco) {
+	public ServiceResponse<?> save(Endereco endereco) {
 		try {
 			URL apiUrl = new URL(localUrl + "/address/create");
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
@@ -33,7 +34,7 @@ public class EnderecoService {
 			connection.setDoOutput(true);
 
 			// Convert Documento object to JSON
-			String jsonInputString = convertObjectToJson(Endereco);
+			String jsonInputString = convertObjectToJson(endereco);
 
 			// Write JSON to request body
 			try (OutputStream os = connection.getOutputStream();
@@ -72,6 +73,52 @@ public class EnderecoService {
 		}
 	}
 
+	public ServiceResponse<?> update(Endereco endereco) {
+		try {
+			URL apiUrl = new URL(localUrl + "/address/update?id=" + endereco.getEndId());
+			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
+			connection.setRequestMethod("PUT");
+			connection.setRequestProperty("Content-Type", "application/json");
+			connection.setDoOutput(true);
+
+			// Convert Documento object to JSON
+			String jsonInputString = convertObjectToJson(endereco);
+			
+			System.out.println(jsonInputString);
+
+			// Write JSON to request body
+			try (OutputStream os = connection.getOutputStream();
+					OutputStreamWriter osw = new OutputStreamWriter(os, "UTF-8")) {
+				osw.write(jsonInputString);
+				osw.flush();
+			}
+
+			int responseCode = connection.getResponseCode();
+
+			String responseBody;
+			if (responseCode == HttpURLConnection.HTTP_OK) {
+
+				try (BufferedReader br = new BufferedReader(
+						new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
+					StringBuilder response = new StringBuilder();
+					String responseLine;
+					while ((responseLine = br.readLine()) != null) {
+						response.append(responseLine);
+					}
+					responseBody = response.toString();
+				}
+			} else {
+				handleErrorResponse(connection);
+				responseBody = readErrorStream(connection);
+			}
+
+			connection.disconnect();
+			return new ServiceResponse<String>(responseCode, responseBody);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null; // Return null if an error occurs
+		}
+	}
 	public List<Endereco> fetchAddress(String keyword) {
 
 		try {
