@@ -58,7 +58,9 @@
 	
 * **[] Tarefa 3 - De alguma forma o sistema está salvando um documento sem endereço selcionado como endId = 1.
 
-
+## 19 de Dezembro de 2023
+* **[] Tarefa 1 - Gmaps API Key
+	* Adicionar no banco de dados para que seja fácil modificar.
 
 
 
