@@ -67,7 +67,7 @@ public class EditDocumentTest extends ApplicationTest {
 		tfNumber.setText("11111/2024");
 		sleep(500);
 		javafx.scene.control.TextField tfNumberSEI = lookup("#tfNumberSEI").query();
-		tfNumberSEI.setText("111112024");
+		tfNumberSEI.setText("111111");
 		sleep(500);
 		
 		ComboBox<Processo> cbProcess = lookup("#cbProcess").query();
@@ -82,17 +82,17 @@ public class EditDocumentTest extends ApplicationTest {
 		});
 		
 		ComboBox<Processo> cbAddress = lookup("#cbAddress").query();
-		clickOn(cbAddress).write("Sorriso");
+		clickOn(cbAddress).write("Rua Carlos Teixeira, 14");
 	
-		sleep(1500);
+		sleep(500);
 		selectFirstItemInComboBox(cbAddress);
 
-		/*
+		
 		Platform.runLater(() -> {
 
 			clickOn(cbAddress);
 			cbAddress.getSelectionModel().select(0);
-		});*/
+		});
 
 		sleep(500);
 		javafx.scene.control.TextField tfCity = lookup("#tfCity").query();
