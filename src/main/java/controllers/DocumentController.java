@@ -56,7 +56,6 @@ import utilities.URLUtility;
  */
 public class DocumentController implements Initializable {
 
-	
 	// URL local para os recursos
 	private String localUrl;
 	// private String remoteUrl;
@@ -226,7 +225,7 @@ public class DocumentController implements Initializable {
 				cbProcess.getSelectionModel().select(newSelection.getDocProcesso());
 				cbAddress.getSelectionModel().select(newSelection.getDocEndereco());
 				if (newSelection.getDocEndereco() != null) {
-					System.out.println("selection" + newSelection.getDocEndereco().getEndCidade());
+
 					tfCity.setText(newSelection.getDocEndereco().getEndCidade());
 					tfCEP.setText(newSelection.getDocEndereco().getEndCEP());
 				} else {
@@ -410,10 +409,9 @@ public class DocumentController implements Initializable {
 		tfNumberSEI.clear();
 		obsProcess.clear();
 		cbProcess.getSelectionModel().clearSelection();
-		obsAddress.clear();
-	
 		cbProcess.setValue(null);
 
+		obsAddress.clear();
 		cbAddress.getSelectionModel().clearSelection();
 		cbAddress.setValue(null);
 		tfCity.clear();
@@ -514,13 +512,14 @@ public class DocumentController implements Initializable {
 
 			Documento requestDocument = new Documento(tfNumber.getText(),
 
-					// Verifica se o usuário cadastrou algum processo
+					// Verifica se o usuário selecionou algum processo
 
-					obsProcess.size() == 0 ? null : obsProcess.get(0), numeroSei, cbDocType.getValue(),
+					cbProcess.selectionModelProperty().get().isEmpty() ? null : obsProcess.get(0), numeroSei,
+					cbDocType.getValue(),
 
-					// Verifica se o usuário cadastrou algum endereço
+					// Verifica se o usuário selecionou ou cadastrou algum endereço
 
-					obsAddress.size() == 0 ? null
+					cbAddress.selectionModelProperty().get().isEmpty() ? null
 							: new Endereco(obsAddress.get(0).getEndId(), obsAddress.get(0).getEndLogradouro(),
 									tfCity.getText(), tfCEP.getText()));
 
