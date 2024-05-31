@@ -6,7 +6,19 @@ var polygon = L.polygon(latlngs, {color: 'red'}).addTo(map);
 // zoom the map to the polygon
 map.fitBounds(polygon.getBounds());*/
 
+ document.addEventListener('DOMContentLoaded', function() {
+        if (typeof app !== 'undefined') {
+            alert('app ok');
+        } else {
+            console.error("app variable not defined");
+        }
+    });
 
+var app;
+
+app.setZoom = function (){
+	console.log('set zoom function');
+}
 
 
 map.on('click', function(e) {
@@ -29,10 +41,5 @@ let json = {
 	L.marker([json.intLatitude, json.intLongitude]).addTo(map);
 	
 	
-	function setZoom(){
-		alert('zoom');
-	}	
-	
-	app.setZoom();
 	
 	

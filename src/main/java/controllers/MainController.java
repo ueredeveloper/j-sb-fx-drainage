@@ -66,25 +66,43 @@ public class MainController implements Initializable {
 		webEngine = wvMap.getEngine();
 		webEngine.load(getClass().getResource("/html/map/index.html").toExternalForm());
 
+		ready = false;
+
 		webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<Worker.State>() {
 			public void changed(final ObservableValue<? extends Worker.State> observableValue,
 					final Worker.State oldState, final Worker.State newState) {
+
 				if (newState == Worker.State.SUCCEEDED) {
-					doc = (JSObject) webEngine.executeScript("window");
-
-					doc.setMember("app", MainController.this);
-
-					// doc.setMember("appShapeEndereco", GoogleMap.this);
+					ready = true;
 				}
-
-				// System.out.println(" initComunicantion funcionando");
 			}
 		});
 		
-		// mostrar erros no console
-        WebConsoleListener.setDefaultListener((webView, message, lineNumber, sourceId) -> {
-            System.out.println(message + "[at " + lineNumber + "]");
+		webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<Worker.State>()
+        {
+            public void changed(final ObservableValue<? extends Worker.State> observableValue,
+                                final Worker.State oldState,
+                                final Worker.State newState)
+            {
+                if (newState == Worker.State.SUCCEEDED)
+                {
+                    doc = (JSObject) webEngine.executeScript("window");
+                    
+                    doc.setMember("app", MainController.this);
+                    
+                    //doc.setMember("appShapeEndereco", GoogleMap.this);
+                }
+               
+               // System.out.println(" initComunicantion funcionando");
+            }
         });
+
+	
+
+		// mostrar erros no console
+		WebConsoleListener.setDefaultListener((webView, message, lineNumber, sourceId) -> {
+			System.out.println(message + "[at " + lineNumber + "]");
+		});
 
 		// Add a listener to the width property of the AnchorPane
 		apContent.widthProperty().addListener(new ChangeListener<Number>() {
@@ -144,7 +162,7 @@ public class MainController implements Initializable {
 	}
 
 	public void setZoom() {
-		invokeJS("setZoom();");
+		invokeJS("app.setZoom();");
 	}
 
 	private DocumentController docController;
