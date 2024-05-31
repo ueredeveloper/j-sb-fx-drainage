@@ -5,6 +5,7 @@
  * @type {HTMLElement}
  */
 
+
 var dom = document.getElementById('chart-container');
 var myChart = echarts.init(dom, null, {
 	renderer : 'canvas',

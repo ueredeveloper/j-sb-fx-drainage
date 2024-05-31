@@ -7,6 +7,8 @@ var polygon = L.polygon(latlngs, {color: 'red'}).addTo(map);
 map.fitBounds(polygon.getBounds());*/
 
 
+
+
 map.on('click', function(e) {
     console.log(e.latlng);
 } );

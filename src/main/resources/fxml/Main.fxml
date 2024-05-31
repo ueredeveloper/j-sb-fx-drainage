@@ -14,6 +14,7 @@
                <children>
                   <WebView fx:id="wvMap" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="5.0" />
                   <Button fx:id="btnZoom" layoutX="134.0" layoutY="304.0" mnemonicParsing="false" text="Button" />
+             
                </children>
             </AnchorPane>
             <AnchorPane fx:id="apManager" layoutX="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
