@@ -1,24 +1,19 @@
 package controllers;
 
+import java.applet.AppletContext;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.concurrent.Worker;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
+import javafx.scene.Parent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
-import netscape.javascript.JSException;
-import netscape.javascript.JSObject;
-import com.sun.javafx.webkit.WebConsoleListener;
 
 @SuppressWarnings("restriction")
 public class MainController implements Initializable {
@@ -32,14 +27,10 @@ public class MainController implements Initializable {
 	@FXML
 	private AnchorPane apContent;
 
-	@FXML
-	private AnchorPane apMap;
 
 	@FXML
 	private AnchorPane apManager;
 
-	@FXML
-	private WebView wvMap;
 
 	public AnchorPane getAnchorPaneContent() {
 		return this.apContent;
@@ -49,34 +40,47 @@ public class MainController implements Initializable {
 		return this.apManager;
 	}
 
-	public Pane getAnchorPaneMap() {
-		return this.apMap;
-	}
-
-
-
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+
+		try {
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Map.fxml"));
+
+			// Set the controller factory
+			fxmlLoader.setControllerFactory(controllerClass -> {
+				if (controllerClass == MapController.class) {
+					MapController controller = new MapController(apContent);
+					return controller;
+				} else {
+					try {
+						return controllerClass.newInstance();
+					} catch (Exception e) {
+						throw new RuntimeException(e);
+					}
+				}
+			});
+
+			Parent root = fxmlLoader.load();
+			
+			apContent.getChildren().add(root);
+			// Add the root to your scene or parent node as needed
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 		// Add a listener to the width property of the AnchorPane
 		apContent.widthProperty().addListener(new ChangeListener<Number>() {
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 				double newWidth = newValue.doubleValue();
-				apMap.setPrefWidth(newWidth / 2);
+				//apMap.setPrefWidth(newWidth / 2);
 				apManager.setPrefWidth(newWidth / 2);
 			}
 		});
-		
-		
 
 		loadNavigationBar();
 
-		
-
 	}
-
-
 
 	private DocumentController docController;
 	private AnchorPane apDocument; // Store the AnchorPane of Documents.fxml

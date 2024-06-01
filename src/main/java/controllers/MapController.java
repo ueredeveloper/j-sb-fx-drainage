@@ -12,6 +12,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import netscape.javascript.JSException;
@@ -23,21 +24,43 @@ import netscape.javascript.JSObject;
 public class MapController implements Initializable {
 
 	@FXML
-	WebView wvMap;
+	private AnchorPane apMap;
 
 	@FXML
+	WebView wvMap;
+
+
 	private Button btnZoom;
 
 	private JSObject doc;
 	private WebEngine webEngine;
 	public boolean ready;
+	private AnchorPane apContent;
+
+	public MapController(AnchorPane apContent) {
+		this.apContent = apContent;
+	}
+
+	public AnchorPane getAnchorPaneMap() {
+		return this.apMap;
+	}
 
 	@SuppressWarnings("restriction")
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		System.out.println("Map Controller Inicializado");
+
+		// Add a listener to the width property of the AnchorPane
+		apContent.widthProperty().addListener(new ChangeListener<Number>() {
+			@Override
+			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+				double newWidth = newValue.doubleValue();
+				apMap.setPrefWidth(newWidth / 2);
+				// apManager.setPrefWidth(newWidth / 2);
+			}
+		});
 
 		webEngine = wvMap.getEngine();
+
 		webEngine.load(getClass().getResource("/html/map/index.html").toExternalForm());
 
 		ready = false;
@@ -72,20 +95,25 @@ public class MapController implements Initializable {
 			System.out.println(message + "[at " + lineNumber + "]");
 		});
 
-		/*
-		 * // Torna as dimens�es do WebView (wvMap) semelhantes ao do pai (aapMap)
-		 * apMap.widthProperty().addListener((observable, oldValue, newValue) -> { //
-		 * setar prefwidth no mapa wvMap.setPrefWidth(newValue.doubleValue()); });
-		 * 
-		 * apMap.heightProperty().addListener((observable, oldValue, newValue) -> {
-		 * wvMap.setPrefHeight(newValue.doubleValue()); });
-		 */
+		// Torna as dimens�es do WebView (wvMap) semelhantes ao do pai (aapMap)
+		apMap.widthProperty().addListener((observable, oldValue, newValue) -> {
+			// setar prefwidth no mapa
+			wvMap.setPrefWidth(newValue.doubleValue());
+		});
 
-		btnZoom.setOnAction(this::handleZoomButtonClick);
+		apMap.heightProperty().addListener((observable, oldValue, newValue) -> {
+			wvMap.setPrefHeight(newValue.doubleValue());
+		});
+		
+		/*apMap.getChildren().add(btnZoom);
+
+		btnZoom.setOnAction(event -> handleZoomButtonClick(event));*/
 
 	}
 
 	private void invokeJS(final String str) {
+
+		System.out.println("invokeJS str " + str);
 
 		if (ready) {
 			try {
@@ -112,6 +140,8 @@ public class MapController implements Initializable {
 	}
 
 	private void handleZoomButtonClick(ActionEvent event) {
+
+		System.out.println("handle zoom button click");
 		// Call setZoom method
 		setZoom();
 	}

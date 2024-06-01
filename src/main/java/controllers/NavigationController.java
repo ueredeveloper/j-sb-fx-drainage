@@ -35,9 +35,14 @@ public class NavigationController implements Initializable {
 
 	@FXML
 	private MainController mainController;
+	@FXML 
+	private MapController mapController;
 	
 	public void setMainController(MainController mainController) {
 		this.mainController = mainController;
+	}
+	public void setMapController(MapController mapController) {
+		this.mapController = mapController;
 	}
 
 	@Override
@@ -49,7 +54,7 @@ public class NavigationController implements Initializable {
 				
 				
 				AnchorPane apc = (AnchorPane) mainController.getAnchorPaneContent();
-				AnchorPane apMap = (AnchorPane) mainController.getAnchorPaneMap();
+				AnchorPane apMap = (AnchorPane) mapController.getAnchorPaneMap();
 				AnchorPane apManager = (AnchorPane) mainController.getAnchorPaneManager();
 
 				ResizeMap rm = new ResizeMap(apc, apMap, apManager);
@@ -62,7 +67,7 @@ public class NavigationController implements Initializable {
 			@Override
 			public void handle(ActionEvent event) {
 				AnchorPane apc = (AnchorPane) mainController.getAnchorPaneContent();
-				AnchorPane apMap = (AnchorPane) mainController.getAnchorPaneMap();
+				AnchorPane apMap = (AnchorPane)  mapController.getAnchorPaneMap();
 				AnchorPane apManager = (AnchorPane) mainController.getAnchorPaneManager();
 
 				ResizeMap rm = new ResizeMap(apc, apMap, apManager);
