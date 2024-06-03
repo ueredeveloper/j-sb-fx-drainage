@@ -27,10 +27,8 @@ public class MainController implements Initializable {
 	@FXML
 	private AnchorPane apContent;
 
-
 	@FXML
 	private AnchorPane apManager;
-
 
 	public AnchorPane getAnchorPaneContent() {
 		return this.apContent;
@@ -40,43 +38,14 @@ public class MainController implements Initializable {
 		return this.apManager;
 	}
 
+	public MapController mapController;
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
-		try {
-			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Map.fxml"));
+		loadMapView();
 
-			// Set the controller factory
-			fxmlLoader.setControllerFactory(controllerClass -> {
-				if (controllerClass == MapController.class) {
-					MapController controller = new MapController(apContent);
-					return controller;
-				} else {
-					try {
-						return controllerClass.newInstance();
-					} catch (Exception e) {
-						throw new RuntimeException(e);
-					}
-				}
-			});
-
-			Parent root = fxmlLoader.load();
-			
-			apContent.getChildren().add(root);
-			// Add the root to your scene or parent node as needed
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		// Add a listener to the width property of the AnchorPane
-		apContent.widthProperty().addListener(new ChangeListener<Number>() {
-			@Override
-			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				double newWidth = newValue.doubleValue();
-				//apMap.setPrefWidth(newWidth / 2);
-				apManager.setPrefWidth(newWidth / 2);
-			}
-		});
+		addApContentWidthListener();
 
 		loadNavigationBar();
 
@@ -86,37 +55,65 @@ public class MainController implements Initializable {
 	private AnchorPane apDocument; // Store the AnchorPane of Documents.fxml
 
 	private void loadNavigationBar() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Navigation.fxml"));
+            // Setting the custom controller factory for NavigationController
+            loader.setControllerFactory(controllerClass -> {
+                if (controllerClass == NavigationController.class) {
+                    return new NavigationController(this, mapController);
+                } else {
+                    try {
+                        return controllerClass.getDeclaredConstructor().newInstance();
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            });
+            AnchorPane apNavBar = loader.load();
+            apTop.getChildren().add(apNavBar);
+            AnchorPane.setRightAnchor(apNavBar, 0.0);
+
+            if (apDocument == null) {
+                FXMLLoader loader2 = new FXMLLoader(getClass().getResource("/fxml/Documents.fxml"));
+                apDocument = loader2.load();
+                docController = loader2.getController();
+                docController.setMainController(this);
+
+                apManager.getChildren().add(apDocument);
+            } else {
+                apManager.setVisible(!apDocument.isVisible());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+	private void loadMapView() {
 		try {
-
-			// Abrir a barra de navega��o
-
-			FXMLLoader loader1 = new FXMLLoader(getClass().getResource("/fxml/Navigation.fxml"));
-			AnchorPane apNavBar = loader1.load();
-			// acesso ao MainController dentro do NavBarController
-			NavigationController navBarController = loader1.getController();
-			navBarController.setMainController(this);
-
-			apTop.getChildren().add(apNavBar);
-			// seta apNavBar no lado direito da tela
-			AnchorPane.setRightAnchor(apNavBar, 0.0);
-
-			if (apDocument == null) {
-				// Open the DocumentController
-				FXMLLoader loader2 = new FXMLLoader(getClass().getResource("/fxml/Documents.fxml"));
-				apDocument = loader2.load();
-
-				docController = loader2.getController();
-				docController.setMainController(this);
-
-				apManager.getChildren().add(apDocument);
-			} else {
-				// Close the DocumentController
-				apManager.setVisible(!apDocument.isVisible());
-			}
-
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Map.fxml"));
+			fxmlLoader.setControllerFactory(controllerClass -> {
+				if (controllerClass == MapController.class) {
+					mapController = new MapController(apContent);
+					return mapController;
+				} else {
+					try {
+						return controllerClass.getDeclaredConstructor().newInstance();
+					} catch (Exception e) {
+						throw new RuntimeException(e);
+					}
+				}
+			});
+			Parent root = fxmlLoader.load();
+			apContent.getChildren().add(root);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
+	 private void addApContentWidthListener () {
+	        apContent.widthProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
+	            double newWidth = newValue.doubleValue();
+	            apManager.setPrefWidth(newWidth / 2);
+	        });
+	    }
 }

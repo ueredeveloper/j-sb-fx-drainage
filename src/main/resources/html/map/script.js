@@ -31,6 +31,45 @@ let json = {
 	
 	L.marker([json.intLatitude, json.intLongitude]).addTo(map);
 	
+function setMapZoom(number){
+	map.setZoom(number);
+	
+}
+
+// Definindo as camadas
+        var streetLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap contributors'
+        });
+
+        var satelliteLayer = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+            maxZoom: 17,
+            attribution: '© OpenTopoMap contributors'
+        });
+
+        var hybridLayer = L.layerGroup([streetLayer, satelliteLayer]);
+
+// Função para definir a camada do mapa
+        function setMapLayer(layer) {
+            map.eachLayer(function (l) {
+                map.removeLayer(l);
+            });
+            map.addLayer(layer);
+        }
+        
+  // Funções para definir tipos específicos de camadas
+        function setStreetMap() {
+            setMapLayer(streetLayer);
+        }
+
+        function setSatelliteMap() {
+            setMapLayer(satelliteLayer);
+        }
+
+        function setHybridMap() {
+            setMapLayer(hybridLayer);
+        }   
+	
 	
 	
 	

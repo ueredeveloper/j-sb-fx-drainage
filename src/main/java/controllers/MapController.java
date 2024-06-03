@@ -3,6 +3,7 @@ package controllers;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import com.jfoenix.controls.JFXButton;
 import com.sun.javafx.webkit.WebConsoleListener;
 
 import javafx.beans.value.ChangeListener;
@@ -29,8 +30,20 @@ public class MapController implements Initializable {
 	@FXML
 	WebView wvMap;
 
+	@FXML
+	private JFXButton btnZoomPlus;
 
-	private Button btnZoom;
+	@FXML
+	private JFXButton btnStreet;
+
+	@FXML
+	private JFXButton btnSatellite;
+
+	@FXML
+	private JFXButton btnHybrid;
+
+	@FXML
+	private JFXButton btnZoomMinus;
 
 	private JSObject doc;
 	private WebEngine webEngine;
@@ -104,10 +117,14 @@ public class MapController implements Initializable {
 		apMap.heightProperty().addListener((observable, oldValue, newValue) -> {
 			wvMap.setPrefHeight(newValue.doubleValue());
 		});
-		
-		/*apMap.getChildren().add(btnZoom);
 
-		btnZoom.setOnAction(event -> handleZoomButtonClick(event));*/
+		/* apMap.getChildren().add(btnZoom); */
+
+		btnZoomPlus.setOnAction(event -> handleZoomPlus(event));
+		btnZoomPlus.setOnAction(event -> handleZoomMinus(event));
+		btnStreet.setOnAction(event -> handleStreetMap(event));
+		btnZoomPlus.setOnAction(event -> handleSatelliteMap(event));
+		btnZoomPlus.setOnAction(event -> handleHybridMap(event));
 
 	}
 
@@ -139,15 +156,27 @@ public class MapController implements Initializable {
 		}
 	}
 
-	private void handleZoomButtonClick(ActionEvent event) {
-
-		System.out.println("handle zoom button click");
-		// Call setZoom method
-		setZoom();
+	private void handleZoomPlus(ActionEvent event) {
+		invokeJS("setMapZoomPlus()");
 	}
 
-	public void setZoom() {
-		invokeJS("console.log('hello world')");
+	private void handleZoomMinus(ActionEvent event) {
+		invokeJS("setMapZoomMinus()");
+	}
+
+	private void handleStreetMap(ActionEvent event) {
+		invokeJS("setMapLayer(streetLayer);");
+
+	}
+
+	private void handleSatelliteMap(ActionEvent event) {
+		invokeJS("setMapLayer(satelliteLayer);");
+
+	}
+
+	private void handleHybridMap(ActionEvent event) {
+		invokeJS("setMapLayer(hybridLayer);");
+
 	}
 
 	public void printCoords(String coords) {

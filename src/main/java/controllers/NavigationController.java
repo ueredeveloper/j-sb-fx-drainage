@@ -16,7 +16,6 @@ import javafx.scene.layout.HBox;
 import utilities.ResizeMap;
 
 public class NavigationController implements Initializable {
-	
 
 	@FXML
 	private AnchorPane apContent;
@@ -35,13 +34,11 @@ public class NavigationController implements Initializable {
 
 	@FXML
 	private MainController mainController;
-	@FXML 
+	@FXML
 	private MapController mapController;
-	
-	public void setMainController(MainController mainController) {
+
+	public NavigationController(MainController mainController, MapController mapController) {
 		this.mainController = mainController;
-	}
-	public void setMapController(MapController mapController) {
 		this.mapController = mapController;
 	}
 
@@ -51,43 +48,39 @@ public class NavigationController implements Initializable {
 		btnRegistration.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				
-				
-				AnchorPane apc = (AnchorPane) mainController.getAnchorPaneContent();
-				AnchorPane apMap = (AnchorPane) mapController.getAnchorPaneMap();
-				AnchorPane apManager = (AnchorPane) mainController.getAnchorPaneManager();
 
-				ResizeMap rm = new ResizeMap(apc, apMap, apManager);
+				AnchorPane apMainContent = (AnchorPane) mainController.getAnchorPaneContent();
+				AnchorPane apMapContent = (AnchorPane) mapController.getAnchorPaneMap();
+				AnchorPane apManagerContent = (AnchorPane) mainController.getAnchorPaneManager();
+
+				ResizeMap rm = new ResizeMap(apMainContent, apMapContent, apManagerContent);
 				rm.resetMapSize();
-			
+
 			}
 		});
 
 		btnMap.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				AnchorPane apc = (AnchorPane) mainController.getAnchorPaneContent();
-				AnchorPane apMap = (AnchorPane)  mapController.getAnchorPaneMap();
-				AnchorPane apManager = (AnchorPane) mainController.getAnchorPaneManager();
+				AnchorPane apMainContent = (AnchorPane) mainController.getAnchorPaneContent();
+				AnchorPane apMapContent = (AnchorPane) mapController.getAnchorPaneMap();
+				AnchorPane apManagerContent = (AnchorPane) mainController.getAnchorPaneManager();
 
-				ResizeMap rm = new ResizeMap(apc, apMap, apManager);
+				ResizeMap rm = new ResizeMap(apMainContent, apMapContent, apManagerContent);
 				rm.resizeMapToFullWidth();
 			}
 		});
-		
 
 	}
-
-	
 
 	public void loadDocuments() {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Documents.fxml"));
-			AnchorPane apManager = (AnchorPane) mainController.getAnchorPaneManager();
-			apManager.getChildren().setAll((AnchorPane) loader.load());
+			AnchorPane apManagerContent = (AnchorPane) mainController.getAnchorPaneManager();
+			apManagerContent.getChildren().setAll((AnchorPane) loader.load());
 
-			DocumentController docCont = loader.getController();
-			docCont.setMainController(this.mainController);
+			DocumentController docController = loader.getController();
+			docController.setMainController(this.mainController);
 
 		} catch (IOException e) {
 			e.printStackTrace();
