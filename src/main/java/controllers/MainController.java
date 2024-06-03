@@ -9,7 +9,6 @@ import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.web.WebEngine;
@@ -88,7 +87,7 @@ public class MainController implements Initializable {
 
 	}
 	
-	private DocumentController docController;
+	private DocumentController2 docController;
 	private AnchorPane apDocument; // Store the AnchorPane of Documents.fxml
 
 	private void loadNavigationBar() {
@@ -109,7 +108,7 @@ public class MainController implements Initializable {
 
 	        if (apDocument == null) {
 	            // Open the DocumentController
-	            FXMLLoader loader2 = new FXMLLoader(getClass().getResource("/fxml/Documents.fxml"));
+	            FXMLLoader loader2 = new FXMLLoader(getClass().getResource("/fxml/Documents2.fxml"));
 	            apDocument = loader2.load();
 
 	            docController = loader2.getController();

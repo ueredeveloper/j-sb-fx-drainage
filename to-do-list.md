@@ -61,6 +61,14 @@
 ## 19 de Dezembro de 2023
 * **[] Tarefa 1 - Gmaps API Key
 	* Adicionar no banco de dados para que seja fácil modificar.
+	
+## 23 de Fevereiro de 2024
+* **[] Tarefa 1 - Mudar bando e Tela de Cadastro de Documentos
+	* Mudar a conexão  com novo banco e mudar a tela da cadastro de documentos
+		* Para isso foi criado o `DocumentController2` e `Documents2.fxml`. São nomes provisórios, depois será deletado os arquivos `DocumentController` e `Documents.fxml`.
+		* Também foi criado o serviço `j-water-grants` com novas tabelas e novos relacionamentos. Por exemplo, um documento tem vários endereços e um endereço tem vários documentos.
+		
+		
 
 
 
