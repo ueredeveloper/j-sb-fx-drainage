@@ -31,10 +31,6 @@ let json = {
 	
 	L.marker([json.intLatitude, json.intLongitude]).addTo(map);
 	
-function setMapZoom(number){
-	map.setZoom(number);
-	
-}
 
 // Definindo as camadas
         var streetLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -69,6 +65,20 @@ function setMapZoom(number){
         function setHybridMap() {
             setMapLayer(hybridLayer);
         }   
+        
+        function setMapZoomPlus(){
+			var currentZoom = map.getZoom(); // Obtém o nível de zoom atual
+		    var newZoom = currentZoom + 1; // Incrementa o nível de zoom em 1
+		    map.setZoom(newZoom);
+	
+		}
+
+		function setMapZoomMinus(){
+			var currentZoom = map.getZoom(); // Obtém o nível de zoom atual
+		    var newZoom = currentZoom - 1; // Decrementa o nível de zoom em 1
+		    map.setZoom(newZoom);
+			
+		}
 	
 	
 	

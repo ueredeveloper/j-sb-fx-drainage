@@ -121,10 +121,10 @@ public class MapController implements Initializable {
 		/* apMap.getChildren().add(btnZoom); */
 
 		btnZoomPlus.setOnAction(event -> handleZoomPlus(event));
-		btnZoomPlus.setOnAction(event -> handleZoomMinus(event));
+		btnZoomMinus.setOnAction(event -> handleZoomMinus(event));
 		btnStreet.setOnAction(event -> handleStreetMap(event));
-		btnZoomPlus.setOnAction(event -> handleSatelliteMap(event));
-		btnZoomPlus.setOnAction(event -> handleHybridMap(event));
+		btnSatellite.setOnAction(event -> handleSatelliteMap(event));
+		btnHybrid.setOnAction(event -> handleHybridMap(event));
 
 	}
 
