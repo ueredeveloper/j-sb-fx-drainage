@@ -17,6 +17,7 @@ import javafx.scene.web.WebView;
 
 @SuppressWarnings("restriction")
 public class MainController implements Initializable {
+	
 
 	@FXML
 	private AnchorPane apMain;

@@ -51,6 +51,7 @@ import services.ServiceResponse;
  * Controlador para lidar com operações relacionadas aos documentos.
  */
 public class DocumentController implements Initializable {
+	
 
 	// URL local para os recursos
 	private String localUrl;

@@ -23,6 +23,7 @@ import netscape.javascript.JSObject;
  * Controlador para a interface de mapa.
  */
 public class MapController implements Initializable {
+	
 
 	@FXML
 	private AnchorPane apMap;
