@@ -48,6 +48,8 @@
 * ** [] Tarefa 2 - Pesquisa número sei
 	* A pesquisa só está sendo pelo número completo do sei, deveria ser  qualquer parte do número. Converter então o docSei para string e pesquisar semelhanças, parte do número etc.
 	
+## 03 de Junho de 2024
+* **[x] Git pull para adicionar Leaflet Maps.
 
 
 
