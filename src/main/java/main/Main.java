@@ -13,11 +13,10 @@ import javafx.stage.Stage;
  */
 public class Main extends Application {
 
-	
     /**
-     * M�todo principal que inicia a aplica��o.
+     * Método principal que inicia a aplicação
      *
-     * @param args Argumentos da linha de comando (n�o s�o usados aqui).
+     * @param args.
      */
     public static void main(String[] args) {
     	
@@ -25,9 +24,9 @@ public class Main extends Application {
     }
     
     /**
-     * M�todo de inicializa��o da aplica��o JavaFX.
+     * Método de inicialização da aplicação JavaFX.
      *
-     * @param stage O palco principal da aplica��o.
+     * @param stage O palco principal da aplicação.
      */
     @Override
     public void start(Stage stage) {

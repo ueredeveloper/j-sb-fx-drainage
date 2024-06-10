@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import java.net.URL?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.web.WebView?>
+
+
+<AnchorPane fx:id="apMap" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: red;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MapController">
+   <children>
+      <WebView fx:id="wvMap" layoutX="50.0" layoutY="-100.0" prefHeight="500.0" prefWidth="500.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      <Pane prefHeight="400.0" prefWidth="95.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+         
+            <JFXButton fx:id="btnZoomPlus" layoutX="34.0" layoutY="20.0" prefHeight="30.0" prefWidth="30.0" styleClass="button-container" text="+">
+               <stylesheets>
+                  <URL value="@css/root.css" />
+                  <URL value="@css/map.css" />
+               </stylesheets>
+            </JFXButton>
+            <JFXButton fx:id="btnStreet" layoutX="8.0" layoutY="183.0" prefWidth="80.0" styleClass="button-container" text="Ruas">
+               <stylesheets>
+                  <URL value="@css/root.css" />
+                  <URL value="@css/map.css" />
+               </stylesheets>
+            </JFXButton>
+            <JFXButton fx:id="btnSatellite" layoutX="8.0" layoutY="223.0" prefWidth="80.0" styleClass="button-container" text="Satélite">
+               <stylesheets>
+                  <URL value="@css/root.css" />
+                  <URL value="@css/map.css" />
+               </stylesheets>
+            </JFXButton>
+            <JFXButton fx:id="btnHybrid" layoutX="8.0" layoutY="266.0" prefWidth="80.0" styleClass="button-container" text="Híbrido">
+               <stylesheets>
+                  <URL value="@css/root.css" />
+                  <URL value="@css/map.css" />
+               </stylesheets>
+            </JFXButton>
+            <JFXButton fx:id="btnZoomMinus" layoutX="34.0" layoutY="59.0" prefHeight="30.0" prefWidth="30.0" styleClass="button-container" text="-">
+               <stylesheets>
+                  <URL value="@css/root.css" />
+                  <URL value="@css/map.css" />
+               </stylesheets>
+            </JFXButton>
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>

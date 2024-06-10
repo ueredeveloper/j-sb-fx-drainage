@@ -45,8 +45,12 @@ public class NavigationController implements Initializable {
 	@FXML
 	private MainController mainController;
 
-	public void setMainController(MainController mainController) {
+	@FXML
+	private MapController mapController;
+
+	public NavigationController(MainController mainController, MapController mapController) {
 		this.mainController = mainController;
+		this.mapController = mapController;
 	}
 
 	@FXML
@@ -61,10 +65,10 @@ public class NavigationController implements Initializable {
 		System.out.println(isDarkMode);
 
 		if (isDarkMode) {
-			mainController.applyDarkMode();
+			//mainController.applyDarkMode();
 			iconLightDark.setGlyphName("MOON_ALT");
 		} else {
-			mainController.applyLightMode();
+			//mainController.applyLightMode();
 			iconLightDark.setGlyphName("SUN_ALT");
 		}
 	}
@@ -97,11 +101,11 @@ public class NavigationController implements Initializable {
 			@Override
 			public void handle(ActionEvent event) {
 
-				AnchorPane apc = (AnchorPane) mainController.getAnchorPaneContent();
-				AnchorPane apMap = (AnchorPane) mainController.getAnchorPaneMap();
-				AnchorPane apManager = (AnchorPane) mainController.getAnchorPaneManager();
+				AnchorPane apMainContent = (AnchorPane) mainController.getAnchorPaneContent();
+				AnchorPane apMapContent = (AnchorPane) mapController.getAnchorPaneMap();
+				AnchorPane apManagerContent = (AnchorPane) mainController.getAnchorPaneManager();
 
-				ResizeMap rm = new ResizeMap(apc, apMap, apManager);
+				ResizeMap rm = new ResizeMap(apMainContent, apMapContent, apManagerContent);
 				rm.resetMapSize();
 
 			}
@@ -110,11 +114,11 @@ public class NavigationController implements Initializable {
 		btnMap.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				AnchorPane apc = (AnchorPane) mainController.getAnchorPaneContent();
-				AnchorPane apMap = (AnchorPane) mainController.getAnchorPaneMap();
-				AnchorPane apManager = (AnchorPane) mainController.getAnchorPaneManager();
+				AnchorPane apMainContent = (AnchorPane) mainController.getAnchorPaneContent();
+				AnchorPane apMapContent = (AnchorPane) mapController.getAnchorPaneMap();
+				AnchorPane apManagerContent = (AnchorPane) mainController.getAnchorPaneManager();
 
-				ResizeMap rm = new ResizeMap(apc, apMap, apManager);
+				ResizeMap rm = new ResizeMap(apMainContent, apMapContent, apManagerContent);
 				rm.resizeMapToFullWidth();
 			}
 		});
@@ -124,11 +128,11 @@ public class NavigationController implements Initializable {
 	public void loadDocuments() {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Documents.fxml"));
-			AnchorPane apManager = (AnchorPane) mainController.getAnchorPaneManager();
-			apManager.getChildren().setAll((AnchorPane) loader.load());
+			AnchorPane apManagerContent = (AnchorPane) mainController.getAnchorPaneManager();
+			apManagerContent.getChildren().setAll((AnchorPane) loader.load());
 
-			DocumentController docCont = loader.getController();
-			docCont.setMainController(this.mainController);
+			DocumentController docController = loader.getController();
+			docController.setMainController(this.mainController);
 
 		} catch (IOException e) {
 			e.printStackTrace();

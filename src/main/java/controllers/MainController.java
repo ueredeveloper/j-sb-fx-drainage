@@ -4,31 +4,20 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.web.WebEngine;
-import javafx.scene.web.WebView;
 
+@SuppressWarnings("restriction")
 public class MainController implements Initializable {
 	
 
 	@FXML
 	private AnchorPane apMain;
-	
-	public void applyDarkMode() {
-		apMain.getStylesheets().clear();
-		apMain.getStylesheets().add(getClass().getResource("/fxml/css/root-dark.css").toExternalForm());
-	}
-
-	public void applyLightMode() {
-		apMain.getStylesheets().clear();
-		apMain.getStylesheets().add(getClass().getResource("/fxml/css/root-light.css").toExternalForm());
-	}
 
 	@FXML
 	private AnchorPane apTop;
@@ -37,13 +26,7 @@ public class MainController implements Initializable {
 	private AnchorPane apContent;
 
 	@FXML
-	private AnchorPane apMap;
-
-	@FXML
 	private AnchorPane apManager;
-
-	@FXML
-	private WebView wvMap;
 
 	public AnchorPane getAnchorPaneContent() {
 		return this.apContent;
@@ -53,77 +36,84 @@ public class MainController implements Initializable {
 		return this.apManager;
 	}
 
-	public Pane getAnchorPaneMap() {
-		return this.apMap;
-	}
+	public MapController mapController;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
-		WebEngine webEngine = wvMap.getEngine();
-		webEngine.load(getClass().getResource("/html/map/index.html").toExternalForm());
+		loadMapView();
 
-		// Add a listener to the width property of the AnchorPane
-		apContent.widthProperty().addListener(new ChangeListener<Number>() {
-			@Override
-			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				double newWidth = newValue.doubleValue();
-				apMap.setPrefWidth(newWidth / 2);
-				apManager.setPrefWidth(newWidth / 2);
-			}
-		});
-
-		// Torna as dimens�es do WebView (wvMap) semelhantes ao do pai (aapMap)
-		apMap.widthProperty().addListener((observable, oldValue, newValue) -> {
-			// setar prefwidth no mapa
-			wvMap.setPrefWidth(newValue.doubleValue());
-		});
-
-		apMap.heightProperty().addListener((observable, oldValue, newValue) -> {
-			wvMap.setPrefHeight(newValue.doubleValue());
-		});
+		addApContentWidthListener();
 
 		loadNavigationBar();
 
 	}
-	
-	private DocumentController2 docController;
+
+	private DocumentController docController;
 	private AnchorPane apDocument; // Store the AnchorPane of Documents.fxml
 
 	private void loadNavigationBar() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Navigation.fxml"));
+            // Setting the custom controller factory for NavigationController
+            loader.setControllerFactory(controllerClass -> {
+                if (controllerClass == NavigationController.class) {
+                    return new NavigationController(this, mapController);
+                } else {
+                    try {
+                        return controllerClass.getDeclaredConstructor().newInstance();
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            });
+            AnchorPane apNavBar = loader.load();
+            apTop.getChildren().add(apNavBar);
+            AnchorPane.setRightAnchor(apNavBar, 0.0);
+
+            if (apDocument == null) {
+                FXMLLoader loader2 = new FXMLLoader(getClass().getResource("/fxml/Documents.fxml"));
+                apDocument = loader2.load();
+                docController = loader2.getController();
+                docController.setMainController(this);
+
+                apManager.getChildren().add(apDocument);
+            } else {
+                apManager.setVisible(!apDocument.isVisible());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+	private void loadMapView() {
 		try {
-
-			// Abrir a barra de navega��o
-
-			FXMLLoader loader1 = new FXMLLoader(getClass().getResource("/fxml/Navigation.fxml"));
-			AnchorPane apNavBar = loader1.load();
-			// acesso ao MainController dentro do NavBarController
-			NavigationController navBarController = loader1.getController();
-			navBarController.setMainController(this);
-
-			apTop.getChildren().add(apNavBar);
-			// seta apNavBar no lado direito da tela
-			AnchorPane.setRightAnchor(apNavBar, 0.0);
-			
-
-	        if (apDocument == null) {
-	            // Open the DocumentController
-	            FXMLLoader loader2 = new FXMLLoader(getClass().getResource("/fxml/Documents2.fxml"));
-	            apDocument = loader2.load();
-
-	            docController = loader2.getController();
-	            docController.setMainController(this);
-
-	            apManager.getChildren().add(apDocument);
-	        } else {
-	            // Close the DocumentController
-	            apManager.setVisible(!apDocument.isVisible());
-	        }
-			
-
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Map.fxml"));
+			fxmlLoader.setControllerFactory(controllerClass -> {
+				if (controllerClass == MapController.class) {
+					mapController = new MapController(apContent);
+					return mapController;
+				} else {
+					try {
+						return controllerClass.getDeclaredConstructor().newInstance();
+					} catch (Exception e) {
+						throw new RuntimeException(e);
+					}
+				}
+			});
+			Parent root = fxmlLoader.load();
+			apContent.getChildren().add(root);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
+	 private void addApContentWidthListener () {
+	        apContent.widthProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
+	            double newWidth = newValue.doubleValue();
+	            // A tela é dividida em três partes, uma para o mapa e as outras duas para o cadastro. O cadastro deve
+	            //ser então newWidth/3 mais newWidth/3, com um pequeno ajuste, newWidth/2.75 em um dos cálculos.
+	            apManager.setPrefWidth(newWidth/2.75+newWidth/3);
+	        });
+	    }
 }

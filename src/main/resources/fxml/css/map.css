@@ -1,0 +1,5 @@
+.button-container {
+  -fx-background-color: -fx-addictional-color;
+  -fx-text-fill: -fx-secondary-color;
+  -fx-font-weight: BOLD;
+}
