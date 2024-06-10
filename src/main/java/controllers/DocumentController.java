@@ -136,6 +136,16 @@ public class DocumentController implements Initializable {
 
 	@FXML
 	private JFXButton btnViews;
+	
+	   @FXML
+	    private JFXButton btnAddress;
+
+	    @FXML
+	    private JFXButton btnUser;
+
+	    @FXML
+	    private JFXButton btnInterference;
+	    
 
 	@FXML
 	private MainController mainController;
