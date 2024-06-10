@@ -12,7 +12,6 @@ import javafx.concurrent.Worker;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
@@ -68,7 +67,7 @@ public class MapController implements Initializable {
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 				double newWidth = newValue.doubleValue();
-				apMap.setPrefWidth(newWidth / 2);
+				apMap.setPrefWidth(newWidth / 3);
 				// apManager.setPrefWidth(newWidth / 2);
 			}
 		});

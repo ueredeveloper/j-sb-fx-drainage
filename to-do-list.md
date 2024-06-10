@@ -51,6 +51,12 @@
 ## 03 de Junho de 2024
 * **[x] Git pull para adicionar Leaflet Maps.
 
+## 04 de junho de 2024
+* ** [] Verificar o objeto selecionado no mapa.
+	Criar um listener para visualizar o objeto selecionado no mapa.
+	
+	
+
 
 
 

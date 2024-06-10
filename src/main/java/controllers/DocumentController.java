@@ -201,7 +201,7 @@ public class DocumentController implements Initializable {
 		tcActions.setCellFactory(cellFactory);
 
 		AnchorPane.setRightAnchor(apContent, 0.0);
-		AnchorPane.setLeftAnchor(apContent, 0.0);
+		AnchorPane.setLeftAnchor(apContent, 50.0);
 
 		tvDocs.setItems(obsListDocs);
 

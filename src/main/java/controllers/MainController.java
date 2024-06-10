@@ -114,7 +114,9 @@ public class MainController implements Initializable {
 	 private void addApContentWidthListener () {
 	        apContent.widthProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
 	            double newWidth = newValue.doubleValue();
-	            apManager.setPrefWidth(newWidth / 2);
+	            // A tela é dividida em três partes, uma para o mapa e as outras duas para o cadastro. O cadastro deve
+	            //ser então newWidth/3 mais newWidth/3, com um pequeno ajuste, newWidth/2.75 em um dos cálculos.
+	            apManager.setPrefWidth(newWidth/2.75+newWidth/3);
 	        });
 	    }
 }

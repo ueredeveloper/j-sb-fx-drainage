@@ -13,12 +13,10 @@ import javafx.stage.Stage;
  */
 public class Main extends Application {
 
-	
-	
     /**
      * Método principal que inicia a aplicação
      *
-     * @param args Argumentos da linha de comando (n�o s�o usados aqui).
+     * @param args.
      */
     public static void main(String[] args) {
     	

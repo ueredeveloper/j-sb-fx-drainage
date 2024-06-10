@@ -50,7 +50,8 @@ public class ResizeMap {
 	 * Redefine os pain�is para seus tamanhos padr�o.
 	 */
 	public void resetMapSize() {
-        double newWidth = apContent.getWidth() / 2;
+		 // A tela é divida em três partes, duas para o cadastro e uma para o mapa. Esta parte é a do mapa.
+        double newWidth = apContent.getWidth() / 3 ;
 
         // Create a timeline for the animation
         Timeline timeline = new Timeline();
