@@ -17,17 +17,15 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane fx:id="apContent" prefHeight="771.0" prefWidth="805.0" styleClass="content" AnchorPane.bottomAnchor="5.0" AnchorPane.topAnchor="5.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.DocumentController">
+<AnchorPane fx:id="apContent" prefHeight="700.0" prefWidth="1200.0" styleClass="content" AnchorPane.bottomAnchor="5.0" AnchorPane.topAnchor="5.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.DocumentController">
 	<children>
-		<GridPane layoutX="12.0" layoutY="24.0" prefHeight="95.0" prefWidth="780.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+		<GridPane layoutX="12.0" layoutY="24.0" prefHeight="50.0" prefWidth="785.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
 			<columnConstraints>
-				<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
 				<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
 				<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
 				<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
 			</columnConstraints>
 			<rowConstraints>
-				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
 				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
 			</rowConstraints>
 			<children>
@@ -51,7 +49,7 @@
                   <Tooltip text="Número do documento, ex: 12/2015" />
                </tooltip>
 				</JFXTextField>
-				<JFXTextField fx:id="tfNumberSEI" alignment="TOP_LEFT" labelFloat="true" prefHeight="80.0" prefWidth="370.0" promptText="Número SEI" styleClass="jfx-text-field-custom" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS">
+				<JFXTextField fx:id="tfNumberSei" alignment="TOP_LEFT" labelFloat="true" prefHeight="80.0" prefWidth="370.0" promptText="Número SEI" styleClass="jfx-text-field-custom" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS">
 					<GridPane.margin>
 						<Insets bottom="60.0" left="10.0" right="10.0" top="60.0" />
 					</GridPane.margin>
@@ -59,9 +57,40 @@
                   <Tooltip text="Número no SEI, ex: 123456789" />
                </tooltip>
 				</JFXTextField>
-				<JFXComboBox fx:id="cbProcess" labelFloat="true" maxWidth="1.7976931348623157E308" prefHeight="80.0" prefWidth="370.0" promptText="Processo" GridPane.columnIndex="3" GridPane.hgrow="ALWAYS">
+			</children>
+		</GridPane>
+      <GridPane layoutX="12.0" layoutY="70.0" prefHeight="112.0" prefWidth="980.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+         <columnConstraints>
+            <ColumnConstraints hgrow="ALWAYS" maxWidth="50.0" minWidth="0.0" prefWidth="46.0" />
+            <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="436.0" />
+            <ColumnConstraints hgrow="ALWAYS" maxWidth="80.0" minWidth="0.0" prefWidth="37.0" />
+            <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="329.0" />
+            <ColumnConstraints hgrow="ALWAYS" maxWidth="159.0" minWidth="10.0" prefWidth="48.0" />
+            <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="281.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <FontAwesomeIconView fx:id="btnAddress" glyphName="MAP_SIGNS" size="30" wrappingWidth="15.0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" />
+            <FontAwesomeIconView fx:id="btnInterference" glyphName="MAP_MARKER" size="30" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" />
+            <FontAwesomeIconView fx:id="btnUser" glyphName="USER" size="30" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
+            <FontAwesomeIconView fx:id="btnProcess" glyphName="FILE_TEXT" size="30" wrappingWidth="11.785714149475098" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
+            <FontAwesomeIconView glyphName="FILE_ZIP_ALT" size="30" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
+            <JFXComboBox fx:id="cbAddress" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="650.0" promptText="Endereço" styleClass="jfx-text-field-custom" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.hgrow="ALWAYS">
+               <padding>
+                  <Insets left="5.0" right="5.0" />
+               </padding>
+            </JFXComboBox>
+            <JFXComboBox fx:id="cbUser" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="400.0" promptText="Usuário" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1">
+               <padding>
+                  <Insets left="5.0" right="5.0" />
+               </padding>
+            </JFXComboBox>
+				<JFXComboBox fx:id="cbProcess" labelFloat="true" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="280.0" promptText="Processo" GridPane.columnIndex="3" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1">
 					<GridPane.margin>
-						<Insets bottom="60.0" left="10.0" right="-40.0" top="60.0" />
+						<Insets left="5.0" right="5.0" />
 					</GridPane.margin>
                <styleClass>
                   <String fx:value="jfx-combo-box" />
@@ -71,73 +100,36 @@
                   <Tooltip text="Processo em que o documento se econtra" />
                </tooltip>
                <padding>
-                  <Insets right="50.0" />
+                  <Insets left="5.0" right="5.0" />
                </padding>
 				</JFXComboBox>
-				<JFXComboBox fx:id="cbAddress" labelFloat="true" maxWidth="1.7976931348623157E308" prefHeight="80.0" prefWidth="370.0" promptText="Logradouro" GridPane.columnSpan="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
-					<GridPane.margin>
-						<Insets bottom="60.0" left="10.0" right="10.0" top="60.0" />
-					</GridPane.margin>
+            <JFXComboBox fx:id="cbAttrachment" labelFloat="true" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="280.0" promptText="Anexo" GridPane.columnIndex="5" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1">
                <styleClass>
                   <String fx:value="jfx-combo-box" />
                   <String fx:value="jfx-text-field-custom" />
                </styleClass>
                <tooltip>
-                  <Tooltip text="Endereço relacionado" />
+                  <Tooltip text="Processo em que o documento se econtra" />
                </tooltip>
-				</JFXComboBox>
-				<JFXTextField fx:id="tfCity" alignment="TOP_LEFT" labelFloat="true" prefHeight="80.0" prefWidth="370.0" promptText="Cidade" styleClass="jfx-text-field-custom" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1">
-					<GridPane.margin>
-						<Insets bottom="60.0" left="10.0" right="10.0" top="60.0" />
-					</GridPane.margin>
+               <padding>
+                  <Insets left="5.0" right="20.0" />
+               </padding>
+            </JFXComboBox>
+            <JFXComboBox fx:id="cbInterference" labelFloat="true" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="280.0" promptText="Interferência" GridPane.columnIndex="5">
+               <styleClass>
+                  <String fx:value="jfx-combo-box" />
+                  <String fx:value="jfx-text-field-custom" />
+               </styleClass>
                <tooltip>
-                  <Tooltip text="Digite a cidade, ex: Brasília" />
+                  <Tooltip text="Processo em que o documento se econtra" />
                </tooltip>
-				</JFXTextField>
-      				<JFXTextField fx:id="tfCEP" alignment="TOP_LEFT" labelFloat="true" prefHeight="80.0" prefWidth="370.0" promptText="CEP" styleClass="jfx-text-field-custom" GridPane.columnIndex="3" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1">
-               <GridPane.margin>
-                  <Insets bottom="60.0" left="10.0" right="10.0" top="60.0" />
-               </GridPane.margin>
-               <tooltip>
-                  <Tooltip text="Digite o CEP, ex 72.145-986" />
-               </tooltip>
-      				</JFXTextField>
-			</children>
-		</GridPane>
-      <GridPane layoutX="17.0" layoutY="120.0" prefHeight="35.0" prefWidth="780.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
-        <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="120.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="120.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="120.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="120.0" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        </rowConstraints>
-         <children>
-            <JFXButton fx:id="btnAddress" prefHeight="30.0" prefWidth="120.0" text="Endereço" GridPane.halignment="CENTER">
-               <graphic>
-                  <FontAwesomeIconView glyphName="MAP_SIGNS" size="44" />
-               </graphic>
-            </JFXButton>
-            <JFXButton fx:id="btnInterference" prefHeight="30.0" prefWidth="120.0" text="Interferência" GridPane.columnIndex="1" GridPane.halignment="CENTER">
-               <graphic>
-                  <FontAwesomeIconView glyphName="MAP_MARKER" size="44" />
-               </graphic>
-            </JFXButton>
-            <JFXButton fx:id="btnUser1" prefHeight="30.0" prefWidth="120.0" text="Usuário" GridPane.columnIndex="2" GridPane.halignment="CENTER">
-               <graphic>
-                  <FontAwesomeIconView glyphName="USER" size="44" />
-               </graphic>
-            </JFXButton>
-            <JFXButton fx:id="btnProcess" prefHeight="30.0" prefWidth="120.0" text="Processo" GridPane.columnIndex="3" GridPane.halignment="CENTER">
-               <graphic>
-                  <FontAwesomeIconView glyphName="PAPERCLIP" size="44" />
-               </graphic>
-            </JFXButton>
+               <padding>
+                  <Insets left="5.0" right="20.0" />
+               </padding>
+            </JFXComboBox>
          </children>
       </GridPane>
-      <GridPane layoutX="10.0" layoutY="180.0" prefHeight="50.0" prefWidth="780.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+      <GridPane layoutX="10.0" layoutY="230.0" prefHeight="50.0" prefWidth="780.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -182,7 +174,7 @@
 				</JFXButton>
          </children>
       </GridPane>
-		<HBox layoutX="7.0" layoutY="230.0" prefHeight="50.0" prefWidth="800.0" styleClass="hbox-search" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+		<HBox layoutX="7.0" layoutY="290.0" prefHeight="50.0" prefWidth="800.0" styleClass="hbox-search" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
 			<children>
 				<Pane prefWidth="100.0" HBox.hgrow="ALWAYS" />
 				<Pane prefWidth="100.0" HBox.hgrow="ALWAYS" />
@@ -208,7 +200,7 @@
 				</JFXButton>
 			</children>
 		</HBox>
-      <AnchorPane layoutX="10.0" layoutY="280.0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="290.0">
+      <AnchorPane layoutX="10.0" layoutY="270.0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="350.0">
          <children>
 				<TableView fx:id="tvDocs" prefHeight="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 					<columns>

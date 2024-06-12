@@ -30,8 +30,21 @@ public class Documento {
 		this.docTipo = docTipo;
 		this.docEndereco = docEndereco;
 	}
+	
+	
 
+	public Documento(String docNumero, Processo docProcesso, DocumentoTipo docTipo) {
+		super();
+		this.docNumero = docNumero;
+		this.docProcesso = docProcesso;
+		this.docTipo = docTipo;
+	}
 
+	public Documento(String docNumero, Processo docProcesso) {
+		super();
+		this.docNumero = docNumero;
+		this.docProcesso = docProcesso;
+	}
 
 	public StringProperty getEnderecoLogradouroProperty() {
 		StringProperty enderecoLogradouroProperty = new SimpleStringProperty("");

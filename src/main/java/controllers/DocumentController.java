@@ -14,8 +14,10 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 
+import controllers.views.AddAddressController;
 import controllers.views.DocumentViewController;
 import controllers.views.EditAddressController;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import enums.ToastType;
 import javafx.animation.TranslateTransition;
 import javafx.beans.value.ChangeListener;
@@ -55,7 +57,6 @@ import utilities.URLUtility;
  * Controlador para lidar com operações relacionadas aos documentos.
  */
 public class DocumentController implements Initializable {
-	
 
 	// URL local para os recursos
 	private String localUrl;
@@ -79,7 +80,7 @@ public class DocumentController implements Initializable {
 	private JFXTextField tfNumber;
 
 	@FXML
-	private JFXTextField tfNumberSEI;
+	private JFXTextField tfNumberSei;
 
 	@FXML
 	private JFXComboBox<Processo> cbProcess;
@@ -88,11 +89,11 @@ public class DocumentController implements Initializable {
 	private JFXComboBox<Endereco> cbAddress;
 	ObservableList<Endereco> obsAddress = FXCollections.observableArrayList();
 
-	@FXML
-	private JFXTextField tfCity;
+	//@FXML
+	//private JFXTextField tfCity;
 
-	@FXML
-	private JFXTextField tfCEP;
+	//@FXML
+	//private JFXTextField tfCEP;
 
 	@FXML
 	private JFXButton btnNew;
@@ -136,21 +137,23 @@ public class DocumentController implements Initializable {
 
 	@FXML
 	private JFXButton btnViews;
-	
+
 	   @FXML
-	    private JFXButton btnAddress;
+	    private FontAwesomeIconView btnAddress;
 
-	    @FXML
-	    private JFXButton btnUser;
+	@FXML
+	private JFXButton btnAddInterference;
 
-	    @FXML
-	    private JFXButton btnInterference;
-	    
+	@FXML
+	private JFXButton btnAddUser;
+
+	@FXML
+	private JFXButton btnAddProcess;
 
 	@FXML
 	private MainController mainController;
 
-	AnchorPane apEditAddress;
+	AnchorPane apEditAddress, apAddAddress;
 
 	public Endereco getDocAddress() {
 		// Get the selected document from the TableView
@@ -203,7 +206,7 @@ public class DocumentController implements Initializable {
 							// Id utilizado para os testes JUnit
 							cbDocsAttributes.setId("cbDocsAttributes");
 							// Action
-							cbDocsAttributes.setOnAction(e -> openapEditAddress());
+							cbDocsAttributes.setOnAction(e -> openApEditAddress());
 
 							setGraphic(cbDocsAttributes);
 							setText(null);
@@ -226,22 +229,26 @@ public class DocumentController implements Initializable {
 		cbDocType.setItems(obsDocumentTypes);
 		cbDocType.setValue(null);
 
+		
 		tvDocs.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+			
+			
 			if (newSelection != null) {
+				
 				// Atualiza ComboBox (Tipo de Documento) a partir do documento selecionado
 				cbDocType.getSelectionModel().select(newSelection.getDocTipo());
 				// Atualizar componentes de acordo com o documento selecionado
 				tfNumber.setText(newSelection.getDocNumero());
-				tfNumberSEI.setText(String.valueOf(newSelection.getDocSei()));
+				tfNumberSei.setText(String.valueOf(newSelection.getDocSei()));
 				cbProcess.getSelectionModel().select(newSelection.getDocProcesso());
 				cbAddress.getSelectionModel().select(newSelection.getDocEndereco());
 				if (newSelection.getDocEndereco() != null) {
 
-					tfCity.setText(newSelection.getDocEndereco().getEndCidade());
-					tfCEP.setText(newSelection.getDocEndereco().getEndCEP());
+					//tfCity.setText(newSelection.getDocEndereco().getEndCidade());
+					//tfCEP.setText(newSelection.getDocEndereco().getEndCep());
 				} else {
-					tfCity.clear();
-					tfCEP.clear();
+					//tfCity.clear();
+					//tfCEP.clear();
 				}
 
 			} else {
@@ -259,7 +266,7 @@ public class DocumentController implements Initializable {
 			}
 		});
 		// Listener do TextField
-		tfNumberSEI.textProperty().addListener(new ChangeListener<String>() {
+		tfNumberSei.textProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
 				// System.out.println("TextField changed from: " + oldValue + " to: " +
@@ -277,7 +284,7 @@ public class DocumentController implements Initializable {
 				return null; // Reject the change (non-numeric input)
 			}
 		});
-		tfNumberSEI.setTextFormatter(textFormatter);
+		tfNumberSei.setTextFormatter(textFormatter);
 
 		cbProcess.setItems(obsProcess);
 		cbProcess.setEditable(true);
@@ -359,6 +366,8 @@ public class DocumentController implements Initializable {
 		btnSearch.setOnAction(event -> handleSearch(event));
 		btnDelete.setOnAction(event -> handleDelete(event));
 		btnEdit.setOnAction(event -> handleEdit(event));
+
+		//btnAddress.setOnAction(e -> openAddAddress());
 	}
 
 	/**
@@ -366,7 +375,7 @@ public class DocumentController implements Initializable {
 	 * arquivo FXML para exibir o painel de edição. Realiza uma transição de
 	 * tradução para exibir o painel na tela.
 	 */
-	public void openapEditAddress() {
+	public void openApEditAddress() {
 
 		// Cria um novo AnchorPane
 		apEditAddress = new AnchorPane();
@@ -409,6 +418,55 @@ public class DocumentController implements Initializable {
 
 		tt.play();
 	}
+	
+
+	
+
+	/**
+	 * Abre o painel de edição do endereço. Cria um novo AnchorPane e carrega um
+	 * arquivo FXML para exibir o painel de edição. Realiza uma transição de
+	 * tradução para exibir o painel na tela.
+	 */
+	public void openAddAddress() {
+
+		// Cria um novo AnchorPane
+		apAddAddress = new AnchorPane();
+
+		// Carrega o arquivo FXML para o painel de edição
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/components/AddAddress.fxml"));
+
+		loader.setRoot(apAddAddress);
+		loader.setController(new AddAddressController(this));
+
+		try {
+			loader.load();
+		} catch (IOException e) {
+			System.out.println("erro na abertura do pane atendimento");
+			e.printStackTrace();
+		}
+		// Adiciona o painel de edição ao conteúdo atual
+		apContent.getChildren().add(apAddAddress);
+		// Define a translação inicial para exibir o painel na tela
+		apAddAddress.setTranslateX(400.0);
+		TranslateTransition tt = new TranslateTransition(new Duration(300), apAddAddress);
+
+		tt.setToX(0.0);
+		tt.play();
+
+	}
+	
+	public void closeAddAddress() {
+		TranslateTransition tt = new TranslateTransition(Duration.millis(300), apAddAddress);
+
+		tt.setToX(400.0);
+		tt.setOnFinished(event -> {
+			// Remover a tela de edição
+			apContent.getChildren().remove(apAddAddress);
+		});
+
+		tt.play();
+	}
+	
 
 	/**
 	 * Limpa todos os componentes da interface de edição. Limpa seleções e campos de
@@ -417,7 +475,7 @@ public class DocumentController implements Initializable {
 	public void clearAllComponents() {
 		cbDocType.getSelectionModel().clearSelection();
 		tfNumber.clear();
-		tfNumberSEI.clear();
+		tfNumberSei.clear();
 		obsProcess.clear();
 		cbProcess.getSelectionModel().clearSelection();
 		cbProcess.setValue(null);
@@ -425,8 +483,8 @@ public class DocumentController implements Initializable {
 		obsAddress.clear();
 		cbAddress.getSelectionModel().clearSelection();
 		cbAddress.setValue(null);
-		tfCity.clear();
-		tfCEP.clear();
+		//tfCity.clear();
+		//tfCEP.clear();
 
 	}
 
@@ -504,14 +562,14 @@ public class DocumentController implements Initializable {
 	 */
 	public void handleSave(ActionEvent event) {
 
-		String text = tfNumberSEI.getText();
+		String text = tfNumberSei.getText();
 
 		// verjo que este m�todo � desnecess�rio pois o textfield j� est� aceitando
 		// apenas n�meros
-		Long numeroSei = 0L;
+		Long numberSei = 0L;
 		try {
-			numeroSei = Long.parseLong(text);
-			// Use the 'numeroSei' integer as needed
+			numberSei = Long.parseLong(text);
+			// Use the 'numberSei' integer as needed
 		} catch (NumberFormatException e) {
 			// Handle the case where the input is not a valid integer
 			System.out.println("Número SEI inválido.");
@@ -520,22 +578,37 @@ public class DocumentController implements Initializable {
 		try {
 
 			DocumentService documentService = new DocumentService(localUrl);
+			
+			// numero, processo, numero sei, tipo endereço -> new Endereco
 
-			Documento requestDocument = new Documento(tfNumber.getText(),
+			/*Documento requestDocument = new Documento(tfNumber.getText(),
 
 					// Verifica se o usuário selecionou algum processo
 
-					cbProcess.selectionModelProperty().get().isEmpty() ? null : obsProcess.get(0), numeroSei,
+					//cbProcess.selectionModelProperty().get().isEmpty() ? null : obsProcess.get(0), 
+					numberSei);
+					
+					
 					cbDocType.getValue(),
 
 					// Verifica se o usuário selecionou ou cadastrou algum endereço
 
 					cbAddress.selectionModelProperty().get().isEmpty() ? null
 							: new Endereco(obsAddress.get(0).getEndId(), obsAddress.get(0).getEndLogradouro(),
-									tfCity.getText(), tfCEP.getText()));
+									tfCity.getText(), tfCEP.getText()));*/
+			
+			
+			Documento requestDocument = new Documento(
+					tfNumber.getText(), // Número
+					cbProcess.selectionModelProperty().get().isEmpty() ? null : obsProcess.get(0), // Processo
+					numberSei,
+					cbDocType.getValue(),
+					cbAddress.selectionModelProperty().get().isEmpty() ? null
+							: new Endereco(obsAddress.get(0).getEndId(), obsAddress.get(0).getEndLogradouro())
+					);
 
 			ServiceResponse<?> documentoServiceResponse = documentService.save(requestDocument);
-
+		
 			if (documentoServiceResponse.getResponseCode() == 201) {
 
 				// Informa salvamento com sucesso
@@ -562,7 +635,6 @@ public class DocumentController implements Initializable {
 		}
 
 	}
-
 	/**
 	 * Manipula a ação de editar um documento existente.
 	 *
@@ -581,7 +653,7 @@ public class DocumentController implements Initializable {
 
 		// Retrieve values from text fields
 		String updatedNumero = tfNumber.getText();
-		String updatedNumeroSEI = tfNumberSEI.getText();
+		String updatedNumeroSEI = tfNumberSei.getText();
 
 		DocumentoTipo updateDocumentoTipo = cbDocType.getValue();
 
@@ -601,8 +673,8 @@ public class DocumentController implements Initializable {
 		selectedDoc.setDocNumero(updatedNumero);
 		selectedDoc.setDocSei(updatedSei);
 		selectedDoc.setDocProcesso(obsProcess.get(0));
-		selectedDoc.setDocEndereco(new Endereco(obsAddress.get(0).getEndId(), obsAddress.get(0).getEndLogradouro(),
-				tfCity.getText(), tfCEP.getText()));
+		/*selectedDoc.setDocEndereco(new Endereco(obsAddress.get(0).getEndId(), obsAddress.get(0).getEndLogradouro(),
+				tfCity.getText(), tfCEP.getText()));*/
 
 		try {
 			DocumentService documentService = new DocumentService(localUrl);

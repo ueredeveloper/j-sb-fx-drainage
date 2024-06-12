@@ -1,33 +1,46 @@
 package models;
 
 public class Endereco {
-	
 
 	private Long endId;
 	private String endLogradouro;
 	private String endCidade;
-	private String endCEP;
+	private String endCep;
+	private String endBairro;
+	private String endEstado;
 
 	public Endereco() {
 		super();
 	}
+
 	public Endereco(String endLogradouro) {
 		super();
 		this.endLogradouro = endLogradouro;
 	}
-	
+
 	public Endereco(Long endId, String endLogradouro) {
 		super();
 		this.endId = endId;
 		this.endLogradouro = endLogradouro;
 	}
 
-	public Endereco(Long endId, String endLogradouro, String endCidade, String endCEP) {
+	public Endereco(Long endId, String endLogradouro, String endCidade, String endCep) {
 		super();
 		this.endId = endId;
 		this.endLogradouro = endLogradouro;
 		this.endCidade = endCidade;
-		this.endCEP = endCEP;
+		this.endCep = endCep;
+	}
+	
+	public Endereco(Long endId) {
+		super();
+		this.endId = endId;
+	}
+
+	// Método toString para mostrar o logradouro no combobox.
+	@Override
+	public String toString() {
+		return endLogradouro;
 	}
 
 	public Long getEndId() {
@@ -54,18 +67,27 @@ public class Endereco {
 		this.endCidade = endCidade;
 	}
 
-	public String getEndCEP() {
-		return endCEP;
+	public String getEndCep() {
+		return endCep;
 	}
 
-	public void setEndCEP(String endCEP) {
-		this.endCEP = endCEP;
-	}
-	
-	@Override
-	public String toString() {
-		return endLogradouro;
+	public void setEndCep(String endCep) {
+		this.endCep = endCep;
 	}
 
-	
+	public String getEndBairro() {
+		return endBairro;
+	}
+
+	public void setEndBairro(String endBairro) {
+		this.endBairro = endBairro;
+	}
+
+	public String getEndEstado() {
+		return endEstado;
+	}
+
+	public void setEndEstado(String endEstado) {
+		this.endEstado = endEstado;
+	}
 }

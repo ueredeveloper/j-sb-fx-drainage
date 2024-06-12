@@ -16,3 +16,9 @@
 .content {
 	-fx-background-color: -fx-secondary-color;
 }
+.scroll-bar .decrement-arrow {
+    -fx-padding:1;
+ }
+.scroll-bar .increment-arrow {
+    -fx-padding:1;
+}
