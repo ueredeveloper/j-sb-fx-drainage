@@ -7,6 +7,7 @@
 
 <StackPane fx:id="spContainer" maxHeight="60.0" maxWidth="600.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="60.0" prefWidth="600.0" styleClass="stack-pane" stylesheets="@css/toast.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ToastController">
    <children>
+   
       <Pane fx:id="pToast" maxHeight="80.0" maxWidth="600.0" prefHeight="80.0" prefWidth="600.0" styleClass="pane" StackPane.alignment="TOP_CENTER">
          <children>
             <Text fx:id="textToast" layoutX="146.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="This is a success alert" textAlignment="CENTER" wrappingWidth="320.828125" />

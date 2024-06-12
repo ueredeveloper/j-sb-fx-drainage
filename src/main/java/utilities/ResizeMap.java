@@ -12,6 +12,7 @@ import javafx.util.Duration;
 public class ResizeMap {
 	
 	
+	
 	private AnchorPane apContent;
 	private AnchorPane apMap;
 	private AnchorPane apManager;

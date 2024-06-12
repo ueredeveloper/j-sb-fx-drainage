@@ -25,6 +25,7 @@ import utilities.HTMLFileLoader;
 
 public class DocumentViewController implements Initializable {
 
+	
 	private Documento selectedDocument;
 
 	// Constructor that takes the selected document as a parameter

@@ -31,6 +31,8 @@ import javafx.stage.Stage;
 public class LoginController implements Initializable {
 	
 	
+	
+	
     // Injetando elementos do arquivo FXML
     @FXML
     private AnchorPane anchorPane;

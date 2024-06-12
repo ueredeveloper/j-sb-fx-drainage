@@ -20,6 +20,8 @@ public final class Toast {
 	public static void makeText(Stage ownerStage, String toastMsg, ToastType toastType) {
 		
 		
+		
+		
 		int toastDelay = 500; // 0.5 seconds
 	    int fadeInDelay = 500; // 0.5 seconds
 	    int fadeOutDelay = 500; // 0.5 seconds

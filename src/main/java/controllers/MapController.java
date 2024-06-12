@@ -54,6 +54,8 @@ public class MapController implements Initializable {
 		this.apContent = apContent;
 	}
 
+	
+	
 	public AnchorPane getAnchorPaneMap() {
 		return this.apMap;
 	}
