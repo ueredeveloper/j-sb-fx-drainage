@@ -17,9 +17,9 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane fx:id="apContent" prefHeight="700.0" prefWidth="1200.0" styleClass="content" AnchorPane.bottomAnchor="5.0" AnchorPane.topAnchor="5.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.DocumentController">
+<AnchorPane fx:id="apContent" prefHeight="700.0" prefWidth="1200.0" styleClass="content" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.DocumentController">
 	<children>
-		<GridPane layoutX="12.0" layoutY="24.0" prefHeight="50.0" prefWidth="785.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
+		<GridPane layoutX="12.0" layoutY="24.0" prefHeight="50.0" prefWidth="980.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
 			<columnConstraints>
 				<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
 				<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -61,11 +61,11 @@
 		</GridPane>
       <GridPane layoutX="12.0" layoutY="70.0" prefHeight="112.0" prefWidth="980.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
          <columnConstraints>
-            <ColumnConstraints hgrow="ALWAYS" maxWidth="50.0" minWidth="0.0" prefWidth="46.0" />
+            <ColumnConstraints hgrow="ALWAYS" maxWidth="45.0" minWidth="0.0" prefWidth="45.0" />
             <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="436.0" />
-            <ColumnConstraints hgrow="ALWAYS" maxWidth="80.0" minWidth="0.0" prefWidth="37.0" />
-            <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="329.0" />
-            <ColumnConstraints hgrow="ALWAYS" maxWidth="159.0" minWidth="10.0" prefWidth="48.0" />
+            <ColumnConstraints hgrow="ALWAYS" maxWidth="45.0" minWidth="0.0" prefWidth="45.0" />
+            <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="319.0" />
+            <ColumnConstraints hgrow="ALWAYS" maxWidth="45.0" minWidth="10.0" prefWidth="45.0" />
             <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="281.0" />
          </columnConstraints>
          <rowConstraints>
@@ -79,18 +79,21 @@
             <FontAwesomeIconView fx:id="btnProcess" glyphName="FILE_TEXT" size="30" wrappingWidth="11.785714149475098" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
             <FontAwesomeIconView glyphName="FILE_ZIP_ALT" size="30" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
             <JFXComboBox fx:id="cbAddress" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="650.0" promptText="Endereço" styleClass="jfx-text-field-custom" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.hgrow="ALWAYS">
-               <padding>
-                  <Insets left="5.0" right="5.0" />
-               </padding>
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" />
+               </GridPane.margin>
             </JFXComboBox>
             <JFXComboBox fx:id="cbUser" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="400.0" promptText="Usuário" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1">
                <padding>
                   <Insets left="5.0" right="5.0" />
                </padding>
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" />
+               </GridPane.margin>
             </JFXComboBox>
 				<JFXComboBox fx:id="cbProcess" labelFloat="true" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="280.0" promptText="Processo" GridPane.columnIndex="3" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1">
 					<GridPane.margin>
-						<Insets left="5.0" right="5.0" />
+						<Insets left="10.0" right="10.0" />
 					</GridPane.margin>
                <styleClass>
                   <String fx:value="jfx-combo-box" />
@@ -112,8 +115,11 @@
                   <Tooltip text="Processo em que o documento se econtra" />
                </tooltip>
                <padding>
-                  <Insets left="5.0" right="20.0" />
+                  <Insets left="5.0" />
                </padding>
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" />
+               </GridPane.margin>
             </JFXComboBox>
             <JFXComboBox fx:id="cbInterference" labelFloat="true" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="280.0" promptText="Interferência" GridPane.columnIndex="5">
                <styleClass>
@@ -124,12 +130,15 @@
                   <Tooltip text="Processo em que o documento se econtra" />
                </tooltip>
                <padding>
-                  <Insets left="5.0" right="20.0" />
+                  <Insets left="5.0" />
                </padding>
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" />
+               </GridPane.margin>
             </JFXComboBox>
          </children>
       </GridPane>
-      <GridPane layoutX="10.0" layoutY="230.0" prefHeight="50.0" prefWidth="780.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+      <GridPane layoutX="10.0" layoutY="230.0" prefHeight="50.0" prefWidth="980.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -174,7 +183,7 @@
 				</JFXButton>
          </children>
       </GridPane>
-		<HBox layoutX="7.0" layoutY="290.0" prefHeight="50.0" prefWidth="800.0" styleClass="hbox-search" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+		<HBox layoutX="7.0" layoutY="290.0" prefHeight="50.0" prefWidth="980.0" styleClass="hbox-search" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
 			<children>
 				<Pane prefWidth="100.0" HBox.hgrow="ALWAYS" />
 				<Pane prefWidth="100.0" HBox.hgrow="ALWAYS" />
@@ -200,7 +209,7 @@
 				</JFXButton>
 			</children>
 		</HBox>
-      <AnchorPane layoutX="10.0" layoutY="270.0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="350.0">
+      <AnchorPane layoutX="10.0" layoutY="270.0" prefWidth="980.0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="350.0">
          <children>
 				<TableView fx:id="tvDocs" prefHeight="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 					<columns>
@@ -217,7 +226,7 @@
 				</TableView>
          </children>
       </AnchorPane>
-      <GridPane layoutX="20.0" layoutY="477.0" prefHeight="30.0" prefWidth="405.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+      <GridPane layoutX="20.0" layoutY="477.0" prefHeight="30.0" prefWidth="980.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -232,6 +241,9 @@
                <tooltip>
                   <Tooltip text="Visualizar diagrama" />
                </tooltip>
+               <GridPane.margin>
+                  <Insets right="10.0" />
+               </GridPane.margin>
 				</JFXButton>
             <Pane maxWidth="1.7976931348623157E308" prefHeight="20.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" />
             <Pane maxWidth="1.7976931348623157E308" prefHeight="20.0" prefWidth="100.0" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" />
@@ -243,4 +255,7 @@
       <URL value="@css/root.css" />
       <URL value="@css/documents.css" />
    </stylesheets>
+   <padding>
+      <Insets left="15.0" />
+   </padding>
 </AnchorPane>

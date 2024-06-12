@@ -67,7 +67,7 @@ public class MapController implements Initializable {
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 				double newWidth = newValue.doubleValue();
-				apMap.setPrefWidth(newWidth / 3);
+				apMap.setPrefWidth(newWidth / 2.99);
 				// apManager.setPrefWidth(newWidth / 2);
 			}
 		});
