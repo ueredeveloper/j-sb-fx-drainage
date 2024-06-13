@@ -119,8 +119,10 @@ public class LoginController implements Initializable {
                     stage.setHeight(primaryScreenBounds.getHeight());
 
                     // Configurando o tamanho mínimo do stage
-                    stage.setMinHeight(400);
-                    stage.setMinWidth(900);
+                   // stage.setMinHeight(400);
+                   // stage.setMinWidth(900);
+                    stage.setMaxWidth(1280);
+                    stage.setMaxHeight(800);
 
                     // Configurando o título da janela
                     stage.setTitle("SAD/DF - Geo - Cadastro");

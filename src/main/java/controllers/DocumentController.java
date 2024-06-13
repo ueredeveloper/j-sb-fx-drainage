@@ -133,10 +133,8 @@ public class DocumentController implements Initializable {
 	private JFXButton btnViews;
 
 	@FXML
-	private FontAwesomeIconView btnAddress;
+	private FontAwesomeIconView btnAddress, btnInterference;
 
-	@FXML
-	private JFXButton btnAddInterference;
 
 	@FXML
 	private JFXButton btnAddUser;
@@ -147,7 +145,7 @@ public class DocumentController implements Initializable {
 	@FXML
 	private MainController mainController;
 
-	AnchorPane apEditAddress, apAddAddress;
+	AnchorPane apEditAddress, apAddAddress, apInterference;
 
 	public Endereco getDocAddress() {
 		// Get the selected document from the TableView
@@ -435,8 +433,10 @@ public class DocumentController implements Initializable {
 		btnEdit.setOnAction(event -> handleEdit(event));
 		
 		btnAddress.setOnMouseClicked(evert -> openAddAddress());
+		btnInterference.setOnMouseClicked(evert -> openInterference());
+		
 
-		// btnAddress.setOnAction(e -> openAddAddress());
+		
 	}
 
 	/**
@@ -502,6 +502,8 @@ public class DocumentController implements Initializable {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/components/AddAddress.fxml"));
 
 		loader.setRoot(apAddAddress);
+		
+		
 		loader.setController(new AddAddressController(this));
 
 		try {
@@ -533,6 +535,48 @@ public class DocumentController implements Initializable {
 		tt.play();
 	}
 
+	
+	public void openInterference() {
+
+		// Cria um novo AnchorPane
+		apInterference = new AnchorPane();
+
+		// Carrega o arquivo FXML para o painel de edição
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Interference.fxml"));
+
+		loader.setRoot(apInterference);
+		
+		TranslateTransition ttClose = new TranslateTransition(new Duration(400), apInterference);
+
+		ttClose.setToX(400.0);
+		ttClose.setOnFinished(event -> {
+			// Remover a tela de edição
+			apContent.getChildren().remove(apInterference);
+		});
+
+		//tt.play();
+		
+		loader.setController(new InterferenceController(this, ttClose));
+
+		try {
+			loader.load();
+		} catch (IOException e) {
+			System.out.println("erro na abertura do pane atendimento");
+			e.printStackTrace();
+		}
+		// Adiciona o painel de edição ao conteúdo atual
+		apContent.getChildren().add(apInterference);
+		AnchorPane.setRightAnchor(apInterference, 0.0);
+		AnchorPane.setLeftAnchor(apInterference, 500.0);
+		// Define a translação inicial para exibir o painel na tela
+		apInterference.setTranslateX(400.0);
+		TranslateTransition ttOpen = new TranslateTransition(new Duration(400), apInterference);
+
+		ttOpen.setToX(0.0);
+		ttOpen.play();
+
+	}
+	
 	/**
 	 * Limpa todos os componentes da interface de edição. Limpa seleções e campos de
 	 * texto, além de limpar listas e caixas de combinação.
