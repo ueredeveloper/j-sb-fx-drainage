@@ -61,11 +61,11 @@
 		</GridPane>
       <GridPane layoutX="12.0" layoutY="70.0" prefHeight="112.0" prefWidth="980.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
          <columnConstraints>
-            <ColumnConstraints hgrow="ALWAYS" maxWidth="50.0" minWidth="0.0" prefWidth="46.0" />
+            <ColumnConstraints hgrow="ALWAYS" maxWidth="45.0" minWidth="0.0" prefWidth="45.0" />
             <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="436.0" />
-            <ColumnConstraints hgrow="ALWAYS" maxWidth="80.0" minWidth="0.0" prefWidth="37.0" />
+            <ColumnConstraints hgrow="ALWAYS" maxWidth="45.0" minWidth="0.0" prefWidth="45.0" />
             <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="329.0" />
-            <ColumnConstraints hgrow="ALWAYS" maxWidth="159.0" minWidth="10.0" prefWidth="48.0" />
+            <ColumnConstraints hgrow="ALWAYS" maxWidth="45.0" minWidth="10.0" prefWidth="45.0" />
             <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="281.0" />
          </columnConstraints>
          <rowConstraints>

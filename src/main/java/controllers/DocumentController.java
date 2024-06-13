@@ -1,13 +1,9 @@
 package controllers;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.List;
-import java.util.Properties;
 import java.util.ResourceBundle;
-
-import javax.swing.plaf.synth.SynthScrollBarUI;
 
 import com.google.gson.Gson;
 import com.jfoenix.controls.JFXButton;
@@ -23,7 +19,6 @@ import javafx.animation.TranslateTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -45,6 +40,7 @@ import javafx.util.Duration;
 import models.Documento;
 import models.DocumentoTipo;
 import models.Endereco;
+import models.Interferencia;
 import models.Processo;
 import services.DocumentService;
 import services.DocumentoTipoService;
@@ -88,12 +84,10 @@ public class DocumentController implements Initializable {
 	@FXML
 	private JFXComboBox<Endereco> cbAddress;
 	ObservableList<Endereco> obsAddress = FXCollections.observableArrayList();
+	@FXML
+	private JFXComboBox<Interferencia> cbInterference;
+	ObservableList<Interferencia> obsInterference = FXCollections.observableArrayList();
 
-	//@FXML
-	//private JFXTextField tfCity;
-
-	//@FXML
-	//private JFXTextField tfCEP;
 
 	@FXML
 	private JFXButton btnNew;
@@ -138,8 +132,8 @@ public class DocumentController implements Initializable {
 	@FXML
 	private JFXButton btnViews;
 
-	   @FXML
-	    private FontAwesomeIconView btnAddress;
+	@FXML
+	private FontAwesomeIconView btnAddress;
 
 	@FXML
 	private JFXButton btnAddInterference;
@@ -229,12 +223,10 @@ public class DocumentController implements Initializable {
 		cbDocType.setItems(obsDocumentTypes);
 		cbDocType.setValue(null);
 
-		
 		tvDocs.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
-			
-			
+
 			if (newSelection != null) {
-				
+
 				// Atualiza ComboBox (Tipo de Documento) a partir do documento selecionado
 				cbDocType.getSelectionModel().select(newSelection.getDocTipo());
 				// Atualizar componentes de acordo com o documento selecionado
@@ -244,11 +236,11 @@ public class DocumentController implements Initializable {
 				cbAddress.getSelectionModel().select(newSelection.getDocEndereco());
 				if (newSelection.getDocEndereco() != null) {
 
-					//tfCity.setText(newSelection.getDocEndereco().getEndCidade());
-					//tfCEP.setText(newSelection.getDocEndereco().getEndCep());
+					// tfCity.setText(newSelection.getDocEndereco().getEndCidade());
+					// tfCEP.setText(newSelection.getDocEndereco().getEndCep());
 				} else {
-					//tfCity.clear();
-					//tfCEP.clear();
+					// tfCity.clear();
+					// tfCEP.clear();
 				}
 
 			} else {
@@ -360,14 +352,91 @@ public class DocumentController implements Initializable {
 
 		});
 
+		
+		cbProcess.setItems(obsProcess);
+		cbProcess.setEditable(true);
+
+		utilities.FxUtilComboBoxSearchable.autoCompleteComboBoxPlus(cbProcess, (typedText,
+				itemToCompare) -> itemToCompare.getProcNumero().toLowerCase().contains(typedText.toLowerCase()));
+
+		utilities.FxUtilComboBoxSearchable.getComboBoxValue(cbProcess);
+
+		// Preeche com valores do servido atualizando ao digitar
+		cbProcess.getEditor().textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+
+				if (newValue != null) {
+
+					obsProcess.clear();
+					List<Processo> list = fetchProcesses(newValue);
+					boolean containsSearchTerm = list.stream()
+							.anyMatch(processo -> processo.getProcNumero().contains(newValue));
+					/*
+					 * Se o que foi digitado está contido, não adicina novo processo, porém, se o
+					 * que foi digitado não está contido na lista, adiciona novo processo com id
+					 * nulo.
+					 */
+					if (containsSearchTerm) {
+						obsProcess.addAll(list);
+					} else {
+						obsProcess.add(new Processo(newValue));
+						obsProcess.addAll(list);
+					}
+
+				}
+
+			}
+		});
+		
+		// Interferência
+		
+		/*cbInterference.setItems(obsInterference);
+		cbInterference.setEditable(true);
+
+		utilities.FxUtilComboBoxSearchable.autoCompleteComboBoxPlus(cbInterference, (typedText,
+				itemToCompare) -> itemToCompare.getInterLatitude().toString().toLowerCase().contains(typedText.toLowerCase()));
+
+		utilities.FxUtilComboBoxSearchable.getComboBoxValue(cbProcess);
+
+		// Preeche com valores do servido atualizando ao digitar
+		cbInterference.getEditor().textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+
+				if (newValue != null) {
+
+					obsInterference.clear();
+					List<Interferencia> list = fetchProcesses(newValue);
+					boolean containsSearchTerm = list.stream()
+							.anyMatch(processo -> processo.getProcNumero().contains(newValue));
+					//
+					// Se o que foi digitado está contido, não adicina novo processo, porém, se o
+					// que foi digitado não está contido na lista, adiciona novo processo com id
+					// nulo.
+					//
+					if (containsSearchTerm) {
+						obsInterference.addAll(list);
+					} else {
+						obsInterference.add(new Interferencia(newValue));
+						obsInterference.addAll(list);
+					}
+
+				}
+
+			}
+		});*/
+		
 		btnNew.setOnAction(e -> clearAllComponents());
 		btnViews.setOnAction(event -> showDocumentView());
 		btnSave.setOnAction(event -> handleSave(event));
 		btnSearch.setOnAction(event -> handleSearch(event));
 		btnDelete.setOnAction(event -> handleDelete(event));
 		btnEdit.setOnAction(event -> handleEdit(event));
+		
+		btnAddress.setOnMouseClicked(evert -> openAddAddress());
 
-		//btnAddress.setOnAction(e -> openAddAddress());
+		// btnAddress.setOnAction(e -> openAddAddress());
 	}
 
 	/**
@@ -418,9 +487,6 @@ public class DocumentController implements Initializable {
 
 		tt.play();
 	}
-	
-
-	
 
 	/**
 	 * Abre o painel de edição do endereço. Cria um novo AnchorPane e carrega um
@@ -454,7 +520,7 @@ public class DocumentController implements Initializable {
 		tt.play();
 
 	}
-	
+
 	public void closeAddAddress() {
 		TranslateTransition tt = new TranslateTransition(Duration.millis(300), apAddAddress);
 
@@ -466,7 +532,6 @@ public class DocumentController implements Initializable {
 
 		tt.play();
 	}
-	
 
 	/**
 	 * Limpa todos os componentes da interface de edição. Limpa seleções e campos de
@@ -483,8 +548,8 @@ public class DocumentController implements Initializable {
 		obsAddress.clear();
 		cbAddress.getSelectionModel().clearSelection();
 		cbAddress.setValue(null);
-		//tfCity.clear();
-		//tfCEP.clear();
+		// tfCity.clear();
+		// tfCEP.clear();
 
 	}
 
@@ -578,37 +643,34 @@ public class DocumentController implements Initializable {
 		try {
 
 			DocumentService documentService = new DocumentService(localUrl);
-			
+
 			// numero, processo, numero sei, tipo endereço -> new Endereco
 
-			/*Documento requestDocument = new Documento(tfNumber.getText(),
+			/*
+			 * Documento requestDocument = new Documento(tfNumber.getText(),
+			 * 
+			 * // Verifica se o usuário selecionou algum processo
+			 * 
+			 * //cbProcess.selectionModelProperty().get().isEmpty() ? null :
+			 * obsProcess.get(0), numberSei);
+			 * 
+			 * 
+			 * cbDocType.getValue(),
+			 * 
+			 * // Verifica se o usuário selecionou ou cadastrou algum endereço
+			 * 
+			 * cbAddress.selectionModelProperty().get().isEmpty() ? null : new
+			 * Endereco(obsAddress.get(0).getEndId(), obsAddress.get(0).getEndLogradouro(),
+			 * tfCity.getText(), tfCEP.getText()));
+			 */
 
-					// Verifica se o usuário selecionou algum processo
-
-					//cbProcess.selectionModelProperty().get().isEmpty() ? null : obsProcess.get(0), 
-					numberSei);
-					
-					
-					cbDocType.getValue(),
-
-					// Verifica se o usuário selecionou ou cadastrou algum endereço
-
-					cbAddress.selectionModelProperty().get().isEmpty() ? null
-							: new Endereco(obsAddress.get(0).getEndId(), obsAddress.get(0).getEndLogradouro(),
-									tfCity.getText(), tfCEP.getText()));*/
-			
-			
-			Documento requestDocument = new Documento(
-					tfNumber.getText(), // Número
+			Documento requestDocument = new Documento(tfNumber.getText(), // Número
 					cbProcess.selectionModelProperty().get().isEmpty() ? null : obsProcess.get(0), // Processo
-					numberSei,
-					cbDocType.getValue(),
-					cbAddress.selectionModelProperty().get().isEmpty() ? null
-							: new Endereco(obsAddress.get(0).getEndId(), obsAddress.get(0).getEndLogradouro())
-					);
+					numberSei, cbDocType.getValue(), cbAddress.selectionModelProperty().get().isEmpty() ? null
+							: new Endereco(obsAddress.get(0).getEndId(), obsAddress.get(0).getEndLogradouro()));
 
 			ServiceResponse<?> documentoServiceResponse = documentService.save(requestDocument);
-		
+
 			if (documentoServiceResponse.getResponseCode() == 201) {
 
 				// Informa salvamento com sucesso
@@ -635,6 +697,7 @@ public class DocumentController implements Initializable {
 		}
 
 	}
+
 	/**
 	 * Manipula a ação de editar um documento existente.
 	 *
@@ -673,8 +736,10 @@ public class DocumentController implements Initializable {
 		selectedDoc.setDocNumero(updatedNumero);
 		selectedDoc.setDocSei(updatedSei);
 		selectedDoc.setDocProcesso(obsProcess.get(0));
-		/*selectedDoc.setDocEndereco(new Endereco(obsAddress.get(0).getEndId(), obsAddress.get(0).getEndLogradouro(),
-				tfCity.getText(), tfCEP.getText()));*/
+		/*
+		 * selectedDoc.setDocEndereco(new Endereco(obsAddress.get(0).getEndId(),
+		 * obsAddress.get(0).getEndLogradouro(), tfCity.getText(), tfCEP.getText()));
+		 */
 
 		try {
 			DocumentService documentService = new DocumentService(localUrl);
