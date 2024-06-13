@@ -12,6 +12,7 @@ import javafx.stage.Stage;
  * Classe principal que inicia a aplica��o JavaFX.
  */
 public class Main extends Application {
+	
 
     /**
      * Método principal que inicia a aplicação
