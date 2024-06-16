@@ -15,6 +15,7 @@ import javafx.scene.layout.Pane;
 @SuppressWarnings("restriction")
 public class MainController implements Initializable {
 	
+	
 
 	
 	@FXML
@@ -79,6 +80,9 @@ public class MainController implements Initializable {
                 docController.setMainController(this);
 
                 apManager.getChildren().add(apDocument);
+                AnchorPane.setLeftAnchor(apDocument, 0.0);
+                AnchorPane.setRightAnchor(apDocument, 0.0);
+                
             } else {
                 apManager.setVisible(!apDocument.isVisible());
             }
@@ -114,7 +118,7 @@ public class MainController implements Initializable {
 	            double newWidth = newValue.doubleValue();
 	            // A tela é dividida em três partes, uma para o mapa e as outras duas para o cadastro. O cadastro deve
 	            //ser então newWidth/3 mais newWidth/3, com um pequeno ajuste, newWidth/2.75 em um dos cálculos.
-	            apManager.setPrefWidth(newWidth/2.75+newWidth/3);
+	            apManager.setPrefWidth(newWidth*2/3);
 	        });
 	    }
 }

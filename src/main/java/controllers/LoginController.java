@@ -32,7 +32,6 @@ public class LoginController implements Initializable {
 	
 	
 	
-	
     // Injetando elementos do arquivo FXML
     @FXML
     private AnchorPane anchorPane;
@@ -120,8 +119,8 @@ public class LoginController implements Initializable {
                     stage.setHeight(primaryScreenBounds.getHeight());
 
                     // Configurando o tamanho mínimo do stage
-                    stage.setMinHeight(400);
-                    stage.setMinWidth(900);
+                    stage.setHeight(1080);
+                    stage.setWidth(1920);
 
                     // Configurando o título da janela
                     stage.setTitle("SAD/DF - Geo - Cadastro");
