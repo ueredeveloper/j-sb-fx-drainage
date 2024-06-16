@@ -22,6 +22,7 @@ public class Interferencia {
 		this.interId = interId;
 	}
 
+	
 	public Double getInterLatitude() {
 		return interLatitude;
 	}

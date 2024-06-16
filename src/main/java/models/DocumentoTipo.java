@@ -20,6 +20,7 @@ public class DocumentoTipo {
 	public DocumentoTipo(Long dtId) {
 		this.dtId = dtId;
 	}
+	
 
 	// getters and setters
 	public Long getDtId() {

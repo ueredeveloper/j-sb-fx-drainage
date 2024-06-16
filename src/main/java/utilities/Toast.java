@@ -22,6 +22,7 @@ public final class Toast {
 		
 		
 		
+		
 		int toastDelay = 500; // 0.5 seconds
 	    int fadeInDelay = 500; // 0.5 seconds
 	    int fadeOutDelay = 500; // 0.5 seconds

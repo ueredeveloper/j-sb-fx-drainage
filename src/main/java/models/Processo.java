@@ -9,6 +9,7 @@ public class Processo {
 		super();
 
 	}
+	
 
 	public Processo(String procNumero) {
 		super();

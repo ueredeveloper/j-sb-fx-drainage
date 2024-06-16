@@ -22,6 +22,7 @@ public class Documento {
 		super();
 	}
 
+	
 	public Documento(String docNumero, Processo docProcesso, Long docSei, DocumentoTipo docTipo, Endereco docEndereco) {
 		super();
 		this.docNumero = docNumero;

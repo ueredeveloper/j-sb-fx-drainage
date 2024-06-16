@@ -12,6 +12,7 @@ public class Endereco {
 	public Endereco() {
 		super();
 	}
+	
 
 	public Endereco(String endLogradouro) {
 		super();

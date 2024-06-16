@@ -56,6 +56,8 @@ public class DocumentController implements Initializable {
 	
 
 	
+	
+	
 	// URL local para os recursos
 	private String localUrl;
 	// private String remoteUrl;

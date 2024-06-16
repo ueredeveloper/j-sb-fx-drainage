@@ -13,6 +13,7 @@ public class ResizeMap {
 	
 	
 	
+	
 	private AnchorPane apContent;
 	private AnchorPane apMap;
 	private AnchorPane apManager;
