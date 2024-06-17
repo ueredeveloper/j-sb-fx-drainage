@@ -13,6 +13,24 @@ public class Interferencia {
 	// private Geometry interGeometry;
 
 	private Endereco interEndereco;
+	
+	private String interLogradouro;
+	
+	public Interferencia() {
+		super();
+	}
+	
+	public Interferencia(Endereco interEndereco) {
+		super();
+		this.interEndereco = interEndereco;
+	}
+	
+	public Interferencia(Double interLatitude, Double interLongitude, String interLogradouro) {
+		super();
+		this.interLatitude = interLatitude;
+		this.interLongitude = interLongitude;
+		this.interLogradouro = interLogradouro;
+	}
 
 	public Long getInterId() {
 		return interId;
@@ -46,10 +64,20 @@ public class Interferencia {
 	public void setInterEndereco(Endereco interEndereco) {
 		this.interEndereco = interEndereco;
 	}
+	
+
+	public String getInterLogradouro() {
+		return interLogradouro;
+	}
+
+	public void setInterLogradouro(String interLogradouro) {
+		this.interLogradouro = interLogradouro;
+	}
 
 	@Override
 	public String toString() {
-		return interLatitude + ", " + interLongitude;
+		return this.interLatitude + ", " + this.interLongitude;
+		
 	}
 
 }

@@ -11,8 +11,11 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 
 import controllers.views.AddAddressController;
+import controllers.views.AddressComboBoxController;
 import controllers.views.DocumentViewController;
 import controllers.views.EditAddressController;
+import controllers.views.InterferenceComboBoxController;
+import controllers.views.ProcessComboBoxController;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import enums.ToastType;
 import javafx.animation.TranslateTransition;
@@ -27,6 +30,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -44,8 +48,6 @@ import models.Interferencia;
 import models.Processo;
 import services.DocumentService;
 import services.DocumentoTipoService;
-import services.EnderecoService;
-import services.ProcessoService;
 import services.ServiceResponse;
 import utilities.URLUtility;
 
@@ -53,18 +55,12 @@ import utilities.URLUtility;
  * Controlador para lidar com operações relacionadas aos documentos.
  */
 public class DocumentController implements Initializable {
-	
 
-	
-	
-	
-	// URL local para os recursos
+	@FXML
+	private ComboBox<Documento> cbDocument;
+
 	private String localUrl;
-	// private String remoteUrl;
 
-	/**
-	 * Construtor da classe DocumentController.
-	 */
 	public DocumentController() {
 		this.localUrl = URLUtility.getURLService();
 	}
@@ -91,7 +87,6 @@ public class DocumentController implements Initializable {
 	@FXML
 	private JFXComboBox<Interferencia> cbInterference;
 	ObservableList<Interferencia> obsInterference = FXCollections.observableArrayList();
-
 
 	@FXML
 	private JFXButton btnNew;
@@ -164,6 +159,10 @@ public class DocumentController implements Initializable {
 		this.mainController = mainController;
 	}
 
+	private AddressComboBoxController addressCbController;
+	private ProcessComboBoxController processCbController;
+	private InterferenceComboBoxController interferenceCbController;
+
 	/**
 	 * Inicializa o controlador e configura a interface.
 	 *
@@ -187,7 +186,7 @@ public class DocumentController implements Initializable {
 
 		Callback<TableColumn<Documento, String>, TableCell<Documento, String>> cellFactory = new Callback<TableColumn<Documento, String>, TableCell<Documento, String>>() {
 			@Override
-			public TableCell call(final TableColumn<Documento, String> param) {
+			public TableCell<Documento, String> call(final TableColumn<Documento, String> param) {
 				final TableCell<Documento, String> cell = new TableCell<Documento, String>() {
 
 					JFXComboBox<String> cbDocsAttributes = new JFXComboBox<>(
@@ -282,154 +281,15 @@ public class DocumentController implements Initializable {
 		});
 		tfNumberSei.setTextFormatter(textFormatter);
 
-		cbProcess.setItems(obsProcess);
-		cbProcess.setEditable(true);
+		addressCbController = new AddressComboBoxController(localUrl, cbAddress);
+		addressCbController.initializeComboBox();
 
-		utilities.FxUtilComboBoxSearchable.autoCompleteComboBoxPlus(cbProcess, (typedText,
-				itemToCompare) -> itemToCompare.getProcNumero().toLowerCase().contains(typedText.toLowerCase()));
-
-		utilities.FxUtilComboBoxSearchable.getComboBoxValue(cbProcess);
-
-		// Preeche com valores do servido atualizando ao digitar
-		cbProcess.getEditor().textProperty().addListener(new ChangeListener<String>() {
-			@Override
-			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-
-				if (newValue != null) {
-
-					obsProcess.clear();
-					List<Processo> list = fetchProcesses(newValue);
-					boolean containsSearchTerm = list.stream()
-							.anyMatch(processo -> processo.getProcNumero().contains(newValue));
-					/*
-					 * Se o que foi digitado está contido, não adicina novo processo, porém, se o
-					 * que foi digitado não está contido na lista, adiciona novo processo com id
-					 * nulo.
-					 */
-					if (containsSearchTerm) {
-						obsProcess.addAll(list);
-					} else {
-						obsProcess.add(new Processo(newValue));
-						obsProcess.addAll(list);
-					}
-
-				}
-
-			}
-		});
-
-		cbAddress.setItems(obsAddress);
-		cbAddress.setEditable(true);
-
-		utilities.FxUtilComboBoxSearchable.autoCompleteComboBoxPlus(cbAddress, (typedText,
-				itemToCompare) -> itemToCompare.getEndLogradouro().toLowerCase().contains(typedText.toLowerCase()));
-
-		utilities.FxUtilComboBoxSearchable.getComboBoxValue(cbAddress);
-
-		// Preeche com valores do servido atualizando ao digitar
-		cbAddress.getEditor().textProperty().addListener(new ChangeListener<String>() {
-			@Override
-			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-
-				if (newValue != null) {
-					obsAddress.clear();
-					List<Endereco> list = fetchAddress(newValue);
-					if (list != null) {
-
-						boolean containsSearchTerm = list.stream()
-								.anyMatch(endereco -> endereco.getEndLogradouro().contains(newValue));
-						/*
-						 * Se o que foi digitado está contido, não adicina novo anexo, porém, se o que
-						 * foi digitado não está contido na lista, adiciona novo anexo com id nulo.
-						 */
-						if (containsSearchTerm) {
-							obsAddress.addAll(list);
-						} else {
-							obsAddress.add(new Endereco(newValue));
-							obsAddress.addAll(list);
-						}
-
-					}
-
-				}
-			}
-
-		});
-
+		processCbController = new ProcessComboBoxController(localUrl, cbProcess);
+		processCbController.initializeComboBox();
 		
-		cbProcess.setItems(obsProcess);
-		cbProcess.setEditable(true);
-
-		utilities.FxUtilComboBoxSearchable.autoCompleteComboBoxPlus(cbProcess, (typedText,
-				itemToCompare) -> itemToCompare.getProcNumero().toLowerCase().contains(typedText.toLowerCase()));
-
-		utilities.FxUtilComboBoxSearchable.getComboBoxValue(cbProcess);
-
-		// Preeche com valores do servido atualizando ao digitar
-		cbProcess.getEditor().textProperty().addListener(new ChangeListener<String>() {
-			@Override
-			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-
-				if (newValue != null) {
-
-					obsProcess.clear();
-					List<Processo> list = fetchProcesses(newValue);
-					boolean containsSearchTerm = list.stream()
-							.anyMatch(processo -> processo.getProcNumero().contains(newValue));
-					/*
-					 * Se o que foi digitado está contido, não adicina novo processo, porém, se o
-					 * que foi digitado não está contido na lista, adiciona novo processo com id
-					 * nulo.
-					 */
-					if (containsSearchTerm) {
-						obsProcess.addAll(list);
-					} else {
-						obsProcess.add(new Processo(newValue));
-						obsProcess.addAll(list);
-					}
-
-				}
-
-			}
-		});
+		interferenceCbController = new InterferenceComboBoxController(localUrl, cbInterference);
+		interferenceCbController.initializeComboBox();
 		
-		// Interferência
-		
-		/*cbInterference.setItems(obsInterference);
-		cbInterference.setEditable(true);
-
-		utilities.FxUtilComboBoxSearchable.autoCompleteComboBoxPlus(cbInterference, (typedText,
-				itemToCompare) -> itemToCompare.getInterLatitude().toString().toLowerCase().contains(typedText.toLowerCase()));
-
-		utilities.FxUtilComboBoxSearchable.getComboBoxValue(cbProcess);
-
-		// Preeche com valores do servido atualizando ao digitar
-		cbInterference.getEditor().textProperty().addListener(new ChangeListener<String>() {
-			@Override
-			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-
-				if (newValue != null) {
-
-					obsInterference.clear();
-					List<Interferencia> list = fetchProcesses(newValue);
-					boolean containsSearchTerm = list.stream()
-							.anyMatch(processo -> processo.getProcNumero().contains(newValue));
-					//
-					// Se o que foi digitado está contido, não adicina novo processo, porém, se o
-					// que foi digitado não está contido na lista, adiciona novo processo com id
-					// nulo.
-					//
-					if (containsSearchTerm) {
-						obsInterference.addAll(list);
-					} else {
-						obsInterference.add(new Interferencia(newValue));
-						obsInterference.addAll(list);
-					}
-
-				}
-
-			}
-		});*/
 		
 		btnNew.setOnAction(e -> clearAllComponents());
 		btnViews.setOnAction(event -> showDocumentView());
@@ -437,7 +297,7 @@ public class DocumentController implements Initializable {
 		btnSearch.setOnAction(event -> handleSearch(event));
 		btnDelete.setOnAction(event -> handleDelete(event));
 		btnEdit.setOnAction(event -> handleEdit(event));
-		
+
 		btnAddress.setOnMouseClicked(evert -> openAddAddress());
 
 		// btnAddress.setOnAction(e -> openAddAddress());
@@ -838,36 +698,4 @@ public class DocumentController implements Initializable {
 		return null;
 	}
 
-	public List<Processo> fetchProcesses(String keyword) {
-
-		try {
-			ProcessoService service = new ProcessoService(localUrl);
-
-			List<Processo> list = service.fetchProcesses(keyword);
-
-			return list;
-
-		} catch (Exception e) {
-
-		}
-
-		return null;
-
-	}
-
-	public List<Endereco> fetchAddress(String keyword) {
-
-		try {
-			EnderecoService service = new EnderecoService(localUrl);
-
-			List<Endereco> list = service.fetchAddress(keyword);
-
-			return list;
-		} catch (Exception e) {
-
-		}
-
-		return null;
-
-	}
 }
