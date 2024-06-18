@@ -14,27 +14,23 @@ import javafx.fxml.Initializable;
 import models.Processo;
 import services.ProcessoService;
 
-public class ProcessComboBoxController implements Initializable {
+public class ProcessComboBoxController {
 
-    String localUrl;
+	String localUrl;
 
-    private JFXComboBox<Processo> cbProcess;
-    ObservableList<Processo> obsProcess = FXCollections.observableArrayList();
+	private JFXComboBox<Processo> cbProcess;
+	ObservableList<Processo> obsProcess = FXCollections.observableArrayList();
 
-    public ProcessComboBoxController(String localUrl, JFXComboBox<Processo> cbProcess) {
-        this.localUrl = localUrl;
-        this.cbProcess = cbProcess;
-    }
+	public ProcessComboBoxController(String localUrl, JFXComboBox<Processo> cbProcess) {
+		this.localUrl = localUrl;
+		this.cbProcess = cbProcess;
+	}
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        // Deixe vazio, já que o ComboBox será inicializado em outro lugar.
-    }
 
-    // Método para inicializar o ComboBox
-    public void initializeComboBox() {
-    	
-    	cbProcess.setItems(obsProcess);
+	// Método para inicializar o ComboBox
+	public void initializeComboBox() {
+
+		cbProcess.setItems(obsProcess);
 		cbProcess.setEditable(true);
 
 		utilities.FxUtilComboBoxSearchable.autoCompleteComboBoxPlus(cbProcess, (typedText,
@@ -69,9 +65,9 @@ public class ProcessComboBoxController implements Initializable {
 
 			}
 		});
-    }
+	}
 
-    // Método para buscar processos e preencher o ComboBox
+	// Método para buscar processos e preencher o ComboBox
 	public List<Processo> fetchProcesses(String keyword) {
 
 		try {
@@ -84,8 +80,13 @@ public class ProcessComboBoxController implements Initializable {
 		} catch (Exception e) {
 
 		}
-
 		return null;
+	}
 
+	public Processo getSelectedObject() {
+		// Verifica se nulo, se não nulo preenche objeto e retorna.
+		Processo object = cbProcess.selectionModelProperty().get().isEmpty() ? null
+				: new Processo(obsProcess.get(0).getProcId(), obsProcess.get(0).getProcNumero());
+		return object;
 	}
 }

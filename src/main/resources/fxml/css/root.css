@@ -22,3 +22,6 @@
 .scroll-bar .increment-arrow {
     -fx-padding:1;
 }
+.icons {
+	-fx-font-size: 24px;
+}

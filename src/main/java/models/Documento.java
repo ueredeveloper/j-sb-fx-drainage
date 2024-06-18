@@ -1,5 +1,7 @@
 package models;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.function.Function;
 
 import javafx.beans.property.SimpleStringProperty;
@@ -17,12 +19,13 @@ public class Documento {
 	private DocumentoTipo docTipo;
 	private Endereco docEndereco;
 
+	private Set<Usuario> usuarios = new HashSet<>();
+
 	// Construtor padrão
 	public Documento() {
 		super();
 	}
 
-	
 	public Documento(String docNumero, Processo docProcesso, Long docSei, DocumentoTipo docTipo, Endereco docEndereco) {
 		super();
 		this.docNumero = docNumero;
@@ -32,8 +35,6 @@ public class Documento {
 		this.docEndereco = docEndereco;
 	}
 	
-	
-
 	public Documento(String docNumero, Processo docProcesso, DocumentoTipo docTipo) {
 		super();
 		this.docNumero = docNumero;
@@ -45,6 +46,18 @@ public class Documento {
 		super();
 		this.docNumero = docNumero;
 		this.docProcesso = docProcesso;
+	}
+	
+
+	public Documento(String docNumero, Processo docProcesso, Long docSei, DocumentoTipo docTipo,
+			Endereco docEndereco, Set<Usuario> usuarios) {
+		super();
+		this.docNumero = docNumero;
+		this.docProcesso = docProcesso;
+		this.docSei = docSei;
+		this.docTipo = docTipo;
+		this.docEndereco = docEndereco;
+		this.usuarios = usuarios;
 	}
 
 	public StringProperty getEnderecoLogradouroProperty() {
@@ -59,43 +72,42 @@ public class Documento {
 		}
 		return enderecoLogradouroProperty;
 	}
-	
-	 public <T> StringProperty getProperty(Function<Documento, T> propertyAccessor) {
-	        StringProperty stringProperty = new SimpleStringProperty("");
-	        T value = propertyAccessor.apply(this);
 
-	        if (value != null) {
-	            String stringValue = String.valueOf(value);
-	            stringProperty.set(stringValue);
-	        }
+	public <T> StringProperty getProperty(Function<Documento, T> propertyAccessor) {
+		StringProperty stringProperty = new SimpleStringProperty("");
+		T value = propertyAccessor.apply(this);
 
-	        return stringProperty;
-	    }
-	 
-	 public String getDocProcessoProcNumero() {
-	        if (this.docProcesso != null) {
-	            return this.docProcesso.getProcNumero();
-	        } else {
-	            return null; // or handle the case when docProcesso is null
-	        }
-	    }
-	 
-	 public String getDocEnderecoLogradouro() {
-	        if (this.docEndereco != null) {
-	            return this.docEndereco.getEndLogradouro();
-	        } else {
-	            return null; // or handle the case when docProcesso is null
-	        }
-	    }
-	 
-	 public String getDocTipoDescricao() {
-	        if (this.docTipo != null) {
-	            return this.docTipo.getDtDescricao();
-	        } else {
-	            return null; // or handle the case when docProcesso is null
-	        }
-	    }
+		if (value != null) {
+			String stringValue = String.valueOf(value);
+			stringProperty.set(stringValue);
+		}
 
+		return stringProperty;
+	}
+
+	public String getDocProcessoProcNumero() {
+		if (this.docProcesso != null) {
+			return this.docProcesso.getProcNumero();
+		} else {
+			return null; // or handle the case when docProcesso is null
+		}
+	}
+
+	public String getDocEnderecoLogradouro() {
+		if (this.docEndereco != null) {
+			return this.docEndereco.getEndLogradouro();
+		} else {
+			return null; // or handle the case when docProcesso is null
+		}
+	}
+
+	public String getDocTipoDescricao() {
+		if (this.docTipo != null) {
+			return this.docTipo.getDtDescricao();
+		} else {
+			return null; // or handle the case when docProcesso is null
+		}
+	}
 
 	public Long getDocId() {
 		return docId;
@@ -121,8 +133,6 @@ public class Documento {
 		this.docProcesso = docProcesso;
 	}
 
-	
-
 	public DocumentoTipo getDocTipo() {
 		return docTipo;
 	}
@@ -146,7 +156,13 @@ public class Documento {
 	public void setDocSei(Long docSei) {
 		this.docSei = docSei;
 	}
-	
-	
+
+	public Set<Usuario> getUsuarios() {
+		return usuarios;
+	}
+
+	public void setUsuarios(Set<Usuario> usuarios) {
+		this.usuarios = usuarios;
+	}
 
 }

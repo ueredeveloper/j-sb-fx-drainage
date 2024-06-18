@@ -12,30 +12,32 @@ import java.util.List;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import models.Processo;
+import models.Endereco;
+import models.Usuario;
+import models.Usuario;
 
-public class ProcessoService {
+public class UsuarioService {
 
 	private String localUrl;
 
-	public ProcessoService(String localUrl) {
+	public UsuarioService(String localUrl) {
 		this.localUrl = localUrl;
 	}
 
-	public List<Processo> fetchProcesses(String keyword) {
+	public List<Usuario> fetchByKeyword (String keyword) {
 
 		try {
-			URL apiUrl = new URL(localUrl + "/process/list?keyword=" + URLEncoder.encode(keyword, "UTF-8"));
+			URL apiUrl = new URL(localUrl + "/user/list?keyword=" + URLEncoder.encode(keyword, "UTF-8"));
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
 			connection.setRequestMethod("GET");
 
 			int responseCode = connection.getResponseCode();
 
 			if (responseCode == HttpURLConnection.HTTP_OK) {
-				System.out.println("HTTP OK");
+
 				return handleSuccessResponse(connection);
 			} else if (responseCode == HttpURLConnection.HTTP_CREATED) {
-				System.out.println("HTTP Created");
+
 				return handleSuccessResponse(connection);
 			} else {
 				handleErrorResponse(connection);
@@ -51,7 +53,7 @@ public class ProcessoService {
 		return null;
 	}
 
-	private List<Processo> handleSuccessResponse(HttpURLConnection connection) throws IOException {
+	private List<Usuario> handleSuccessResponse(HttpURLConnection connection) throws IOException {
 		BufferedReader reader = new BufferedReader(
 				new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8));
 		StringBuilder response = new StringBuilder();
@@ -64,7 +66,7 @@ public class ProcessoService {
 
 		reader.close();
 
-		return new Gson().fromJson(response.toString(), new TypeToken<List<Processo>>() {
+		return new Gson().fromJson(response.toString(), new TypeToken<List<Usuario>>() {
 		}.getType());
 	}
 
@@ -83,6 +85,11 @@ public class ProcessoService {
 			}
 			return response.toString();
 		}
+	}
+
+	private String convertObjectToJson(Object object) {
+		Gson gson = new Gson();
+		return gson.toJson(object);
 	}
 
 }

@@ -2,8 +2,10 @@ package controllers;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashSet;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 import com.google.gson.Gson;
 import com.jfoenix.controls.JFXButton;
@@ -12,10 +14,12 @@ import com.jfoenix.controls.JFXTextField;
 
 import controllers.views.AddAddressController;
 import controllers.views.AddressComboBoxController;
+import controllers.views.AttachmentComboBoxController;
 import controllers.views.DocumentViewController;
 import controllers.views.EditAddressController;
-import controllers.views.InterferenceComboBoxController;
+import controllers.views.InterferenceTextFieldsController;
 import controllers.views.ProcessComboBoxController;
+import controllers.views.UserComboBoxController;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import enums.ToastType;
 import javafx.animation.TranslateTransition;
@@ -41,11 +45,12 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.Duration;
+import models.Anexo;
 import models.Documento;
 import models.DocumentoTipo;
 import models.Endereco;
-import models.Interferencia;
 import models.Processo;
+import models.Usuario;
 import services.DocumentService;
 import services.DocumentoTipoService;
 import services.ServiceResponse;
@@ -84,9 +89,19 @@ public class DocumentController implements Initializable {
 	@FXML
 	private JFXComboBox<Endereco> cbAddress;
 	ObservableList<Endereco> obsAddress = FXCollections.observableArrayList();
+
 	@FXML
-	private JFXComboBox<Interferencia> cbInterference;
-	ObservableList<Interferencia> obsInterference = FXCollections.observableArrayList();
+	private JFXComboBox<Anexo> cbAttachment;
+	ObservableList<Anexo> obsAnexo = FXCollections.observableArrayList();
+
+	@FXML
+	private JFXComboBox<Usuario> cbUser;
+
+	@FXML
+	private JFXTextField tfLatitude;
+
+	@FXML
+	private JFXTextField tfLongitude;
 
 	@FXML
 	private JFXButton btnNew;
@@ -161,7 +176,10 @@ public class DocumentController implements Initializable {
 
 	private AddressComboBoxController addressCbController;
 	private ProcessComboBoxController processCbController;
-	private InterferenceComboBoxController interferenceCbController;
+	private AttachmentComboBoxController attachmentCbController;
+	private UserComboBoxController userCbController;
+
+	private InterferenceTextFieldsController interferenceTfController;
 
 	/**
 	 * Inicializa o controlador e configura a interface.
@@ -230,6 +248,8 @@ public class DocumentController implements Initializable {
 
 			if (newSelection != null) {
 
+				System.out.println(newSelection.getDocTipo());
+
 				// Atualiza ComboBox (Tipo de Documento) a partir do documento selecionado
 				cbDocType.getSelectionModel().select(newSelection.getDocTipo());
 				// Atualizar componentes de acordo com o documento selecionado
@@ -237,14 +257,6 @@ public class DocumentController implements Initializable {
 				tfNumberSei.setText(String.valueOf(newSelection.getDocSei()));
 				cbProcess.getSelectionModel().select(newSelection.getDocProcesso());
 				cbAddress.getSelectionModel().select(newSelection.getDocEndereco());
-				if (newSelection.getDocEndereco() != null) {
-
-					// tfCity.setText(newSelection.getDocEndereco().getEndCidade());
-					// tfCEP.setText(newSelection.getDocEndereco().getEndCep());
-				} else {
-					// tfCity.clear();
-					// tfCEP.clear();
-				}
 
 			} else {
 
@@ -286,11 +298,16 @@ public class DocumentController implements Initializable {
 
 		processCbController = new ProcessComboBoxController(localUrl, cbProcess);
 		processCbController.initializeComboBox();
-		
-		interferenceCbController = new InterferenceComboBoxController(localUrl, cbInterference);
-		interferenceCbController.initializeComboBox();
-		
-		
+
+		attachmentCbController = new AttachmentComboBoxController(localUrl, cbAttachment);
+		attachmentCbController.init();
+
+		interferenceTfController = new InterferenceTextFieldsController(localUrl, tfLatitude, tfLongitude);
+		interferenceTfController.initializeTextFields();
+
+		userCbController = new UserComboBoxController(localUrl, cbUser);
+		userCbController.init();
+
 		btnNew.setOnAction(e -> clearAllComponents());
 		btnViews.setOnAction(event -> showDocumentView());
 		btnSave.setOnAction(event -> handleSave(event));
@@ -508,30 +525,19 @@ public class DocumentController implements Initializable {
 
 			DocumentService documentService = new DocumentService(localUrl);
 
-			// numero, processo, numero sei, tipo endereço -> new Endereco
-
-			/*
-			 * Documento requestDocument = new Documento(tfNumber.getText(),
-			 * 
-			 * // Verifica se o usuário selecionou algum processo
-			 * 
-			 * //cbProcess.selectionModelProperty().get().isEmpty() ? null :
-			 * obsProcess.get(0), numberSei);
-			 * 
-			 * 
-			 * cbDocType.getValue(),
-			 * 
-			 * // Verifica se o usuário selecionou ou cadastrou algum endereço
-			 * 
-			 * cbAddress.selectionModelProperty().get().isEmpty() ? null : new
-			 * Endereco(obsAddress.get(0).getEndId(), obsAddress.get(0).getEndLogradouro(),
-			 * tfCity.getText(), tfCEP.getText()));
-			 */
+			Processo obsProcessList0 = processCbController.getSelectedObject();
+			Endereco obsAddressList0 = addressCbController.getSelectedObject();
+			Usuario obsUserList0 = userCbController.getSelectedObject();
+			Set<Usuario> usuarios = new HashSet<>();
+			usuarios.add(obsUserList0);
 
 			Documento requestDocument = new Documento(tfNumber.getText(), // Número
-					cbProcess.selectionModelProperty().get().isEmpty() ? null : obsProcess.get(0), // Processo
-					numberSei, cbDocType.getValue(), cbAddress.selectionModelProperty().get().isEmpty() ? null
-							: new Endereco(obsAddress.get(0).getEndId(), obsAddress.get(0).getEndLogradouro()));
+					obsProcessList0, // Processo
+					numberSei, // numero sei
+					cbDocType.getValue(), // doc Tipo
+					obsAddressList0, // endereço
+					usuarios // usuário
+			);
 
 			ServiceResponse<?> documentoServiceResponse = documentService.save(requestDocument);
 
