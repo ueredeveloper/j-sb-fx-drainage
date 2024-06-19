@@ -21,10 +21,12 @@ public class ProcessComboBoxController {
 	public ProcessComboBoxController(String localUrl, JFXComboBox<Processo> cbProcess) {
 		this.localUrl = localUrl;
 		this.cbProcess = cbProcess;
+		
+		init();
 	}
 
 	// Método para inicializar o ComboBox
-	public void initializeComboBox() {
+	public void init () {
 
 		cbProcess.setItems(obsProcess);
 		cbProcess.setEditable(true);

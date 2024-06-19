@@ -25,12 +25,12 @@ let json = {
 	"docEndereco":{
 		"endId":3,"endLogradouro":"Rua das Flores, Apartamento 5","endCidade":"br","endCEP":"22"
 	},
-	"intLatitude": -15.710520042184267,
-	"intLongitude": -47.76868726015565
+	"interLatitude": -15.710520042184267,
+	"interLongitude": -47.76868726015565
 	}
 
 	
-	L.marker([json.intLatitude, json.intLongitude]).addTo(map);
+	L.marker([json.interLatitude, json.interLongitude]).addTo(map);
 	
 
 // Definindo as camadas
@@ -80,7 +80,16 @@ let json = {
 		    map.setZoom(newZoom);
 			
 		}
-	
+		
+		let currentMarker = null;
+
+		function addMarker(json) {
+		    if (currentMarker) {
+		        map.removeLayer(currentMarker);
+		    }
+		    currentMarker = L.marker([json.interLatitude, json.interLongitude]).addTo(map);
+		    map.setView([json.interLatitude, json.interLongitude], 11); // Centralizar o mapa no novo marcador
+		}
 	
 	
 	

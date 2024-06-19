@@ -22,10 +22,12 @@ public class AddressComboBoxController {
 		super();
 		this.localUrl = localUrl;
 		this.cbAddress = cbAddress;
+		
+		init();
 	}
 
 	// Método para inicializar o ComboBox
-	public void initializeComboBox() {
+	public void init () {
 		cbAddress.setItems(obsAddress);
 		cbAddress.setEditable(true);
 

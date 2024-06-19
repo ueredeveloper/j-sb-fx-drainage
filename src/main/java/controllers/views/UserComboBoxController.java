@@ -21,6 +21,8 @@ public class UserComboBoxController {
 	public UserComboBoxController(String localUrl, JFXComboBox<Usuario> cbUser) {
 		this.localUrl = localUrl;
 		this.cbUser = cbUser;
+		
+		init();
 	}
 
 	// Método para inicializar o ComboBox

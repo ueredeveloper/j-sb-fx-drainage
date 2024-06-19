@@ -170,7 +170,7 @@ public class DocumentController implements Initializable {
 		return address;
 	}
 
-	public void setMainController(MainController mainController) {
+	public void setMainController (MainController mainController) {
 		this.mainController = mainController;
 	}
 
@@ -178,8 +178,8 @@ public class DocumentController implements Initializable {
 	private ProcessComboBoxController processCbController;
 	private AttachmentComboBoxController attachmentCbController;
 	private UserComboBoxController userCbController;
+	private InterferenceTextFieldsController interferenceTFController;
 
-	private InterferenceTextFieldsController interferenceTfController;
 
 	/**
 	 * Inicializa o controlador e configura a interface.
@@ -294,19 +294,11 @@ public class DocumentController implements Initializable {
 		tfNumberSei.setTextFormatter(textFormatter);
 
 		addressCbController = new AddressComboBoxController(localUrl, cbAddress);
-		addressCbController.initializeComboBox();
-
 		processCbController = new ProcessComboBoxController(localUrl, cbProcess);
-		processCbController.initializeComboBox();
-
 		attachmentCbController = new AttachmentComboBoxController(localUrl, cbAttachment);
-		attachmentCbController.init();
-
-		interferenceTfController = new InterferenceTextFieldsController(localUrl, tfLatitude, tfLongitude);
-		interferenceTfController.initializeTextFields();
-
+		interferenceTFController = new InterferenceTextFieldsController(localUrl, tfLatitude, tfLongitude);
 		userCbController = new UserComboBoxController(localUrl, cbUser);
-		userCbController.init();
+	
 
 		btnNew.setOnAction(e -> clearAllComponents());
 		btnViews.setOnAction(event -> showDocumentView());

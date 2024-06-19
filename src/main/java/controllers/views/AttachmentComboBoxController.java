@@ -24,12 +24,11 @@ public class AttachmentComboBoxController implements Initializable {
 	public AttachmentComboBoxController(String localUrl, JFXComboBox<Anexo> cbAttachment) {
 		this.localUrl = localUrl;
 		this.cbAttachment = cbAttachment;
+		
+		init();
 	}
 
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-		// Deixe vazio, já que o ComboBox será inicializado em outro lugar.
-	}
+
 
 	// Método para inicializar o ComboBox
 	public void init() {
@@ -94,5 +93,13 @@ public class AttachmentComboBoxController implements Initializable {
 		Anexo object = cbAttachment.selectionModelProperty().get().isEmpty() ? null
 				: new Anexo(obsAttachment.get(0).getId(), obsAttachment.get(0).getNumero());
 		return object;
+	}
+
+
+
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		// TODO Auto-generated method stub
+		
 	}
 }

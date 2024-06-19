@@ -35,7 +35,9 @@ public class MainController implements Initializable {
 		return this.apManager;
 	}
 
-	public MapController mapController;
+	private DocumentController documentController;
+	private MapController mapController;
+	private AnchorPane apDocument;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -46,10 +48,9 @@ public class MainController implements Initializable {
 
 		loadNavigationBar();
 
-	}
+		loadDocuments();
 
-	private DocumentController docController;
-	private AnchorPane apDocument; // Store the AnchorPane of Documents.fxml
+	}
 
 	private void loadNavigationBar() {
 		try {
@@ -57,7 +58,7 @@ public class MainController implements Initializable {
 			// Setting the custom controller factory for NavigationController
 			loader.setControllerFactory(controllerClass -> {
 				if (controllerClass == NavigationController.class) {
-					return new NavigationController(this, mapController);
+					return new NavigationController(this, this.mapController);
 				} else {
 					try {
 						return controllerClass.getDeclaredConstructor().newInstance();
@@ -70,19 +71,6 @@ public class MainController implements Initializable {
 			apTop.getChildren().add(apNavBar);
 			AnchorPane.setRightAnchor(apNavBar, 0.0);
 
-			if (apDocument == null) {
-				FXMLLoader loader2 = new FXMLLoader(getClass().getResource("/fxml/Documents.fxml"));
-				apDocument = loader2.load();
-				docController = loader2.getController();
-				docController.setMainController(this);
-
-				apManager.getChildren().add(apDocument);
-				AnchorPane.setLeftAnchor(apDocument, 0.0);
-				AnchorPane.setRightAnchor(apDocument, 0.0);
-
-			} else {
-				apManager.setVisible(!apDocument.isVisible());
-			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -105,8 +93,38 @@ public class MainController implements Initializable {
 			});
 			Parent root = fxmlLoader.load();
 			apContent.getChildren().add(root);
+
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+	}
+
+	private void loadDocuments() {
+
+		if (apDocument == null) {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Documents.fxml"));
+			try {
+				apDocument = loader.load();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			if (mapController != null) {
+
+				System.out.println("this map != null ");
+
+				documentController = loader.getController();
+				documentController.setMainController (this);
+
+				apManager.getChildren().add(apDocument);
+				AnchorPane.setLeftAnchor(apDocument, 0.0);
+				AnchorPane.setRightAnchor(apDocument, 0.0);
+
+			}
+
+		} else {
+			apManager.setVisible(!apDocument.isVisible());
 		}
 	}
 

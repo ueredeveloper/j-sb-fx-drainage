@@ -23,6 +23,8 @@ import netscape.javascript.JSObject;
  */
 public class MapController implements Initializable {
 
+	private static MapController instance;
+
 	@FXML
 	private AnchorPane apMap;
 
@@ -51,6 +53,11 @@ public class MapController implements Initializable {
 
 	public MapController(AnchorPane apContent) {
 		this.apContent = apContent;
+		instance = this; // Define a instância no construtor
+	}
+
+	public static MapController getInstance() {
+		return instance;
 	}
 
 	public AnchorPane getAnchorPaneMap() {
@@ -60,6 +67,8 @@ public class MapController implements Initializable {
 	@SuppressWarnings("restriction")
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+
+		System.out.println("map controller inicializado!!! ");
 
 		// Add a listener to the width property of the AnchorPane
 		apContent.widthProperty().addListener(new ChangeListener<Number>() {
@@ -180,6 +189,13 @@ public class MapController implements Initializable {
 
 	public void printCoords(String coords) {
 		System.out.println(coords);
+	}
+
+	public void handleAddMarker(String json) {
+
+		System.out.println(" add marker with json map controller");
+		invokeJS("addMarker(" + json + ");");
+
 	}
 
 }
