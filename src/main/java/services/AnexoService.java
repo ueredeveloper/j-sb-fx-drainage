@@ -7,6 +7,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
@@ -22,6 +23,7 @@ public class AnexoService {
 	public AnexoService(String localUrl) {
 		this.localUrl = localUrl;
 	}
+
 	public ServiceResponse<?> save(Anexo anexo) {
 		try {
 			URL apiUrl = new URL(localUrl + "/attachment/create");
@@ -32,7 +34,7 @@ public class AnexoService {
 
 			// Convert Documento object to JSON
 			String jsonInputString = convertObjectToJson(anexo);
-		
+
 			// Write JSON to request body
 			try (OutputStream os = connection.getOutputStream();
 					OutputStreamWriter osw = new OutputStreamWriter(os, "UTF-8")) {
@@ -68,20 +70,21 @@ public class AnexoService {
 		}
 	}
 
-	public List<Anexo> fetchAttachments (String keyword) {
-	
+	public List<Anexo> fecthByKeyword(String keyword) {
+
 		try {
-			URL apiUrl = new URL(localUrl + "/attachment/list?keyword=" + keyword);
+			URL apiUrl = new URL(
+					localUrl + "/attachment/list-by-keyword?keyword=" + URLEncoder.encode(keyword, "UTF-8"));
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
 			connection.setRequestMethod("GET");
 
 			int responseCode = connection.getResponseCode();
 
 			if (responseCode == HttpURLConnection.HTTP_OK) {
-				 System.out.println("HTTP OK");
+				System.out.println("HTTP OK");
 				return handleSuccessResponse(connection);
 			} else if (responseCode == HttpURLConnection.HTTP_CREATED) {
-				 System.out.println("HTTP Created");
+				System.out.println("HTTP Created");
 				return handleSuccessResponse(connection);
 			} else {
 				handleErrorResponse(connection);
@@ -135,6 +138,5 @@ public class AnexoService {
 		Gson gson = new Gson();
 		return gson.toJson(object);
 	}
-
 
 }

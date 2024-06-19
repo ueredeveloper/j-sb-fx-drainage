@@ -4,12 +4,12 @@ public class Processo {
 
 	private Long procId;
 	private String procNumero;
+	private Anexo anexo;
 
 	public Processo() {
 		super();
 
 	}
-	
 
 	public Processo(String procNumero) {
 		super();
@@ -37,11 +37,19 @@ public class Processo {
 	public void setProcNumero(String procNumero) {
 		this.procNumero = procNumero;
 	}
-	
-	 // Override toString() method to display procNumero in ComboBox
-    @Override
-    public String toString() {
-        return procNumero;
-    }
+
+	public Anexo getAnexo() {
+		return anexo;
+	}
+
+	public void setAnexo(Anexo anexo) {
+		this.anexo = anexo;
+	}
+
+	// Override toString() method to display procNumero in ComboBox
+	@Override
+	public String toString() {
+		return procNumero;
+	}
 
 }

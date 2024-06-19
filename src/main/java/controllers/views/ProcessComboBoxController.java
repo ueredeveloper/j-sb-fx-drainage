@@ -1,8 +1,6 @@
 package controllers.views;
 
-import java.net.URL;
 import java.util.List;
-import java.util.ResourceBundle;
 
 import com.jfoenix.controls.JFXComboBox;
 
@@ -10,7 +8,6 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.fxml.Initializable;
 import models.Processo;
 import services.ProcessoService;
 
@@ -25,7 +22,6 @@ public class ProcessComboBoxController {
 		this.localUrl = localUrl;
 		this.cbProcess = cbProcess;
 	}
-
 
 	// Método para inicializar o ComboBox
 	public void initializeComboBox() {

@@ -22,8 +22,6 @@ import utilities.URLUtility;
 
 public class AddAddressController implements Initializable {
 
-	
-	
 	@FXML
 	private AnchorPane apContainer;
 
@@ -80,7 +78,7 @@ public class AddAddressController implements Initializable {
 	}
 
 	public void handleAdd(ActionEvent event) {
-		
+
 		Endereco endereco = new Endereco();
 
 		String endLogradouro = tfStreet.getText();
@@ -101,7 +99,7 @@ public class AddAddressController implements Initializable {
 			if (serviceResponse.getResponseCode() == 200) {
 				// Alerta (Toast) de sucesso na edi��o
 				Node source = (Node) event.getSource();
-				
+
 				System.out.println(source);
 				Stage ownerStage = (Stage) source.getScene().getWindow();
 				String toastMsg = "Endereço editado com sucesso!";

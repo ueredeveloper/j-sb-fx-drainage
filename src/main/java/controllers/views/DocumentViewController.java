@@ -1,6 +1,5 @@
 package controllers.views;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -18,24 +17,20 @@ import javafx.scene.web.HTMLEditor;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import models.Documento;
-import models.DocumentoTipo;
-import models.Processo;
 import netscape.javascript.JSObject;
 import utilities.HTMLFileLoader;
 
 public class DocumentViewController implements Initializable {
 
-	
-	
 	private Documento selectedDocument;
 
 	// Constructor that takes the selected document as a parameter
 	public DocumentViewController(Documento selectedDocument) {
 		this.selectedDocument = selectedDocument;
 	}
-	
-    @FXML
-    private AnchorPane apContainer;
+
+	@FXML
+	private AnchorPane apContainer;
 
 	@FXML
 	private HTMLEditor htmlEditor;
@@ -48,8 +43,9 @@ public class DocumentViewController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		
-		// Retira o link com a stilização light ou dark, assim fica a estilização do componente pai (MainController)
+
+		// Retira o link com a stilização light ou dark, assim fica a estilização do
+		// componente pai (MainController)
 		apContainer.getStylesheets().clear();
 
 		// Load HTML content from a resource file.
@@ -96,13 +92,12 @@ public class DocumentViewController implements Initializable {
 		webEngine.getLoadWorker().stateProperty().addListener((obs, oldState, newState) -> {
 
 			if (newState == Worker.State.SUCCEEDED) {
-		
+
 				JSObject jsObject = (JSObject) webEngine.executeScript("window");
 
 				String sJson = json.replace("\"", "'");
-	
-				JSObject updatedData = (JSObject) webEngine.executeScript("(" + sJson + ")");
 
+				JSObject updatedData = (JSObject) webEngine.executeScript("(" + sJson + ")");
 
 				jsObject.call("updateSeriesData", updatedData);
 			}

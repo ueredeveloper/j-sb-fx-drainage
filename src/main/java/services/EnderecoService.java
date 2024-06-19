@@ -14,7 +14,6 @@ import java.util.List;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import models.Documento;
 import models.Endereco;
 
 public class EnderecoService {
@@ -83,7 +82,7 @@ public class EnderecoService {
 
 			// Convert Documento object to JSON
 			String jsonInputString = convertObjectToJson(endereco);
-			
+
 			System.out.println(jsonInputString);
 
 			// Write JSON to request body
@@ -119,6 +118,7 @@ public class EnderecoService {
 			return null; // Return null if an error occurs
 		}
 	}
+
 	public List<Endereco> fetchAddress(String keyword) {
 
 		try {

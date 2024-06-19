@@ -14,7 +14,6 @@ import com.google.gson.reflect.TypeToken;
 import models.DocumentoTipo;
 
 public class DocumentoTipoService {
-	
 
 	private String localUrl;
 
@@ -22,7 +21,7 @@ public class DocumentoTipoService {
 		this.localUrl = localUrl;
 	}
 
-	public List<DocumentoTipo> fetchDocumentTypes () {
+	public List<DocumentoTipo> fetchDocumentTypes() {
 		try {
 			URL apiUrl = new URL(localUrl + "/document-type");
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();

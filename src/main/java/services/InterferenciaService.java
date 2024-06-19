@@ -15,7 +15,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import models.Interferencia;
-import models.Interferencia;
 import models.Subterranea;
 
 public class InterferenciaService {
@@ -75,54 +74,40 @@ public class InterferenciaService {
 	}
 
 	/*
-	public ServiceResponse<?> update(Interferencia endereco) {
-		try {
-			URL apiUrl = new URL(localUrl + "/address/update?id=" + endereco.getEndId());
-			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
-			connection.setRequestMethod("PUT");
-			connection.setRequestProperty("Content-Type", "application/json");
-			connection.setDoOutput(true);
+	 * public ServiceResponse<?> update(Interferencia endereco) { try { URL apiUrl =
+	 * new URL(localUrl + "/address/update?id=" + endereco.getEndId());
+	 * HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
+	 * connection.setRequestMethod("PUT");
+	 * connection.setRequestProperty("Content-Type", "application/json");
+	 * connection.setDoOutput(true);
+	 * 
+	 * // Convert Documento object to JSON String jsonInputString =
+	 * convertObjectToJson(endereco);
+	 * 
+	 * System.out.println(jsonInputString);
+	 * 
+	 * // Write JSON to request body try (OutputStream os =
+	 * connection.getOutputStream(); OutputStreamWriter osw = new
+	 * OutputStreamWriter(os, "UTF-8")) { osw.write(jsonInputString); osw.flush(); }
+	 * 
+	 * int responseCode = connection.getResponseCode();
+	 * 
+	 * String responseBody; if (responseCode == HttpURLConnection.HTTP_OK) {
+	 * 
+	 * try (BufferedReader br = new BufferedReader( new
+	 * InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
+	 * StringBuilder response = new StringBuilder(); String responseLine; while
+	 * ((responseLine = br.readLine()) != null) { response.append(responseLine); }
+	 * responseBody = response.toString(); } } else {
+	 * handleErrorResponse(connection); responseBody = readErrorStream(connection);
+	 * }
+	 * 
+	 * connection.disconnect(); return new ServiceResponse<String>(responseCode,
+	 * responseBody); } catch (Exception e) { e.printStackTrace(); return null; //
+	 * Return null if an error occurs } }
+	 */
 
-			// Convert Documento object to JSON
-			String jsonInputString = convertObjectToJson(endereco);
-
-			System.out.println(jsonInputString);
-
-			// Write JSON to request body
-			try (OutputStream os = connection.getOutputStream();
-					OutputStreamWriter osw = new OutputStreamWriter(os, "UTF-8")) {
-				osw.write(jsonInputString);
-				osw.flush();
-			}
-
-			int responseCode = connection.getResponseCode();
-
-			String responseBody;
-			if (responseCode == HttpURLConnection.HTTP_OK) {
-
-				try (BufferedReader br = new BufferedReader(
-						new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
-					StringBuilder response = new StringBuilder();
-					String responseLine;
-					while ((responseLine = br.readLine()) != null) {
-						response.append(responseLine);
-					}
-					responseBody = response.toString();
-				}
-			} else {
-				handleErrorResponse(connection);
-				responseBody = readErrorStream(connection);
-			}
-
-			connection.disconnect();
-			return new ServiceResponse<String>(responseCode, responseBody);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null; // Return null if an error occurs
-		}
-	}*/
-
-	public List<Interferencia> fetch (String keyword) {
+	public List<Interferencia> fetch(String keyword) {
 
 		try {
 			URL apiUrl = new URL(localUrl + "/interference/list?keyword=" + URLEncoder.encode(keyword, "UTF-8"));

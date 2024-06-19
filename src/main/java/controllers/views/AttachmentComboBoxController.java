@@ -38,7 +38,7 @@ public class AttachmentComboBoxController implements Initializable {
 		cbAttachment.setEditable(true);
 
 		utilities.FxUtilComboBoxSearchable.autoCompleteComboBoxPlus(cbAttachment, (typedText,
-				itemToCompare) -> itemToCompare.getAnNumero().toLowerCase().contains(typedText.toLowerCase()));
+				itemToCompare) -> itemToCompare.getNumero().toLowerCase().contains(typedText.toLowerCase()));
 
 		utilities.FxUtilComboBoxSearchable.getComboBoxValue(cbAttachment);
 
@@ -50,9 +50,9 @@ public class AttachmentComboBoxController implements Initializable {
 				if (newValue != null) {
 
 					obsAttachment.clear();
-					List<Anexo> list = fetch(newValue);
+					List<Anexo> list = fetchByKeyword(newValue);
 					boolean containsSearchTerm = list.stream()
-							.anyMatch(processo -> processo.getAnNumero().contains(newValue));
+							.anyMatch(processo -> processo.getNumero().contains(newValue));
 					//
 					// Se o que foi digitado está contido, não adicina novo processo, porém, se o
 					// que foi digitado não está contido na lista, adiciona novo processo com id
@@ -72,12 +72,12 @@ public class AttachmentComboBoxController implements Initializable {
 	}
 
 	// Método para buscar processos e preencher o ComboBox
-	public List<Anexo> fetch(String keyword) {
+	public List<Anexo> fetchByKeyword(String keyword) {
 
 		try {
 			AnexoService service = new AnexoService(localUrl);
 
-			List<Anexo> list = service.fetchAttachments(keyword);
+			List<Anexo> list = service.fecthByKeyword(keyword);
 
 			return list;
 
@@ -87,5 +87,12 @@ public class AttachmentComboBoxController implements Initializable {
 
 		return null;
 
+	}
+
+	public Anexo getSelectedObject() {
+		// Verifica se nulo, se não nulo preenche objeto e retorna.
+		Anexo object = cbAttachment.selectionModelProperty().get().isEmpty() ? null
+				: new Anexo(obsAttachment.get(0).getId(), obsAttachment.get(0).getNumero());
+		return object;
 	}
 }

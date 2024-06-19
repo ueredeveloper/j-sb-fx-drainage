@@ -3,7 +3,6 @@ package controllers.views;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import com.google.gson.Gson;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 
@@ -16,7 +15,6 @@ import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
-import models.Documento;
 import models.Endereco;
 import services.EnderecoService;
 import services.ServiceResponse;
@@ -24,8 +22,6 @@ import utilities.URLUtility;
 
 public class EditAddressController implements Initializable {
 
-	
-	
 	@FXML
 	private AnchorPane apContainer;
 
@@ -65,14 +61,13 @@ public class EditAddressController implements Initializable {
 		// Retira o link com a stilização light ou dark, assim fica a estilização do
 		// componente pai (MainController)
 		apContainer.getStylesheets().clear();
-		
+
 		this.endereco = this.documentController.getDocAddress();
-		
+
 		tfAddress.setText(endereco.getEndLogradouro());
 		tfCity.setText(endereco.getEndCidade());
 		tfZipCode.setText(endereco.getEndCep());
-		
-		
+
 		btnClose.setOnAction(e -> {
 			this.documentController.closeEditAddress();
 		});
@@ -84,7 +79,6 @@ public class EditAddressController implements Initializable {
 	}
 
 	public void handleEdit(ActionEvent event) {
-
 
 		String endLogradouro = tfAddress.getText();
 		String endCidade = tfCity.getText();
@@ -105,8 +99,7 @@ public class EditAddressController implements Initializable {
 				Stage ownerStage = (Stage) source.getScene().getWindow();
 				String toastMsg = "Endereço editado com sucesso!";
 				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.SUCCESS);
-				
-				
+
 				// é preciso voltar com o endereço editado e atualizar a lista de documentos
 
 				/*

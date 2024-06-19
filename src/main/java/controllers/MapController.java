@@ -22,8 +22,6 @@ import netscape.javascript.JSObject;
  * Controlador para a interface de mapa.
  */
 public class MapController implements Initializable {
-	
-	
 
 	@FXML
 	private AnchorPane apMap;
@@ -55,8 +53,6 @@ public class MapController implements Initializable {
 		this.apContent = apContent;
 	}
 
-	
-	
 	public AnchorPane getAnchorPaneMap() {
 		return this.apMap;
 	}

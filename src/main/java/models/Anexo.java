@@ -1,61 +1,68 @@
 package models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Anexo {
 
-	private Long anId;
+	private Long id;
+	private String numero;
+	private List<Processo> processos = new ArrayList<>();
 
-	private String anNumero;
-
-	private Processo anPrincipal;
+	public Anexo() {
+		super();
+	}
 	
-
-	public Anexo(Long anId, String anNumero, Processo anPrincipal) {
+	public Anexo(String numero) {
 		super();
-		this.anId = anId;
-		this.anNumero = anNumero;
-		this.anPrincipal = anPrincipal;
+		this.numero = numero;
 	}
 
-	public Anexo(String anNumero, Processo anPrincipal) {
+	public Anexo(Long id, String numero) {
 		super();
-		this.anNumero = anNumero;
-		this.anPrincipal = anPrincipal;
+		this.id = id;
+		this.numero = numero;
 	}
 
-	public Anexo(String anNumero) {
-		super();
-		this.anNumero = anNumero;
+	public Long getId() {
+		return id;
 	}
 
-	public Long getAnId() {
-		return anId;
+
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
-	public void setAnId(Long anId) {
-		this.anId = anId;
+
+
+	public String getNumero() {
+		return numero;
 	}
 
-	public String getAnNumero() {
-		return anNumero;
+
+
+	public void setNumero(String numero) {
+		this.numero = numero;
 	}
 
-	public void setAnNumero(String anNumero) {
-		this.anNumero = anNumero;
+
+
+	public List<Processo> getProcessos() {
+		return processos;
 	}
 
-	public Processo getAnPrincipal() {
-		return anPrincipal;
+
+
+	public void setProcessos(List<Processo> processos) {
+		this.processos = processos;
 	}
 
-	public void setAnPrincipal(Processo anPrincipal) {
-		this.anPrincipal = anPrincipal;
-	}
+
 
 	@Override
 	public String toString() {
-		return anNumero;
+		return numero;
 	}
-	
-	
 
 }

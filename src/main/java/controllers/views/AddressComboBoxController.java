@@ -42,7 +42,7 @@ public class AddressComboBoxController {
 					obsAddress.clear();
 					List<Endereco> list = fetchAddress(newValue);
 					System.out.println("endereço size " + list.size());
-					
+
 					if (list != null) {
 						boolean containsSearchTerm = list.stream()
 								.anyMatch(endereco -> endereco.getEndLogradouro().contains(newValue));

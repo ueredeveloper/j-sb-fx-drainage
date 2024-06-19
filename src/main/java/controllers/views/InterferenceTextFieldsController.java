@@ -9,7 +9,7 @@ public class InterferenceTextFieldsController {
 	private JFXTextField tfLatitude;
 	private JFXTextField tfLongitude;
 
-	public InterferenceTextFieldsController (String localUrl, JFXTextField tfLatitude, JFXTextField tfLongitude) {
+	public InterferenceTextFieldsController(String localUrl, JFXTextField tfLatitude, JFXTextField tfLongitude) {
 		this.localUrl = localUrl;
 		this.tfLatitude = tfLatitude;
 		this.tfLongitude = tfLongitude;

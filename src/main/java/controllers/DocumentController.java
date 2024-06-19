@@ -526,6 +526,12 @@ public class DocumentController implements Initializable {
 			DocumentService documentService = new DocumentService(localUrl);
 
 			Processo obsProcessList0 = processCbController.getSelectedObject();
+			Anexo obsAttachList0 = attachmentCbController.getSelectedObject();
+			
+			System.out.println(obsAttachList0.getNumero());
+				// Anexar o processo principal (anexo) ao processo
+				obsProcessList0.setAnexo(obsAttachList0);
+				
 			Endereco obsAddressList0 = addressCbController.getSelectedObject();
 			Usuario obsUserList0 = userCbController.getSelectedObject();
 			Set<Usuario> usuarios = new HashSet<>();

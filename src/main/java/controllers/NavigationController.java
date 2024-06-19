@@ -17,13 +17,10 @@ import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import javafx.stage.Stage;
 import utilities.ResizeMap;
 
 public class NavigationController implements Initializable {
 
-	
-	
 	@FXML
 	private AnchorPane apContent;
 
@@ -57,46 +54,45 @@ public class NavigationController implements Initializable {
 
 	@FXML
 	private void toggleMode(MouseEvent event) {
-		
+
 		System.out.println("ICON");
 		Node source = (Node) event.getSource();
-        Scene scene = source.getScene();
+		Scene scene = source.getScene();
 
 		isDarkMode = !isDarkMode; // Toggle mode
-		
+
 		System.out.println(isDarkMode);
 
 		if (isDarkMode) {
-			//mainController.applyDarkMode();
+			// mainController.applyDarkMode();
 			iconLightDark.setGlyphName("MOON_ALT");
 		} else {
-			//mainController.applyLightMode();
+			// mainController.applyLightMode();
 			iconLightDark.setGlyphName("SUN_ALT");
 		}
 	}
 
 	/*
-	private void applyDarkMode(Scene scene) {
-		// Load the root-dark.css file
-		scene.getStylesheets().clear();
-		scene.getStylesheets().add(getClass().getResource("/fxml/css/root-dark.css").toExternalForm());
-
-		// Change icon to indicate light mode
-		iconLightDark.setGlyphName("MOON_ALT");
-	}
-
-	private void applyLightMode(Scene scene) {
-		// Load the root-light.css file
-		scene.getStylesheets().clear();
-		scene.getStylesheets().add(getClass().getResource("/fxml/css/root-light.css").toExternalForm());
-
-		// Change icon to indicate dark mode
-		iconLightDark.setGlyphName("SUN_ALT");
-	}*/
+	 * private void applyDarkMode(Scene scene) { // Load the root-dark.css file
+	 * scene.getStylesheets().clear();
+	 * scene.getStylesheets().add(getClass().getResource("/fxml/css/root-dark.css").
+	 * toExternalForm());
+	 * 
+	 * // Change icon to indicate light mode iconLightDark.setGlyphName("MOON_ALT");
+	 * }
+	 * 
+	 * private void applyLightMode(Scene scene) { // Load the root-light.css file
+	 * scene.getStylesheets().clear();
+	 * scene.getStylesheets().add(getClass().getResource("/fxml/css/root-light.css")
+	 * .toExternalForm());
+	 * 
+	 * // Change icon to indicate dark mode iconLightDark.setGlyphName("SUN_ALT"); }
+	 */
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		// Retira o link com a stilização light ou dark, assim fica a estilização do componente pai (MainController)
+		// Retira o link com a stilização light ou dark, assim fica a estilização do
+		// componente pai (MainController)
 		apContent.getStylesheets().clear();
 
 		btnRegistration.setOnAction(new EventHandler<ActionEvent>() {

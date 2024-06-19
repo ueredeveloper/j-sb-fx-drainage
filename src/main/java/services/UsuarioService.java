@@ -12,8 +12,6 @@ import java.util.List;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import models.Endereco;
-import models.Usuario;
 import models.Usuario;
 
 public class UsuarioService {
@@ -24,7 +22,7 @@ public class UsuarioService {
 		this.localUrl = localUrl;
 	}
 
-	public List<Usuario> fetchByKeyword (String keyword) {
+	public List<Usuario> fetchByKeyword(String keyword) {
 
 		try {
 			URL apiUrl = new URL(localUrl + "/user/list?keyword=" + URLEncoder.encode(keyword, "UTF-8"));
