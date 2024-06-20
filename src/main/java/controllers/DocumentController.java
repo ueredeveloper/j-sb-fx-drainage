@@ -520,7 +520,6 @@ public class DocumentController implements Initializable {
 			Processo obsProcessList0 = processCbController.getSelectedObject();
 			Anexo obsAttachList0 = attachmentCbController.getSelectedObject();
 			
-			System.out.println(obsAttachList0.getNumero());
 				// Anexar o processo principal (anexo) ao processo
 				obsProcessList0.setAnexo(obsAttachList0);
 				

@@ -5,64 +5,52 @@ import java.util.List;
 
 public class Anexo {
 
-	private Long id;
-	private String numero;
+	private Long anId;
+	private String anNumero;
 	private List<Processo> processos = new ArrayList<>();
 
 	public Anexo() {
 		super();
 	}
-	
-	public Anexo(String numero) {
+
+	public Anexo(String anNumero) {
 		super();
-		this.numero = numero;
+		this.anNumero = anNumero;
 	}
 
-	public Anexo(Long id, String numero) {
+	public Anexo(Long anId, String anNumero) {
 		super();
-		this.id = id;
-		this.numero = numero;
+		this.anId = anId;
+		this.anNumero = anNumero;
 	}
 
-	public Long getId() {
-		return id;
+	public Long getAnId() {
+		return anId;
 	}
 
-
-
-	public void setId(Long id) {
-		this.id = id;
+	public void setAnId(Long anId) {
+		this.anId = anId;
 	}
 
-
-
-	public String getNumero() {
-		return numero;
+	public String getAnNumero() {
+		return anNumero;
 	}
 
-
-
-	public void setNumero(String numero) {
-		this.numero = numero;
+	public void setAnNumero(String anNumero) {
+		this.anNumero = anNumero;
 	}
-
-
 
 	public List<Processo> getProcessos() {
 		return processos;
 	}
 
-
-
 	public void setProcessos(List<Processo> processos) {
 		this.processos = processos;
 	}
 
-
-
 	@Override
 	public String toString() {
-		return numero;
+		return anNumero;
 	}
 
 }
