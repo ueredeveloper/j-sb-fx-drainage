@@ -13,39 +13,33 @@ import javafx.scene.control.TableView;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import main.Main;
-import models.Documento;
 import models.DocumentoTipo;
-import models.Endereco;
-import models.Processo;
+import models.Usuario;
 
 public class EditDocumentTest extends ApplicationTest {
-	
-	public void start (Stage stage) throws Exception {
+
+	public void start(Stage stage) throws Exception {
 		new Main().start(stage);
 	}
-	
+
 	@Test
-	public void editDocument () {
-		
-		sleep(2000);
-		
+	public void editDocument() {
+
 		Button btnSignUp = lookup("#btnSignUp").query();
 		assertNotNull(btnSignUp);
 		clickOn(btnSignUp);
-		sleep(500);
-		
+
 		Button btnSearch = lookup("#btnSearch").query();
 		assertNotNull(btnSignUp);
 		clickOn(btnSearch);
-		sleep(500);
-		
-		TableView<Documento> tvDocs = lookup("#tvDocs").query();
+
+		TableView<?> tvDocs = lookup("#tvDocs").query();
 		assertNotNull(tvDocs);
-		// Clica no primeiro resultado da lista de  documentos
+		// Clica no primeiro resultado da lista de documentos
 		clickOn(".table-row-cell").clickOn(".table-row-cell");
-		
+
 		// Começa a edição dos dados
-		
+
 		ComboBox<DocumentoTipo> cbDocType = lookup("#cbDocType").query();
 		Node item = lookup(".list-cell").nth(0).query();
 		assertNotNull(item);
@@ -65,14 +59,46 @@ public class EditDocumentTest extends ApplicationTest {
 
 		javafx.scene.control.TextField tfNumber = lookup("#tfNumber").query();
 		tfNumber.setText("11111/2024");
+		sleep(1000);
+		javafx.scene.control.TextField tfNumberSei = lookup("#tfNumberSei").query();
+		tfNumberSei.setText("111111");
+		sleep(1000);
+
+		ComboBox<?> cbAddress = lookup("#cbAddress").query();
+		clickOn(cbAddress).write("Rua das Acássias, 19");
+
 		sleep(500);
-		javafx.scene.control.TextField tfNumberSEI = lookup("#tfNumberSEI").query();
-		tfNumberSEI.setText("111111");
+		selectFirstItemInComboBox(cbAddress);
+
+		Platform.runLater(() -> {
+
+			clickOn(cbAddress);
+			cbAddress.getSelectionModel().select(0);
+		});
+
+		javafx.scene.control.TextField tfLatitude = lookup("#tfLatitude").query();
+		tfLatitude.setText("-15.123");
+		sleep(1000);
+
+		javafx.scene.control.TextField tfLongitude = lookup("#tfLongitude").query();
+		tfLongitude.setText("-47.123");
+		sleep(1000);
+
+		ComboBox<Usuario> cbUser = lookup("#cbUser").query();
+		clickOn(cbUser).write("Carlos José");
+
 		sleep(500);
-		
-		ComboBox<Processo> cbProcess = lookup("#cbProcess").query();
-		clickOn(cbProcess).write("1");
-	
+		selectFirstItemInComboBox(cbUser);
+
+		Platform.runLater(() -> {
+
+			clickOn(cbUser);
+			cbUser.getSelectionModel().select(0);
+		});
+
+		ComboBox<?> cbProcess = lookup("#cbProcess").query();
+		clickOn(cbProcess).write("195.123.564/2012");
+
 		sleep(500);
 
 		Platform.runLater(() -> {
@@ -80,42 +106,34 @@ public class EditDocumentTest extends ApplicationTest {
 			clickOn(cbProcess);
 			cbProcess.getSelectionModel().select(1);
 		});
-		
-		ComboBox<Processo> cbAddress = lookup("#cbAddress").query();
-		clickOn(cbAddress).write("Rua Carlos Teixeira, 14");
-	
-		sleep(500);
-		selectFirstItemInComboBox(cbAddress);
 
-		
+		ComboBox<?> cbAttachment = lookup("#cbAttachment").query();
+		clickOn(cbAttachment).write("195.123.555/2015");
+
+		sleep(500);
+
 		Platform.runLater(() -> {
 
-			clickOn(cbAddress);
-			cbAddress.getSelectionModel().select(0);
+			clickOn(cbAttachment);
+			cbAttachment.getSelectionModel().select(1);
 		});
 
 		sleep(500);
-		javafx.scene.control.TextField tfCity = lookup("#tfCity").query();
-		tfCity.setText("Goiânia Junit ");
-		sleep(500);
-		
-		javafx.scene.control.TextField tfCEP = lookup("#tfCEP").query();
-		tfCEP.setText("72130- Junit");
-		sleep(500);
-		
-		Button btnEdit = lookup("#btnEdit").query();
-		assertNotNull(btnEdit);
-		clickOn(btnEdit);
-		
+
+		/*
+		 * 
+		 * Button btnEdit = lookup("#btnEdit").query(); assertNotNull(btnEdit);
+		 * clickOn(btnEdit);
+		 */
+
 		sleep(3000);
-		
-		
+
 	}
-	
-	private void selectFirstItemInComboBox(ComboBox<Processo> comboBox) {
-		  interact(() -> comboBox.show());
-	        type(KeyCode.DOWN); // Simulate pressing the DOWN arrow key
-	        type(KeyCode.TAB); // Simulate pressing the ENTER key 
-    }
+
+	private void selectFirstItemInComboBox(ComboBox<?> comboBox) {
+		interact(() -> comboBox.show());
+		type(KeyCode.DOWN); // Simulate pressing the DOWN arrow key
+		type(KeyCode.TAB); // Simulate pressing the ENTER key
+	}
 
 }

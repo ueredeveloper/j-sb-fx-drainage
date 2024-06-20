@@ -2,6 +2,7 @@ package models;
 
 public class Processo {
 
+	
 	private Long procId;
 	private String procNumero;
 	private Anexo anexo;

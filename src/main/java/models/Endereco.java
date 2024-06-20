@@ -1,6 +1,7 @@
 package models;
 
 public class Endereco {
+	
 
 	private Long endId;
 	private String endLogradouro;
@@ -32,6 +33,8 @@ public class Endereco {
 		this.endCidade = endCidade;
 		this.endCep = endCep;
 	}
+	
+	
 	
 	public Endereco(Long endId) {
 		super();

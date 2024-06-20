@@ -170,7 +170,7 @@ public class DocumentController implements Initializable {
 		return address;
 	}
 
-	public void setMainController (MainController mainController) {
+	public void setMainController(MainController mainController) {
 		this.mainController = mainController;
 	}
 
@@ -180,14 +180,11 @@ public class DocumentController implements Initializable {
 	private UserComboBoxController userCbController;
 	private InterferenceTextFieldsController interferenceTFController;
 
-
 	/**
 	 * Inicializa o controlador e configura a interface.
 	 *
-	 * @param location
-	 *            O URL para localização do recurso.
-	 * @param resources
-	 *            Os recursos utilizados pelo controlador.
+	 * @param location  O URL para localização do recurso.
+	 * @param resources Os recursos utilizados pelo controlador.
 	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -248,8 +245,6 @@ public class DocumentController implements Initializable {
 
 			if (newSelection != null) {
 
-				System.out.println(newSelection.getDocTipo());
-
 				// Atualiza ComboBox (Tipo de Documento) a partir do documento selecionado
 				cbDocType.getSelectionModel().select(newSelection.getDocTipo());
 				// Atualizar componentes de acordo com o documento selecionado
@@ -298,7 +293,6 @@ public class DocumentController implements Initializable {
 		attachmentCbController = new AttachmentComboBoxController(localUrl, cbAttachment);
 		interferenceTFController = new InterferenceTextFieldsController(localUrl, tfLatitude, tfLongitude);
 		userCbController = new UserComboBoxController(localUrl, cbUser);
-	
 
 		btnNew.setOnAction(e -> clearAllComponents());
 		btnViews.setOnAction(event -> showDocumentView());
@@ -374,8 +368,23 @@ public class DocumentController implements Initializable {
 		// Carrega o arquivo FXML para o painel de edição
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/components/AddAddress.fxml"));
 
+		TranslateTransition ttClose = new TranslateTransition(Duration.millis(300), apAddAddress);
+
+		ttClose.setToX(400.0);
+		ttClose.setOnFinished(event -> {
+			// Remover a tela de edição
+			apContent.getChildren().remove(apAddAddress);
+		});
+
+		/*
+		 * String LocalUrl. Utiliza para acessar o serviço (crud); TranslateTransition
+		 * ttClose. Utiliza para fechar a tela apAddAddress; ComboBox cbAddress. Utiliza
+		 * para buscar o logradouro cadastrado pelo usuário e atualizá-lo ao fechar
+		 * apAddAddress.
+		 */
+
 		loader.setRoot(apAddAddress);
-		loader.setController(new AddAddressController(this));
+		loader.setController(new AddAddressController(localUrl, ttClose, cbAddress));
 
 		try {
 			loader.load();
@@ -392,18 +401,6 @@ public class DocumentController implements Initializable {
 		tt.setToX(0.0);
 		tt.play();
 
-	}
-
-	public void closeAddAddress() {
-		TranslateTransition tt = new TranslateTransition(Duration.millis(300), apAddAddress);
-
-		tt.setToX(400.0);
-		tt.setOnFinished(event -> {
-			// Remover a tela de edição
-			apContent.getChildren().remove(apAddAddress);
-		});
-
-		tt.play();
 	}
 
 	/**
@@ -467,8 +464,7 @@ public class DocumentController implements Initializable {
 	/**
 	 * Manipula a ação de pesquisa de documentos por parâmetro.
 	 *
-	 * @param event
-	 *            O evento de ação associado à pesquisa.
+	 * @param event O evento de ação associado à pesquisa.
 	 */
 	public void handleSearch(ActionEvent event) {
 
@@ -495,8 +491,7 @@ public class DocumentController implements Initializable {
 	/**
 	 * Manipula a ação de salvar um documento.
 	 *
-	 * @param event
-	 *            O evento de ação associado à edição do documento.
+	 * @param event O evento de ação associado à edição do documento.
 	 */
 	public void handleSave(ActionEvent event) {
 
@@ -519,11 +514,13 @@ public class DocumentController implements Initializable {
 
 			Processo obsProcessList0 = processCbController.getSelectedObject();
 			Anexo obsAttachList0 = attachmentCbController.getSelectedObject();
-			
-				// Anexar o processo principal (anexo) ao processo
-				obsProcessList0.setAnexo(obsAttachList0);
-				
+
+			// Anexar o processo principal (anexo) ao processo
+			obsProcessList0.setAnexo(obsAttachList0);
+
 			Endereco obsAddressList0 = addressCbController.getSelectedObject();
+
+			System.out.println("id selecionado metodo save endereço " + obsAddressList0.getEndId());
 			Usuario obsUserList0 = userCbController.getSelectedObject();
 			Set<Usuario> usuarios = new HashSet<>();
 			usuarios.add(obsUserList0);
@@ -568,8 +565,7 @@ public class DocumentController implements Initializable {
 	/**
 	 * Manipula a ação de editar um documento existente.
 	 *
-	 * @param event
-	 *            O evento de ação associado à edição do documento.
+	 * @param event O evento de ação associado à edição do documento.
 	 */
 	public void handleEdit(ActionEvent event) {
 		// Get the selected document from the TableView
@@ -644,8 +640,7 @@ public class DocumentController implements Initializable {
 	/**
 	 * Manipula a ação de deletar um documento existente.
 	 *
-	 * @param event
-	 *            O evento de ação associado à exclusão do documento.
+	 * @param event O evento de ação associado à exclusão do documento.
 	 */
 	public void handleDelete(ActionEvent event) {
 

@@ -3,9 +3,12 @@ package controllers;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.jfoenix.controls.JFXButton;
 import com.sun.javafx.webkit.WebConsoleListener;
 
+import controllers.views.InterferenceTextFieldsController;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker;
@@ -15,6 +18,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
+import models.Interferencia;
 import netscape.javascript.JSException;
 import netscape.javascript.JSObject;
 
@@ -23,7 +27,7 @@ import netscape.javascript.JSObject;
  */
 public class MapController implements Initializable {
 
-	private static MapController instance;
+	
 
 	@FXML
 	private AnchorPane apMap;
@@ -50,15 +54,19 @@ public class MapController implements Initializable {
 	private WebEngine webEngine;
 	public boolean ready;
 	private AnchorPane apContent;
+	
+	private static MapController instance;
+	
+	public static MapController getInstance() {
+		return instance;
+	}
 
 	public MapController(AnchorPane apContent) {
 		this.apContent = apContent;
 		instance = this; // Define a instância no construtor
 	}
 
-	public static MapController getInstance() {
-		return instance;
-	}
+	
 
 	public AnchorPane getAnchorPaneMap() {
 		return this.apMap;
@@ -67,8 +75,6 @@ public class MapController implements Initializable {
 	@SuppressWarnings("restriction")
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-
-		System.out.println("map controller inicializado!!! ");
 
 		// Add a listener to the width property of the AnchorPane
 		apContent.widthProperty().addListener(new ChangeListener<Number>() {
@@ -138,8 +144,6 @@ public class MapController implements Initializable {
 
 	private void invokeJS(final String str) {
 
-		System.out.println("invokeJS str " + str);
-
 		if (ready) {
 			try {
 				doc.eval(str);
@@ -188,14 +192,25 @@ public class MapController implements Initializable {
 	}
 
 	public void printCoords(String coords) {
-		System.out.println(coords);
+		
+		Gson gson = new Gson();
+		JsonObject jsonObject = gson.fromJson(coords, JsonObject.class);
+		Double interLatitude = jsonObject.get("lat").getAsDouble();
+		Double interLongitude = jsonObject.get("lng").getAsDouble();
+
+		Interferencia interferencia = new Interferencia(interLatitude, interLongitude);
+
+		InterferenceTextFieldsController interferenceController = InterferenceTextFieldsController.getInstance();
+		if (interferenceController != null) {
+			interferenceController.updateCoordinates(interferencia);
+		} else {
+			System.out.println("InterferenceTextFieldsController instance is null!");
+		}
+
 	}
 
 	public void handleAddMarker(String json) {
-
-		System.out.println(" add marker with json map controller");
 		invokeJS("addMarker(" + json + ");");
-
 	}
 
 }

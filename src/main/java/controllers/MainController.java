@@ -112,8 +112,6 @@ public class MainController implements Initializable {
 
 			if (mapController != null) {
 
-				System.out.println("this map != null ");
-
 				documentController = loader.getController();
 				documentController.setMainController (this);
 

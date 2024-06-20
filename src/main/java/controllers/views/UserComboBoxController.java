@@ -45,7 +45,7 @@ public class UserComboBoxController {
 				if (newValue != null) {
 					obsUser.clear();
 					List<Usuario> list = fetchByKeyword(newValue);
-					System.out.println("endereço size " + list.size());
+				
 
 					if (list != null) {
 						boolean containsSearchTerm = list.stream()

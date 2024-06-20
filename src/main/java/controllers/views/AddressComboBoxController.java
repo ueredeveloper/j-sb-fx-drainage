@@ -43,8 +43,7 @@ public class AddressComboBoxController {
 				if (newValue != null) {
 					obsAddress.clear();
 					List<Endereco> list = fetchAddress(newValue);
-					System.out.println("endereço size " + list.size());
-
+				
 					if (list != null) {
 						boolean containsSearchTerm = list.stream()
 								.anyMatch(endereco -> endereco.getEndLogradouro().contains(newValue));
@@ -78,5 +77,8 @@ public class AddressComboBoxController {
 
 		return endereco;
 
+	}
+	public ObservableList<Endereco> getObservableList () {
+		return this.obsAddress;
 	}
 }
