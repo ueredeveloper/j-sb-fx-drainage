@@ -2,6 +2,7 @@ package models;
 
 public class Subterranea extends Interferencia {
 	
+	
 	private Boolean subCaesb;  // tem caesb () sim () não
 
 	private String subNivelEstatico;  // em metros

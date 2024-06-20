@@ -11,6 +11,7 @@ import javafx.beans.property.StringProperty;
  * Classe que representa um Documento.
  */
 public class Documento {
+	
 
 	private Long docId;
 	private String docNumero;

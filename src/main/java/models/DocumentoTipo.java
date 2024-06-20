@@ -1,9 +1,7 @@
 package models;
 
-import java.util.Objects;
-
 public class DocumentoTipo {
-	
+
 	private Long dtId;
 	private String dtDescricao;
 
@@ -20,7 +18,6 @@ public class DocumentoTipo {
 	public DocumentoTipo(Long dtId) {
 		this.dtId = dtId;
 	}
-	
 
 	// getters and setters
 	public Long getDtId() {
@@ -55,21 +52,14 @@ public class DocumentoTipo {
 	 * to define when two instances are considered equal based on their dtDescricao
 	 * or dtId values. Here's an example:
 	 */
-	/*@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null || getClass() != obj.getClass()) {
-			return false;
-		}
-		DocumentoTipo other = (DocumentoTipo) obj;
-		return dtId == other.dtId && Objects.equals(dtDescricao, other.dtDescricao);
-	}
-
-	@Override
-	public Long hashCode() {
-		return (long) Objects.hash(dtId, dtDescricao);
-	}*/
+	/*
+	 * @Override public boolean equals(Object obj) { if (this == obj) { return true;
+	 * } if (obj == null || getClass() != obj.getClass()) { return false; }
+	 * DocumentoTipo other = (DocumentoTipo) obj; return dtId == other.dtId &&
+	 * Objects.equals(dtDescricao, other.dtDescricao); }
+	 * 
+	 * @Override public Long hashCode() { return (long) Objects.hash(dtId,
+	 * dtDescricao); }
+	 */
 
 }

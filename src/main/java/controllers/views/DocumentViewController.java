@@ -61,8 +61,7 @@ public class DocumentViewController implements Initializable {
 		// Replace a placeholder in the HTML content with JSON data.
 		String json = new Gson().toJson(selectedDocument);
 
-		System.out.println("selected - json");
-		System.out.println(json);
+	
 		htmlContent = htmlContent.replace("${json}", json);
 		htmlEditor.setHtmlText(htmlContent);
 

@@ -9,28 +9,38 @@ import javafx.beans.value.ObservableValue;
 import models.Interferencia;
 
 public class InterferenceTextFieldsController {
+	
+
+	public static InterferenceTextFieldsController getInstance() {
+		return instance;
+	}
+
+	private Interferencia interferencia = new Interferencia();
 
 	private String localUrl;
 	private JFXTextField tfLatitude;
 	private JFXTextField tfLongitude;
 	private MapController mapController;
+	
 
 	public InterferenceTextFieldsController(String localUrl, JFXTextField tfLatitude, JFXTextField tfLongitude) {
 		this.localUrl = localUrl;
 		this.mapController = MapController.getInstance();
 		this.tfLatitude = tfLatitude;
 		this.tfLongitude = tfLongitude;
+		instance = this;
 
 		init();
 
 	}
 
-	private Interferencia interferencia = new Interferencia();
+	private static InterferenceTextFieldsController instance;
+
+	// Adicione os campos existentes e o construtor
+
 
 	// Método privado para atualizar a latitude
 	private void updateLatitude(String newValue) {
-
-		System.out.println("Latitude, new value  " + newValue);
 
 		try {
 			if (newValue != null && !newValue.trim().isEmpty()) {
@@ -44,7 +54,7 @@ public class InterferenceTextFieldsController {
 			interferencia.setInterLatitude(null); // Set null if input cannot be parsed
 		}
 		if (interferencia.getInterLatitude() != null && interferencia.getInterLongitude() != null) {
-			
+
 			mapController.handleAddMarker(convertObjectToJson(interferencia));
 		}
 
@@ -66,7 +76,7 @@ public class InterferenceTextFieldsController {
 		}
 
 		if (interferencia.getInterLatitude() != null && interferencia.getInterLongitude() != null) {
-			
+
 			mapController.handleAddMarker(convertObjectToJson(interferencia));
 		}
 	}
@@ -74,6 +84,16 @@ public class InterferenceTextFieldsController {
 	// Método para obter a instância de Interferencia com latitude e longitude
 	public Interferencia getLatitudeLongitude() {
 		return interferencia;
+	}
+
+	public void updateCoordinates(Interferencia interferencia) {
+
+		System.out.println("Tf update coords " + interferencia.getInterLatitude() + tfLatitude.getText());
+
+		tfLatitude.setText(String.valueOf(interferencia.getInterLatitude()));
+		tfLongitude.setText(String.valueOf(interferencia.getInterLongitude()));
+
+		// mapController.handleAddMarker(convertObjectToJson(interferencia));
 	}
 
 	private String convertObjectToJson(Object object) {

@@ -170,7 +170,7 @@ public class DocumentController implements Initializable {
 		return address;
 	}
 
-	public void setMainController (MainController mainController) {
+	public void setMainController(MainController mainController) {
 		this.mainController = mainController;
 	}
 
@@ -179,7 +179,6 @@ public class DocumentController implements Initializable {
 	private AttachmentComboBoxController attachmentCbController;
 	private UserComboBoxController userCbController;
 	private InterferenceTextFieldsController interferenceTFController;
-
 
 	/**
 	 * Inicializa o controlador e configura a interface.
@@ -248,8 +247,6 @@ public class DocumentController implements Initializable {
 
 			if (newSelection != null) {
 
-				System.out.println(newSelection.getDocTipo());
-
 				// Atualiza ComboBox (Tipo de Documento) a partir do documento selecionado
 				cbDocType.getSelectionModel().select(newSelection.getDocTipo());
 				// Atualizar componentes de acordo com o documento selecionado
@@ -298,7 +295,6 @@ public class DocumentController implements Initializable {
 		attachmentCbController = new AttachmentComboBoxController(localUrl, cbAttachment);
 		interferenceTFController = new InterferenceTextFieldsController(localUrl, tfLatitude, tfLongitude);
 		userCbController = new UserComboBoxController(localUrl, cbUser);
-	
 
 		btnNew.setOnAction(e -> clearAllComponents());
 		btnViews.setOnAction(event -> showDocumentView());
@@ -308,6 +304,7 @@ public class DocumentController implements Initializable {
 		btnEdit.setOnAction(event -> handleEdit(event));
 
 		btnAddress.setOnMouseClicked(evert -> openAddAddress());
+		
 
 		// btnAddress.setOnAction(e -> openAddAddress());
 	}
@@ -366,16 +363,29 @@ public class DocumentController implements Initializable {
 	 * arquivo FXML para exibir o painel de edição. Realiza uma transição de
 	 * tradução para exibir o painel na tela.
 	 */
-	public void openAddAddress() {
+	public void openAddAddress () {
 
 		// Cria um novo AnchorPane
 		apAddAddress = new AnchorPane();
 
 		// Carrega o arquivo FXML para o painel de edição
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/components/AddAddress.fxml"));
+		
+		TranslateTransition ttClose = new TranslateTransition(Duration.millis(300), apAddAddress);
 
+		ttClose.setToX(400.0);
+		ttClose.setOnFinished(event -> {
+			// Remover a tela de edição
+			apContent.getChildren().remove(apAddAddress);
+		});
+		
+		/* String LocalUrl. Utiliza para acessar o serviço (crud);
+		 * TranslateTransition ttClose. Utiliza para fechar a tela apAddAddress;
+		 * ComboBox cbAddress. Utiliza para buscar o logradouro cadastrado pelo usuário e atualizá-lo ao fechar apAddAddress.
+		 */
+		
 		loader.setRoot(apAddAddress);
-		loader.setController(new AddAddressController(this));
+		loader.setController(new AddAddressController(localUrl, ttClose, cbAddress));
 
 		try {
 			loader.load();
@@ -394,17 +404,7 @@ public class DocumentController implements Initializable {
 
 	}
 
-	public void closeAddAddress() {
-		TranslateTransition tt = new TranslateTransition(Duration.millis(300), apAddAddress);
-
-		tt.setToX(400.0);
-		tt.setOnFinished(event -> {
-			// Remover a tela de edição
-			apContent.getChildren().remove(apAddAddress);
-		});
-
-		tt.play();
-	}
+	
 
 	/**
 	 * Limpa todos os componentes da interface de edição. Limpa seleções e campos de
@@ -499,6 +499,9 @@ public class DocumentController implements Initializable {
 	 *            O evento de ação associado à edição do documento.
 	 */
 	public void handleSave(ActionEvent event) {
+		
+		
+	
 
 		String text = tfNumberSei.getText();
 
@@ -519,12 +522,13 @@ public class DocumentController implements Initializable {
 
 			Processo obsProcessList0 = processCbController.getSelectedObject();
 			Anexo obsAttachList0 = attachmentCbController.getSelectedObject();
-			
-			System.out.println(obsAttachList0.getNumero());
-				// Anexar o processo principal (anexo) ao processo
-				obsProcessList0.setAnexo(obsAttachList0);
-				
+
+			// Anexar o processo principal (anexo) ao processo
+			obsProcessList0.setAnexo(obsAttachList0);
+
 			Endereco obsAddressList0 = addressCbController.getSelectedObject();
+			
+			System.out.println("id selecionado metodo save endereço " + obsAddressList0.getEndId());
 			Usuario obsUserList0 = userCbController.getSelectedObject();
 			Set<Usuario> usuarios = new HashSet<>();
 			usuarios.add(obsUserList0);

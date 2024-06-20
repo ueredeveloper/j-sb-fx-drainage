@@ -3,6 +3,7 @@ package models;
 //import com.vividsolutions.jts.geom.Geometry;
 
 public class Interferencia {
+	
 
 	private Long interId;
 
@@ -30,6 +31,14 @@ public class Interferencia {
 		this.interLatitude = interLatitude;
 		this.interLongitude = interLongitude;
 		this.interLogradouro = interLogradouro;
+	}
+	
+	
+
+	public Interferencia(Double interLatitude, Double interLongitude) {
+		super();
+		this.interLatitude = interLatitude;
+		this.interLongitude = interLongitude;
 	}
 
 	public Long getInterId() {

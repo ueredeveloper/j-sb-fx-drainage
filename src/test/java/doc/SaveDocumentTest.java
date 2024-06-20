@@ -21,6 +21,7 @@ public class SaveDocumentTest extends ApplicationTest {
 
 	@Test
 	public void saveDocument() {
+		
 		Button btnSignUp = lookup("#btnSignUp").query();
 		assertNotNull(btnSignUp);
 		clickOn(btnSignUp);
@@ -41,16 +42,43 @@ public class SaveDocumentTest extends ApplicationTest {
 		});
 		// fechar a seleção
 		clickOn(item);
+		sleep(500);
 
 		javafx.scene.control.TextField tfNumber = lookup("#tfNumber").query();
-		tfNumber.setText("123");
+		tfNumber.setText("123/2024");
 		sleep(500);
-		javafx.scene.control.TextField tfNumberSEI = lookup("#tfNumberSEI").query();
-		tfNumberSEI.setText("456");
+		javafx.scene.control.TextField tfNumberSei = lookup("#tfNumberSei").query();
+		tfNumberSei.setText("456");
 		sleep(500);
 		
-		ComboBox<Processo> cbProcess = lookup("#cbProcess").query();
-		clickOn(cbProcess).write("1");
+		
+		ComboBox<?> cbAddress = lookup("#cbAddress").query();
+		clickOn(cbAddress).write("Rua dos Bosques, 1");
+	
+		sleep(500);
+
+		Platform.runLater(() -> {
+
+			clickOn(cbAddress);
+			cbAddress.getSelectionModel().select(1);
+		});
+		
+		ComboBox<?> cbUser = lookup("#cbUser").query();
+		clickOn(cbUser).write("Carlos Drumond de Andrade");
+	
+		sleep(500);
+
+		Platform.runLater(() -> {
+
+			clickOn(cbUser);
+			cbUser.getSelectionModel().select(1);
+		});
+		
+
+		
+		
+		ComboBox<?> cbProcess = lookup("#cbProcess").query();
+		clickOn(cbProcess).write("197");
 	
 		sleep(500);
 
@@ -60,30 +88,24 @@ public class SaveDocumentTest extends ApplicationTest {
 			cbProcess.getSelectionModel().select(1);
 		});
 		
-		ComboBox<Processo> cbAddress = lookup("#cbAddress").query();
-		clickOn(cbAddress).write("Rua");
+		ComboBox<?> cbAttachment = lookup("#cbAttachment").query();
+		clickOn(cbAttachment).write("195.265.555/2015");
 	
 		sleep(500);
 
 		Platform.runLater(() -> {
 
-			clickOn(cbAddress);
-			cbAddress.getSelectionModel().select(1);
+			clickOn(cbAttachment);
+			cbAttachment.getSelectionModel().select(1);
 		});
-
-		sleep(500);
-		javafx.scene.control.TextField tfCity = lookup("#tfCity").query();
-		tfCity.setText("Brasília");
-		sleep(500);
 		
-		javafx.scene.control.TextField tfCEP = lookup("#tfCEP").query();
-		tfCEP.setText("72130-040");
-		sleep(500);
+		
+		
 		
 		Button btnSave = lookup("#btnSave").query();
 		clickOn(btnSave);
 
-		//sleep(3000);
+		sleep(3000);
 
 	}
 }
