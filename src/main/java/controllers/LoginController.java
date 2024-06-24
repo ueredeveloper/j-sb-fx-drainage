@@ -25,6 +25,8 @@ import javafx.stage.Stage;
  * Controlador para a interface de login.
  */
 public class LoginController implements Initializable {
+	
+	
 
 	// Injetando elementos do arquivo FXML
 	@FXML

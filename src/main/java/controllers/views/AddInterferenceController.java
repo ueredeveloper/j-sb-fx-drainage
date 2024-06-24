@@ -17,6 +17,8 @@ import models.Interferencia;
 import utilities.URLUtility;
 
 public class AddInterferenceController implements Initializable {
+	
+	
 
 	@FXML
 	private AnchorPane apContainer;

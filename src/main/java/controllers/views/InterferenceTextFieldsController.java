@@ -10,6 +10,8 @@ import models.Interferencia;
 
 public class InterferenceTextFieldsController {
 	
+	
+	
 
 	public static InterferenceTextFieldsController getInstance() {
 		return instance;
