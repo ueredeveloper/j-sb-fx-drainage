@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane fx:id="apContent" prefHeight="700.0" prefWidth="1200.0" styleClass="content" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="66.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.DocumentController">
+<AnchorPane fx:id="apContent" prefHeight="700.0" prefWidth="1200.0" styleClass="content" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.DocumentController">
 	<children>
 		<GridPane layoutX="12.0" layoutY="24.0" prefHeight="50.0" prefWidth="785.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
 			<columnConstraints>
@@ -64,7 +64,6 @@
             <ColumnConstraints maxWidth="45.0" minWidth="15.0" prefWidth="45.0" />
             <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="525.0" />
             <ColumnConstraints maxWidth="45.0" minWidth="15.0" prefWidth="45.0" />
-            <ColumnConstraints maxWidth="45.0" minWidth="15.0" prefWidth="45.0" />
             <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="210.0" />
             <ColumnConstraints maxWidth="45.0" minWidth="15.0" prefWidth="45.0" />
             <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="210.0" />
@@ -87,13 +86,12 @@
                <GridPane.margin>
                   <Insets left="5.0" right="5.0" />
                </GridPane.margin></FontAwesomeIconView>
-            <FontAwesomeIconView glyphName="NEUTER" styleClass="icons" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" />
-            <JFXTextField fx:id="tfLatitude" prefHeight="30.0" prefWidth="280.0" promptText="Latitude" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS">
+            <JFXTextField fx:id="tfLatitude" prefHeight="30.0" prefWidth="280.0" promptText="Latitude" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS">
                <padding>
                   <Insets left="5.0" right="5.0" />
                </padding>
             </JFXTextField>
-            <JFXTextField fx:id="tfLongitude" prefHeight="30.0" prefWidth="280.0" promptText="Longitude" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS">
+            <JFXTextField fx:id="tfLongitude" prefHeight="30.0" prefWidth="280.0" promptText="Longitude" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS">
                <padding>
                   <Insets left="5.0" right="5.0" />
                </padding>
@@ -107,11 +105,7 @@
                   <Insets left="5.0" right="5.0" />
                </GridPane.margin>
             </JFXComboBox>
-            <FontAwesomeIconView fx:id="btnProcess" glyphName="FILE_TEXT" styleClass="icons" wrappingWidth="11.785714149475098" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1">
-               <GridPane.margin>
-                  <Insets left="5.0" right="5.0" />
-               </GridPane.margin></FontAwesomeIconView>
-				<JFXComboBox fx:id="cbProcess" labelFloat="true" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="280.0" promptText="Processo" GridPane.columnIndex="4" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1">
+				<JFXComboBox fx:id="cbProcess" labelFloat="true" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="280.0" promptText="Processo" GridPane.columnIndex="3" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1">
 					<GridPane.margin>
 						<Insets left="5.0" right="5.0" />
 					</GridPane.margin>
@@ -123,11 +117,11 @@
                   <Tooltip text="Processo em que o documento se econtra" />
                </tooltip>
 				</JFXComboBox>
-            <FontAwesomeIconView glyphName="FILE_ZIP_ALT" styleClass="icons" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1">
+            <FontAwesomeIconView fx:id="btnAttachment" glyphName="FILE_ZIP_ALT" styleClass="icons" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets left="5.0" right="5.0" />
                </GridPane.margin></FontAwesomeIconView>
-            <JFXComboBox fx:id="cbAttachment" labelFloat="true" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="280.0" promptText="Anexo" GridPane.columnIndex="6" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1">
+            <JFXComboBox fx:id="cbAttachment" labelFloat="true" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="280.0" promptText="Anexo" GridPane.columnIndex="5" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1">
                <styleClass>
                   <String fx:value="jfx-combo-box" />
                   <String fx:value="jfx-text-field-custom" />
@@ -139,6 +133,7 @@
                   <Insets left="5.0" right="5.0" />
                </GridPane.margin>
             </JFXComboBox>
+            <FontAwesomeIconView fx:id="btnProcess" glyphName="CLIPBOARD" styleClass="icons" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
          </children>
       </GridPane>
       <GridPane layoutX="10.0" layoutY="230.0" prefHeight="50.0" prefWidth="780.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">

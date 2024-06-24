@@ -71,8 +71,12 @@ public class AddAddressController implements Initializable {
 		// Retira o link com a stilização light ou dark, assim fica a estilização do
 		// componente pai (MainController)
 		apContainer.getStylesheets().clear();
+		
+		String userInput = cbAddress.getEditor().getText();
+		
 
-		Endereco selectedEndereco = cbAddress.getSelectionModel().getSelectedItem();
+		//Endereco selectedEndereco = cbAddress.getSelectionModel().getSelectedItem();
+		Endereco selectedEndereco = new Endereco(userInput);
 
 		if (selectedEndereco != null) {
 			tfStreet.setText(selectedEndereco.getEndLogradouro());
@@ -136,9 +140,9 @@ public class AddAddressController implements Initializable {
 
 	public void updateComboBox(Endereco selectedEndereco) {
 
-		if (selectedEndereco == null) {
+		//if (selectedEndereco == null) {
 
-			System.out.println("update combobox (selectedEndereco == null ");
+			System.out.println("if  null");
 
 			selectedEndereco = new Endereco();
 
@@ -162,48 +166,7 @@ public class AddAddressController implements Initializable {
 
 			// Selecionando o novo item no ComboBox
 			cbAddress.getSelectionModel().select(0);
-		} else {
-			System.out.println("else update combobox (selectedEndereco == null ");
-
-			selectedEndereco.setEndLogradouro(tfStreet.getText());
-			selectedEndereco.setEndCidade(tfCity.getText());
-			selectedEndereco.setEndCep(tfPostalCode.getText());
-			selectedEndereco.setEndBairro(tfNeighborhood.getText());
-
-			// Verificando se o endereço já possui um ID
-			if (selectedEndereco.getEndId() != null) {
-
-				System.out.println("else if selectedEndereco.getEndId() != null  ");
-				// Atualizando o item existente na lista
-				ObservableList<Endereco> items = cbAddress.getItems();
-				int selectedIndex = cbAddress.getSelectionModel().getSelectedIndex();
-
-				// Removendo e readicionando o item para garantir a atualização na exibição do
-				// ComboBox
-				items.remove(selectedIndex);
-				items.add(selectedIndex, selectedEndereco);
-
-				// Selecionando novamente o item no ComboBox
-				cbAddress.getSelectionModel().select(selectedIndex);
-			} else {
-				System.out.println("else else  ");
-
-				// Caso não tenha ID (novo endereço não salvo), provavelmente você deseja
-				// adicionar ao final da lista
-				// ObservableList<Endereco> items = cbAddress.getItems();
-				// items.add(selectedEndereco);
-
-				// Selecionando o novo item no ComboBox
-				// cbAddress.getSelectionModel().select(items.size() - 1);
-				ObservableList<Endereco> items = cbAddress.getItems();
-				items.add(0, selectedEndereco);
-				cbAddress.getSelectionModel().select(0);
-
-				// Selecionando o novo item no ComboBox
-				// cbAddress.getSelectionModel().select(items.size() - 1);
-
-			}
-		}
+		//} 
 	}
 
 }

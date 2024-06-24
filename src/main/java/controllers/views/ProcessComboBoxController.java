@@ -63,6 +63,9 @@ public class ProcessComboBoxController {
 
 			}
 		});
+		
+		
+		//System.out.println(cbProcess.getItems().get(0).getProcNumero());
 	}
 
 	// Método para buscar processos e preencher o ComboBox
@@ -86,5 +89,21 @@ public class ProcessComboBoxController {
 		Processo object = cbProcess.selectionModelProperty().get().isEmpty() ? null
 				: new Processo(obsProcess.get(0).getProcId(), obsProcess.get(0).getProcNumero());
 		return object;
+	}
+	
+	public void fillAndSelectComboBoxProcess (Processo process) {
+		ObservableList<Processo> newObs = FXCollections.observableArrayList();
+		cbProcess.setItems(newObs);
+
+		
+
+		newObs.add(0, process);
+
+		// Atualizando o ComboBox para refletir a mudança
+		// cbProcess.setItems(null);
+		cbProcess.setItems(newObs);
+
+		// Selecionando o novo item no ComboBox
+		cbProcess.getSelectionModel().select(0);
 	}
 }

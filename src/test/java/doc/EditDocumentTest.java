@@ -10,6 +10,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import main.Main;
@@ -76,11 +77,11 @@ public class EditDocumentTest extends ApplicationTest {
 			cbAddress.getSelectionModel().select(0);
 		});
 
-		javafx.scene.control.TextField tfLatitude = lookup("#tfLatitude").query();
+		TextField tfLatitude = lookup("#tfLatitude").query();
 		tfLatitude.setText("-15.123");
 		sleep(1000);
 
-		javafx.scene.control.TextField tfLongitude = lookup("#tfLongitude").query();
+		TextField tfLongitude = lookup("#tfLongitude").query();
 		tfLongitude.setText("-47.123");
 		sleep(1000);
 
@@ -104,7 +105,7 @@ public class EditDocumentTest extends ApplicationTest {
 		Platform.runLater(() -> {
 
 			clickOn(cbProcess);
-			cbProcess.getSelectionModel().select(1);
+			cbProcess.getSelectionModel().select(0);
 		});
 
 		ComboBox<?> cbAttachment = lookup("#cbAttachment").query();
@@ -115,7 +116,7 @@ public class EditDocumentTest extends ApplicationTest {
 		Platform.runLater(() -> {
 
 			clickOn(cbAttachment);
-			cbAttachment.getSelectionModel().select(1);
+			cbAttachment.getSelectionModel().select(0);
 		});
 
 		sleep(500);

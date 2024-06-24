@@ -12,7 +12,6 @@ import javafx.scene.control.ComboBox;
 import javafx.stage.Stage;
 import main.Main;
 import models.DocumentoTipo;
-import models.Processo;
 
 public class SaveDocumentTest extends ApplicationTest {
 	public void start(Stage stage) throws Exception {
@@ -21,7 +20,7 @@ public class SaveDocumentTest extends ApplicationTest {
 
 	@Test
 	public void saveDocument() {
-		
+
 		Button btnSignUp = lookup("#btnSignUp").query();
 		assertNotNull(btnSignUp);
 		clickOn(btnSignUp);
@@ -50,11 +49,10 @@ public class SaveDocumentTest extends ApplicationTest {
 		javafx.scene.control.TextField tfNumberSei = lookup("#tfNumberSei").query();
 		tfNumberSei.setText("456");
 		sleep(500);
-		
-		
+
 		ComboBox<?> cbAddress = lookup("#cbAddress").query();
 		clickOn(cbAddress).write("Rua dos Bosques, 1");
-	
+
 		sleep(500);
 
 		Platform.runLater(() -> {
@@ -62,10 +60,10 @@ public class SaveDocumentTest extends ApplicationTest {
 			clickOn(cbAddress);
 			cbAddress.getSelectionModel().select(1);
 		});
-		
+
 		ComboBox<?> cbUser = lookup("#cbUser").query();
 		clickOn(cbUser).write("Carlos Drumond de Andrade");
-	
+
 		sleep(500);
 
 		Platform.runLater(() -> {
@@ -73,13 +71,10 @@ public class SaveDocumentTest extends ApplicationTest {
 			clickOn(cbUser);
 			cbUser.getSelectionModel().select(1);
 		});
-		
 
-		
-		
 		ComboBox<?> cbProcess = lookup("#cbProcess").query();
 		clickOn(cbProcess).write("197");
-	
+
 		sleep(500);
 
 		Platform.runLater(() -> {
@@ -87,10 +82,10 @@ public class SaveDocumentTest extends ApplicationTest {
 			clickOn(cbProcess);
 			cbProcess.getSelectionModel().select(1);
 		});
-		
+
 		ComboBox<?> cbAttachment = lookup("#cbAttachment").query();
 		clickOn(cbAttachment).write("195.265.555/2015");
-	
+
 		sleep(500);
 
 		Platform.runLater(() -> {
@@ -98,10 +93,7 @@ public class SaveDocumentTest extends ApplicationTest {
 			clickOn(cbAttachment);
 			cbAttachment.getSelectionModel().select(1);
 		});
-		
-		
-		
-		
+
 		Button btnSave = lookup("#btnSave").query();
 		clickOn(btnSave);
 

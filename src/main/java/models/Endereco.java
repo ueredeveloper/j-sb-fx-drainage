@@ -1,7 +1,6 @@
 package models;
 
 public class Endereco {
-	
 
 	private Long endId;
 	private String endLogradouro;
@@ -13,7 +12,6 @@ public class Endereco {
 	public Endereco() {
 		super();
 	}
-	
 
 	public Endereco(String endLogradouro) {
 		super();
@@ -33,13 +31,8 @@ public class Endereco {
 		this.endCidade = endCidade;
 		this.endCep = endCep;
 	}
+
 	
-	
-	
-	public Endereco(Long endId) {
-		super();
-		this.endId = endId;
-	}
 
 	// Método toString para mostrar o logradouro no combobox.
 	@Override

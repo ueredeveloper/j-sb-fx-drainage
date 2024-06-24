@@ -18,50 +18,48 @@ public class AttachmentComboBoxController implements Initializable {
 
 	String localUrl;
 
-	private JFXComboBox<Anexo> cbAttachment;
-	ObservableList<Anexo> obsAttachment = FXCollections.observableArrayList();
+	private JFXComboBox<Anexo> comboBox;
+	ObservableList<Anexo> obsList = FXCollections.observableArrayList();
 
-	public AttachmentComboBoxController(String localUrl, JFXComboBox<Anexo> cbAttachment) {
+	public AttachmentComboBoxController(String localUrl, JFXComboBox<Anexo> comboBox) {
 		this.localUrl = localUrl;
-		this.cbAttachment = cbAttachment;
-		
+		this.comboBox = comboBox;
+
 		init();
 	}
-
-
 
 	// Método para inicializar o ComboBox
 	public void init() {
 
-		cbAttachment.setItems(obsAttachment);
-		cbAttachment.setEditable(true);
+		comboBox.setItems(obsList);
+		comboBox.setEditable(true);
 
-		utilities.FxUtilComboBoxSearchable.autoCompleteComboBoxPlus(cbAttachment, (typedText,
+		utilities.FxUtilComboBoxSearchable.autoCompleteComboBoxPlus(comboBox, (typedText,
 				itemToCompare) -> itemToCompare.getAnNumero().toLowerCase().contains(typedText.toLowerCase()));
 
-		utilities.FxUtilComboBoxSearchable.getComboBoxValue(cbAttachment);
+		utilities.FxUtilComboBoxSearchable.getComboBoxValue(comboBox);
 
 		// Preeche com valores do servido atualizando ao digitar
-		cbAttachment.getEditor().textProperty().addListener(new ChangeListener<String>() {
+		comboBox.getEditor().textProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
 
 				if (newValue != null) {
 
-					obsAttachment.clear();
+					obsList.clear();
 					List<Anexo> list = fetchByKeyword(newValue);
 					boolean containsSearchTerm = list.stream()
-							.anyMatch(processo -> processo.getAnNumero().contains(newValue));
+							.anyMatch(Anexo -> Anexo.getAnNumero().contains(newValue));
 					//
-					// Se o que foi digitado está contido, não adicina novo processo, porém, se o
-					// que foi digitado não está contido na lista, adiciona novo processo com id
+					// Se o que foi digitado está contido, não adicina novo Anexo, porém, se o
+					// que foi digitado não está contido na lista, adiciona novo Anexo com id
 					// nulo.
 					//
 					if (containsSearchTerm) {
-						obsAttachment.addAll(list);
+						obsList.addAll(list);
 					} else {
-						obsAttachment.add(new Anexo(newValue));
-						obsAttachment.addAll(list);
+						obsList.add(new Anexo(newValue));
+						obsList.addAll(list);
 					}
 
 				}
@@ -70,7 +68,7 @@ public class AttachmentComboBoxController implements Initializable {
 		});
 	}
 
-	// Método para buscar processos e preencher o ComboBox
+	// Método para buscar Anexos e preencher o ComboBox
 	public List<Anexo> fetchByKeyword(String keyword) {
 
 		try {
@@ -90,16 +88,29 @@ public class AttachmentComboBoxController implements Initializable {
 
 	public Anexo getSelectedObject() {
 		// Verifica se nulo, se não nulo preenche objeto e retorna.
-		Anexo object = cbAttachment.selectionModelProperty().get().isEmpty() ? null
-				: new Anexo(obsAttachment.get(0).getAnId(), obsAttachment.get(0).getAnNumero());
+		Anexo object = comboBox.selectionModelProperty().get().isEmpty() ? null
+				: new Anexo(obsList.get(0).getAnId(), obsList.get(0).getAnNumero());
 		return object;
 	}
-
-
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
-		
+
 	}
+
+	public void fillAndSelectComboBox(Anexo object) {
+		ObservableList<Anexo> newObsList = FXCollections.observableArrayList();
+		comboBox.setItems(newObsList);
+
+		newObsList.add(0, object);
+
+		// Atualizando o ComboBox para refletir a mudança
+		// cbProcess.setItems(null);
+		comboBox.setItems(newObsList);
+
+		// Selecionando o novo item no ComboBox
+		comboBox.getSelectionModel().select(0);
+	}
+
 }
