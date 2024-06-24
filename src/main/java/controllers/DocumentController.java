@@ -16,6 +16,7 @@ import controllers.views.AddAddressController;
 import controllers.views.AddAttachmentController;
 import controllers.views.AddInterferenceController;
 import controllers.views.AddProcessController;
+import controllers.views.AddUserController;
 import controllers.views.AddressComboBoxController;
 import controllers.views.AttachmentComboBoxController;
 import controllers.views.DocumentViewController;
@@ -150,8 +151,7 @@ public class DocumentController implements Initializable {
 	private JFXButton btnViews;
 
 	@FXML
-	private FontAwesomeIconView btnAddress, btnInterference, btnProcess, btnAttachment;
-
+	private FontAwesomeIconView btnAddress, btnInterference, btnProcess, btnAttachment, btnUser;
 
 	@FXML
 	private MainController mainController;
@@ -298,10 +298,11 @@ public class DocumentController implements Initializable {
 		btnDelete.setOnAction(event -> handleDelete(event));
 		btnEdit.setOnAction(event -> handleEdit(event));
 
-		btnAddress.setOnMouseClicked(evert -> openAddAddress());
-		btnInterference.setOnMouseClicked(event-> openAddInterference());
-		btnProcess.setOnMouseClicked(event-> openAddProcess());
-		btnAttachment.setOnMouseClicked(event-> openAnchorPaneAttrachment());
+		btnAddress.setOnMouseClicked(evert -> openAnchorPaneAddress());
+		btnInterference.setOnMouseClicked(event -> openAddInterference());
+		btnProcess.setOnMouseClicked(event -> openAddProcess());
+		btnAttachment.setOnMouseClicked(event -> openAnchorPaneAttrachment());
+		btnUser.setOnMouseClicked(event -> openAnchorPaneUser());
 
 		// btnAddress.setOnAction(e -> openAddAddress());
 	}
@@ -360,48 +361,6 @@ public class DocumentController implements Initializable {
 	 * arquivo FXML para exibir o painel de edição. Realiza uma transição de
 	 * tradução para exibir o painel na tela.
 	 */
-	public void openAddAddress() {
-
-		// Cria um novo AnchorPane
-		apAddAddress = new AnchorPane();
-
-		// Carrega o arquivo FXML para o painel de edição
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/components/AddAddress.fxml"));
-
-		TranslateTransition ttClose = new TranslateTransition(Duration.millis(300), apAddAddress);
-
-		ttClose.setToX(400.0);
-		ttClose.setOnFinished(event -> {
-			// Remover a tela de edição
-			apContent.getChildren().remove(apAddAddress);
-		});
-
-		/*
-		 * String LocalUrl. Utiliza para acessar o serviço (crud); TranslateTransition
-		 * ttClose. Utiliza para fechar a tela apAddAddress; ComboBox cbAddress. Utiliza
-		 * para buscar o logradouro cadastrado pelo usuário e atualizá-lo ao fechar
-		 * apAddAddress.
-		 */
-
-		loader.setRoot(apAddAddress);
-		loader.setController(new AddAddressController(localUrl, ttClose, cbAddress));
-
-		try {
-			loader.load();
-		} catch (IOException e) {
-			System.out.println("erro na abertura do pane atendimento");
-			e.printStackTrace();
-		}
-		// Adiciona o painel de edição ao conteúdo atual
-		apContent.getChildren().add(apAddAddress);
-		// Define a translação inicial para exibir o painel na tela
-		apAddAddress.setTranslateX(400.0);
-		TranslateTransition tt = new TranslateTransition(new Duration(300), apAddAddress);
-
-		tt.setToX(0.0);
-		tt.play();
-
-	}
 
 	public void openAddInterference() {
 
@@ -447,57 +406,54 @@ public class DocumentController implements Initializable {
 	}
 
 	public void openAddProcess() {
-        // Cria um novo AnchorPane
-        AnchorPane apAddProcess = new AnchorPane();
+		// Cria um novo AnchorPane
+		AnchorPane apAddProcess = new AnchorPane();
 
-        // Carrega o arquivo FXML para o painel de adição de processo
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/components/AddProcess.fxml"));
+		// Carrega o arquivo FXML para o painel de adição de processo
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/components/AddProcess.fxml"));
 
-        // Configuração da transição de animação
-        TranslateTransition ttClose = new TranslateTransition(Duration.millis(300), apAddProcess);
-        ttClose.setToX(400.0);
-        ttClose.setOnFinished(event -> {
-            // Remove o painel de adição de processo após a animação
-            apContent.getChildren().remove(apAddProcess);
-        });
+		// Configuração da transição de animação
+		TranslateTransition ttClose = new TranslateTransition(Duration.millis(300), apAddProcess);
+		ttClose.setToX(400.0);
+		ttClose.setOnFinished(event -> {
+			// Remove o painel de adição de processo após a animação
+			apContent.getChildren().remove(apAddProcess);
+		});
 
-        // Configura o loader FXML
-        loader.setRoot(apAddProcess);
-        
-       Processo object = cbProcess.selectionModelProperty().get().isEmpty() ? null
-				: cbProcess.getItems().get(0);
-        
-        //System.out.println(cbProcess.getItems().get(0).getProcNumero());
-        loader.setController(new AddProcessController(this, object, localUrl, ttClose));
+		// Configura o loader FXML
+		loader.setRoot(apAddProcess);
 
-        try {
-            // Carrega o FXML e configura o controle
-            loader.load();
-        } catch (IOException e) {
-            System.out.println("Erro na abertura do painel de adição de processo");
-            e.printStackTrace();
-        }
+		Processo object = cbProcess.selectionModelProperty().get().isEmpty() ? null : cbProcess.getItems().get(0);
 
-        // Adiciona o painel de adição de processo ao conteúdo atual
-        apContent.getChildren().add(apAddProcess);
-    
-        AnchorPane.setTopAnchor(apAddProcess, 5.0);
-        AnchorPane.setBottomAnchor(apAddProcess, 5.0);
-        AnchorPane.setLeftAnchor(apAddProcess, 5.0);
-        AnchorPane.setRightAnchor(apAddProcess, 5.0);
+		// System.out.println(cbProcess.getItems().get(0).getProcNumero());
+		loader.setController(new AddProcessController(this, object, localUrl, ttClose));
 
-        // Define a translação inicial para exibir o painel na tela
-        apAddProcess.setTranslateX(400.0);
-        TranslateTransition tt = new TranslateTransition(new Duration(300), apAddProcess);
-        tt.setToX(0.0);
-        tt.play();
-    }
-	
-	public void fillAndSelectComboBoxProcess (Processo process) {
+		try {
+			// Carrega o FXML e configura o controle
+			loader.load();
+		} catch (IOException e) {
+			System.out.println("Erro na abertura do painel de adição de processo");
+			e.printStackTrace();
+		}
+
+		// Adiciona o painel de adição de processo ao conteúdo atual
+		apContent.getChildren().add(apAddProcess);
+
+		AnchorPane.setTopAnchor(apAddProcess, 5.0);
+		AnchorPane.setBottomAnchor(apAddProcess, 5.0);
+		AnchorPane.setLeftAnchor(apAddProcess, 5.0);
+		AnchorPane.setRightAnchor(apAddProcess, 5.0);
+
+		// Define a translação inicial para exibir o painel na tela
+		apAddProcess.setTranslateX(400.0);
+		TranslateTransition tt = new TranslateTransition(new Duration(300), apAddProcess);
+		tt.setToX(0.0);
+		tt.play();
+	}
+
+	public void fillAndSelectComboBoxProcess(Processo process) {
 		ObservableList<Processo> newObs = FXCollections.observableArrayList();
 		cbProcess.setItems(newObs);
-
-		
 
 		newObs.add(0, process);
 
@@ -508,12 +464,10 @@ public class DocumentController implements Initializable {
 		// Selecionando o novo item no ComboBox
 		cbProcess.getSelectionModel().select(0);
 	}
-	
-	public void fillAndSelectComboBoxAttachment (Anexo object) {
+
+	public void fillAndSelectComboBoxAttachment(Anexo object) {
 		ObservableList<Anexo> newObs = FXCollections.observableArrayList();
 		cbAttachment.setItems(newObs);
-
-		
 
 		newObs.add(0, object);
 
@@ -524,55 +478,173 @@ public class DocumentController implements Initializable {
 		// Selecionando o novo item no ComboBox
 		cbAttachment.getSelectionModel().select(0);
 	}
-	
-	public void openAnchorPaneAttrachment () {
-        // Cria um novo AnchorPane
-        AnchorPane anchorPaneAttachment = new AnchorPane();
 
-        // Carrega o arquivo FXML para o painel de adição de processo
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/components/AddAttachment.fxml"));
+	public void openAnchorPaneUser() {
+		// Cria um novo AnchorPane
+		AnchorPane anchorPaneUser = new AnchorPane();
 
-        // Configuração da transição de animação
-        TranslateTransition ttClose = new TranslateTransition(Duration.millis(300), anchorPaneAttachment);
-        ttClose.setToX(400.0);
-        ttClose.setOnFinished(event -> {
-            // Remove o painel de adição de processo após a animação
-            apContent.getChildren().remove(anchorPaneAttachment);
-        });
+		// Carrega o arquivo FXML para o painel de adição de processo
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/components/AddUser.fxml"));
 
-        // Configura o loader FXML
-        loader.setRoot(anchorPaneAttachment);
-        
-       Anexo object = cbAttachment.selectionModelProperty().get().isEmpty() ? null
-				: cbAttachment.getItems().get(0);
-        
-        //System.out.println(cbProcess.getItems().get(0).getProcNumero());
-        loader.setController(new AddAttachmentController(this, object, localUrl, ttClose));
+		// Configuração da transição de animação
+		TranslateTransition ttClose = new TranslateTransition(Duration.millis(300), anchorPaneUser);
+		ttClose.setToX(400.0);
+		ttClose.setOnFinished(event -> {
+			// Remove o painel de adição de processo após a animação
+			apContent.getChildren().remove(anchorPaneUser);
+		});
 
-        try {
-            // Carrega o FXML e configura o controle
-            loader.load();
-        } catch (IOException e) {
-            System.out.println("Erro na abertura do painel de adição de processo");
-            e.printStackTrace();
-        }
+		// Configura o loader FXML
+		loader.setRoot(anchorPaneUser);
 
-        // Adiciona o painel de adição de processo ao conteúdo atual
-        apContent.getChildren().add(anchorPaneAttachment);
-    
-        AnchorPane.setTopAnchor(anchorPaneAttachment, 5.0);
-        AnchorPane.setBottomAnchor(anchorPaneAttachment, 5.0);
-        AnchorPane.setLeftAnchor(anchorPaneAttachment, 5.0);
-        AnchorPane.setRightAnchor(anchorPaneAttachment, 5.0);
+		Usuario object = cbUser.selectionModelProperty().get().isEmpty() ? null : cbUser.getItems().get(0);
 
-        // Define a translação inicial para exibir o painel na tela
-        anchorPaneAttachment.setTranslateX(400.0);
-        TranslateTransition tt = new TranslateTransition(new Duration(300), anchorPaneAttachment);
-        tt.setToX(0.0);
-        tt.play();
-    }
-	
-	
+		// System.out.println(cbProcess.getItems().get(0).getProcNumero());
+		loader.setController(new AddUserController(this, object, localUrl, ttClose));
+
+		try {
+			// Carrega o FXML e configura o controle
+			loader.load();
+		} catch (IOException e) {
+			System.out.println("Erro na abertura do painel ");
+			e.printStackTrace();
+		}
+
+		// Adiciona o painel de adição de processo ao conteúdo atual
+		apContent.getChildren().add(anchorPaneUser);
+
+		AnchorPane.setTopAnchor(anchorPaneUser, 5.0);
+		AnchorPane.setBottomAnchor(anchorPaneUser, 5.0);
+		AnchorPane.setLeftAnchor(anchorPaneUser, 5.0);
+		AnchorPane.setRightAnchor(anchorPaneUser, 5.0);
+
+		// Define a translação inicial para exibir o painel na tela
+		anchorPaneUser.setTranslateX(400.0);
+		TranslateTransition tt = new TranslateTransition(new Duration(300), anchorPaneUser);
+		tt.setToX(0.0);
+		tt.play();
+	}
+
+	public void openAnchorPaneAddress() {
+		// Cria um novo AnchorPane
+		AnchorPane anchorPaneAddress = new AnchorPane();
+
+		// Carrega o arquivo FXML para o painel de adição de processo
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/components/AddAddress.fxml"));
+
+		// Configuração da transição de animação
+		TranslateTransition ttClose = new TranslateTransition(Duration.millis(300), anchorPaneAddress);
+		ttClose.setToX(400.0);
+		ttClose.setOnFinished(event -> {
+			// Remove o painel de adição de processo após a animação
+			apContent.getChildren().remove(anchorPaneAddress);
+		});
+
+		// Configura o loader FXML
+		loader.setRoot(anchorPaneAddress);
+
+		Endereco object = cbAddress.selectionModelProperty().get().isEmpty() ? null : cbAddress.getItems().get(0);
+
+		// System.out.println(cbProcess.getItems().get(0).getProcNumero());
+		loader.setController(new AddAddressController(this, object, localUrl, ttClose));
+
+		try {
+			// Carrega o FXML e configura o controle
+			loader.load();
+		} catch (IOException e) {
+			System.out.println("Erro na abertura do painel ");
+			e.printStackTrace();
+		}
+
+		// Adiciona o painel de adição de processo ao conteúdo atual
+		apContent.getChildren().add(anchorPaneAddress);
+
+		AnchorPane.setTopAnchor(anchorPaneAddress, 5.0);
+		AnchorPane.setBottomAnchor(anchorPaneAddress, 5.0);
+		AnchorPane.setLeftAnchor(anchorPaneAddress, 5.0);
+		AnchorPane.setRightAnchor(anchorPaneAddress, 5.0);
+
+		// Define a translação inicial para exibir o painel na tela
+		anchorPaneAddress.setTranslateX(400.0);
+		TranslateTransition tt = new TranslateTransition(new Duration(300), anchorPaneAddress);
+		tt.setToX(0.0);
+		tt.play();
+	}
+
+	public void fillAndSelectComboBoxAddress(Endereco object) {
+		ObservableList<Endereco> newObsList = FXCollections.observableArrayList();
+		cbAddress.setItems(newObsList);
+
+		newObsList.add(0, object);
+
+		// Atualizando o ComboBox para refletir a mudança
+		// cbProcess.setItems(null);
+		cbAddress.setItems(newObsList);
+
+		// Selecionando o novo item no ComboBox
+		cbAddress.getSelectionModel().select(0);
+	}
+
+	public void fillAndSelectComboBoxUser(Usuario object) {
+		ObservableList<Usuario> newObs = FXCollections.observableArrayList();
+		cbUser.setItems(newObs);
+
+		newObs.add(0, object);
+
+		// Atualizando o ComboBox para refletir a mudança
+		// cbProcess.setItems(null);
+		cbUser.setItems(newObs);
+
+		// Selecionando o novo item no ComboBox
+		cbUser.getSelectionModel().select(0);
+	}
+
+	public void openAnchorPaneAttrachment() {
+		// Cria um novo AnchorPane
+		AnchorPane anchorPaneAttachment = new AnchorPane();
+
+		// Carrega o arquivo FXML para o painel de adição de processo
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/components/AddAttachment.fxml"));
+
+		// Configuração da transição de animação
+		TranslateTransition ttClose = new TranslateTransition(Duration.millis(300), anchorPaneAttachment);
+		ttClose.setToX(400.0);
+		ttClose.setOnFinished(event -> {
+			// Remove o painel de adição de processo após a animação
+			apContent.getChildren().remove(anchorPaneAttachment);
+		});
+
+		// Configura o loader FXML
+		loader.setRoot(anchorPaneAttachment);
+
+		Anexo object = cbAttachment.selectionModelProperty().get().isEmpty() ? null : cbAttachment.getItems().get(0);
+
+		// System.out.println(cbProcess.getItems().get(0).getProcNumero());
+		loader.setController(new AddAttachmentController(this, object, localUrl, ttClose));
+
+		try {
+			// Carrega o FXML e configura o controle
+			loader.load();
+		} catch (IOException e) {
+			System.out.println("Erro na abertura do painel de adição de processo");
+			e.printStackTrace();
+		}
+
+		// Adiciona o painel de adição de processo ao conteúdo atual
+		apContent.getChildren().add(anchorPaneAttachment);
+
+		AnchorPane.setTopAnchor(anchorPaneAttachment, 5.0);
+		AnchorPane.setBottomAnchor(anchorPaneAttachment, 5.0);
+		AnchorPane.setLeftAnchor(anchorPaneAttachment, 5.0);
+		AnchorPane.setRightAnchor(anchorPaneAttachment, 5.0);
+
+		// Define a translação inicial para exibir o painel na tela
+		anchorPaneAttachment.setTranslateX(400.0);
+		TranslateTransition tt = new TranslateTransition(new Duration(300), anchorPaneAttachment);
+		tt.setToX(0.0);
+		tt.play();
+	}
+
 	/**
 	 * Limpa todos os componentes da interface de edição. Limpa seleções e campos de
 	 * texto, além de limpar listas e caixas de combinação.

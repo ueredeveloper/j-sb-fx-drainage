@@ -6,68 +6,152 @@
 <?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<fx:root fx:id="apContainer" prefHeight="640.0" prefWidth="900.0" styleClass="container" stylesheets="@../css/root-light.css" type="AnchorPane" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root prefHeight="751.0" prefWidth="700.0" styleClass="container" stylesheets="@../css/root-light.css" type="AnchorPane" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+      <AnchorPane layoutX="14.0" layoutY="14.0" prefHeight="147.0" prefWidth="699.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
          <children>
-            <Label alignment="TOP_CENTER" contentDisplay="TOP" layoutX="10.0" layoutY="50.0" text="Endereço" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+            <Label alignment="TOP_CENTER" contentDisplay="TOP" layoutX="10.0" layoutY="23.0" text="Endereço" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
                <styleClass>
                   <String fx:value="title" />
                   <String fx:value="text-color" />
-               </styleClass></Label>
-            <JFXButton fx:id="btnAdd" layoutX="755.0" layoutY="556.0" prefHeight="30.0" prefWidth="100.0" text="Adicionar" AnchorPane.rightAnchor="5.0" />
-            <JFXButton fx:id="btnClose" layoutX="255.0" layoutY="12.0" prefHeight="30.0" prefWidth="100.0" text="Sair" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
-            <GridPane layoutX="22.0" layoutY="100.0" prefHeight="202.0" prefWidth="817.0">
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              </rowConstraints>
-               <children>
-                  <JFXTextField fx:id="tfStreet" labelFloat="true" prefHeight="25.0" promptText="Logradouro" styleClass="jfx-text-field" GridPane.columnSpan="5" GridPane.halignment="CENTER">
-                     <padding>
-                        <Insets left="10.0" right="10.0" />
-                     </padding>
-                  </JFXTextField>
-                  <JFXTextField fx:id="tfNeighborhood" labelFloat="true" prefHeight="30.0" prefWidth="150.0" promptText="Bairro" styleClass="jfx-text-field" GridPane.halignment="CENTER" GridPane.rowIndex="2">
-                     <padding>
-                        <Insets left="10.0" right="10.0" />
-                     </padding>
-                  </JFXTextField>
-                  <JFXTextField fx:id="tfCity" labelFloat="true" prefHeight="30.0" prefWidth="150.0" promptText="Cidade" styleClass="jfx-text-field" text="Brasília" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
-                     <padding>
-                        <Insets left="10.0" right="10.0" />
-                     </padding>
-                  </JFXTextField>
-                  <JFXTextField fx:id="tfPostalCode" labelFloat="true" prefHeight="30.0" prefWidth="150.0" promptText="Cep" styleClass="jfx-text-field" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2">
-                     <padding>
-                        <Insets left="10.0" right="10.0" />
-                     </padding>
-                  </JFXTextField>
-                  <JFXComboBox fx:id="cbState" prefHeight="30.0" prefWidth="150.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-                  <JFXComboBox fx:id="cbAdministrativeRegion" prefHeight="30.0" prefWidth="150.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-                  <JFXTextField fx:id="tfArea" labelFloat="true" prefHeight="30.0" prefWidth="150.0" promptText="Área" styleClass="jfx-text-field" GridPane.rowIndex="4">
-                     <padding>
-                        <Insets left="10.0" right="10.0" />
-                     </padding>
-                  </JFXTextField>
-               </children>
-            </GridPane>
+               </styleClass>
+            </Label>
+            <JFXButton fx:id="btnClose" layoutX="643.0" layoutY="19.0" text="Fechar" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0" />
          </children>
       </AnchorPane>
+      <GridPane layoutX="32.0" layoutY="90.0" prefHeight="125.0" prefWidth="690.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="100.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <JFXComboBox fx:id="cbAddress" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="400.0" promptText="Logradouro" GridPane.columnSpan="5" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS">
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" />
+               </GridPane.margin>
+            </JFXComboBox>
+            <JFXTextField fx:id="tfNeighborhood" labelFloat="true" prefHeight="25.0" prefWidth="150.0" promptText="Bairro" styleClass="jfx-text-field" GridPane.columnIndex="5" GridPane.columnSpan="2">
+               <padding>
+                  <Insets left="10.0" right="10.0" />
+               </padding>
+            </JFXTextField>
+            <JFXTextField fx:id="tfZipCode" labelFloat="true" prefHeight="25.0" prefWidth="150.0" promptText="Cep" styleClass="jfx-text-field" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="1">
+               <padding>
+                  <Insets left="10.0" right="10.0" />
+               </padding>
+            </JFXTextField>
+            <JFXTextField fx:id="tfCity" labelFloat="true" prefHeight="25.0" prefWidth="150.0" promptText="Cidade" styleClass="jfx-text-field" text="Brasília" GridPane.columnSpan="2" GridPane.rowIndex="1">
+               <padding>
+                  <Insets left="10.0" right="10.0" />
+               </padding>
+            </JFXTextField>
+            <JFXTextField fx:id="tfArea" labelFloat="true" prefHeight="25.0" prefWidth="150.0" promptText="Área" styleClass="jfx-text-field" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="1">
+               <padding>
+                  <Insets left="10.0" right="10.0" />
+               </padding>
+            </JFXTextField>
+         </children>
+      </GridPane>
+      <AnchorPane layoutX="14.0" layoutY="181.0" prefHeight="293.0" prefWidth="699.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="420.0">
+         <children>
+            <TableView layoutX="14.0" layoutY="79.0" prefHeight="200.0" prefWidth="689.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="15.0">
+              <columns>
+                <TableColumn fx:id="tcAttachment" prefWidth="126.0" text="Nome" />
+                <TableColumn fx:id="tcUser" prefWidth="428.0" text="Cpf/Cnpj" />
+                  <TableColumn fx:id="tcProcess" prefWidth="128.0" text="Documentos" />
+              </columns>
+            </TableView>
+         </children>
+      </AnchorPane>
+      <HBox layoutX="5.0" layoutY="293.0" prefHeight="50.0" prefWidth="800.0" styleClass="hbox-search" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">
+         <children>
+            <Pane prefWidth="100.0" HBox.hgrow="ALWAYS" />
+            <Pane prefWidth="100.0" HBox.hgrow="ALWAYS" />
+            <JFXTextField fx:id="tfSearch" alignment="TOP_LEFT" labelFloat="true" prefHeight="30.0" prefWidth="300.0" promptText="Pesquisar número, sei, processo e endereço" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
+               </HBox.margin>
+               <styleClass>
+                  <String fx:value="text-field" />
+                  <String fx:value="jfx-text-field-custom" />
+               </styleClass>
+               <tooltip>
+                  <Tooltip text="Digite uma busca. Pode ser pesquisado número, sei, processo e endereço relacionado." />
+               </tooltip>
+            </JFXTextField>
+            <JFXButton fx:id="btnSearch" minWidth="100.0" prefHeight="30.0" styleClass="buttons" text="Buscar" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
+               </HBox.margin>
+               <tooltip>
+                  <Tooltip text="Buscar documento" />
+               </tooltip>
+            </JFXButton>
+         </children>
+      </HBox>
+      <GridPane layoutX="14.0" layoutY="351.0" prefHeight="50.0" prefWidth="780.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="6.0">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <JFXButton fx:id="btnNew" maxWidth="1.7976931348623157E308" prefHeight="20.0" prefWidth="100.0" styleClass="buttons" text="Novo" GridPane.hgrow="ALWAYS">
+               <tooltip>
+                  <Tooltip text="Criar novo documento" />
+               </tooltip>
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" />
+               </GridPane.margin>
+            </JFXButton>
+            <JFXButton fx:id="btnSave" maxWidth="1.7976931348623157E308" prefHeight="20.0" prefWidth="100.0" styleClass="buttons" text="Salvar" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+               <tooltip>
+                  <Tooltip text="Salvar documento" />
+               </tooltip>
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" />
+               </GridPane.margin>
+            </JFXButton>
+            <JFXButton fx:id="btnEdit" maxWidth="1.7976931348623157E308" prefHeight="20.0" prefWidth="100.0" styleClass="buttons" text="Editar" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+               <tooltip>
+                  <Tooltip text="Editar documento" />
+               </tooltip>
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" />
+               </GridPane.margin>
+            </JFXButton>
+            <JFXButton fx:id="btnDelete" maxWidth="1.7976931348623157E308" prefHeight="20.0" prefWidth="100.0" styleClass="buttons" text="Deletar" GridPane.columnIndex="3" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+               <tooltip>
+                  <Tooltip text="Deletar documento" />
+               </tooltip>
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" />
+               </GridPane.margin>
+            </JFXButton>
+         </children>
+      </GridPane>
    </children>
-</fx:root>
+   </fx:root>

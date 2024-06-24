@@ -15,46 +15,45 @@ public class UserComboBoxController {
 
 	String localUrl;
 
-	private JFXComboBox<Usuario> cbUser;
-	ObservableList<Usuario> obsUser = FXCollections.observableArrayList();
+	private JFXComboBox<Usuario> comboBox;
+	ObservableList<Usuario> obsList = FXCollections.observableArrayList();
 
-	public UserComboBoxController(String localUrl, JFXComboBox<Usuario> cbUser) {
+	public UserComboBoxController(String localUrl, JFXComboBox<Usuario> comboBox) {
 		this.localUrl = localUrl;
-		this.cbUser = cbUser;
-		
+		this.comboBox = comboBox;
+
 		init();
 	}
 
 	// Método para inicializar o ComboBox
 	public void init() {
 
-		cbUser.setItems(obsUser);
-		cbUser.setEditable(true);
+		comboBox.setItems(obsList);
+		comboBox.setEditable(true);
 
-		utilities.FxUtilComboBoxSearchable.autoCompleteComboBoxPlus(cbUser, (typedText,
+		utilities.FxUtilComboBoxSearchable.autoCompleteComboBoxPlus(comboBox, (typedText,
 				itemToCompare) -> itemToCompare.getUsNome().toLowerCase().contains(typedText.toLowerCase()));
 
-		utilities.FxUtilComboBoxSearchable.getComboBoxValue(cbUser);
+		utilities.FxUtilComboBoxSearchable.getComboBoxValue(comboBox);
 
-		utilities.FxUtilComboBoxSearchable.getComboBoxValue(cbUser);
+		utilities.FxUtilComboBoxSearchable.getComboBoxValue(comboBox);
 
 		// Preeche com valores do servido atualizando ao digitar
-		cbUser.getEditor().textProperty().addListener(new ChangeListener<String>() {
+		comboBox.getEditor().textProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
 				if (newValue != null) {
-					obsUser.clear();
+					obsList.clear();
 					List<Usuario> list = fetchByKeyword(newValue);
-				
 
 					if (list != null) {
 						boolean containsSearchTerm = list.stream()
 								.anyMatch(endereco -> endereco.getUsNome().contains(newValue));
 						if (containsSearchTerm) {
-							obsUser.addAll(list);
+							obsList.addAll(list);
 						} else {
-							obsUser.add(new Usuario(newValue));
-							obsUser.addAll(list);
+							obsList.add(new Usuario(newValue));
+							obsList.addAll(list);
 						}
 					}
 				}
@@ -82,10 +81,24 @@ public class UserComboBoxController {
 
 	public Usuario getSelectedObject() {
 		// Verifica se nulo, se não preenche objeto e retorna.
-		Usuario object = cbUser.selectionModelProperty().get().isEmpty() ? null
-				: new Usuario(obsUser.get(0).getUsId(), obsUser.get(0).getUsNome());
+		Usuario object = comboBox.selectionModelProperty().get().isEmpty() ? null
+				: new Usuario(obsList.get(0).getUsId(), obsList.get(0).getUsNome());
 
 		return object;
 
+	}
+
+	public void fillAndSelectComboBox(Usuario object) {
+		ObservableList<Usuario> newObsList = FXCollections.observableArrayList();
+		comboBox.setItems(newObsList);
+
+		newObsList.add(0, object);
+
+		// Atualizando o ComboBox para refletir a mudança
+		// cbProcess.setItems(null);
+		comboBox.setItems(newObsList);
+
+		// Selecionando o novo item no ComboBox
+		comboBox.getSelectionModel().select(0);
 	}
 }

@@ -1,172 +1,147 @@
 package controllers.views;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
-import com.google.gson.Gson;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 
-import enums.ToastType;
+import controllers.DocumentController;
 import javafx.animation.TranslateTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
+import javafx.scene.control.TableColumn;
 import models.Endereco;
-import services.EnderecoService;
-import services.ServiceResponse;
+import models.Processo;
+import models.Usuario;
+import services.ProcessoService;
 import utilities.URLUtility;
 
 public class AddAddressController implements Initializable {
 
 	@FXML
-	private AnchorPane apContainer;
-
-	@FXML
-	private JFXButton btnAdd;
-
-	@FXML
 	private JFXButton btnClose;
 
 	@FXML
-	private JFXTextField tfStreet;
+	private JFXComboBox<Endereco> cbAddress;
 
 	@FXML
 	private JFXTextField tfNeighborhood;
 
 	@FXML
+	private JFXTextField tfZipCode;
+
+	@FXML
 	private JFXTextField tfCity;
-
-	@FXML
-	private JFXTextField tfPostalCode;
-
-	@FXML
-	private JFXComboBox<?> cbState;
-
-	@FXML
-	private JFXComboBox<?> cbAdministrativeRegion;
 
 	@FXML
 	private JFXTextField tfArea;
 
-	String urlService;
-	TranslateTransition ttClose;
-	Endereco endereco = new Endereco();
-	JFXComboBox<Endereco> cbAddress;
+	@FXML
+	private TableColumn<?, ?> tcAttachment;
 
-	public AddAddressController(String urlServie, TranslateTransition ttClose, JFXComboBox<Endereco> cbAddress) {
+	@FXML
+	private TableColumn<?, ?> tcUser;
+
+	@FXML
+	private TableColumn<?, ?> tcProcess;
+
+	@FXML
+	private JFXTextField tfSearch;
+
+	@FXML
+	private JFXButton btnSearch;
+
+	@FXML
+	private JFXButton btnNew;
+
+	@FXML
+	private JFXButton btnSave;
+
+	@FXML
+	private JFXButton btnEdit;
+
+	@FXML
+	private JFXButton btnDelete;
+
+	private String urlService;
+	private TranslateTransition ttClose;
+
+	Endereco object;
+
+	ProcessComboBoxController processCbController;
+	UserComboBoxController userComboBoxController;
+	AddressComboBoxController addressCbController;
+	DocumentController documentController;
+
+	public AddAddressController(DocumentController documentController, Endereco object, String urlService,
+			TranslateTransition ttClose) {
+		this.documentController = documentController;
+		this.object = object;
 		this.urlService = URLUtility.getURLService();
 		this.ttClose = ttClose;
-		this.cbAddress = cbAddress;
+
 	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		// Retira o link com a stilização light ou dark, assim fica a estilização do
-		// componente pai (MainController)
-		apContainer.getStylesheets().clear();
-		
-		String userInput = cbAddress.getEditor().getText();
-		
 
-		//Endereco selectedEndereco = cbAddress.getSelectionModel().getSelectedItem();
-		Endereco selectedEndereco = new Endereco(userInput);
+		// mudar para cpf processCbController = new
+		// ProcessComboBoxController(urlService, cbProcess);
+		// new UserComboBoxController(urlService, cbAddress);
+		// userComboBoxController = new UserComboBoxController(urlService, cbAddress);
 
-		if (selectedEndereco != null) {
-			tfStreet.setText(selectedEndereco.getEndLogradouro());
+		addressCbController = new AddressComboBoxController(urlService, cbAddress);
+
+		if (object != null) {
+			addressCbController.fillAndSelectComboBox(object);
 		}
 
-		// Fechar tela
 		btnClose.setOnAction(e -> {
 			ttClose.play();
 
-			updateComboBox(selectedEndereco);
+			Endereco object = cbAddress.selectionModelProperty().get().isEmpty() ? null
+					: addressCbController.getSelectedObject();
+
+			if (object != null) {
+				this.documentController.fillAndSelectComboBoxAddress(object);
+			}
 
 		});
-
-		btnAdd.setOnAction(event -> {
-			handleSave(event);
-
-		});
-
 	}
 
-	public void handleSave(ActionEvent event) {
-
-		String endLogradouro = tfStreet.getText();
-		String endBairro = tfNeighborhood.getText();
-		String endCidade = tfCity.getText();
-		String endCep = tfPostalCode.getText();
-
-		endereco.setEndLogradouro(endLogradouro);
-		endereco.setEndCidade(endCidade);
-		endereco.setEndCep(endCep);
-		endereco.setEndBairro(endBairro);
+	// Método para buscar processos e preencher o ComboBox
+	public List<Processo> fetchProcesses(String keyword) {
 
 		try {
-			EnderecoService endServ = new EnderecoService(urlService);
+			ProcessoService service = new ProcessoService(urlService);
 
-			// Requisi��o de resposta de edi��o
-			ServiceResponse<?> serviceResponse = endServ.save(endereco);
+			List<Processo> list = service.fetchProcesses(keyword);
 
-			if (serviceResponse.getResponseCode() == 200 || serviceResponse.getResponseCode() == 201) {
-				// Alerta (Toast) de sucesso na edi��o
-				Node source = (Node) event.getSource();
+			return list;
 
-				Stage ownerStage = (Stage) source.getScene().getWindow();
-				String toastMsg = "Endereço salvo com sucesso!";
-				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.SUCCESS);
-
-				// Atualiza com endereço salvo no banco de dados, trazindo assim o Id também.
-				Endereco response = new Gson().fromJson((String) serviceResponse.getResponseBody(), Endereco.class);
-
-				endereco = response;
-
-			} else {
-				// Display an error toast or alert
-				// System.out.println(serviceResponse.getResponseCode());
-			}
 		} catch (Exception e) {
-			e.printStackTrace();
-		}
 
+		}
+		return null;
 	}
 
-	public void updateComboBox(Endereco selectedEndereco) {
+	public void fillAndSelectComboBoxAddress(Endereco object) {
+		ObservableList<Endereco> newObsList = FXCollections.observableArrayList();
+		cbAddress.setItems(newObsList);
 
-		//if (selectedEndereco == null) {
+		newObsList.add(0, object);
 
-			System.out.println("if  null");
+		// Atualizando o ComboBox para refletir a mudança
+		// cbProcess.setItems(null);
+		cbAddress.setItems(newObsList);
 
-			selectedEndereco = new Endereco();
-
-			selectedEndereco.setEndLogradouro(tfStreet.getText());
-			selectedEndereco.setEndCidade(tfCity.getText());
-			selectedEndereco.setEndCep(tfPostalCode.getText());
-			selectedEndereco.setEndBairro(tfNeighborhood.getText());
-
-			ObservableList<Endereco> newObs = FXCollections.observableArrayList();
-			cbAddress.setItems(newObs);
-
-			// Adicionando o novo Endereco como primeiro da lista
-			// newObs.add(new Endereco());
-			cbAddress.setItems(newObs);
-
-			newObs.add(0, selectedEndereco);
-
-			// Atualizando o ComboBox para refletir a mudança
-			// cbAddress.setItems(null);
-			cbAddress.setItems(newObs);
-
-			// Selecionando o novo item no ComboBox
-			cbAddress.getSelectionModel().select(0);
-		//} 
+		// Selecionando o novo item no ComboBox
+		cbAddress.getSelectionModel().select(0);
 	}
 
 }
