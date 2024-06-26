@@ -128,7 +128,12 @@
 * **[x] Git pull para adicionar Leaflet Maps.
 
 ## 04 de junho de 2024
-* ** [] Verificar o objeto selecionado no mapa.
+* ** [X] Verificar o objeto selecionado no mapa.
 	Criar um listener para visualizar o objeto selecionado no mapa.
+		26/06/2024, Obs: foi criado um listener para receber a coordenada do mapa e também mostrar a coordenada escrita pelo usuário no mapa.
 	
-
+## 26 de junho de 2024
+* ** [] Lista de Bairros, Cidade e Cep.
+	Adicionar lista de bairros de acordo com o que o usuário preenche. Por exemplo, a pessoa cadastra o bairro Taguatina Norte, isso já pode ser sujerido da próxima vez.
+	[] Tabelas Acessórias da Interferência
+		Criar as tabelas acessórias como tipo de interferência, tipo de outorga, subtipo de outorga etc...

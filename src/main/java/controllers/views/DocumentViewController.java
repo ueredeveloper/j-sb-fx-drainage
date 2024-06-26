@@ -21,6 +21,7 @@ import netscape.javascript.JSObject;
 import utilities.HTMLFileLoader;
 
 public class DocumentViewController implements Initializable {
+	
 
 	private Documento selectedDocument;
 

@@ -2,6 +2,7 @@ package services;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -10,6 +11,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -119,7 +121,7 @@ public class EnderecoService {
 		}
 	}
 
-	public List<Endereco> fetchAddress(String keyword) {
+	public List<Endereco> fetchAddressByKeyword (String keyword) {
 
 		try {
 			URL apiUrl = new URL(localUrl + "/address/list?keyword=" + URLEncoder.encode(keyword, "UTF-8"));
@@ -148,6 +150,31 @@ public class EnderecoService {
 		return null;
 	}
 
+	public ServiceResponse<?> deleteById(Long id) {
+		try {
+			URL apiUrl = new URL(localUrl + "/address/delete?id=" + id); // Updated URL
+			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
+			connection.setRequestMethod("DELETE");
+
+			int responseCode = connection.getResponseCode();
+
+			// Read the response body if needed
+			InputStream inputStream = connection.getInputStream();
+			String responseBody = new BufferedReader(new InputStreamReader(inputStream)).lines()
+					.collect(Collectors.joining("\n"));
+
+			connection.disconnect();
+
+			return new ServiceResponse<>(responseCode, responseBody); // Change null to the actual response body if
+																		// needed
+		} catch (Exception e) {
+			e.printStackTrace();
+			// Handle the exception if needed
+			return new ServiceResponse<>(-1, null); // You might want to use a different code for errors
+		}
+	}
+	
+	
 	private List<Endereco> handleSuccessResponse(HttpURLConnection connection) throws IOException {
 		BufferedReader reader = new BufferedReader(
 				new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8));

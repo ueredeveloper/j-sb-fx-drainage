@@ -7,50 +7,86 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
 import models.Endereco;
 import models.Interferencia;
 import utilities.URLUtility;
 
 public class AddInterferenceController implements Initializable {
-
-	@FXML
-	private AnchorPane apContainer;
-
-	@FXML
-	private JFXComboBox<?> cbInterferenceType;
-
-	@FXML
-	private JFXComboBox<?> cbGrant;
-
-	@FXML
-	private JFXComboBox<?> cbGrantSubtype;
-
-	@FXML
-	private JFXComboBox<?> cbSituation;
-
-	@FXML
-	private JFXComboBox<?> cbActType;
-
-	@FXML
-	private JFXComboBox<?> cbWatershedBasin;
-
-	@FXML
-	private JFXComboBox<?> cbHydrographicUnit;
-
-	@FXML
-	private AnchorPane apInterferenceType;
 	
-	@FXML
-	private JFXButton btnClose;
 
+	   @FXML
+	    private JFXTextField tfLatitude;
 
-	JFXTextField tfLatitude;
-	JFXTextField tfLongitude;
+	    @FXML
+	    private JFXTextField tfLongitude;
+
+	    @FXML
+	    private FontAwesomeIconView iconMarker;
+
+	    @FXML
+	    private JFXComboBox<?> cbInterferenceType;
+
+	    @FXML
+	    private JFXComboBox<?> cbGrant;
+
+	    @FXML
+	    private JFXComboBox<?> cbGrantSubtype;
+
+	    @FXML
+	    private JFXComboBox<?> cbSituation;
+
+	    @FXML
+	    private JFXComboBox<?> cbActType;
+
+	    @FXML
+	    private JFXComboBox<?> cbWatershedBasin;
+
+	    @FXML
+	    private JFXComboBox<?> cbHydrographicUnit;
+
+	    @FXML
+	    private JFXTextField tfSearch;
+
+	    @FXML
+	    private JFXButton btnSearch;
+
+	    @FXML
+	    private JFXButton btnNew;
+
+	    @FXML
+	    private JFXButton btnSave;
+
+	    @FXML
+	    private JFXButton btnUpdate;
+
+	    @FXML
+	    private JFXButton btnDelete;
+
+	    @FXML
+	    private TableView<?> tableView;
+
+	    @FXML
+	    private TableColumn<?, ?> tcAddress;
+
+	    @FXML
+	    private TableColumn<?, ?> tcNeighborhood;
+
+	    @FXML
+	    private TableColumn<?, ?> tcCity;
+
+	    @FXML
+	    private TableColumn<?, ?> tcState;
+
+	    @FXML
+	    private JFXButton btnClose;
 
 	String urlService;
 	TranslateTransition ttClose;
@@ -67,9 +103,7 @@ public class AddInterferenceController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		// Retira o link com a stilização light ou dark, assim fica a estilização do
-		// componente pai (MainController)
-		apContainer.getStylesheets().clear();
+		
 		
 		// Fechar tela
 		btnClose.setOnAction(e -> {

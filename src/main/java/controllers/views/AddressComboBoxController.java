@@ -12,6 +12,7 @@ import models.Endereco;
 import services.EnderecoService;
 
 public class AddressComboBoxController {
+	
 
 	String localUrl;
 
@@ -62,7 +63,7 @@ public class AddressComboBoxController {
 	public List<Endereco> fetchAddress(String keyword) {
 		try {
 			EnderecoService service = new EnderecoService(localUrl);
-			List<Endereco> list = service.fetchAddress(keyword);
+			List<Endereco> list = service.fetchAddressByKeyword(keyword);
 			return list;
 		} catch (Exception e) {
 			// Trate exceções adequadamente
