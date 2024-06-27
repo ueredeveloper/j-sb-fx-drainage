@@ -1,5 +1,10 @@
 package models;
 
+import java.util.function.Function;
+
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
 //import com.vividsolutions.jts.geom.Geometry;
 
 public class Interferencia {
@@ -15,7 +20,8 @@ public class Interferencia {
 
 	private Endereco interEndereco;
 	
-	private String interLogradouro;
+	private InterferenciaTipo interferenciaTipo;
+
 	
 	public Interferencia() {
 		super();
@@ -26,19 +32,20 @@ public class Interferencia {
 		this.interEndereco = interEndereco;
 	}
 	
-	public Interferencia(Double interLatitude, Double interLongitude, String interLogradouro) {
-		super();
-		this.interLatitude = interLatitude;
-		this.interLongitude = interLongitude;
-		this.interLogradouro = interLogradouro;
-	}
-	
-	
-
 	public Interferencia(Double interLatitude, Double interLongitude) {
 		super();
 		this.interLatitude = interLatitude;
 		this.interLongitude = interLongitude;
+	}
+	
+	
+	public Interferencia(Double interLatitude, Double interLongitude, Endereco interEndereco,
+			InterferenciaTipo interferenciaTipo) {
+		super();
+		this.interLatitude = interLatitude;
+		this.interLongitude = interLongitude;
+		this.interEndereco = interEndereco;
+		this.interferenciaTipo = interferenciaTipo;
 	}
 
 	public Long getInterId() {
@@ -75,12 +82,12 @@ public class Interferencia {
 	}
 	
 
-	public String getInterLogradouro() {
-		return interLogradouro;
+	public InterferenciaTipo getInterferenciaTipo() {
+		return interferenciaTipo;
 	}
 
-	public void setInterLogradouro(String interLogradouro) {
-		this.interLogradouro = interLogradouro;
+	public void setInterferenciaTipo(InterferenciaTipo interferenciaTipo) {
+		this.interferenciaTipo = interferenciaTipo;
 	}
 
 	@Override
@@ -89,4 +96,31 @@ public class Interferencia {
 		
 	}
 
+	public <T> StringProperty getProperty(Function<Interferencia, T> propertyAccessor) {
+		StringProperty stringProperty = new SimpleStringProperty("");
+		T value = propertyAccessor.apply(this);
+
+		if (value != null) {
+			String stringValue = String.valueOf(value);
+			stringProperty.set(stringValue);
+		}
+
+		return stringProperty;
+	}
+
+	public String getEnderecoLogradouro() {
+		if (this.interEndereco != null) {
+			return this.interEndereco.getEndLogradouro();
+		} else {
+			return null; // or handle the case when docProcesso is null
+		}
+	}
+	public String getInterferenciaTipoDescricao() {
+		if (this.interferenciaTipo != null) {
+			return this.interferenciaTipo.getDescricao();
+		} else {
+			return null; // or handle the case when docProcesso is null
+		}
+	}
+	
 }

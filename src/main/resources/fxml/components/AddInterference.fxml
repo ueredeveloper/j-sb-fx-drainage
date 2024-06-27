@@ -7,6 +7,7 @@
 <?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.Tooltip?>
@@ -17,175 +18,180 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<fx:root prefHeight="842.0" prefWidth="900.0" styleClass="container" stylesheets="@../css/root-light.css" type="AnchorPane" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root fx:id="anchorPaneContainer" prefHeight="842.0" prefWidth="900.0" styleClass="container" stylesheets="@../css/root-light.css" type="AnchorPane" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <AnchorPane layoutX="105.0" layoutY="14.0" prefHeight="80.0" prefWidth="690.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="5.0">
-         <children>
-            <Label alignment="TOP_CENTER" contentDisplay="TOP" layoutX="10.0" layoutY="23.0" text="Interferência" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
-               <styleClass>
-                  <String fx:value="title" />
-                  <String fx:value="text-color" />
-               </styleClass>
-            </Label>
-            <JFXButton fx:id="btnClose" layoutX="643.0" layoutY="19.0" text="Fechar" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0" />
-         </children>
-      </AnchorPane>
-      <GridPane layoutX="10.0" layoutY="90.0" prefHeight="109.0" prefWidth="880.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
-        <columnConstraints>
-          <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="220.0" minWidth="220.0" prefWidth="220.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="220.0" minWidth="220.0" prefWidth="220.0" />
-            <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
-        </columnConstraints>
-        <rowConstraints>
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        </rowConstraints>
-         <children>
-            <JFXTextField fx:id="tfLatitude" prefHeight="30.0" promptText="Latitude" GridPane.columnIndex="1">
-               <GridPane.margin>
-                  <Insets left="10.0" right="10.0" />
-               </GridPane.margin>
-            </JFXTextField>
-            <JFXTextField fx:id="tfLongitude" prefHeight="30.0" prefWidth="200.0" promptText="Longitude" GridPane.columnIndex="2">
-               <GridPane.margin>
-                  <Insets left="10.0" right="10.0" />
-               </GridPane.margin>
-            </JFXTextField>
-            <FontAwesomeIconView fx:id="iconMarker" glyphName="MAP_MARKER" GridPane.columnIndex="3" />
-            <JFXComboBox fx:id="cbInterferenceType" prefHeight="30.0" prefWidth="200.0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1">
-               <GridPane.margin>
-                  <Insets left="10.0" right="10.0" />
-               </GridPane.margin>
-            </JFXComboBox>
-            <JFXComboBox fx:id="cbGrant" prefHeight="30.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1">
-               <GridPane.margin>
-                  <Insets left="10.0" right="10.0" />
-               </GridPane.margin>
-            </JFXComboBox>
-            <JFXComboBox fx:id="cbGrantSubtype" prefHeight="30.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1">
-               <GridPane.margin>
-                  <Insets left="10.0" right="10.0" />
-               </GridPane.margin>
-            </JFXComboBox>
-            <JFXComboBox fx:id="cbSituation" prefHeight="30.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1">
-               <GridPane.margin>
-                  <Insets left="10.0" right="10.0" />
-               </GridPane.margin>
-            </JFXComboBox>
-            <JFXComboBox fx:id="cbActType" prefHeight="30.0" prefWidth="200.0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2">
-               <GridPane.margin>
-                  <Insets left="10.0" right="10.0" />
-               </GridPane.margin>
-            </JFXComboBox>
-            <JFXComboBox fx:id="cbWatershedBasin" prefHeight="30.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2">
-               <GridPane.margin>
-                  <Insets left="10.0" right="10.0" />
-               </GridPane.margin>
-            </JFXComboBox>
-            <JFXComboBox fx:id="cbHydrographicUnit" prefHeight="30.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2">
-               <GridPane.margin>
-                  <Insets left="10.0" right="10.0" />
-               </GridPane.margin>
-            </JFXComboBox>
-         </children>
-      </GridPane>
-      <GridPane layoutX="10.0" layoutY="621.0" prefHeight="30.0" prefWidth="800.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
-        <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        </rowConstraints>
-      </GridPane>
-      <HBox layoutX="10.0" layoutY="226.0" prefHeight="50.0" prefWidth="800.0" styleClass="hbox-search" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
-         <children>
-            <Pane prefWidth="100.0" HBox.hgrow="ALWAYS" />
-            <Pane prefWidth="100.0" HBox.hgrow="ALWAYS" />
-            <JFXTextField fx:id="tfSearch" alignment="TOP_LEFT" labelFloat="true" prefHeight="30.0" prefWidth="300.0" promptText="Pesquisar número, sei, processo e endereço" HBox.hgrow="ALWAYS">
-               <HBox.margin>
-                  <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
-               </HBox.margin>
-               <styleClass>
-                  <String fx:value="text-field" />
-                  <String fx:value="jfx-text-field-custom" />
-               </styleClass>
-               <tooltip>
-                  <Tooltip text="Digite uma busca. Pode ser pesquisado número, sei, processo e endereço relacionado." />
-               </tooltip>
-            </JFXTextField>
-            <JFXButton fx:id="btnSearch" minWidth="100.0" prefHeight="30.0" styleClass="buttons" text="Buscar" HBox.hgrow="ALWAYS">
-               <HBox.margin>
-                  <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
-               </HBox.margin>
-               <tooltip>
-                  <Tooltip text="Buscar documento" />
-               </tooltip>
-            </JFXButton>
-         </children>
-      </HBox>
-      <GridPane layoutX="10.0" layoutY="295.0" prefHeight="50.0" prefWidth="780.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
-         <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-         </columnConstraints>
-         <rowConstraints>
-            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-         </rowConstraints>
-         <children>
-            <JFXButton fx:id="btnNew" maxWidth="1.7976931348623157E308" prefHeight="20.0" prefWidth="100.0" styleClass="buttons" text="Novo" GridPane.hgrow="ALWAYS">
-               <tooltip>
-                  <Tooltip text="Criar novo documento" />
-               </tooltip>
-               <GridPane.margin>
-                  <Insets left="10.0" right="10.0" />
-               </GridPane.margin>
-            </JFXButton>
-            <JFXButton fx:id="btnSave" maxWidth="1.7976931348623157E308" prefHeight="20.0" prefWidth="100.0" styleClass="buttons" text="Salvar" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
-               <tooltip>
-                  <Tooltip text="Salvar documento" />
-               </tooltip>
-               <GridPane.margin>
-                  <Insets left="10.0" right="10.0" />
-               </GridPane.margin>
-            </JFXButton>
-            <JFXButton fx:id="btnUpdate" maxWidth="1.7976931348623157E308" prefHeight="20.0" prefWidth="100.0" styleClass="buttons" text="Editar" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
-               <tooltip>
-                  <Tooltip text="Editar documento" />
-               </tooltip>
-               <GridPane.margin>
-                  <Insets left="10.0" right="10.0" />
-               </GridPane.margin>
-            </JFXButton>
-            <JFXButton fx:id="btnDelete" maxWidth="1.7976931348623157E308" prefHeight="20.0" prefWidth="100.0" styleClass="buttons" text="Deletar" GridPane.columnIndex="3" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
-               <tooltip>
-                  <Tooltip text="Deletar documento" />
-               </tooltip>
-               <GridPane.margin>
-                  <Insets left="10.0" right="10.0" />
-               </GridPane.margin>
-            </JFXButton>
-         </children>
-      </GridPane>
-      <AnchorPane layoutX="14.0" layoutY="519.0" prefHeight="300.0" prefWidth="700.0" AnchorPane.bottomAnchor="280.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="350.0">
-         <children>
-            <TableView fx:id="tableView" layoutX="14.0" layoutY="79.0" prefHeight="200.0" prefWidth="690.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="15.0">
-               <columns>
-                  <TableColumn fx:id="tcAddress" prefWidth="300.0" text="Endereço" />
-                  <TableColumn fx:id="tcLatitude" maxWidth="1000.0" prefWidth="150.0" text="Latitude" />
-                  <TableColumn fx:id="tcLongitude" maxWidth="1000.0" prefWidth="150.0" text="Longitude" />
-               </columns>
-               <columnResizePolicy>
-                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-               </columnResizePolicy>
-            </TableView>
-         </children>
-      </AnchorPane>
-      <AnchorPane fx:id="apPurposes" layoutX="21.0" layoutY="562.0" prefHeight="270.0" prefWidth="860.0" AnchorPane.bottomAnchor="10.0" AnchorPane.topAnchor="570.0" />
+      <ScrollPane layoutX="10.0" layoutY="14.0" prefHeight="825.0" prefWidth="860.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <content>
+          <AnchorPane fx:id="anchorPaneResizable" minHeight="0.0" minWidth="0.0" prefHeight="1000.0" prefWidth="870.0" styleClass="container">
+               <children>
+                  <AnchorPane prefHeight="80.0" prefWidth="690.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                     <children>
+                        <Label alignment="TOP_CENTER" contentDisplay="TOP" layoutX="10.0" layoutY="23.0" text="Interferência" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+                           <styleClass>
+                              <String fx:value="title" />
+                              <String fx:value="text-color" />
+                           </styleClass>
+                        </Label>
+                        <JFXButton fx:id="btnClose" layoutX="643.0" layoutY="19.0" text="Fechar" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0" />
+                     </children>
+                  </AnchorPane>
+                  <GridPane layoutY="100.0" prefHeight="154.0" prefWidth="860.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="220.0" minWidth="220.0" prefWidth="220.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="220.0" minWidth="220.0" prefWidth="220.0" />
+                        <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <children>
+                        <JFXTextField fx:id="tfLatitude" prefHeight="30.0" promptText="Latitude" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                           <GridPane.margin>
+                              <Insets left="10.0" right="10.0" />
+                           </GridPane.margin>
+                        </JFXTextField>
+                        <JFXTextField fx:id="tfLongitude" prefHeight="30.0" prefWidth="200.0" promptText="Longitude" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                           <GridPane.margin>
+                              <Insets left="10.0" right="10.0" />
+                           </GridPane.margin>
+                        </JFXTextField>
+                        <FontAwesomeIconView fx:id="iconMarker" glyphName="MAP_MARKER" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                        <JFXComboBox fx:id="cbInterferenceType" prefHeight="30.0" prefWidth="200.0" promptText="Tipo de Interferência" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2">
+                           <GridPane.margin>
+                              <Insets left="10.0" right="10.0" />
+                           </GridPane.margin>
+                        </JFXComboBox>
+                        <JFXComboBox fx:id="cbGrant" prefHeight="30.0" prefWidth="200.0" promptText="Tipo de Outorga" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2">
+                           <GridPane.margin>
+                              <Insets left="10.0" right="10.0" />
+                           </GridPane.margin>
+                        </JFXComboBox>
+                        <JFXComboBox fx:id="cbGrantSubtype" prefHeight="30.0" prefWidth="200.0" promptText="Subtipo de Outorga" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2">
+                           <GridPane.margin>
+                              <Insets left="10.0" right="10.0" />
+                           </GridPane.margin>
+                        </JFXComboBox>
+                        <JFXComboBox fx:id="cbSituation" prefHeight="30.0" prefWidth="200.0" promptText="Situação" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2">
+                           <GridPane.margin>
+                              <Insets left="10.0" right="10.0" />
+                           </GridPane.margin>
+                        </JFXComboBox>
+                        <JFXComboBox fx:id="cbActType" prefHeight="30.0" prefWidth="200.0" promptText="Tipo de Ato" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3">
+                           <GridPane.margin>
+                              <Insets left="10.0" right="10.0" />
+                           </GridPane.margin>
+                        </JFXComboBox>
+                        <JFXComboBox fx:id="cbWatershedBasin" prefHeight="30.0" prefWidth="200.0" promptText="Bacia Hidrográfica" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3">
+                           <GridPane.margin>
+                              <Insets left="10.0" right="10.0" />
+                           </GridPane.margin>
+                        </JFXComboBox>
+                        <JFXComboBox fx:id="cbHydrographicUnit" prefHeight="30.0" prefWidth="200.0" promptText="Unidade Hidrográfica" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3">
+                           <GridPane.margin>
+                              <Insets left="10.0" right="10.0" />
+                           </GridPane.margin>
+                        </JFXComboBox>
+                        <JFXComboBox fx:id="cbAddress" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="400.0" promptText="Logradouro" GridPane.columnSpan="4">
+                           <GridPane.margin>
+                              <Insets left="10.0" right="10.0" />
+                           </GridPane.margin>
+                        </JFXComboBox>
+                     </children>
+                  </GridPane>
+                  <GridPane layoutY="250.0" prefHeight="50.0" prefWidth="780.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <children>
+                        <JFXButton fx:id="btnNew" maxWidth="1.7976931348623157E308" prefHeight="20.0" prefWidth="100.0" styleClass="buttons" text="Novo" GridPane.hgrow="ALWAYS">
+                           <tooltip>
+                              <Tooltip text="Criar novo documento" />
+                           </tooltip>
+                           <GridPane.margin>
+                              <Insets left="10.0" right="10.0" />
+                           </GridPane.margin>
+                        </JFXButton>
+                        <JFXButton fx:id="btnSave" maxWidth="1.7976931348623157E308" prefHeight="20.0" prefWidth="100.0" styleClass="buttons" text="Salvar" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+                           <tooltip>
+                              <Tooltip text="Salvar documento" />
+                           </tooltip>
+                           <GridPane.margin>
+                              <Insets left="10.0" right="10.0" />
+                           </GridPane.margin>
+                        </JFXButton>
+                        <JFXButton fx:id="btnUpdate" maxWidth="1.7976931348623157E308" prefHeight="20.0" prefWidth="100.0" styleClass="buttons" text="Editar" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+                           <tooltip>
+                              <Tooltip text="Editar documento" />
+                           </tooltip>
+                           <GridPane.margin>
+                              <Insets left="10.0" right="10.0" />
+                           </GridPane.margin>
+                        </JFXButton>
+                        <JFXButton fx:id="btnDelete" maxWidth="1.7976931348623157E308" prefHeight="20.0" prefWidth="100.0" styleClass="buttons" text="Deletar" GridPane.columnIndex="3" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+                           <tooltip>
+                              <Tooltip text="Deletar documento" />
+                           </tooltip>
+                           <GridPane.margin>
+                              <Insets left="10.0" right="10.0" />
+                           </GridPane.margin>
+                        </JFXButton>
+                     </children>
+                  </GridPane>
+                  <HBox layoutX="-10.0" layoutY="320.0" prefHeight="50.0" prefWidth="800.0" styleClass="hbox-search" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">
+                     <children>
+                        <Pane prefWidth="100.0" HBox.hgrow="ALWAYS" />
+                        <Pane prefWidth="100.0" HBox.hgrow="ALWAYS" />
+                        <JFXTextField fx:id="tfSearch" alignment="TOP_LEFT" labelFloat="true" prefHeight="30.0" prefWidth="300.0" promptText="Pesquisar número, sei, processo e endereço" HBox.hgrow="ALWAYS">
+                           <HBox.margin>
+                              <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
+                           </HBox.margin>
+                           <styleClass>
+                              <String fx:value="text-field" />
+                              <String fx:value="jfx-text-field-custom" />
+                           </styleClass>
+                           <tooltip>
+                              <Tooltip text="Digite uma busca. Pode ser pesquisado número, sei, processo e endereço relacionado." />
+                           </tooltip>
+                        </JFXTextField>
+                        <JFXButton fx:id="btnSearch" minWidth="100.0" prefHeight="30.0" styleClass="buttons" text="Buscar" HBox.hgrow="ALWAYS">
+                           <HBox.margin>
+                              <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
+                           </HBox.margin>
+                           <tooltip>
+                              <Tooltip text="Buscar documento" />
+                           </tooltip>
+                        </JFXButton>
+                     </children>
+                  </HBox>
+                  <AnchorPane layoutX="24.0" layoutY="381.0" prefHeight="200.0" prefWidth="700.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">
+                     <children>
+                        <TableView fx:id="tableView" layoutX="14.0" layoutY="79.0" prefHeight="200.0" prefWidth="690.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                           <columns>
+                              <TableColumn fx:id="tcInterferenceType" maxWidth="1000.0" prefWidth="150.0" text="Tipo" />
+                              <TableColumn fx:id="tcAddress" prefWidth="593.0" text="Endereço" />
+                              <TableColumn fx:id="tcLatitude" maxWidth="1000.0" prefWidth="150.0" text="Latitude" />
+                              <TableColumn fx:id="tcLongitude" maxWidth="1000.0" prefWidth="150.0" text="Longitude" />
+                           </columns>
+                           <columnResizePolicy>
+                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                           </columnResizePolicy>
+                        </TableView>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane layoutX="14.0" layoutY="598.0" prefHeight="390.0" prefWidth="900.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" />
+               </children>
+            </AnchorPane>
+        </content>
+      </ScrollPane>
    </children>
 </fx:root>

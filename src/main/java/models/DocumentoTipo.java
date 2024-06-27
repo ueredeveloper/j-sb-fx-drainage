@@ -41,25 +41,4 @@ public class DocumentoTipo {
 		return dtDescricao;
 	}
 
-	// Comparação de objetos para testes
-	/*
-	 * It seems that the verifyThat method in the TestFX test is expecting an exact
-	 * match of the DocumentoTipo object for the selected item, but the assertion
-	 * fails because it's comparing different instances of the DocumentoTipo class,
-	 * even if they represent the same item.
-	 * 
-	 * To fix this, you can override the equals method in your DocumentoTipo class
-	 * to define when two instances are considered equal based on their dtDescricao
-	 * or dtId values. Here's an example:
-	 */
-	/*
-	 * @Override public boolean equals(Object obj) { if (this == obj) { return true;
-	 * } if (obj == null || getClass() != obj.getClass()) { return false; }
-	 * DocumentoTipo other = (DocumentoTipo) obj; return dtId == other.dtId &&
-	 * Objects.equals(dtDescricao, other.dtDescricao); }
-	 * 
-	 * @Override public Long hashCode() { return (long) Objects.hash(dtId,
-	 * dtDescricao); }
-	 */
-
 }

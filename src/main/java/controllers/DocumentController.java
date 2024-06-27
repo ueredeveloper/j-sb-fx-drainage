@@ -379,15 +379,10 @@ public class DocumentController implements Initializable {
 			apContent.getChildren().remove(apAddInterference);
 		});
 
-		/*
-		 * String LocalUrl. Utiliza para acessar o serviço (crud); TranslateTransition
-		 * ttClose. Utiliza para fechar a tela apAddAddress; ComboBox cbAddress. Utiliza
-		 * para buscar o logradouro cadastrado pelo usuário e atualizá-lo ao fechar
-		 * apAddAddress.
-		 */
+		Endereco object = cbAddress.selectionModelProperty().get().isEmpty() ? null : cbAddress.getItems().get(0);
 
 		loader.setRoot(apAddInterference);
-		loader.setController(new AddInterferenceController(localUrl, ttClose, tfLatitude, tfLongitude));
+		loader.setController(new AddInterferenceController(localUrl, ttClose, object, tfLatitude.getText(), tfLongitude.getText()));
 
 		try {
 			loader.load();

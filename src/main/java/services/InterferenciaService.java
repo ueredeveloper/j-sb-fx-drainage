@@ -27,7 +27,7 @@ public class InterferenciaService {
 
 	public ServiceResponse<?> save(Subterranea obj) {
 		try {
-			URL apiUrl = new URL(localUrl + "/create/subterranean");
+			URL apiUrl = new URL(localUrl + "/interference/subterranean/create");
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
 			connection.setRequestMethod("POST");
 			connection.setRequestProperty("Content-Type", "application/json");
@@ -67,7 +67,7 @@ public class InterferenciaService {
 			return new ServiceResponse<>(responseCode, responseBody);
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("EEEEE EXCETION");
+
 			// showAlert("Error saving document", AlertType.ERROR);
 			return null; // Return null if an error occurs
 		}
@@ -107,10 +107,10 @@ public class InterferenciaService {
 	 * Return null if an error occurs } }
 	 */
 
-	public List<Interferencia> fetch(String keyword) {
+	public List<Interferencia> fetchByKeyword(String keyword) {
 
 		try {
-			URL apiUrl = new URL(localUrl + "/interference/list?keyword=" + URLEncoder.encode(keyword, "UTF-8"));
+			URL apiUrl = new URL(localUrl + "/interference/subterranean/list?keyword=" + URLEncoder.encode(keyword, "UTF-8"));
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
 			connection.setRequestMethod("GET");
 

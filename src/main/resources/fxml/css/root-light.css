@@ -183,7 +183,7 @@
     background-color: -fx-primary-color;
 }
 .icon-light-dark {
-	-fx-font-size: 28px;
+	-fx-font-size: 20px;
 	-fx-fill: -fx-addictional-color; /*cor do ícone */
 }
 .nav-buttons {

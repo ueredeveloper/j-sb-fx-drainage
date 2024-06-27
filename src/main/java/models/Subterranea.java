@@ -1,13 +1,21 @@
 package models;
 
 public class Subterranea extends Interferencia {
-	
-	
-	private Boolean subCaesb;  // tem caesb () sim () não
 
-	private String subNivelEstatico;  // em metros
+	private Boolean subCaesb; // tem caesb () sim () não
 
-	private String subDinamico;  // em metros
+	private String subNivelEstatico; // em metros
+
+	private String subDinamico; // em metros
+
+	public Subterranea() {
+		super();
+	}
+
+	public Subterranea(Double interLatitude, Double interLongitude, Endereco interEndereco,
+			InterferenciaTipo interferenciaTipo) {
+		super(interLatitude, interLongitude, interEndereco, interferenciaTipo);
+	}
 
 	public Boolean getSubCaesb() {
 		return subCaesb;
@@ -32,8 +40,15 @@ public class Subterranea extends Interferencia {
 	public void setSubDinamico(String subDinamico) {
 		this.subDinamico = subDinamico;
 	}
-	
-	
-	
-}
 
+	@Override
+	public String toString() {
+		return "Subterranea [getInterLatitude()=" + getInterLatitude()
+				+ ", getInterLongitude()=" + getInterLongitude() + ", getInterEndereco()=" + getInterEndereco()
+				+ ", getInterferenciaTipo()=" + getInterferenciaTipo() + ", toString()=" + super.toString()
+				+ ", getClass()=" + getClass() + ", hashCode()=" + hashCode() + "]";
+	}
+	
+	
+
+}
