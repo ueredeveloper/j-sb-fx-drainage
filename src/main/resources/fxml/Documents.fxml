@@ -17,7 +17,6 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-
 <AnchorPane fx:id="apContent" prefHeight="700.0" prefWidth="1200.0" styleClass="content" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.DocumentController">
 	<children>
 		<GridPane layoutX="12.0" layoutY="24.0" prefHeight="50.0" prefWidth="785.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
@@ -74,7 +73,7 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <FontAwesomeIconView fx:id="btnAddress" glyphName="MAP_SIGNS" styleClass="icons" wrappingWidth="15.0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS">
+            <FontAwesomeIconView fx:id="btnAddress" glyphName="MAP_SIGNS" styleClass="icons" textAlignment="CENTER" wrappingWidth="30.0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS">
                <GridPane.margin>
                   <Insets left="5.0" right="5.0" />
                </GridPane.margin></FontAwesomeIconView>
@@ -83,7 +82,7 @@
                   <Insets left="5.0" right="5.0" />
                </GridPane.margin>
             </JFXComboBox>
-            <FontAwesomeIconView fx:id="btnInterference" glyphName="MAP_MARKER" styleClass="icons" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS">
+            <FontAwesomeIconView fx:id="btnInterference" glyphName="MAP_MARKER" styleClass="icons" textAlignment="CENTER" wrappingWidth="30.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS">
                <GridPane.margin>
                   <Insets left="5.0" right="5.0" />
                </GridPane.margin></FontAwesomeIconView>
@@ -97,7 +96,7 @@
                   <Insets left="5.0" right="5.0" />
                </padding>
             </JFXTextField>
-            <FontAwesomeIconView fx:id="btnUser" glyphName="USER" styleClass="icons" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1">
+            <FontAwesomeIconView fx:id="btnUser" glyphName="USER" styleClass="icons" textAlignment="CENTER" wrappingWidth="30.0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets left="5.0" right="5.0" />
                </GridPane.margin></FontAwesomeIconView>
@@ -118,7 +117,7 @@
                   <Tooltip text="Processo em que o documento se econtra" />
                </tooltip>
 				</JFXComboBox>
-            <FontAwesomeIconView fx:id="btnAttachment" glyphName="FILE_ZIP_ALT" styleClass="icons" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1">
+            <FontAwesomeIconView fx:id="btnAttachment" glyphName="FILE_ZIP_ALT" styleClass="icons" textAlignment="CENTER" wrappingWidth="30.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets left="5.0" right="5.0" />
                </GridPane.margin></FontAwesomeIconView>
@@ -134,7 +133,7 @@
                   <Insets left="5.0" right="5.0" />
                </GridPane.margin>
             </JFXComboBox>
-            <FontAwesomeIconView fx:id="btnProcess" glyphName="CLIPBOARD" styleClass="icons" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <FontAwesomeIconView fx:id="btnProcess" glyphName="CLIPBOARD" styleClass="icons" textAlignment="CENTER" wrappingWidth="30.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
          </children>
       </GridPane>
       <GridPane layoutX="10.0" layoutY="230.0" prefHeight="50.0" prefWidth="780.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">

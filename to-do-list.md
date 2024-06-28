@@ -137,3 +137,10 @@
 	Adicionar lista de bairros de acordo com o que o usuário preenche. Por exemplo, a pessoa cadastra o bairro Taguatina Norte, isso já pode ser sujerido da próxima vez.
 	[] Tabelas Acessórias da Interferência
 		Criar as tabelas acessórias como tipo de interferência, tipo de outorga, subtipo de outorga etc...
+## 28 de Junho de 2024
+* ** [] AddInterferenceControler
+		A clicar no mapa é atualizado tanto este controller quanto o InterferenceTextFieldsController, mas quando abre o AddInterferenceController, ao clicar no mapa não atualiza a coordenadas mais.
+* ** [] Ícones Tela Documento
+		O css não está funcionando, mas funciona na tela AddInterferenceController. Nesta tela o css, classe icons funciona o hover que aumenta o ícone ao passar o mouse. Deveria funcionar na  tela Documentos.
+		
+		

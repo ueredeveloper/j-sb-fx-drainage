@@ -64,7 +64,6 @@ import utilities.URLUtility;
  * Controlador para lidar com operações relacionadas aos documentos.
  */
 public class DocumentController implements Initializable {
-	
 
 	@FXML
 	private ComboBox<Documento> cbDocument;
@@ -382,7 +381,8 @@ public class DocumentController implements Initializable {
 		Endereco object = cbAddress.selectionModelProperty().get().isEmpty() ? null : cbAddress.getItems().get(0);
 
 		loader.setRoot(apAddInterference);
-		loader.setController(new AddInterferenceController(localUrl, ttClose, object, tfLatitude.getText(), tfLongitude.getText()));
+		loader.setController(
+				new AddInterferenceController(localUrl, ttClose, object, tfLatitude.getText(), tfLongitude.getText()));
 
 		try {
 			loader.load();

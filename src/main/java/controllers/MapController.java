@@ -8,6 +8,7 @@ import com.google.gson.JsonObject;
 import com.jfoenix.controls.JFXButton;
 import com.sun.javafx.webkit.WebConsoleListener;
 
+import controllers.views.AddInterferenceController;
 import controllers.views.InterferenceTextFieldsController;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -26,8 +27,6 @@ import netscape.javascript.JSObject;
  * Controlador para a interface de mapa.
  */
 public class MapController implements Initializable {
-	
-
 	
 
 	@FXML
@@ -207,11 +206,19 @@ public class MapController implements Initializable {
 		} else {
 			System.out.println("InterferenceTextFieldsController instance is null!");
 		}
+		AddInterferenceController addInterController = AddInterferenceController.getInstance();
+		if (addInterController != null) {
+			addInterController.updateCoordinates(interferencia);
+		} else {
+			System.out.println("Add Interference Controller instance is null!");
+		}
+		
 
 	}
 
 	public void handleAddMarker(String json) {
 		invokeJS("addMarker(" + json + ");");
 	}
+
 
 }

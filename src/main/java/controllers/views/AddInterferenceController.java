@@ -11,6 +11,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 
+import controllers.MapController;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import enums.StaticData;
 import enums.ToastType;
@@ -18,6 +19,7 @@ import javafx.animation.TranslateTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -30,15 +32,24 @@ import models.Endereco;
 import models.Interferencia;
 import models.InterferenciaTipo;
 import models.Subterranea;
-import services.EnderecoService;
 import services.InterferenciaService;
 import services.ServiceResponse;
+import utilities.JsonConverter;
 import utilities.URLUtility;
 
 public class AddInterferenceController implements Initializable {
 
+	private static AddInterferenceController instance;
+
+	public static AddInterferenceController getInstance() {
+		return instance;
+	}
+
 	@FXML
 	private AnchorPane anchorPaneContainer, anchorPaneResizable;
+
+	@FXML
+	JFXComboBox<Endereco> cbAddress;
 
 	@FXML
 	private JFXTextField tfLatitude;
@@ -108,59 +119,65 @@ public class AddInterferenceController implements Initializable {
 	String urlService;
 	TranslateTransition ttClose;
 
-	@FXML
-	JFXComboBox<Endereco> cbAddress;
-
 	String latitude, longitude;
 	AddressComboBoxController addressCbController;
 	Endereco object;
+	private MapController mapController;
 
 	public AddInterferenceController(String urlService, TranslateTransition ttClose, Endereco object, String latitude,
 			String longitude) {
+
 		this.urlService = URLUtility.getURLService();
 		this.ttClose = ttClose;
 		this.latitude = latitude;
 		this.longitude = longitude;
 		this.object = object;
+		this.mapController = MapController.getInstance();
 	}
-	
-	ObservableList<InterferenciaTipo> obsListInterferenceTipo;
+
+	ObservableList<InterferenciaTipo> obsListInterType;// = FXCollections.observableArrayList();
 	ObservableList<Interferencia> obsListInterference = FXCollections.observableArrayList();
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
-		obsListInterferenceTipo = StaticData.INSTANCE.getInterferenciaTipo();
-		cbInterferenceType.setItems(obsListInterferenceTipo);
-
-		// cbInterferenceType.setValue(obsList.get(0));
-
+		obsListInterType = StaticData.INSTANCE.getInterferenciaTipo();
+		
+		cbInterferenceType.setItems(obsListInterType);
+	
 		tfLatitude.setText(latitude);
 		tfLongitude.setText(longitude);
 
 		addressCbController = new AddressComboBoxController(urlService, cbAddress);
 
-		// Aqui eu quero selecionar o primeiro resultado, mas não está funcionando.
-
-		// 1 - Primeira forma de selecionar o primeiro resultado
-		// cbInterferenceType.getSelectionModel().selectFirst();
-		// cbInterferenceType.requestFocus(); // Optional: Set focus to ComboBox
-		// 2 - Segunda
-		// cbInterferenceType.getSelectionModel().select(0);
-
-		// Traz valor de outra tabela relacionada, no caso Interferencia Tipo, o atributo descricao.
-	
-		
-		
-		tcInterferenceType
-				.setCellValueFactory(cellData -> cellData.getValue().getProperty(Interferencia::getInterferenciaTipoDescricao));
+		tcInterferenceType.setCellValueFactory(
+				cellData -> cellData.getValue().getProperty(Interferencia::getInterferenciaTipoDescricao));
 		tcAddress
 				.setCellValueFactory(cellData -> cellData.getValue().getProperty(Interferencia::getEnderecoLogradouro));
 		tcLatitude.setCellValueFactory(new PropertyValueFactory<Interferencia, String>("interLatitude"));
 		tcLongitude.setCellValueFactory(new PropertyValueFactory<Interferencia, String>("interLongitude"));
 
 		tableView.setItems(obsListInterference);
-		
+
+		tableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newValue) -> {
+
+			if (newValue != null) {
+
+				tfLatitude.setText(newValue.getInterLatitude().toString());
+				tfLongitude.setText(newValue.getInterLongitude().toString());
+				
+				cbAddress.getSelectionModel().select(newValue.getInterEndereco());
+				
+				 InterferenciaTipo selectedType = newValue.getInterferenciaTipo();
+			        cbInterferenceType.getSelectionModel().select(selectedType);
+
+			} else {
+
+				clearAllComponents();
+
+			}
+		});
+
 		// Redimensionar o anchor pane interno.
 		anchorPaneContainer.widthProperty().addListener((observable, oldValue, newValue) -> {
 			anchorPaneResizable.setPrefWidth(newValue.doubleValue() - 20.0);
@@ -173,12 +190,25 @@ public class AddInterferenceController implements Initializable {
 			// updateComboBox(selectedEndereco);
 
 		});
+
+		// Ao abrir, verifica se object enviado é nulo, se não preenche combobox
+		// cbAddress.
 		if (object != null) {
 			addressCbController.fillAndSelectComboBox(object);
 		}
 
 		btnSave.setOnAction(event -> save(event));
-		btnSearch.setOnAction(event-> fetchByKeyword(event));
+		btnUpdate.setOnAction(event -> update(event));
+		btnSearch.setOnAction(event -> fetchByKeyword(event));
+
+		// Adicionar try catch para ver se o usuário digitou algo, se há coordenada, se
+		// é válida...
+
+		// Mostra a coordenada no mapa.
+		iconMarker.setOnMouseClicked(event -> {
+			mapController.handleAddMarker(JsonConverter.convertObjectToJson(new Interferencia(
+					Double.parseDouble(tfLatitude.getText()), Double.parseDouble(tfLongitude.getText()))));
+		});
 
 	}
 
@@ -256,8 +286,66 @@ public class AddInterferenceController implements Initializable {
 
 	}
 
+	public void update(ActionEvent event) {
+		// Get the selected document from the TableView
+		Interferencia selectedObject = tableView.getSelectionModel().getSelectedItem();
+
+		if (selectedObject == null) {
+			// Display an alert or toast message indicating that no document is selected
+			// Alerta (Toast) de sucesso na edi��o
+			Node source = (Node) event.getSource();
+			Stage ownerStage = (Stage) source.getScene().getWindow();
+			String toastMsg = "Nenhum objeto selecionado!";
+			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+
+			return;
+		}
+
+		// Retrieve values from text fields
+		String latitude = tfLatitude.getText();
+		String longitude = tfLongitude.getText();
+
 	
-	public void fetchByKeyword (ActionEvent event) {
+
+		// Edita objeto com novos valores
+		selectedObject.setInterLatitude(Double.parseDouble(latitude));
+		selectedObject.setInterLongitude(Double.parseDouble(longitude));
+		selectedObject.setInterEndereco(addressCbController.getSelectedObject());
+		selectedObject.setInterferenciaTipo(cbInterferenceType.getValue());
+
+		try {
+			InterferenciaService service = new InterferenciaService(urlService);
+
+			// Requisi��o de resposta de edi��o
+			ServiceResponse<?> response = service.update(selectedObject);
+
+			if (response.getResponseCode() == 200) {
+				// Alerta (Toast) de sucesso na edi��o
+				Node source = (Node) event.getSource();
+				Stage ownerStage = (Stage) source.getScene().getWindow();
+				String toastMsg = "Sucesso!";
+				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.SUCCESS);
+
+				tableView.getItems().remove(selectedObject);
+				// Converte objeto editado para Json
+				Interferencia jsonObject = new Gson().fromJson((String) response.getResponseBody(), Interferencia.class);
+				// Adiciona objeto editado como primeiro �tem ma fila na table view
+				tableView.getItems().add(0, jsonObject);
+				// Seleciona o objeto editado na table view
+				tableView.getSelectionModel().select(jsonObject);
+
+			} else {
+				// Display an error toast or alert
+				// System.out.println(serviceResponse.getResponseCode());
+			}
+
+		} catch (Exception e) {
+			// Display an error toast or alert
+			e.printStackTrace();
+		}
+	}
+
+	public void fetchByKeyword(ActionEvent event) {
 
 		try {
 
@@ -268,12 +356,13 @@ public class AddInterferenceController implements Initializable {
 			String keyword = tfSearch.getText();
 
 			List<Interferencia> list = service.fetchByKeyword(keyword);
-			
+
 			// Create a Gson instance
 			Gson gson = new Gson();
 
 			// Define the Type for the list
-			Type listType  = new TypeToken<List<Interferencia>>() {}.getType();
+			Type listType = new TypeToken<List<Interferencia>>() {
+			}.getType();
 
 			// Convert the list to JSON
 			String json = gson.toJson(list, listType);
@@ -290,15 +379,15 @@ public class AddInterferenceController implements Initializable {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void clearAllComponents() {
 		cbAddress.getSelectionModel().clearSelection();
 		tfLatitude.clear();
 		tfLongitude.clear();
 		cbInterferenceType.getSelectionModel().clearSelection();
-		
+
 	}
-	
+
 	public void fillAndSelectComboBoxAddress(Endereco object) {
 		ObservableList<Endereco> newObsList = FXCollections.observableArrayList();
 		cbAddress.setItems(newObsList);
@@ -311,5 +400,17 @@ public class AddInterferenceController implements Initializable {
 
 		// Selecionando o novo item no ComboBox
 		cbAddress.getSelectionModel().select(0);
+	}
+
+	/**
+	 * Atualiza as coordenadas dos TextFields de acordo com o clique no mapa.
+	 * 
+	 * @param interferencia
+	 */
+	public void updateCoordinates(Interferencia interferencia) {
+
+		tfLatitude.setText(String.valueOf(interferencia.getInterLatitude()));
+		tfLongitude.setText(String.valueOf(interferencia.getInterLongitude()));
+
 	}
 }

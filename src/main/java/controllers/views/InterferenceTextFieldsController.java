@@ -7,10 +7,11 @@ import controllers.MapController;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import models.Interferencia;
+import utilities.JsonConverter;
 
 public class InterferenceTextFieldsController {
 	
-	
+	private static InterferenceTextFieldsController instance;
 
 	public static InterferenceTextFieldsController getInstance() {
 		return instance;
@@ -35,7 +36,7 @@ public class InterferenceTextFieldsController {
 
 	}
 
-	private static InterferenceTextFieldsController instance;
+	
 
 	// Adicione os campos existentes e o construtor
 
@@ -56,7 +57,7 @@ public class InterferenceTextFieldsController {
 		}
 		if (interferencia.getInterLatitude() != null && interferencia.getInterLongitude() != null) {
 
-			mapController.handleAddMarker(convertObjectToJson(interferencia));
+			mapController.handleAddMarker(JsonConverter.convertObjectToJson(interferencia));
 		}
 
 	}
@@ -78,7 +79,7 @@ public class InterferenceTextFieldsController {
 
 		if (interferencia.getInterLatitude() != null && interferencia.getInterLongitude() != null) {
 
-			mapController.handleAddMarker(convertObjectToJson(interferencia));
+			mapController.handleAddMarker(JsonConverter.convertObjectToJson(interferencia));
 		}
 	}
 
@@ -89,18 +90,12 @@ public class InterferenceTextFieldsController {
 
 	public void updateCoordinates(Interferencia interferencia) {
 
-		System.out.println("Tf update coords " + interferencia.getInterLatitude() + tfLatitude.getText());
-
 		tfLatitude.setText(String.valueOf(interferencia.getInterLatitude()));
 		tfLongitude.setText(String.valueOf(interferencia.getInterLongitude()));
 
-		// mapController.handleAddMarker(convertObjectToJson(interferencia));
 	}
 
-	private String convertObjectToJson(Object object) {
-		Gson gson = new Gson();
-		return gson.toJson(object);
-	}
+	
 
 	public void init() {
 		tfLatitude.textProperty().addListener(new ChangeListener<String>() {
