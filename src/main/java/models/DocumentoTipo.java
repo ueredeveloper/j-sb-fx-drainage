@@ -1,5 +1,7 @@
 package models;
 
+import java.util.Objects;
+
 public class DocumentoTipo {
 
 	private Long dtId;
@@ -34,6 +36,24 @@ public class DocumentoTipo {
 
 	public void setDtDescricao(String dtDescricao) {
 		this.dtDescricao = dtDescricao;
+	}
+	
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(dtId);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		DocumentoTipo other = (DocumentoTipo) obj;
+		return Objects.equals(dtId, other.dtId);
 	}
 
 	@Override

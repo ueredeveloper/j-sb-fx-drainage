@@ -1,5 +1,7 @@
 package models;
 
+import java.util.Objects;
+
 public class Processo {
 
 	
@@ -46,6 +48,24 @@ public class Processo {
 	public void setAnexo(Anexo anexo) {
 		this.anexo = anexo;
 	}
+	
+	/*
+	@Override
+	public int hashCode() {
+		return Objects.hash(procId);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Processo other = (Processo) obj;
+		return Objects.equals(procId, other.procId);
+	}*/
 
 	// Override toString() method to display procNumero in ComboBox
 	@Override

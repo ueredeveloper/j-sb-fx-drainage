@@ -53,6 +53,7 @@ import models.Anexo;
 import models.Documento;
 import models.DocumentoTipo;
 import models.Endereco;
+import models.InterferenciaTipo;
 import models.Processo;
 import models.Usuario;
 import services.DocumentService;
@@ -247,8 +248,10 @@ public class DocumentController implements Initializable {
 				// Atualizar componentes de acordo com o documento selecionado
 				tfNumber.setText(newSelection.getDocNumero());
 				tfNumberSei.setText(String.valueOf(newSelection.getDocSei()));
-				cbProcess.getSelectionModel().select(newSelection.getDocProcesso());
-				cbAddress.getSelectionModel().select(newSelection.getDocEndereco());
+				 Processo processo = newSelection.getDocProcesso();
+				cbProcess.getSelectionModel().select(processo);
+				 Endereco endereco = newSelection.getDocEndereco();
+				cbAddress.getSelectionModel().select(endereco);
 
 			} else {
 
@@ -839,7 +842,16 @@ public class DocumentController implements Initializable {
 		selectedDoc.setDocTipo(updateDocumentoTipo);
 		selectedDoc.setDocNumero(updatedNumero);
 		selectedDoc.setDocSei(updatedSei);
-		selectedDoc.setDocProcesso(obsProcess.get(0));
+		
+			Endereco selectedAdress = addressCbController.getSelectedObject();
+			
+			selectedDoc.setDocEndereco(selectedAdress);
+		
+			Processo selectedProcess = processCbController.getSelectedObject();
+			selectedProcess.setAnexo(attachmentCbController.getSelectedObject());
+	
+		selectedDoc.setDocProcesso(selectedProcess);
+	
 		/*
 		 * selectedDoc.setDocEndereco(new Endereco(obsAddress.get(0).getEndId(),
 		 * obsAddress.get(0).getEndLogradouro(), tfCity.getText(), tfCEP.getText()));

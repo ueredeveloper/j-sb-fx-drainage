@@ -1,5 +1,7 @@
 package models;
 
+import java.util.Objects;
+
 public class Endereco {
 
 	private Long endId;
@@ -53,14 +55,6 @@ public class Endereco {
 	}
 	
 
-	
-
-	// Método toString para mostrar o logradouro no combobox.
-	@Override
-	public String toString() {
-		return endLogradouro;
-	}
-
 	public Long getEndId() {
 		return endId;
 	}
@@ -108,4 +102,41 @@ public class Endereco {
 	public void setEndEstado(String endEstado) {
 		this.endEstado = endEstado;
 	}
+	
+	// Metodos
+
+	// Método toString para mostrar o logradouro no combobox.
+	@Override
+	public String toString() {
+		return endLogradouro;
+	}
+
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(endLogradouro);
+	}
+
+	/* 
+	 * Quando você usa coleções que dependem de comparações, como ObservableList, HashSet ou HashMap, é crucial que 
+	 * os métodos hashCode() e equals() sejam consistentes e adequados.
+	 * Se esses métodos não estiverem definidos ou estiverem definidos incorretamente, 
+	 * a coleção pode não funcionar como esperado, resultando em comportamento imprevisível, 
+	 * como perda de caracteres ou falha ao encontrar e atualizar elementos corretamente.
+	 * Relacionado ao combobox editável do AddressComboBoxController e outros...
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Endereco other = (Endereco) obj;
+		return Objects.equals(endLogradouro, other.endLogradouro);
+	}
+	
+	
+	
 }

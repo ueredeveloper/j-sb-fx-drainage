@@ -56,6 +56,7 @@ public class ProcessComboBoxController {
 					if (containsSearchTerm) {
 						obsProcess.addAll(list);
 					} else {
+						
 						obsProcess.add(new Processo(newValue));
 						obsProcess.addAll(list);
 					}
