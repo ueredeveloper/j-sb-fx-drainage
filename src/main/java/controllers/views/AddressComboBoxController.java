@@ -12,7 +12,6 @@ import models.Endereco;
 import services.EnderecoService;
 
 public class AddressComboBoxController {
-	
 
 	String localUrl;
 
@@ -23,12 +22,12 @@ public class AddressComboBoxController {
 		super();
 		this.localUrl = localUrl;
 		this.comboBox = comboBox;
-		
+
 		init();
 	}
 
 	// Método para inicializar o ComboBox
-	public void init () {
+	public void init() {
 		comboBox.setItems(obsAddress);
 		comboBox.setEditable(true);
 
@@ -44,7 +43,7 @@ public class AddressComboBoxController {
 				if (newValue != null) {
 					obsAddress.clear();
 					List<Endereco> list = fetchAddress(newValue);
-				
+
 					if (list != null) {
 						boolean containsSearchTerm = list.stream()
 								.anyMatch(endereco -> endereco.getEndLogradouro().contains(newValue));
@@ -79,9 +78,11 @@ public class AddressComboBoxController {
 		return endereco;
 
 	}
-	public ObservableList<Endereco> getObservableList () {
+
+	public ObservableList<Endereco> getObservableList() {
 		return this.obsAddress;
 	}
+
 	public void fillAndSelectComboBox(Endereco object) {
 		ObservableList<Endereco> newObsList = FXCollections.observableArrayList();
 		comboBox.setItems(newObsList);
@@ -89,10 +90,13 @@ public class AddressComboBoxController {
 		newObsList.add(0, object);
 
 		// Atualizando o ComboBox para refletir a mudança
-		// cbProcess.setItems(null);
 		comboBox.setItems(newObsList);
 
 		// Selecionando o novo item no ComboBox
 		comboBox.getSelectionModel().select(0);
+	}
+
+	public void clearComponent() {
+		comboBox.getSelectionModel().clearSelection();
 	}
 }
