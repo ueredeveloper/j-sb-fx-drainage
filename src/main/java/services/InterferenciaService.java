@@ -26,6 +26,7 @@ public class InterferenciaService {
 	public InterferenciaService(String localUrl) {
 		this.localUrl = localUrl;
 	}
+	
 
 	public ServiceResponse<?> save(Subterranea obj) {
 		try {

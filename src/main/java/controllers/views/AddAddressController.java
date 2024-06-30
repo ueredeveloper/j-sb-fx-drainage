@@ -33,6 +33,7 @@ import utilities.URLUtility;
 
 public class AddAddressController implements Initializable {
 
+	
 	@FXML
 	private JFXButton btnClose;
 

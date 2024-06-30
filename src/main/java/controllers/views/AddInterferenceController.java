@@ -418,8 +418,9 @@ public class AddInterferenceController implements Initializable {
 	}
 	
 	public void clearAllComponents() {
-		//cbAddress.getSelectionModel().clearSelection();
+		// Limpa o combobox no controlador específico.
 		addressCbController.clearComponent();
+		// Limpa os componentes deste controlador.
 		tfLatitude.clear();
 		tfLongitude.clear();
 		cbInterferenceType.getSelectionModel().clearSelection();

@@ -65,6 +65,7 @@ import utilities.URLUtility;
  * Controlador para lidar com operações relacionadas aos documentos.
  */
 public class DocumentController implements Initializable {
+	
 
 	@FXML
 	private ComboBox<Documento> cbDocument;
