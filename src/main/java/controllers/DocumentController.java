@@ -53,7 +53,6 @@ import models.Anexo;
 import models.Documento;
 import models.DocumentoTipo;
 import models.Endereco;
-import models.InterferenciaTipo;
 import models.Processo;
 import models.Usuario;
 import services.DocumentService;
@@ -65,7 +64,6 @@ import utilities.URLUtility;
  * Controlador para lidar com operações relacionadas aos documentos.
  */
 public class DocumentController implements Initializable {
-	
 
 	@FXML
 	private ComboBox<Documento> cbDocument;
@@ -98,7 +96,7 @@ public class DocumentController implements Initializable {
 
 	@FXML
 	private JFXComboBox<Anexo> cbAttachment;
-	ObservableList<Anexo> obsAnexo = FXCollections.observableArrayList();
+	ObservableList<Anexo> obsAttachment = FXCollections.observableArrayList();
 
 	@FXML
 	private JFXComboBox<Usuario> cbUser;
@@ -249,10 +247,18 @@ public class DocumentController implements Initializable {
 				// Atualizar componentes de acordo com o documento selecionado
 				tfNumber.setText(newSelection.getDocNumero());
 				tfNumberSei.setText(String.valueOf(newSelection.getDocSei()));
-				 Processo processo = newSelection.getDocProcesso();
+				Processo processo = newSelection.getDocProcesso();
 				cbProcess.getSelectionModel().select(processo);
-				 Endereco endereco = newSelection.getDocEndereco();
+				Endereco endereco = newSelection.getDocEndereco();
 				cbAddress.getSelectionModel().select(endereco);
+				
+				// Limpar componentes que não são preenchidos.
+				cbAttachment.getSelectionModel().clearSelection();
+				cbUser.getSelectionModel().clearSelection();
+				tfLatitude.clear();
+				tfLongitude.clear();
+				
+				
 
 			} else {
 
@@ -297,10 +303,10 @@ public class DocumentController implements Initializable {
 
 		btnNew.setOnAction(e -> clearAllComponents());
 		btnViews.setOnAction(event -> showDocumentView());
-		btnSave.setOnAction(event -> handleSave(event));
-		btnSearch.setOnAction(event -> handleSearch(event));
-		btnDelete.setOnAction(event -> handleDelete(event));
-		btnEdit.setOnAction(event -> handleEdit(event));
+		btnSave.setOnAction(event -> saveDocument(event));
+		btnSearch.setOnAction(event -> searchDocument(event));
+		btnDelete.setOnAction(event -> deleteDocument(event));
+		btnEdit.setOnAction(event -> editDocument(event));
 
 		btnAddress.setOnMouseClicked(evert -> openAnchorPaneAddress());
 		btnInterference.setOnMouseClicked(event -> openAddInterference());
@@ -660,8 +666,12 @@ public class DocumentController implements Initializable {
 		obsAddress.clear();
 		cbAddress.getSelectionModel().clearSelection();
 		cbAddress.setValue(null);
-		// tfCity.clear();
-		// tfCEP.clear();
+
+		obsAttachment.clear();
+		cbAttachment.getSelectionModel().clearSelection();
+		cbAttachment.setValue(null);
+		
+		
 
 	}
 
@@ -671,7 +681,7 @@ public class DocumentController implements Initializable {
 	 * @return O documento selecionado.
 	 */
 
-	public Documento getSelectedDocument() {
+	public Documento getselectedDocumentument() {
 		Documento documento = tvDocs.getSelectionModel().getSelectedItem();
 		return documento;
 	}
@@ -681,10 +691,10 @@ public class DocumentController implements Initializable {
 	 */
 	public void showDocumentView() {
 		try {
-			Documento selectedDocument = tvDocs.getSelectionModel().getSelectedItem();
+			Documento selectedDocumentument = tvDocs.getSelectionModel().getSelectedItem();
 
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/views/DocumentView.fxml"));
-			DocumentViewController docViewController = new DocumentViewController(selectedDocument);
+			DocumentViewController docViewController = new DocumentViewController(selectedDocumentument);
 			loader.setController(docViewController);
 
 			Parent root = loader.load();
@@ -709,7 +719,7 @@ public class DocumentController implements Initializable {
 	 * @param event
 	 *            O evento de ação associado à pesquisa.
 	 */
-	public void handleSearch(ActionEvent event) {
+	public void searchDocument(ActionEvent event) {
 
 		try {
 
@@ -737,7 +747,7 @@ public class DocumentController implements Initializable {
 	 * @param event
 	 *            O evento de ação associado à edição do documento.
 	 */
-	public void handleSave(ActionEvent event) {
+	public void saveDocument(ActionEvent event) {
 
 		String text = tfNumberSei.getText();
 
@@ -748,8 +758,11 @@ public class DocumentController implements Initializable {
 			numberSei = Long.parseLong(text);
 			// Use the 'numberSei' integer as needed
 		} catch (NumberFormatException e) {
-			// Handle the case where the input is not a valid integer
-			System.out.println("Número SEI inválido.");
+			// Alerta (Toast) de sucesso na edi��o
+			Node source = (Node) event.getSource();
+			Stage ownerStage = (Stage) source.getScene().getWindow();
+			String toastMsg = "Número do Sei Inválido!";
+			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
 		}
 
 		try {
@@ -760,24 +773,29 @@ public class DocumentController implements Initializable {
 			Anexo obsAttachList0 = attachmentCbController.getSelectedObject();
 
 			// Anexar o processo principal (anexo) ao processo
-			obsProcessList0.setAnexo(obsAttachList0);
+			if (obsAttachList0 != null) {
+				obsProcessList0.setAnexo(obsAttachList0);
+			}
 
 			Endereco obsAddressList0 = addressCbController.getSelectedObject();
-
-			System.out.println("id selecionado metodo save endereço " + obsAddressList0.getEndId());
+			
+			
 			Usuario obsUserList0 = userCbController.getSelectedObject();
 			Set<Usuario> usuarios = new HashSet<>();
 			usuarios.add(obsUserList0);
+			
+			DocumentoTipo docType = cbDocType.getValue();
 
-			Documento requestDocument = new Documento(tfNumber.getText(), // Número
-					obsProcessList0, // Processo
-					numberSei, // numero sei
-					cbDocType.getValue(), // doc Tipo
-					obsAddressList0, // endereço
-					usuarios // usuário
-			);
+			Documento newDocument = new Documento();
+			newDocument.setDocNumero(tfNumber.getText());
+			newDocument. setDocProcesso(obsProcessList0);
+			newDocument.setDocSei(numberSei);
+			newDocument.setDocTipo(docType);
+			newDocument.setDocEndereco(obsAddressList0);
+			newDocument.setUsuarios(usuarios);
+			
 
-			ServiceResponse<?> documentoServiceResponse = documentService.save(requestDocument);
+			ServiceResponse<?> documentoServiceResponse = documentService.save(newDocument);
 
 			if (documentoServiceResponse.getResponseCode() == 201) {
 
@@ -812,13 +830,18 @@ public class DocumentController implements Initializable {
 	 * @param event
 	 *            O evento de ação associado à edição do documento.
 	 */
-	public void handleEdit(ActionEvent event) {
+	public void editDocument(ActionEvent event) {
 		// Get the selected document from the TableView
-		Documento selectedDoc = tvDocs.getSelectionModel().getSelectedItem();
+		Documento selectedDocument = tvDocs.getSelectionModel().getSelectedItem();
 
-		if (selectedDoc == null) {
-			// Display an alert or toast message indicating that no document is selected
-			System.out.println("Nenhum documento selecionado para edição.");
+		if (selectedDocument == null) {
+
+			// Alerta (Toast) de sucesso na edição
+			Node source = (Node) event.getSource();
+			Stage ownerStage = (Stage) source.getScene().getWindow();
+			String toastMsg = "Selecione um documento!";
+			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+
 			return;
 		}
 
@@ -828,41 +851,62 @@ public class DocumentController implements Initializable {
 
 		DocumentoTipo updateDocumentoTipo = cbDocType.getValue();
 
+		if (updateDocumentoTipo == null) {
+
+			// Alerta (Toast) de sucesso na edição
+			Node source = (Node) event.getSource();
+			Stage ownerStage = (Stage) source.getScene().getWindow();
+			String toastMsg = "Selecione um tipo de documento!";
+			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+
+			return;
+		}
+
 		// converter para integer
 		Long updatedSei = 0L;
 		try {
 			updatedSei = Long.parseLong(updatedNumeroSEI);
 		} catch (NumberFormatException e) {
-			// Handle the case where the input is not a valid integer
-			System.out.println("Número SEI Inválido.");
+
+			// Alerta (Toast) de sucesso na edi��o
+			Node source = (Node) event.getSource();
+			Stage ownerStage = (Stage) source.getScene().getWindow();
+			String toastMsg = "Número do Sei Inválido!";
+			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+
 			// You may want to display a toast or alert here
 			return;
 		}
 
 		// Edita objeto com novos valores
-		selectedDoc.setDocTipo(updateDocumentoTipo);
-		selectedDoc.setDocNumero(updatedNumero);
-		selectedDoc.setDocSei(updatedSei);
-		
-			Endereco selectedAdress = addressCbController.getSelectedObject();
-			
-			selectedDoc.setDocEndereco(selectedAdress);
-		
-			Processo selectedProcess = processCbController.getSelectedObject();
-			selectedProcess.setAnexo(attachmentCbController.getSelectedObject());
-	
-		selectedDoc.setDocProcesso(selectedProcess);
-	
+		selectedDocument.setDocTipo(updateDocumentoTipo);
+		selectedDocument.setDocNumero(updatedNumero);
+		selectedDocument.setDocSei(updatedSei);
+
+		Endereco selectedAddress = addressCbController.getSelectedObject();
+
+		selectedDocument.setDocEndereco(selectedAddress);
+
+		Processo selectedProcess = processCbController.getSelectedObject();
+
+		Anexo anexo = attachmentCbController.getSelectedObject();
+
+		if (anexo != null) {
+			selectedProcess.setAnexo(anexo);
+		}
+
+		selectedDocument.setDocProcesso(selectedProcess);
+
 		/*
-		 * selectedDoc.setDocEndereco(new Endereco(obsAddress.get(0).getEndId(),
+		 * selectedDocument.setDocEndereco(new Endereco(obsAddress.get(0).getEndId(),
 		 * obsAddress.get(0).getEndLogradouro(), tfCity.getText(), tfCEP.getText()));
 		 */
 
 		try {
-			DocumentService documentService = new DocumentService(localUrl);
+			DocumentService service = new DocumentService(localUrl);
 
 			// Requisi��o de resposta de edi��o
-			ServiceResponse<?> serviceResponse = documentService.update(selectedDoc);
+			ServiceResponse<?> serviceResponse = service.update(selectedDocument);
 
 			if (serviceResponse.getResponseCode() == 200) {
 				// Alerta (Toast) de sucesso na edi��o
@@ -871,7 +915,7 @@ public class DocumentController implements Initializable {
 				String toastMsg = "Documento editado com sucesso!";
 				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.SUCCESS);
 
-				tvDocs.getItems().remove(selectedDoc);
+				tvDocs.getItems().remove(selectedDocument);
 				// Converte objeto editado para Json
 				Documento responseDocumento = new Gson().fromJson((String) serviceResponse.getResponseBody(),
 						Documento.class);
@@ -886,7 +930,11 @@ public class DocumentController implements Initializable {
 			}
 
 		} catch (Exception e) {
-			// Display an error toast or alert
+			// Alerta (Toast) de sucesso na edi��o
+			Node source = (Node) event.getSource();
+			Stage ownerStage = (Stage) source.getScene().getWindow();
+			String toastMsg = "Erro! \n" + e.getMessage();
+			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
 			e.printStackTrace();
 		}
 	}
@@ -897,14 +945,14 @@ public class DocumentController implements Initializable {
 	 * @param event
 	 *            O evento de ação associado à exclusão do documento.
 	 */
-	public void handleDelete(ActionEvent event) {
+	public void deleteDocument(ActionEvent event) {
 
-		Documento selectedDocumento = tvDocs.getSelectionModel().getSelectedItem();
+		Documento selectedDocument = tvDocs.getSelectionModel().getSelectedItem();
 
 		try {
 			DocumentService documentService = new DocumentService(localUrl);
 
-			ServiceResponse<?> serviceResponse = documentService.deleteById(selectedDocumento.getDocId());
+			ServiceResponse<?> serviceResponse = documentService.deleteById(selectedDocument.getDocId());
 
 			if (serviceResponse.getResponseCode() == 200) {
 
@@ -915,7 +963,7 @@ public class DocumentController implements Initializable {
 				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.SUCCESS);
 
 				// retira objecto da tabela de documentos tvDocs
-				tvDocs.getItems().remove(selectedDocumento);
+				tvDocs.getItems().remove(selectedDocument);
 
 			} else {
 				// Informa erro em deletar

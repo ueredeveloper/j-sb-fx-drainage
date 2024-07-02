@@ -1,6 +1,10 @@
 package models;
 
 import java.util.Objects;
+import java.util.function.Function;
+
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 public class Endereco {
 
@@ -9,7 +13,7 @@ public class Endereco {
 	private String endCidade;
 	private String endCep;
 	private String endBairro;
-	private String endEstado;
+	private Estado endEstado;
 
 	public Endereco() {
 		super();
@@ -25,16 +29,6 @@ public class Endereco {
 		this.endId = endId;
 		this.endLogradouro = endLogradouro;
 	}
-	
-
-	public Endereco(String endLogradouro, String endCidade, String endCep, String endBairro, String endEstado) {
-		super();
-		this.endLogradouro = endLogradouro;
-		this.endCidade = endCidade;
-		this.endCep = endCep;
-		this.endBairro = endBairro;
-		this.endEstado = endEstado;
-	}
 
 	public Endereco(Long endId, String endLogradouro, String endCidade, String endCep) {
 		super();
@@ -44,16 +38,16 @@ public class Endereco {
 		this.endCep = endCep;
 	}
 	
-	public Endereco(Long endId, String endLogradouro, String endCidade, String endCep, String endBairro, String endEstado) {
+	
+
+	public Endereco(String endLogradouro, String endCidade, String endCep, String endBairro, Estado endEstado) {
 		super();
-		this.endId = endId;
 		this.endLogradouro = endLogradouro;
 		this.endCidade = endCidade;
 		this.endCep = endCep;
 		this.endBairro = endBairro;
 		this.endEstado = endEstado;
 	}
-	
 
 	public Long getEndId() {
 		return endId;
@@ -95,15 +89,15 @@ public class Endereco {
 		this.endBairro = endBairro;
 	}
 
-	public String getEndEstado() {
+	// Metodos
+
+	public Estado getEndEstado() {
 		return endEstado;
 	}
 
-	public void setEndEstado(String endEstado) {
+	public void setEndEstado(Estado endEstado) {
 		this.endEstado = endEstado;
 	}
-	
-	// Metodos
 
 	// Método toString para mostrar o logradouro no combobox.
 	@Override
@@ -111,19 +105,19 @@ public class Endereco {
 		return endLogradouro;
 	}
 
-	
 	@Override
 	public int hashCode() {
 		return Objects.hash(endLogradouro);
 	}
 
-	/* 
-	 * Quando você usa coleções que dependem de comparações, como ObservableList, HashSet ou HashMap, é crucial que 
-	 * os métodos hashCode() e equals() sejam consistentes e adequados.
-	 * Se esses métodos não estiverem definidos ou estiverem definidos incorretamente, 
-	 * a coleção pode não funcionar como esperado, resultando em comportamento imprevisível, 
-	 * como perda de caracteres ou falha ao encontrar e atualizar elementos corretamente.
-	 * Relacionado ao combobox editável do AddressComboBoxController e outros...
+	/*
+	 * Quando você usa coleções que dependem de comparações, como ObservableList,
+	 * HashSet ou HashMap, é crucial que os métodos hashCode() e equals() sejam
+	 * consistentes e adequados. Se esses métodos não estiverem definidos ou
+	 * estiverem definidos incorretamente, a coleção pode não funcionar como
+	 * esperado, resultando em comportamento imprevisível, como perda de caracteres
+	 * ou falha ao encontrar e atualizar elementos corretamente. Relacionado ao
+	 * combobox editável do AddressComboBoxController e outros...
 	 */
 	@Override
 	public boolean equals(Object obj) {
@@ -136,7 +130,25 @@ public class Endereco {
 		Endereco other = (Endereco) obj;
 		return Objects.equals(endLogradouro, other.endLogradouro);
 	}
-	
-	
-	
+
+	public <T> StringProperty getProperty(Function<Endereco, T> propertyAccessor) {
+		StringProperty stringProperty = new SimpleStringProperty("");
+		T value = propertyAccessor.apply(this);
+
+		if (value != null) {
+			String stringValue = String.valueOf(value);
+			stringProperty.set(stringValue);
+		}
+
+		return stringProperty;
+	}
+
+	public String getEstado() {
+		if (this.endEstado != null) {
+			return this.getEstado();
+		} else {
+			return null; // or handle the case when docProcesso is null
+		}
+	}
+
 }

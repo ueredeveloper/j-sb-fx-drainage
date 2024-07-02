@@ -15,9 +15,7 @@ import models.Anexo;
 import services.AnexoService;
 
 public class AttachmentComboBoxController implements Initializable {
-	
 
-	
 	String localUrl;
 
 	private JFXComboBox<Anexo> comboBox;
@@ -37,7 +35,7 @@ public class AttachmentComboBoxController implements Initializable {
 		comboBox.setEditable(true);
 
 		utilities.FxUtilComboBoxSearchable.autoCompleteComboBoxPlus(comboBox, (typedText,
-				itemToCompare) -> itemToCompare.getAnNumero().toLowerCase().contains(typedText.toLowerCase()));
+				itemToCompare) -> itemToCompare.getNumero().toLowerCase().contains(typedText.toLowerCase()));
 
 		utilities.FxUtilComboBoxSearchable.getComboBoxValue(comboBox);
 
@@ -50,8 +48,7 @@ public class AttachmentComboBoxController implements Initializable {
 
 					obsList.clear();
 					List<Anexo> list = fetchByKeyword(newValue);
-					boolean containsSearchTerm = list.stream()
-							.anyMatch(Anexo -> Anexo.getAnNumero().contains(newValue));
+					boolean containsSearchTerm = list.stream().anyMatch(anexo -> anexo.getNumero().contains(newValue));
 					//
 					// Se o que foi digitado está contido, não adicina novo Anexo, porém, se o
 					// que foi digitado não está contido na lista, adiciona novo Anexo com id
@@ -91,7 +88,7 @@ public class AttachmentComboBoxController implements Initializable {
 	public Anexo getSelectedObject() {
 		// Verifica se nulo, se não nulo preenche objeto e retorna.
 		Anexo object = comboBox.selectionModelProperty().get().isEmpty() ? null
-				: new Anexo(obsList.get(0).getAnId(), obsList.get(0).getAnNumero());
+				: new Anexo(obsList.get(0).getId(), obsList.get(0).getNumero());
 		return object;
 	}
 

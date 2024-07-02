@@ -10,6 +10,7 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 
 import controllers.DocumentController;
+import enums.StaticData;
 import enums.ToastType;
 import javafx.animation.TranslateTransition;
 import javafx.beans.value.ChangeListener;
@@ -25,20 +26,18 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import models.Endereco;
-import models.Processo;
+import models.Estado;
 import services.EnderecoService;
-import services.ProcessoService;
 import services.ServiceResponse;
 import utilities.URLUtility;
 
 public class AddAddressController implements Initializable {
 
-	
 	@FXML
 	private JFXButton btnClose;
 
 	@FXML
-	private JFXComboBox<Endereco> cbAddress;
+	private JFXTextField tfAddress;
 
 	@FXML
 	private JFXTextField tfNeighborhood;
@@ -53,7 +52,7 @@ public class AddAddressController implements Initializable {
 	private JFXTextField tfArea;
 
 	@FXML
-	private JFXComboBox<String> cbState;
+	private JFXComboBox<Estado> cbState;
 
 	@FXML
 	private TableView<Endereco> tableView;
@@ -109,12 +108,16 @@ public class AddAddressController implements Initializable {
 
 	}
 
+	ObservableList<Estado> obsListState;
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
+		obsListState = StaticData.INSTANCE.getEstados();
+		cbState.setItems(obsListState);
+
 		tcAddress.setCellValueFactory(new PropertyValueFactory<Endereco, String>("endLogradouro"));
-		tcNeighborhood.setCellValueFactory(new PropertyValueFactory<Endereco, String>("endCep"));
-		tcCity.setCellValueFactory(new PropertyValueFactory<Endereco, String>("endCidade"));
+		tcNeighborhood.setCellValueFactory(new PropertyValueFactory<Endereco, String>("endBairro"));
 		tcCity.setCellValueFactory(new PropertyValueFactory<Endereco, String>("endCidade"));
 		tcState.setCellValueFactory(new PropertyValueFactory<Endereco, String>("endEstado"));
 
@@ -127,36 +130,24 @@ public class AddAddressController implements Initializable {
 				if (newValue != null) {
 					// Perform actions with the selected Endereco object
 
+					tfAddress.setText(newValue.getEndLogradouro());
 					tfNeighborhood.setText(newValue.getEndBairro());
 					tfZipCode.setText(newValue.getEndCep());
 					tfCity.setText(newValue.getEndCidade());
 					// tfArea.setText(newValue.getEndArea());
-					cbState.setValue(newValue.getEndEstado());
-					cbAddress.setValue(newValue);
-					
-					// Selecionar o object dentro do combobox
-					addressCbController.fillAndSelectComboBox(newValue);
+					Estado selectedType = newValue.getEndEstado();
+					cbState.getSelectionModel().select(selectedType);
+
 				}
 			}
 		});
 
-		cbState.getItems().addAll("DF", "SP");
-
-		addressCbController = new AddressComboBoxController(urlService, cbAddress);
-
-		if (object != null) {
-			addressCbController.fillAndSelectComboBox(object);
-		}
 
 		btnClose.setOnAction(e -> {
 			ttClose.play();
-
-			Endereco object = cbAddress.selectionModelProperty().get().isEmpty() ? null
-					: addressCbController.getSelectedObject();
 			
-			if (object != null) {
-				this.documentController.fillAndSelectComboBoxAddress(object);
-			}
+			Endereco seletedObject = tableView.getSelectionModel().getSelectedItem();
+			this.documentController.fillAndSelectComboBoxAddress(seletedObject);
 
 		});
 
@@ -164,62 +155,43 @@ public class AddAddressController implements Initializable {
 		btnUpdate.setOnAction(event -> update(event));
 		btnDelete.setOnAction(event -> delete(event));
 		btnNew.setOnAction(e -> clearAllComponents());
-		btnSearch.setOnAction(event -> handleSearchByKeyword(event));
-		
+		btnSearch.setOnAction(event -> searchByKeyword(event));
 
-	}
-
-	// Método para buscar processos e preencher o ComboBox
-	public List<Processo> fetchProcesses(String keyword) {
-
-		try {
-			ProcessoService service = new ProcessoService(urlService);
-
-			List<Processo> list = service.fetchProcesses(keyword);
-
-			return list;
-
-		} catch (Exception e) {
-
+		if (object != null) {
+			obsList.clear();
+			obsList.add(object);
+			tableView.getSelectionModel().select(object);
 		}
-		return null;
-	}
 
-	public void fillAndSelectComboBoxAddress(Endereco object) {
-		ObservableList<Endereco> newObsList = FXCollections.observableArrayList();
-		cbAddress.setItems(newObsList);
-
-		newObsList.add(0, object);
-
-		// Atualizando o ComboBox para refletir a mudança
-		// cbProcess.setItems(null);
-		cbAddress.setItems(newObsList);
-
-		// Selecionando o novo item no ComboBox
-		cbAddress.getSelectionModel().select(0);
 	}
 
 	public void save(ActionEvent event) {
 
-		Endereco object = cbAddress.selectionModelProperty().get().isEmpty() ? null
-				: addressCbController.getSelectedObject();
-
-		if (object != null) {
-
+		if (object == null) {
+			
+			String logradouro = tfAddress.getText();
 			String bairro = tfNeighborhood.getText();
 			String cidade = tfCity.getText();
 			String cep = tfZipCode.getText();
-			String estado = cbState.getValue();
+			Estado estado = cbState.getValue();
 
-			// Se objeto sem Id, salva, senão edita.
-			if (object.getEndId() == null) {
+			// Se logradouro preenchido
+			if (logradouro == null) {
 
+				// Informa salvamento com sucesso
+				Node source = (Node) event.getSource();
+				Stage ownerStage = (Stage) source.getScene().getWindow();
+				String toastMsg = "Logradouro vazio!!!";
+				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+
+			} else {
+				
 				try {
 
 					// DocumentService documentService = new DocumentService(localUrl);
 					EnderecoService enderecoService = new EnderecoService(urlService);
 
-					Endereco endereco = new Endereco(object.getEndLogradouro(), bairro, cidade, cep, estado);
+					Endereco endereco = new Endereco(logradouro, bairro, cidade, cep, estado);
 					ServiceResponse<?> service = enderecoService.save(endereco);
 
 					if (service.getResponseCode() == 201) {
@@ -249,9 +221,6 @@ public class AddAddressController implements Initializable {
 					// adicionar Toast de erro
 					e.printStackTrace();
 				}
-
-			} else {
-
 			}
 
 			// Alerta de logradouro vazio
@@ -259,7 +228,7 @@ public class AddAddressController implements Initializable {
 			// Informa salvamento com sucesso
 			Node source = (Node) event.getSource();
 			Stage ownerStage = (Stage) source.getScene().getWindow();
-			String toastMsg = "O logradouro não pode estar vazio";
+			String toastMsg = "erro";
 			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
 		}
 
@@ -267,24 +236,36 @@ public class AddAddressController implements Initializable {
 
 	public void update(ActionEvent event) {
 
-		Endereco object = cbAddress.selectionModelProperty().get().isEmpty() ? null
-				: addressCbController.getSelectedObject();
+		/*
+		 * Endereco object = cbAddress.selectionModelProperty().get().isEmpty() ? null :
+		 * addressCbController.getSelectedObject();
+		 */
 
-		if (object.getEndId() != null) {
+		Endereco seletedObject = tableView.getSelectionModel().getSelectedItem();
 
-			Long id = object.getEndId();
-			String logradouro = object.getEndLogradouro();
+			// Long id = seletedObject.getEndId();
+			String logradouro = tfAddress.getText();
 			String bairro = tfNeighborhood.getText();
 			String cidade = tfCity.getText();
 			String cep = tfZipCode.getText();
-			String estado = cbState.getValue();
+			Estado estado = cbState.getValue();
 
 			try {
 
 				// DocumentService documentService = new DocumentService(localUrl);
 				EnderecoService enderecoService = new EnderecoService(urlService);
 
-				Endereco endereco = new Endereco(id, logradouro, bairro, cidade, cep, estado);
+				// Endereco endereco = new Endereco(id, logradouro, bairro, cidade, cep,
+				// estado);
+				
+				Endereco endereco = new Endereco();
+				endereco.setEndId(seletedObject.getEndId());
+				endereco.setEndLogradouro(logradouro);
+				endereco.setEndBairro(bairro);
+				endereco.setEndCidade(cidade);
+				endereco.setEndCep(cep);
+				endereco.setEndEstado(estado);
+
 				ServiceResponse<?> service = enderecoService.update(endereco);
 
 				if (service.getResponseCode() == 200) {
@@ -297,9 +278,12 @@ public class AddAddressController implements Initializable {
 
 					// Adiciona resposta na tabela
 					Endereco newEndereco = new Gson().fromJson((String) service.getResponseBody(), Endereco.class);
-					// Adiciona com primeiro na lista
+
+					// Remove objeto solicitado da tableView
+					tableView.getItems().remove(seletedObject);
+					// Adiciona objeto já editado como primeiro da lista.
 					tableView.getItems().add(0, newEndereco);
-					// Seleciona o objeto salvo na table view
+					// Seleciona o objeto na table view
 					tableView.getSelectionModel().select(newEndereco);
 
 				} else {
@@ -315,17 +299,11 @@ public class AddAddressController implements Initializable {
 				e.printStackTrace();
 			}
 
-		} else {
-			// Mensagem
-			Node source = (Node) event.getSource();
-			Stage ownerStage = (Stage) source.getScene().getWindow();
-			String toastMsg = "Selecione um endereço!";
-			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
-		}
+		
 
 	}
 
-	public void handleSearchByKeyword(ActionEvent event) {
+	public void searchByKeyword(ActionEvent event) {
 
 		try {
 
@@ -354,7 +332,7 @@ public class AddAddressController implements Initializable {
 			EnderecoService service = new EnderecoService(urlService);
 
 			ServiceResponse<?> serviceResponse = service.deleteById(selected.getEndId());
-			
+
 			if (serviceResponse.getResponseCode() == 200) {
 
 				// Informa sucesso em deletar
@@ -367,21 +345,24 @@ public class AddAddressController implements Initializable {
 				tableView.getItems().remove(selected);
 
 			} else {
-				// Informa erro em deletar
-				Node source = (Node) event.getSource();
-				Stage ownerStage = (Stage) source.getScene().getWindow();
-				String toastMsg = "Erro ao deletar documento!";
-				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	            // Informa erro em deletar
+	            Node source = (Node) event.getSource();
+	            Stage ownerStage = (Stage) source.getScene().getWindow();
+	            String toastMsg = "Erro ao deletar! " + serviceResponse.getResponseBody();
+	            utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        Node source = (Node) event.getSource();
+	        Stage ownerStage = (Stage) source.getScene().getWindow();
+	        String toastMsg = "Erro ao deletar! " + e.getMessage();
+	        utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+	    }
 
 	}
 
 	public void clearAllComponents() {
-		cbAddress.getSelectionModel().clearSelection();
+		tfAddress.clear();
 		tfNeighborhood.clear();
 		tfCity.clear();
 		tfZipCode.clear();

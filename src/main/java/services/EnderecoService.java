@@ -95,6 +95,8 @@ public class EnderecoService {
 			}
 
 			int responseCode = connection.getResponseCode();
+			
+			System.out.println("edição res code " + responseCode);
 
 			String responseBody;
 			if (responseCode == HttpURLConnection.HTTP_OK) {
@@ -164,13 +166,16 @@ public class EnderecoService {
 					.collect(Collectors.joining("\n"));
 
 			connection.disconnect();
+			
+			System.out.println(responseBody);
 
 			return new ServiceResponse<>(responseCode, responseBody); // Change null to the actual response body if
 																		// needed
 		} catch (Exception e) {
 			e.printStackTrace();
+			System.out.println(e.getMessage());
 			// Handle the exception if needed
-			return new ServiceResponse<>(-1, null); // You might want to use a different code for errors
+			return new ServiceResponse<>(-1, e.getMessage()); // You might want to use a different code for errors
 		}
 	}
 	
