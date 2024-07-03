@@ -167,7 +167,9 @@ public class AddAddressController implements Initializable {
 
 	public void save(ActionEvent event) {
 
-		if (object == null) {
+		  	Long id = object.getEndId() !=null? object.getEndId(): null;
+		  	
+		  	System.out.println(id);
 			
 			String logradouro = tfAddress.getText();
 			String bairro = tfNeighborhood.getText();
@@ -191,7 +193,7 @@ public class AddAddressController implements Initializable {
 					// DocumentService documentService = new DocumentService(localUrl);
 					EnderecoService enderecoService = new EnderecoService(urlService);
 
-					Endereco endereco = new Endereco(logradouro, bairro, cidade, cep, estado);
+					Endereco endereco = new Endereco(id, logradouro, bairro, cidade, cep, estado);
 					ServiceResponse<?> service = enderecoService.save(endereco);
 
 					if (service.getResponseCode() == 201) {
@@ -204,34 +206,35 @@ public class AddAddressController implements Initializable {
 
 						// Adiciona resposta na tabela
 						Endereco newEndereco = new Gson().fromJson((String) service.getResponseBody(), Endereco.class);
+						
+						  // Remove o objeto com solicitado de salvamento ou id nulo, se estiver presente na tableView
+					    tableView.getItems().removeIf(end -> end.getEndId() == null || end.getEndId().equals(newEndereco.getEndId()));
+
 						// Adiciona com primeiro na lista
 						tableView.getItems().add(0, newEndereco);
 						// Seleciona o objeto salvo na table view
 						tableView.getSelectionModel().select(newEndereco);
+						// Atualiza objeto vindo do DocumentController
+						object = newEndereco;
 
 					} else {
 						Node source = (Node) event.getSource();
 						Stage ownerStage = (Stage) source.getScene().getWindow();
-						String toastMsg = "Erro!";
+						String toastMsg = "Erro! + " + service.getResponseCode() ;
 						utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
 
 					}
 
 				} catch (Exception e) {
-					// adicionar Toast de erro
+					Node source = (Node) event.getSource();
+					Stage ownerStage = (Stage) source.getScene().getWindow();
+					String toastMsg = "Erro! + " + e.getMessage() ;
+					utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
 					e.printStackTrace();
 				}
 			}
 
-			// Alerta de logradouro vazio
-		} else {
-			// Informa salvamento com sucesso
-			Node source = (Node) event.getSource();
-			Stage ownerStage = (Stage) source.getScene().getWindow();
-			String toastMsg = "erro";
-			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
-		}
-
+		
 	}
 
 	public void update(ActionEvent event) {

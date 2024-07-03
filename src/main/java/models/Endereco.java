@@ -39,6 +39,16 @@ public class Endereco {
 	}
 	
 	
+	public Endereco(Long endId, String endLogradouro, String endCidade, String endCep, String endBairro,
+			Estado endEstado) {
+		super();
+		this.endId = endId;
+		this.endLogradouro = endLogradouro;
+		this.endCidade = endCidade;
+		this.endCep = endCep;
+		this.endBairro = endBairro;
+		this.endEstado = endEstado;
+	}
 
 	public Endereco(String endLogradouro, String endCidade, String endCep, String endBairro, Estado endEstado) {
 		super();
