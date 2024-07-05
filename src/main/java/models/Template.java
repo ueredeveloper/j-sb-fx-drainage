@@ -1,6 +1,7 @@
 package models;
 
 public class Template {
+	
 
 	private Long id;
 	private String descricao;
