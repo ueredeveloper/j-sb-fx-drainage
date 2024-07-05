@@ -251,14 +251,12 @@ public class DocumentController implements Initializable {
 				cbProcess.getSelectionModel().select(processo);
 				Endereco endereco = newSelection.getDocEndereco();
 				cbAddress.getSelectionModel().select(endereco);
-				
+
 				// Limpar componentes que não são preenchidos.
 				cbAttachment.getSelectionModel().clearSelection();
 				cbUser.getSelectionModel().clearSelection();
 				tfLatitude.clear();
 				tfLongitude.clear();
-				
-				
 
 			} else {
 
@@ -670,8 +668,6 @@ public class DocumentController implements Initializable {
 		obsAttachment.clear();
 		cbAttachment.getSelectionModel().clearSelection();
 		cbAttachment.setValue(null);
-		
-		
 
 	}
 
@@ -778,22 +774,20 @@ public class DocumentController implements Initializable {
 			}
 
 			Endereco obsAddressList0 = addressCbController.getSelectedObject();
-			
-			
+
 			Usuario obsUserList0 = userCbController.getSelectedObject();
 			Set<Usuario> usuarios = new HashSet<>();
 			usuarios.add(obsUserList0);
-			
+
 			DocumentoTipo docType = cbDocType.getValue();
 
 			Documento newDocument = new Documento();
 			newDocument.setDocNumero(tfNumber.getText());
-			newDocument. setDocProcesso(obsProcessList0);
+			newDocument.setDocProcesso(obsProcessList0);
 			newDocument.setDocSei(numberSei);
 			newDocument.setDocTipo(docType);
 			newDocument.setDocEndereco(obsAddressList0);
 			newDocument.setUsuarios(usuarios);
-			
 
 			ServiceResponse<?> documentoServiceResponse = documentService.save(newDocument);
 
