@@ -124,7 +124,7 @@ public class EnderecoService {
 	public List<Endereco> fetchAddressByKeyword (String keyword) {
 
 		try {
-			URL apiUrl = new URL(localUrl + "/address/list?keyword=" + URLEncoder.encode(keyword, "UTF-8"));
+			URL apiUrl = new URL(localUrl + "/address/list-by-keyword?keyword=" + URLEncoder.encode(keyword, "UTF-8"));
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
 			connection.setRequestMethod("GET");
 
