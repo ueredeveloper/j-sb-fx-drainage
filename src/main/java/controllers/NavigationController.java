@@ -13,14 +13,16 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import utilities.ResizeMap;
 
 public class NavigationController implements Initializable {
-	
 
 	@FXML
 	private AnchorPane apContent;
@@ -122,6 +124,15 @@ public class NavigationController implements Initializable {
 			}
 		});
 
+		btnModels.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+
+				loadTemplate();
+
+			}
+		});
+
 	}
 
 	public void loadDocuments() {
@@ -135,6 +146,29 @@ public class NavigationController implements Initializable {
 
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+	}
+
+	public void loadTemplate() {
+		try {
+
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Template.fxml"));
+			TemplateController controller = new TemplateController();
+			loader.setController(controller);
+
+			Parent root = loader.load();
+
+			Stage popupStage = new Stage();
+			popupStage.initModality(Modality.APPLICATION_MODAL);
+			//popupStage.setTitle("Edições e Diagramas");
+
+			Scene scene = new Scene(root);
+			popupStage.setScene(scene);
+
+			popupStage.showAndWait();
+		} catch (Exception e) {
+			e.printStackTrace();
+
 		}
 	}
 

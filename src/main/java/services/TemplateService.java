@@ -2,7 +2,6 @@ package services;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -11,82 +10,94 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import models.Interferencia;
-import models.Subterranea;
+import models.Documento;
+import models.Template;
+import utilities.JsonConverter;
 
-public class InterferenciaService {
+public class TemplateService {
 
 	private String localUrl;
 
-	public InterferenciaService(String localUrl) {
+	public TemplateService(String localUrl) {
 		this.localUrl = localUrl;
 	}
-	
 
-	public ServiceResponse<?> save(Subterranea obj) {
-		try {
-			URL apiUrl = new URL(localUrl + "/interference/subterranean/create");
-			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
-			connection.setRequestMethod("POST");
-			connection.setRequestProperty("Content-Type", "application/json");
-			connection.setDoOutput(true);
+	public ServiceResponse<?> save(Template object) {
+	    try {
+	        URL apiUrl = new URL(localUrl + "/template/create");
+	        HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
+	        connection.setRequestMethod("POST");
+	        connection.setRequestProperty("Content-Type", "application/json");
+	        connection.setDoOutput(true);
 
-			// Convert Documento object to JSON
-			String jsonInputString = convertObjectToJson(obj);
+	        // Convert Template object to JSON
+	        String jsonInputString = JsonConverter.convertObjectToJson(object);
+	        System.out.println("Request JSON: " + jsonInputString);
 
-			// Write JSON to request body
-			try (OutputStream os = connection.getOutputStream();
-					OutputStreamWriter osw = new OutputStreamWriter(os, "UTF-8")) {
-				osw.write(jsonInputString);
-				osw.flush();
-			}
+	        // Write JSON to request body
+	        try (OutputStream os = connection.getOutputStream();
+	             OutputStreamWriter osw = new OutputStreamWriter(os, "UTF-8")) {
+	            osw.write(jsonInputString);
+	            osw.flush();
+	        }
 
-			int responseCode = connection.getResponseCode();
+	        int responseCode = connection.getResponseCode();
+	        String responseBody;
 
-			String responseBody;
-			if (responseCode == HttpURLConnection.HTTP_CREATED) {
-				// System.out.println("service created");
-				try (BufferedReader br = new BufferedReader(
-						new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
-					StringBuilder response = new StringBuilder();
-					String responseLine;
-					while ((responseLine = br.readLine()) != null) {
-						response.append(responseLine);
-					}
-					responseBody = response.toString();
-				}
-			} else {
-				System.out.println("ERROR");
-				handleErrorResponse(connection);
-				responseBody = readErrorStream(connection);
-			}
+	        if (responseCode == HttpURLConnection.HTTP_CREATED) {
+	            try (BufferedReader br = new BufferedReader(
+	                    new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
+	                StringBuilder response = new StringBuilder();
+	                String responseLine;
+	                while ((responseLine = br.readLine()) != null) {
+	                    response.append(responseLine);
+	                }
+	                responseBody = response.toString();
+	            }
+	        } else {
+	            System.out.println("HttpURLConnection != HTTP_CREATED, Error occurred");
+	            handleErrorResponse(connection);
+	            responseBody = readErrorStream(connection);
+	        }
 
-			connection.disconnect();
-			return new ServiceResponse<>(responseCode, responseBody);
-		} catch (Exception e) {
-			e.printStackTrace();
+	        System.out.println("Response body: " + responseBody);
+	        connection.disconnect();
 
-			// showAlert("Error saving document", AlertType.ERROR);
-			return null; // Return null if an error occurs
-		}
+	        // Check if response body is a JSON object
+	        if (responseBody.trim().startsWith("{")) {
+	            Template responseObject = new Gson().fromJson(responseBody, Template.class);
+	            System.out.println("Parsed response object: " + responseObject);
+	            return new ServiceResponse<>(responseCode, responseObject);
+	        } else {
+	            System.out.println("Unexpected response format: " + responseBody);
+	            return new ServiceResponse<>(responseCode, responseBody);
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        System.out.println("Exception occurred");
+	        return null; // Return null if an error occurs
+	    }
 	}
 
-	public ServiceResponse<?> update(Interferencia object) {
+
+
+
+
+	public ServiceResponse<?> update(Template object) {
 		try {
-			URL apiUrl = new URL(localUrl + "/interference/subterranean/update?id=" + object.getInterId());
+			URL apiUrl = new URL(localUrl + "/template/update?id=" + object.getId());
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
 			connection.setRequestMethod("PUT");
 			connection.setRequestProperty("Content-Type", "application/json");
 			connection.setDoOutput(true);
 
-			// Convert Documento object to JSON
-			String jsonInputString = convertObjectToJson(object);
-			
+			// Convert object to JSON
+			String jsonInputString = JsonConverter.convertObjectToJson(object);
+
 			System.out.println(jsonInputString);
 
 			// Write JSON to request body
@@ -97,6 +108,8 @@ public class InterferenciaService {
 			}
 
 			int responseCode = connection.getResponseCode();
+
+			System.out.println("edição res code " + responseCode);
 
 			String responseBody;
 			if (responseCode == HttpURLConnection.HTTP_OK) {
@@ -123,21 +136,20 @@ public class InterferenciaService {
 		}
 	}
 
-	public List<Interferencia> fetchByKeyword(String keyword) {
+	public List<Template> listByKeyword(String keyword) {
 
 		try {
-			URL apiUrl = new URL(
-					localUrl + "/interference/subterranean/list?keyword=" + URLEncoder.encode(keyword, "UTF-8"));
+			URL apiUrl = new URL(localUrl + "/template/list-by-keyword?keyword=" + URLEncoder.encode(keyword, "UTF-8"));
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
 			connection.setRequestMethod("GET");
 
 			int responseCode = connection.getResponseCode();
 
 			if (responseCode == HttpURLConnection.HTTP_OK) {
-
+				System.out.println("HTTP OK");
 				return handleSuccessResponse(connection);
 			} else if (responseCode == HttpURLConnection.HTTP_CREATED) {
-
+				System.out.println("HTTP Created");
 				return handleSuccessResponse(connection);
 			} else {
 				handleErrorResponse(connection);
@@ -153,48 +165,26 @@ public class InterferenciaService {
 		return null;
 	}
 
-	public ServiceResponse<?> deleteById(Long id) {
-		try {
-			URL apiUrl = new URL(localUrl + "/interference/delete?id=" + id); // Updated URL
-			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
-			connection.setRequestMethod("DELETE");
-
-			int responseCode = connection.getResponseCode();
-
-			// Read the response body if needed
-			InputStream inputStream = connection.getInputStream();
-			String responseBody = new BufferedReader(new InputStreamReader(inputStream)).lines()
-					.collect(Collectors.joining("\n"));
-
-			connection.disconnect();
-
-			return new ServiceResponse<>(responseCode, responseBody); // Change null to the actual response body if
-																		// needed
-		} catch (Exception e) {
-			e.printStackTrace();
-			// Handle the exception if needed
-			return new ServiceResponse<>(-1, null); // You might want to use a different code for errors
-		}
-	}
-	private List<Interferencia> handleSuccessResponse(HttpURLConnection connection) throws IOException {
+	private List<Template> handleSuccessResponse(HttpURLConnection connection) throws IOException {
 		BufferedReader reader = new BufferedReader(
 				new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8));
 		StringBuilder response = new StringBuilder();
 		String line;
 
 		while ((line = reader.readLine()) != null) {
+
 			response.append(line);
 		}
 
 		reader.close();
 
-		return new Gson().fromJson(response.toString(), new TypeToken<List<Interferencia>>() {
+		return new Gson().fromJson(response.toString(), new TypeToken<List<Template>>() {
 		}.getType());
 	}
 
 	private void handleErrorResponse(HttpURLConnection connection) throws IOException {
 		String responseMessage = connection.getResponseMessage();
-		System.out.println("Error (method handleErrorRespose, Service Class: " + responseMessage);
+		System.out.println("Error: " + responseMessage);
 	}
 
 	private String readErrorStream(HttpURLConnection connection) throws IOException {
@@ -208,10 +198,11 @@ public class InterferenciaService {
 			return response.toString();
 		}
 	}
-
+	
 	private String convertObjectToJson(Object object) {
 		Gson gson = new Gson();
 		return gson.toJson(object);
 	}
+
 
 }

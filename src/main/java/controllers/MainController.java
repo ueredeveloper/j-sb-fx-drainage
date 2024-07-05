@@ -15,7 +15,6 @@ import javafx.scene.layout.Pane;
 @SuppressWarnings("restriction")
 public class MainController implements Initializable {
 	
-
 	@FXML
 	private AnchorPane apMain;
 

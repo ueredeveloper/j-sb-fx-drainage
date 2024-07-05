@@ -1,6 +1,5 @@
 package controllers.views;
 
-import com.google.gson.Gson;
 import com.jfoenix.controls.JFXTextField;
 
 import controllers.MapController;
@@ -10,7 +9,7 @@ import models.Interferencia;
 import utilities.JsonConverter;
 
 public class InterferenceTextFieldsController {
-	
+
 	private static InterferenceTextFieldsController instance;
 
 	public static InterferenceTextFieldsController getInstance() {
@@ -23,7 +22,6 @@ public class InterferenceTextFieldsController {
 	private JFXTextField tfLatitude;
 	private JFXTextField tfLongitude;
 	private MapController mapController;
-	
 
 	public InterferenceTextFieldsController(String localUrl, JFXTextField tfLatitude, JFXTextField tfLongitude) {
 		this.localUrl = localUrl;
@@ -36,10 +34,7 @@ public class InterferenceTextFieldsController {
 
 	}
 
-	
-
 	// Adicione os campos existentes e o construtor
-
 
 	// Método privado para atualizar a latitude
 	private void updateLatitude(String newValue) {
@@ -94,8 +89,6 @@ public class InterferenceTextFieldsController {
 		tfLongitude.setText(String.valueOf(interferencia.getInterLongitude()));
 
 	}
-
-	
 
 	public void init() {
 		tfLatitude.textProperty().addListener(new ChangeListener<String>() {

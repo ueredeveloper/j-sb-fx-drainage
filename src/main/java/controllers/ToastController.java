@@ -15,6 +15,7 @@ import javafx.util.Duration;
 
 public class ToastController implements Initializable {
 	
+	
 
 	@FXML
 	private StackPane spContainer;

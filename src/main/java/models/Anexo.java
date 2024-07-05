@@ -4,41 +4,40 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Anexo {
-	
 
-	private Long anId;
-	private String anNumero;
+	private Long id;
+	private String numero;
 	private List<Processo> processos = new ArrayList<>();
 
 	public Anexo() {
 		super();
 	}
 
-	public Anexo(String anNumero) {
+	public Anexo(String numero) {
 		super();
-		this.anNumero = anNumero;
+		this.numero = numero;
 	}
 
-	public Anexo(Long anId, String anNumero) {
+	public Anexo(Long id, String numero) {
 		super();
-		this.anId = anId;
-		this.anNumero = anNumero;
+		this.id = id;
+		this.numero = numero;
 	}
 
-	public Long getAnId() {
-		return anId;
+	public Long getId() {
+		return id;
 	}
 
-	public void setAnId(Long anId) {
-		this.anId = anId;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
-	public String getAnNumero() {
-		return anNumero;
+	public String getNumero() {
+		return numero;
 	}
 
-	public void setAnNumero(String anNumero) {
-		this.anNumero = anNumero;
+	public void setNumero(String numero) {
+		this.numero = numero;
 	}
 
 	public List<Processo> getProcessos() {
@@ -51,7 +50,7 @@ public class Anexo {
 
 	@Override
 	public String toString() {
-		return anNumero;
+		return numero;
 	}
 
 }

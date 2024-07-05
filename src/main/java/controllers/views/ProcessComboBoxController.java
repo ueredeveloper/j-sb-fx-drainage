@@ -14,6 +14,7 @@ import services.ProcessoService;
 public class ProcessComboBoxController {
 	
 
+	
 	String localUrl;
 
 	private JFXComboBox<Processo> cbProcess;
@@ -56,6 +57,7 @@ public class ProcessComboBoxController {
 					if (containsSearchTerm) {
 						obsProcess.addAll(list);
 					} else {
+						
 						obsProcess.add(new Processo(newValue));
 						obsProcess.addAll(list);
 					}

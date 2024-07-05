@@ -28,10 +28,12 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import models.Documento;
 import models.Endereco;
 import models.Interferencia;
 import models.InterferenciaTipo;
 import models.Subterranea;
+import services.DocumentService;
 import services.InterferenciaService;
 import services.ServiceResponse;
 import utilities.JsonConverter;
@@ -200,6 +202,8 @@ public class AddInterferenceController implements Initializable {
 		btnSave.setOnAction(event -> save(event));
 		btnUpdate.setOnAction(event -> update(event));
 		btnSearch.setOnAction(event -> fetchByKeyword(event));
+		btnDelete.setOnAction(event -> delete(event));
+		btnNew.setOnAction(event -> clearAllComponents());
 
 		// Adicionar try catch para ver se o usuário digitou algo, se há coordenada, se
 		// é válida...
@@ -380,8 +384,43 @@ public class AddInterferenceController implements Initializable {
 		}
 	}
 
+	public void delete(ActionEvent event) {
+
+		Interferencia selected = tableView.getSelectionModel().getSelectedItem();
+
+		try {
+			InterferenciaService service = new InterferenciaService(urlService);
+
+			ServiceResponse<?> response = service.deleteById(selected.getInterId());
+
+			if (response.getResponseCode() == 200) {
+
+				// Informa sucesso em deletar
+				Node source = (Node) event.getSource();
+				Stage ownerStage = (Stage) source.getScene().getWindow();
+				String toastMsg = "Ojeto deletado com sucesso!";
+				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.SUCCESS);
+
+				// retira objecto da tabela de documentos tvDocs
+				tableView.getItems().remove(selected);
+
+			} else {
+				// Informa erro em deletar
+				Node source = (Node) event.getSource();
+				Stage ownerStage = (Stage) source.getScene().getWindow();
+				String toastMsg = "Erro ao deletar!";
+				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+	
 	public void clearAllComponents() {
-		cbAddress.getSelectionModel().clearSelection();
+		// Limpa o combobox no controlador específico.
+		addressCbController.clearComponent();
+		// Limpa os componentes deste controlador.
 		tfLatitude.clear();
 		tfLongitude.clear();
 		cbInterferenceType.getSelectionModel().clearSelection();
