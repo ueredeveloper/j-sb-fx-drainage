@@ -17,7 +17,8 @@ public class AddressComboBoxController {
 	private String localUrl;
 	private JFXComboBox<Endereco> comboBox;
 	private ObservableList<Endereco> obsList = FXCollections.observableArrayList();
-	private Set<Endereco> addressSet = new HashSet<>();
+	// Objetos buscados no banco de dados
+	private Set<Endereco> dbObjects = new HashSet<>();
 
 	public AddressComboBoxController(String localUrl, JFXComboBox<Endereco> comboBox) {
 		this.localUrl = localUrl;
@@ -43,18 +44,18 @@ public class AddressComboBoxController {
 					// Verifica se a nova busca é uma continuação da busca anterior, tanto
 					// adicionando como removendo caracteres
 					if (lastSearch.contains(newValue) || newValue.contains(lastSearch)) {
-						boolean containsSearchTerm = addressSet.stream().anyMatch(
+						boolean containsSearchTerm = dbObjects.stream().anyMatch(
 								endereco -> endereco.getEndLogradouro().toLowerCase().contains(newValue.toLowerCase()));
 
 						if (containsSearchTerm) {
-							obsList.addAll(addressSet);
+							obsList.addAll(dbObjects);
 						} else {
 							fetchAndUpdate(newValue);
 						}
 					} else {
 						// Nova busca completamente diferente, então limpamos o conjunto e fazemos uma
 						// nova busca
-						addressSet.clear();
+						dbObjects.clear();
 						fetchAndUpdate(newValue);
 					}
 
@@ -70,12 +71,12 @@ public class AddressComboBoxController {
 			Set<Endereco> fetchedAddresses = new HashSet<>(service.fetchAddressByKeyword(keyword));
 
 			if (!fetchedAddresses.isEmpty()) {
-				addressSet.addAll(fetchedAddresses);
-				obsList.addAll(addressSet);
+				dbObjects.addAll(fetchedAddresses);
+				obsList.addAll(dbObjects);
 			} else {
 				// Se não houver resultados, adiciona o novo endereço diretamente
 				Endereco newAddress = new Endereco(keyword);
-				addressSet.add(newAddress);
+				dbObjects.add(newAddress);
 				obsList.add(newAddress);
 			}
 		} catch (Exception e) {

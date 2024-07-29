@@ -1,6 +1,8 @@
 package controllers.views;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.jfoenix.controls.JFXComboBox;
 
@@ -18,7 +20,9 @@ public class ProcessComboBoxController {
 	String localUrl;
 
 	private JFXComboBox<Processo> cbProcess;
-	ObservableList<Processo> obsProcess = FXCollections.observableArrayList();
+	ObservableList<Processo> obsList = FXCollections.observableArrayList();
+	// Objetos buscados no banco de dados. Estes objectos não podem repetir.
+	private Set<Processo> dbObjects = new HashSet<>();
 
 	public ProcessComboBoxController(String localUrl, JFXComboBox<Processo> cbProcess) {
 		this.localUrl = localUrl;
@@ -30,7 +34,7 @@ public class ProcessComboBoxController {
 	// Método para inicializar o ComboBox
 	public void init () {
 
-		cbProcess.setItems(obsProcess);
+		cbProcess.setItems(obsList);
 		cbProcess.setEditable(true);
 
 		utilities.FxUtilComboBoxSearchable.autoCompleteComboBoxPlus(cbProcess, (typedText,
@@ -40,35 +44,61 @@ public class ProcessComboBoxController {
 
 		// Preeche com valores do servido atualizando ao digitar
 		cbProcess.getEditor().textProperty().addListener(new ChangeListener<String>() {
+			
+			private String lastSearch = "";
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				if (newValue != null && !newValue.isEmpty() && newValue != "") {
+					obsList.clear();
 
-				if (newValue != null) {
+					// Verifica se a nova busca é uma continuação da busca anterior, tanto
+					// adicionando como removendo caracteres
+					if (lastSearch.contains(newValue) || newValue.contains(lastSearch)) {
+						boolean containsSearchTerm = dbObjects.stream().anyMatch(
+								object -> object.getProcNumero().toLowerCase().contains(newValue.toLowerCase()));
 
-					obsProcess.clear();
-					List<Processo> list = fetchProcesses(newValue);
-					boolean containsSearchTerm = list.stream()
-							.anyMatch(processo -> processo.getProcNumero().contains(newValue));
-					//
-					// Se o que foi digitado está contido, não adicina novo processo, porém, se o
-					// que foi digitado não está contido na lista, adiciona novo processo com id
-					// nulo.
-					//
-					if (containsSearchTerm) {
-						obsProcess.addAll(list);
+						if (containsSearchTerm) {
+							obsList.addAll(dbObjects);
+						} else {
+							fetchAndUpdate(newValue);
+						}
 					} else {
-						
-						obsProcess.add(new Processo(newValue));
-						obsProcess.addAll(list);
+						// Nova busca completamente diferente, então limpamos o conjunto e fazemos uma
+						// nova busca
+						dbObjects.clear();
+						fetchAndUpdate(newValue);
 					}
 
+					lastSearch = newValue;
 				}
-
+				
+				
 			}
 		});
 		
 		
 		//System.out.println(cbProcess.getItems().get(0).getProcNumero());
+	}
+	
+
+	private void fetchAndUpdate(String keyword) {
+		try {
+			ProcessoService service = new ProcessoService(localUrl);
+			Set<Processo> fetchedObjects = new HashSet<>(service.fetchByKeyword(keyword));
+
+			if (!fetchedObjects.isEmpty()) {
+				dbObjects.addAll(fetchedObjects);
+				obsList.addAll(dbObjects);
+			} else {
+				// Se não houver resultados, adiciona o novo endereço diretamente
+				Processo newObject = new Processo(keyword);
+				dbObjects.add(newObject);
+				obsList.add(newObject);
+			}
+		} catch (Exception e) {
+			// Trate exceções adequadamente
+			e.printStackTrace();
+		}
 	}
 
 	// Método para buscar processos e preencher o ComboBox
@@ -77,7 +107,7 @@ public class ProcessComboBoxController {
 		try {
 			ProcessoService service = new ProcessoService(localUrl);
 
-			List<Processo> list = service.fetchProcesses(keyword);
+			List<Processo> list = service.fetchByKeyword(keyword);
 
 			return list;
 
@@ -90,7 +120,7 @@ public class ProcessComboBoxController {
 	public Processo getSelectedObject() {
 		// Verifica se nulo, se não nulo preenche objeto e retorna.
 		Processo object = cbProcess.selectionModelProperty().get().isEmpty() ? null
-				: new Processo(obsProcess.get(0).getProcId(), obsProcess.get(0).getProcNumero());
+				: new Processo(obsList.get(0).getProcId(), obsList.get(0).getProcNumero());
 		return object;
 	}
 	

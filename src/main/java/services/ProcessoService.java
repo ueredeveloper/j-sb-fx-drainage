@@ -22,7 +22,7 @@ public class ProcessoService {
 		this.localUrl = localUrl;
 	}
 
-	public List<Processo> fetchProcesses(String keyword) {
+	public List<Processo> fetchByKeyword(String keyword) {
 
 		try {
 			URL apiUrl = new URL(localUrl + "/process/list?keyword=" + URLEncoder.encode(keyword, "UTF-8"));

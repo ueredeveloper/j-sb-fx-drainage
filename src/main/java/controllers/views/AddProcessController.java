@@ -103,7 +103,7 @@ public class AddProcessController implements Initializable {
 		try {
 			ProcessoService service = new ProcessoService(urlService);
 
-			List<Processo> list = service.fetchProcesses(keyword);
+			List<Processo> list = service.fetchByKeyword(keyword);
 
 			return list;
 

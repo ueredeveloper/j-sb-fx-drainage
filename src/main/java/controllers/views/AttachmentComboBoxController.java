@@ -1,8 +1,10 @@
 package controllers.views;
 
 import java.net.URL;
+import java.util.HashSet;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 import com.jfoenix.controls.JFXComboBox;
 
@@ -20,6 +22,8 @@ public class AttachmentComboBoxController implements Initializable {
 
 	private JFXComboBox<Anexo> comboBox;
 	ObservableList<Anexo> obsList = FXCollections.observableArrayList();
+	// Objetos buscados no banco de dados. Estes objectos não podem repetir.
+	private Set<Anexo> dbObjects = new HashSet<>();
 
 	public AttachmentComboBoxController(String localUrl, JFXComboBox<Anexo> comboBox) {
 		this.localUrl = localUrl;
@@ -41,30 +45,58 @@ public class AttachmentComboBoxController implements Initializable {
 
 		// Preeche com valores do servido atualizando ao digitar
 		comboBox.getEditor().textProperty().addListener(new ChangeListener<String>() {
+			
+			private String lastSearch = "";
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
 
-				if (newValue != null) {
-
+				
+				if (newValue != null && !newValue.isEmpty() && newValue != "") {
 					obsList.clear();
-					List<Anexo> list = fetchByKeyword(newValue);
-					boolean containsSearchTerm = list.stream().anyMatch(anexo -> anexo.getNumero().contains(newValue));
-					//
-					// Se o que foi digitado está contido, não adicina novo Anexo, porém, se o
-					// que foi digitado não está contido na lista, adiciona novo Anexo com id
-					// nulo.
-					//
-					if (containsSearchTerm) {
-						obsList.addAll(list);
+
+					// Verifica se a nova busca é uma continuação da busca anterior, tanto
+					// adicionando como removendo caracteres
+					if (lastSearch.contains(newValue) || newValue.contains(lastSearch)) {
+						boolean containsSearchTerm = dbObjects.stream().anyMatch(
+								object -> object.getNumero().toLowerCase().contains(newValue.toLowerCase()));
+
+						if (containsSearchTerm) {
+							obsList.addAll(dbObjects);
+						} else {
+							fetchAndUpdate(newValue);
+						}
 					} else {
-						obsList.add(new Anexo(newValue));
-						obsList.addAll(list);
+						// Nova busca completamente diferente, então limpamos o conjunto e fazemos uma
+						// nova busca
+						dbObjects.clear();
+						fetchAndUpdate(newValue);
 					}
 
+					lastSearch = newValue;
 				}
 
 			}
 		});
+	}
+	
+	private void fetchAndUpdate(String keyword) {
+		try {
+			AnexoService service = new AnexoService(localUrl);
+			Set<Anexo> fetchedObjects = new HashSet<>(service.fecthByKeyword(keyword));
+
+			if (!fetchedObjects.isEmpty()) {
+				dbObjects.addAll(fetchedObjects);
+				obsList.addAll(dbObjects);
+			} else {
+				// Se não houver resultados, adiciona o novo endereço diretamente
+				Anexo newObject = new Anexo(keyword);
+				dbObjects.add(newObject);
+				obsList.add(newObject);
+			}
+		} catch (Exception e) {
+			// Trate exceções adequadamente
+			e.printStackTrace();
+		}
 	}
 
 	// Método para buscar Anexos e preencher o ComboBox
