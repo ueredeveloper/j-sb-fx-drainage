@@ -50,22 +50,36 @@ public class AddressComboBoxController {
 						if (containsSearchTerm) {
 							obsList.addAll(dbObjects);
 						} else {
+							
+							
 							fetchAndUpdate(newValue);
 						}
-					} else {
+					} 
+					/*else {
 						// Nova busca completamente diferente, então limpamos o conjunto e fazemos uma
 						// nova busca
+						
+						System.out.println("else fetch" + newValue + "last " + lastSearch);
 						dbObjects.clear();
 						fetchAndUpdate(newValue);
-					}
+					}*/
 
 					lastSearch = newValue;
 				}
 			}
 		});
 	}
+	
+	/* Ao selecionar algo na table view `DocumentController`, este ítem é adicionado aqui para que não seja preciso 
+	buscá-lo no banco de dados e assim não ficando lento a seleção. 
+	*/
+	public void addItemToDbObjects (Endereco object) {
+		dbObjects.add(object);
+	}
 
 	private void fetchAndUpdate(String keyword) {
+		
+		System.out.println("Adddres  cb fetch and up");
 		try {
 			EnderecoService service = new EnderecoService(localUrl);
 			Set<Endereco> fetchedAddresses = new HashSet<>(service.fetchAddressByKeyword(keyword));

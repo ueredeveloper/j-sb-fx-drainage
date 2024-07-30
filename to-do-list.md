@@ -144,3 +144,11 @@
 		O css não está funcionando, mas funciona na tela AddInterferenceController. Nesta tela o css, classe icons funciona o hover que aumenta o ícone ao passar o mouse. Deveria funcionar na  tela Documentos.
 		
 		
+## 30 de Julho de 2024
+* **[X] Seleção de Interferências
+	Ao selecionar uma interferência está sendo feito selects no banco desnecessários que além disso fazem o programa ficar lento.
+		A solução é adicionar o ítem selecionado na lista, no caso, que foi feito no controlador dos processos, `dbObjects`. É igual para todos os Combobox editáveis.
+		
+		
+		
+	

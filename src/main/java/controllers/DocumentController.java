@@ -241,29 +241,41 @@ public class DocumentController implements Initializable {
 		tvDocs.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
 
 			if (newSelection != null) {
-
 				// Atualiza ComboBox (Tipo de Documento) a partir do documento selecionado
 				cbDocType.getSelectionModel().select(newSelection.getDocTipo());
 				// Atualizar componentes de acordo com o documento selecionado
 				tfNumber.setText(newSelection.getDocNumero());
 				tfNumberSei.setText(String.valueOf(newSelection.getDocSei()));
+
 				Processo processo = newSelection.getDocProcesso();
+				// Adiciona o objeto à lista para não precisar buscar no banco de dados.
+				if (processo != null) {
+					processCbController.addItemToDbObjects(processo);
+
+				}
 				cbProcess.getSelectionModel().select(processo);
+
 				Endereco endereco = newSelection.getDocEndereco();
+				// Adiciona o objeto à lista para não precisar buscar no banco de dados.
+				if (endereco != null) {
+					addressCbController.addItemToDbObjects(endereco);
+
+				}
 				cbAddress.getSelectionModel().select(endereco);
 
 				// Limpar componentes que não são preenchidos.
+				// ERRO: VER FORMA DE SELECIONAR TAMBÉM O ANEXO AO BUSCAR NO BANCO
 				cbAttachment.getSelectionModel().clearSelection();
 				cbUser.getSelectionModel().clearSelection();
 				tfLatitude.clear();
 				tfLongitude.clear();
 
 			} else {
-
 				clearAllComponents();
-
 			}
 		});
+
+		
 		// Listener do TextField
 		tfNumber.textProperty().addListener(new ChangeListener<String>() {
 			@Override

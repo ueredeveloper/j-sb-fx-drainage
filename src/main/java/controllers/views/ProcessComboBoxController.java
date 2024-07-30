@@ -46,28 +46,34 @@ public class ProcessComboBoxController {
 		cbProcess.getEditor().textProperty().addListener(new ChangeListener<String>() {
 			
 			private String lastSearch = "";
+			
+			
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				
 				if (newValue != null && !newValue.isEmpty() && newValue != "") {
+					
 					obsList.clear();
-
+					
 					// Verifica se a nova busca é uma continuação da busca anterior, tanto
 					// adicionando como removendo caracteres
 					if (lastSearch.contains(newValue) || newValue.contains(lastSearch)) {
+						
 						boolean containsSearchTerm = dbObjects.stream().anyMatch(
 								object -> object.getProcNumero().toLowerCase().contains(newValue.toLowerCase()));
-
+						
 						if (containsSearchTerm) {
 							obsList.addAll(dbObjects);
 						} else {
 							fetchAndUpdate(newValue);
 						}
-					} else {
+					} /*else {
+						System.out.println("cbProcess else | last " + lastSearch + " new " + newValue);
 						// Nova busca completamente diferente, então limpamos o conjunto e fazemos uma
 						// nova busca
 						dbObjects.clear();
 						fetchAndUpdate(newValue);
-					}
+					}*/
 
 					lastSearch = newValue;
 				}
@@ -78,6 +84,12 @@ public class ProcessComboBoxController {
 		
 		
 		//System.out.println(cbProcess.getItems().get(0).getProcNumero());
+	}
+	/* Ao selecionar algo na table view `DocumentController`, este ítem é adicionado aqui para que não seja preciso 
+	buscá-lo no banco de dados e assim não ficando lento a seleção. 
+	*/
+	public void addItemToDbObjects (Processo object) {
+		dbObjects.add(object);
 	}
 	
 

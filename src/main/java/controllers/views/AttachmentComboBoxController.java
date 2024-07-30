@@ -65,18 +65,25 @@ public class AttachmentComboBoxController implements Initializable {
 						} else {
 							fetchAndUpdate(newValue);
 						}
-					} else {
+					} /*else {
 						// Nova busca completamente diferente, então limpamos o conjunto e fazemos uma
 						// nova busca
 						dbObjects.clear();
 						fetchAndUpdate(newValue);
-					}
+					}*/
 
 					lastSearch = newValue;
 				}
 
 			}
 		});
+	}
+	
+	/* Ao selecionar algo na table view `DocumentController`, este ítem é adicionado aqui para que não seja preciso 
+	buscá-lo no banco de dados e assim não ficando lento a seleção. 
+	*/
+	public void addItemToDbObjects (Anexo object) {
+		dbObjects.add(object);
 	}
 	
 	private void fetchAndUpdate(String keyword) {
