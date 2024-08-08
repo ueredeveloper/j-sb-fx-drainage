@@ -76,7 +76,7 @@ public class EnderecoService {
 
 	public ServiceResponse<?> update(Endereco endereco) {
 		try {
-			URL apiUrl = new URL(localUrl + "/address/update?id=" + endereco.getEndId());
+			URL apiUrl = new URL(localUrl + "/address/update?id=" + endereco.getId());
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
 			connection.setRequestMethod("PUT");
 			connection.setRequestProperty("Content-Type", "application/json");

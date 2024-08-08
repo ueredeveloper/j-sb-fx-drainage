@@ -2,9 +2,8 @@ package models;
 
 public class Processo {
 
-	
-	private Long procId;
-	private String procNumero;
+	private Long id;
+	private String numero;
 	private Anexo anexo;
 
 	public Processo() {
@@ -12,31 +11,31 @@ public class Processo {
 
 	}
 
-	public Processo(String procNumero) {
+	public Processo(String numero) {
 		super();
-		this.procNumero = procNumero;
+		this.numero = numero;
 	}
 
-	public Processo(Long procId, String procNumero) {
+	public Processo(Long id, String numero) {
 		super();
-		this.procId = procId;
-		this.procNumero = procNumero;
+		this.id = id;
+		this.numero = numero;
 	}
 
-	public Long getProcId() {
-		return procId;
+	public Long getId() {
+		return id;
 	}
 
-	public void setProcId(Long procId) {
-		this.procId = procId;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
-	public String getProcNumero() {
-		return procNumero;
+	public String getNumero() {
+		return numero;
 	}
 
-	public void setProcNumero(String procNumero) {
-		this.procNumero = procNumero;
+	public void setNumero(String numero) {
+		this.numero = numero;
 	}
 
 	public Anexo getAnexo() {
@@ -46,29 +45,11 @@ public class Processo {
 	public void setAnexo(Anexo anexo) {
 		this.anexo = anexo;
 	}
-	
-	/*
-	@Override
-	public int hashCode() {
-		return Objects.hash(procId);
-	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Processo other = (Processo) obj;
-		return Objects.equals(procId, other.procId);
-	}*/
-
-	// Override toString() method to display procNumero in ComboBox
+	// Override toString() method to display numero in ComboBox
 	@Override
 	public String toString() {
-		return procNumero;
+		return numero;
 	}
 
 }

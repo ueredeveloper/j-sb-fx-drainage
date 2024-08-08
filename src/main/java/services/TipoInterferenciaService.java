@@ -11,17 +11,17 @@ import java.util.List;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import models.InterferenciaTipo;
+import models.TipoInterferencia;
 
-public class InterferenciaTipoService {
+public class TipoInterferenciaService {
 
 	private String localUrl;
 
-	public InterferenciaTipoService(String localUrl) {
+	public TipoInterferenciaService(String localUrl) {
 		this.localUrl = localUrl;
 	}
 
-	public List<InterferenciaTipo> fetchAll () {
+	public List<TipoInterferencia> fetchAll () {
 		try {
 			URL apiUrl = new URL(localUrl + "/interference-type/list-all");
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
@@ -49,7 +49,7 @@ public class InterferenciaTipoService {
 		return null;
 	}
 
-	private List<InterferenciaTipo> handleSuccessResponse(HttpURLConnection connection) throws IOException {
+	private List<TipoInterferencia> handleSuccessResponse(HttpURLConnection connection) throws IOException {
 		BufferedReader reader = new BufferedReader(
 				new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8));
 		StringBuilder response = new StringBuilder();
@@ -62,7 +62,7 @@ public class InterferenciaTipoService {
 
 		reader.close();
 
-		return new Gson().fromJson(response.toString(), new TypeToken<List<InterferenciaTipo>>() {
+		return new Gson().fromJson(response.toString(), new TypeToken<List<TipoInterferencia>>() {
 		}.getType());
 	}
 

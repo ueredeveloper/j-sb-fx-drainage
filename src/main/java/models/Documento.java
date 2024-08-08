@@ -11,14 +11,13 @@ import javafx.beans.property.StringProperty;
  * Classe que representa um Documento.
  */
 public class Documento {
-	
 
-	private Long docId;
-	private String docNumero;
-	private Processo docProcesso;
-	private Long docSei;
-	private DocumentoTipo docTipo;
-	private Endereco docEndereco;
+	private Long id;
+	private String numero;
+	private Processo processo;
+	private Long numeroSei;
+	private DocumentoTipo tipo;
+	private Endereco endereco;
 
 	private Set<Usuario> usuarios = new HashSet<>();
 
@@ -27,46 +26,90 @@ public class Documento {
 		super();
 	}
 
-	public Documento(String docNumero, Processo docProcesso, Long docSei, DocumentoTipo docTipo, Endereco docEndereco) {
+	public Documento(String numero, Processo processo, Long numeroSei, DocumentoTipo tipo, Endereco endereco) {
 		super();
-		this.docNumero = docNumero;
-		this.docProcesso = docProcesso;
-		this.docSei = docSei;
-		this.docTipo = docTipo;
-		this.docEndereco = docEndereco;
-	}
-	
-	public Documento(String docNumero, Processo docProcesso, DocumentoTipo docTipo) {
-		super();
-		this.docNumero = docNumero;
-		this.docProcesso = docProcesso;
-		this.docTipo = docTipo;
+		this.numero = numero;
+		this.processo = processo;
+		this.numeroSei = numeroSei;
+		this.tipo = tipo;
+		this.endereco = endereco;
 	}
 
-	public Documento(String docNumero, Processo docProcesso) {
+	public Documento(String numero, Processo processo, DocumentoTipo tipo) {
 		super();
-		this.docNumero = docNumero;
-		this.docProcesso = docProcesso;
+		this.numero = numero;
+		this.processo = processo;
+		this.tipo = tipo;
 	}
-	
 
-	public Documento(String docNumero, Processo docProcesso, Long docSei, DocumentoTipo docTipo,
-			Endereco docEndereco, Set<Usuario> usuarios) {
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getNumero() {
+		return numero;
+	}
+
+	public Documento(String numero, Processo processo) {
 		super();
-		this.docNumero = docNumero;
-		this.docProcesso = docProcesso;
-		this.docSei = docSei;
-		this.docTipo = docTipo;
-		this.docEndereco = docEndereco;
+		this.numero = numero;
+		this.processo = processo;
+	}
+
+	public void setNumero(String numero) {
+		this.numero = numero;
+	}
+
+	public Processo getProcesso() {
+		return processo;
+	}
+
+	public void setProcesso(Processo processo) {
+		this.processo = processo;
+	}
+
+	public Long getNumeroSei() {
+		return numeroSei;
+	}
+
+	public void setNumeroSei(Long numeroSei) {
+		this.numeroSei = numeroSei;
+	}
+
+	public DocumentoTipo getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(DocumentoTipo tipo) {
+		this.tipo = tipo;
+	}
+
+	public Endereco getEndereco() {
+		return endereco;
+	}
+
+	public void setEndereco(Endereco endereco) {
+		this.endereco = endereco;
+	}
+
+	public Set<Usuario> getUsuarios() {
+		return usuarios;
+	}
+
+	public void setUsuarios(Set<Usuario> usuarios) {
 		this.usuarios = usuarios;
 	}
 
 	public StringProperty getEnderecoLogradouroProperty() {
 		StringProperty enderecoLogradouroProperty = new SimpleStringProperty("");
-		Endereco endereco = this.getDocEndereco();
+		Endereco endereco = this.getEndereco();
 
 		if (endereco != null) {
-			String enderecoValue = endereco.getEndLogradouro();
+			String enderecoValue = endereco.getLogradouro();
 			if (enderecoValue != null) {
 				enderecoLogradouroProperty.set(enderecoValue);
 			}
@@ -86,84 +129,28 @@ public class Documento {
 		return stringProperty;
 	}
 
-	public String getDocProcessoProcNumero() {
-		if (this.docProcesso != null) {
-			return this.docProcesso.getProcNumero();
+	public String getProcessoNumero() {
+		if (this.processo != null) {
+			return this.processo.getNumero();
 		} else {
 			return null; // or handle the case when docProcesso is null
 		}
 	}
 
-	public String getDocEnderecoLogradouro() {
-		if (this.docEndereco != null) {
-			return this.docEndereco.getEndLogradouro();
+	public String getEnderecoLogradouro() {
+		if (this.endereco != null) {
+			return this.endereco.getLogradouro();
 		} else {
 			return null; // or handle the case when docProcesso is null
 		}
 	}
 
-	public String getDocTipoDescricao() {
-		if (this.docTipo != null) {
-			return this.docTipo.getDtDescricao();
+	public String getTipoDescricao() {
+		if (this.tipo != null) {
+			return this.tipo.getDescricao();
 		} else {
 			return null; // or handle the case when docProcesso is null
 		}
-	}
-
-	public Long getDocId() {
-		return docId;
-	}
-
-	public void setDocId(Long docId) {
-		this.docId = docId;
-	}
-
-	public String getDocNumero() {
-		return docNumero;
-	}
-
-	public void setDocNumero(String docNumero) {
-		this.docNumero = docNumero;
-	}
-
-	public Processo getDocProcesso() {
-		return docProcesso;
-	}
-
-	public void setDocProcesso(Processo docProcesso) {
-		this.docProcesso = docProcesso;
-	}
-
-	public DocumentoTipo getDocTipo() {
-		return docTipo;
-	}
-
-	public void setDocTipo(DocumentoTipo docTipo) {
-		this.docTipo = docTipo;
-	}
-
-	public Endereco getDocEndereco() {
-		return docEndereco;
-	}
-
-	public void setDocEndereco(Endereco docEndereco) {
-		this.docEndereco = docEndereco;
-	}
-
-	public Long getDocSei() {
-		return docSei;
-	}
-
-	public void setDocSei(Long docSei) {
-		this.docSei = docSei;
-	}
-
-	public Set<Usuario> getUsuarios() {
-		return usuarios;
-	}
-
-	public void setUsuarios(Set<Usuario> usuarios) {
-		this.usuarios = usuarios;
 	}
 
 }

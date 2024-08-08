@@ -1,6 +1,6 @@
 package models;
 
-public class InterferenciaTipo {
+public class TipoInterferencia {
 
 	private Long id;
 
@@ -26,7 +26,7 @@ public class InterferenciaTipo {
 	    public boolean equals(Object o) {
 	        if (this == o) return true;
 	        if (o == null || getClass() != o.getClass()) return false;
-	        InterferenciaTipo that = (InterferenciaTipo) o;
+	        TipoInterferencia that = (TipoInterferencia) o;
 	        return id.equals(that.id);
 	    }
 

@@ -66,9 +66,9 @@ public class EditAddressController implements Initializable {
 
 		this.endereco = this.documentController.getDocAddress();
 
-		tfAddress.setText(endereco.getEndLogradouro());
-		tfCity.setText(endereco.getEndCidade());
-		tfZipCode.setText(endereco.getEndCep());
+		tfAddress.setText(endereco.getLogradouro());
+		tfCity.setText(endereco.getCidade());
+		tfZipCode.setText(endereco.getCep());
 
 		btnClose.setOnAction(e -> {
 			this.documentController.closeEditAddress();
@@ -86,9 +86,9 @@ public class EditAddressController implements Initializable {
 		String endCidade = tfCity.getText();
 		String endCep = tfZipCode.getText();
 
-		endereco.setEndLogradouro(endLogradouro);
-		endereco.setEndCidade(endCidade);
-		endereco.setEndCep(endCep);
+		endereco.setLogradouro(endLogradouro);
+		endereco.setCidade(endCidade);
+		endereco.setCep(endCep);
 
 		try {
 			EnderecoService endServ = new EnderecoService(urlService);

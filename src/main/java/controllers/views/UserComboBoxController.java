@@ -14,10 +14,7 @@ import models.Usuario;
 import services.UsuarioService;
 
 public class UserComboBoxController {
-	
-	
 
-	
 	String localUrl;
 
 	private JFXComboBox<Usuario> comboBox;
@@ -38,8 +35,8 @@ public class UserComboBoxController {
 		comboBox.setItems(obsList);
 		comboBox.setEditable(true);
 
-		utilities.FxUtilComboBoxSearchable.autoCompleteComboBoxPlus(comboBox, (typedText,
-				itemToCompare) -> itemToCompare.getUsNome().toLowerCase().contains(typedText.toLowerCase()));
+		utilities.FxUtilComboBoxSearchable.autoCompleteComboBoxPlus(comboBox,
+				(typedText, itemToCompare) -> itemToCompare.getNome().toLowerCase().contains(typedText.toLowerCase()));
 
 		utilities.FxUtilComboBoxSearchable.getComboBoxValue(comboBox);
 
@@ -48,44 +45,62 @@ public class UserComboBoxController {
 		// Preeche com valores do servido atualizando ao digitar
 		comboBox.getEditor().textProperty().addListener(new ChangeListener<String>() {
 			private String lastSearch = "";
-			
+
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
 				if (newValue != null && !newValue.isEmpty() && newValue != "") {
-					obsList.clear();
+					
 
 					// Verifica se a nova busca é uma continuação da busca anterior, tanto
 					// adicionando como removendo caracteres
 					if (lastSearch.contains(newValue) || newValue.contains(lastSearch)) {
-						boolean containsSearchTerm = dbObjects.stream().anyMatch(
-								object -> object.getUsNome().toLowerCase().contains(newValue.toLowerCase()));
+						
+						obsList.clear();
+						
+						boolean containsSearchTerm = dbObjects.stream()
+								.anyMatch(object -> object.getNome().toLowerCase().contains(newValue.toLowerCase()));
 
 						if (containsSearchTerm) {
+							
+							obsList.clear();
+							
 							obsList.addAll(dbObjects);
 						} else {
+							
+							obsList.clear();
 							fetchAndUpdate(newValue);
 						}
-					}/* else {
-						// Nova busca completamente diferente, então limpamos o conjunto e fazemos uma
-						// nova busca
-						dbObjects.clear();
-						fetchAndUpdate(newValue);
-					}*/
+					} /*
+						 * else { // Nova busca completamente diferente, então limpamos o conjunto e
+						 * fazemos uma // nova busca dbObjects.clear(); fetchAndUpdate(newValue); }
+						 */
 
 					lastSearch = newValue;
+					
+					// Ordena a lista colocando o newValue no início e assim podendo buscar (obsList.get(0) no método getSelectedObject.
+		            obsList.sort((object1, object2) -> {
+		                if (object1.getNome().equalsIgnoreCase(newValue)) {
+		                    return -1; // Coloca endereco1 (com logradouro igual ao newValue) no início
+		                } else if (object2.getNome().equalsIgnoreCase(newValue)) {
+		                    return 1;  // Coloca endereco2 no início, se for o newValue
+		                }
+		                return 0;
+		            });
+		            
 				}
 
 			}
 		});
 	}
-	
-	/* Ao selecionar algo na table view `DocumentController`, este ítem é adicionado aqui para que não seja preciso 
-	buscá-lo no banco de dados e assim não ficando lento a seleção. 
-	*/
-	public void addItemToDbObjects (Usuario object) {
+
+	/*
+	 * Ao selecionar algo na table view `DocumentController`, este ítem é adicionado
+	 * aqui para que não seja preciso buscá-lo no banco de dados e assim não ficando
+	 * lento a seleção.
+	 */
+	public void addItemToDbObjects(Usuario object) {
 		dbObjects.add(object);
 	}
-
 
 	private void fetchAndUpdate(String keyword) {
 		try {
@@ -106,6 +121,7 @@ public class UserComboBoxController {
 			e.printStackTrace();
 		}
 	}
+
 	// Método para buscar processos e preencher o ComboBox
 	public List<Usuario> fetchByKeyword(String keyword) {
 
@@ -127,7 +143,7 @@ public class UserComboBoxController {
 	public Usuario getSelectedObject() {
 		// Verifica se nulo, se não preenche objeto e retorna.
 		Usuario object = comboBox.selectionModelProperty().get().isEmpty() ? null
-				: new Usuario(obsList.get(0).getUsId(), obsList.get(0).getUsNome());
+				: new Usuario(obsList.get(0).getId(), obsList.get(0).getNome());
 
 		return object;
 

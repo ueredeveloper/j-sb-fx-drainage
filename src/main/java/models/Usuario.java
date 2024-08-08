@@ -6,9 +6,9 @@ import java.util.Set;
 public class Usuario {
 	
 
-	private Long usId;
-	private String usNome;
-	private Integer usCpfCnpj;
+	private Long id;
+	private String nome;
+	private Integer cpdCnpj;
 
 	private Set<Documento> documentos = new HashSet<>();
 
@@ -16,39 +16,39 @@ public class Usuario {
 		super();
 	}
 
-	public Usuario(Long usId, String usNome) {
+	public Usuario(Long id, String nome) {
 		super();
-		this.usId = usId;
-		this.usNome = usNome;
+		this.id = id;
+		this.nome = nome;
 	}
 
-	public Usuario(String usNome) {
+	public Usuario(String nome) {
 		super();
-		this.usNome = usNome;
+		this.nome = nome;
 	}
 
-	public Long getUsId() {
-		return usId;
+	public Long getId() {
+		return id;
 	}
 
-	public void setUsId(Long usId) {
-		this.usId = usId;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
-	public String getUsNome() {
-		return usNome;
+	public String getNome() {
+		return nome;
 	}
 
-	public void setUsNome(String usNome) {
-		this.usNome = usNome;
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 
-	public Integer getUsCpfCnpj() {
-		return usCpfCnpj;
+	public Integer getCpdCnpj() {
+		return cpdCnpj;
 	}
 
-	public void setUsCpfCnpj(Integer usCpfCnpj) {
-		this.usCpfCnpj = usCpfCnpj;
+	public void setCpdCnpj(Integer cpdCnpj) {
+		this.cpdCnpj = cpdCnpj;
 	}
 
 	public Set<Documento> getDocumentos() {
@@ -61,7 +61,7 @@ public class Usuario {
 
 	@Override
 	public String toString() {
-		return usNome;
+		return nome;
 	}
 
 }

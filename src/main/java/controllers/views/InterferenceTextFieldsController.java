@@ -42,15 +42,15 @@ public class InterferenceTextFieldsController {
 		try {
 			if (newValue != null && !newValue.trim().isEmpty()) {
 				Double latitude = Double.parseDouble(newValue);
-				interferencia.setInterLatitude(latitude);
+				interferencia.setLatitude(latitude);
 			} else {
-				interferencia.setInterLatitude(null); // Set null if empty or null input
+				interferencia.setLatitude(null); // Set null if empty or null input
 			}
 		} catch (NumberFormatException e) {
 			// Handle invalid number format
-			interferencia.setInterLatitude(null); // Set null if input cannot be parsed
+			interferencia.setLatitude(null); // Set null if input cannot be parsed
 		}
-		if (interferencia.getInterLatitude() != null && interferencia.getInterLongitude() != null) {
+		if (interferencia.getLatitude() != null && interferencia.getLongitude() != null) {
 
 			mapController.handleAddMarker(JsonConverter.convertObjectToJson(interferencia));
 		}
@@ -63,16 +63,16 @@ public class InterferenceTextFieldsController {
 		try {
 			if (newValue != null && !newValue.trim().isEmpty()) {
 				Double longitude = Double.parseDouble(newValue);
-				interferencia.setInterLongitude(longitude);
+				interferencia.setLongitude(longitude);
 			} else {
-				interferencia.setInterLongitude(null); // Set null if empty or null input
+				interferencia.setLongitude(null); // Set null if empty or null input
 			}
 		} catch (NumberFormatException e) {
 			// Handle invalid number format
-			interferencia.setInterLongitude(null); // Set null if input cannot be parsed
+			interferencia.setLongitude(null); // Set null if input cannot be parsed
 		}
 
-		if (interferencia.getInterLatitude() != null && interferencia.getInterLongitude() != null) {
+		if (interferencia.getLatitude() != null && interferencia.getLongitude() != null) {
 
 			mapController.handleAddMarker(JsonConverter.convertObjectToJson(interferencia));
 		}
@@ -85,8 +85,8 @@ public class InterferenceTextFieldsController {
 
 	public void updateCoordinates(Interferencia interferencia) {
 
-		tfLatitude.setText(String.valueOf(interferencia.getInterLatitude()));
-		tfLongitude.setText(String.valueOf(interferencia.getInterLongitude()));
+		tfLatitude.setText(String.valueOf(interferencia.getLatitude()));
+		tfLongitude.setText(String.valueOf(interferencia.getLongitude()));
 
 	}
 

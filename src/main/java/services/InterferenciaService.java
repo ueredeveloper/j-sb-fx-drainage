@@ -78,7 +78,7 @@ public class InterferenciaService {
 
 	public ServiceResponse<?> update(Interferencia object) {
 		try {
-			URL apiUrl = new URL(localUrl + "/interference/subterranean/update?id=" + object.getInterId());
+			URL apiUrl = new URL(localUrl + "/interference/subterranean/update?id=" + object.getId());
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
 			connection.setRequestMethod("PUT");
 			connection.setRequestProperty("Content-Type", "application/json");

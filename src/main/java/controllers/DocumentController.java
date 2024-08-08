@@ -160,7 +160,7 @@ public class DocumentController implements Initializable {
 
 	public Endereco getDocAddress() {
 		// Get the selected document from the TableView
-		Endereco address = tvDocs.getSelectionModel().getSelectedItem().getDocEndereco();
+		Endereco address = tvDocs.getSelectionModel().getSelectedItem().getEndereco();
 
 		return address;
 	}
@@ -190,11 +190,11 @@ public class DocumentController implements Initializable {
 		// componente pai (MainController)
 		apContent.getStylesheets().clear();
 
-		tcTipo.setCellValueFactory(cellData -> cellData.getValue().getProperty(Documento::getDocTipoDescricao));
-		tcNum.setCellValueFactory(new PropertyValueFactory<Documento, String>("docNumero"));
-		tcNumSei.setCellValueFactory(new PropertyValueFactory<Documento, String>("docSei"));
-		tcProc.setCellValueFactory(cellData -> cellData.getValue().getProperty(Documento::getDocProcessoProcNumero));
-		tcAddress.setCellValueFactory(cellData -> cellData.getValue().getProperty(Documento::getDocEnderecoLogradouro));
+		tcTipo.setCellValueFactory(cellData -> cellData.getValue().getProperty(Documento::getTipoDescricao));
+		tcNum.setCellValueFactory(new PropertyValueFactory<Documento, String>("numero"));
+		tcNumSei.setCellValueFactory(new PropertyValueFactory<Documento, String>("numeroSei"));
+		tcProc.setCellValueFactory(cellData -> cellData.getValue().getProperty(Documento::getProcessoNumero));
+		tcAddress.setCellValueFactory(cellData -> cellData.getValue().getProperty(Documento::getEnderecoLogradouro));
 
 		Callback<TableColumn<Documento, String>, TableCell<Documento, String>> cellFactory = new Callback<TableColumn<Documento, String>, TableCell<Documento, String>>() {
 			@Override
@@ -242,12 +242,12 @@ public class DocumentController implements Initializable {
 
 			if (newSelection != null) {
 				// Atualiza ComboBox (Tipo de Documento) a partir do documento selecionado
-				cbDocType.getSelectionModel().select(newSelection.getDocTipo());
+				cbDocType.getSelectionModel().select(newSelection.getTipo());
 				// Atualizar componentes de acordo com o documento selecionado
-				tfNumber.setText(newSelection.getDocNumero());
-				tfNumberSei.setText(String.valueOf(newSelection.getDocSei()));
+				tfNumber.setText(newSelection.getNumero());
+				tfNumberSei.setText(String.valueOf(newSelection.getNumeroSei()));
 
-				Processo processo = newSelection.getDocProcesso();
+				Processo processo = newSelection.getProcesso();
 				// Adiciona o objeto à lista para não precisar buscar no banco de dados.
 				if (processo != null) {
 					processCbController.addItemToDbObjects(processo);
@@ -255,7 +255,7 @@ public class DocumentController implements Initializable {
 				}
 				cbProcess.getSelectionModel().select(processo);
 
-				Endereco endereco = newSelection.getDocEndereco();
+				Endereco endereco = newSelection.getEndereco();
 				// Adiciona o objeto à lista para não precisar buscar no banco de dados.
 				if (endereco != null) {
 					addressCbController.addItemToDbObjects(endereco);
@@ -794,11 +794,11 @@ public class DocumentController implements Initializable {
 			DocumentoTipo docType = cbDocType.getValue();
 
 			Documento newDocument = new Documento();
-			newDocument.setDocNumero(tfNumber.getText());
-			newDocument.setDocProcesso(obsProcessList0);
-			newDocument.setDocSei(numberSei);
-			newDocument.setDocTipo(docType);
-			newDocument.setDocEndereco(obsAddressList0);
+			newDocument.setNumero(tfNumber.getText());
+			newDocument.setProcesso(obsProcessList0);
+			newDocument.setNumeroSei(numberSei);
+			newDocument.setTipo(docType);
+			newDocument.setEndereco(obsAddressList0);
 			newDocument.setUsuarios(usuarios);
 
 			ServiceResponse<?> documentoServiceResponse = documentService.save(newDocument);
@@ -885,13 +885,13 @@ public class DocumentController implements Initializable {
 		}
 
 		// Edita objeto com novos valores
-		selectedDocument.setDocTipo(updateDocumentoTipo);
-		selectedDocument.setDocNumero(updatedNumero);
-		selectedDocument.setDocSei(updatedSei);
+		selectedDocument.setTipo(updateDocumentoTipo);
+		selectedDocument.setNumero(updatedNumero);
+		selectedDocument.setNumeroSei(updatedSei);
 
 		Endereco selectedAddress = addressCbController.getSelectedObject();
 
-		selectedDocument.setDocEndereco(selectedAddress);
+		selectedDocument.setEndereco(selectedAddress);
 
 		Processo selectedProcess = processCbController.getSelectedObject();
 
@@ -901,10 +901,10 @@ public class DocumentController implements Initializable {
 			selectedProcess.setAnexo(anexo);
 		}
 
-		selectedDocument.setDocProcesso(selectedProcess);
+		selectedDocument.setProcesso(selectedProcess);
 
 		/*
-		 * selectedDocument.setDocEndereco(new Endereco(obsAddress.get(0).getEndId(),
+		 * selectedDocument.setEndereco(new Endereco(obsAddress.get(0).getEndId(),
 		 * obsAddress.get(0).getEndLogradouro(), tfCity.getText(), tfCEP.getText()));
 		 */
 
@@ -958,7 +958,7 @@ public class DocumentController implements Initializable {
 		try {
 			DocumentService documentService = new DocumentService(localUrl);
 
-			ServiceResponse<?> serviceResponse = documentService.deleteById(selectedDocument.getDocId());
+			ServiceResponse<?> serviceResponse = documentService.deleteById(selectedDocument.getId());
 
 			if (serviceResponse.getResponseCode() == 200) {
 

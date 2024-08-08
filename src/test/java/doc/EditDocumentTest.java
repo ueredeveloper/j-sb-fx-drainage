@@ -49,7 +49,7 @@ public class EditDocumentTest extends ApplicationTest {
 
 		Platform.runLater(() -> {
 			for (DocumentoTipo tipo : cbDocType.getItems()) {
-				if (tipo.getDtDescricao().equals("Ofício")) {
+				if (tipo.getDescricao().equals("Ofício")) {
 					cbDocType.getSelectionModel().select(tipo);
 					break;
 				}

@@ -8,116 +8,116 @@ import javafx.beans.property.StringProperty;
 
 public class Endereco {
 
-	private Long endId;
-	private String endLogradouro;
-	private String endCidade;
-	private String endCep;
-	private String endBairro;
-	private Estado endEstado;
+	private Long id;
+	private String logradouro;
+	private String cidade;
+	private String cep;
+	private String bairro;
+	private Estado estado;
 
 	public Endereco() {
 		super();
 	}
 
-	public Endereco(String endLogradouro) {
+	public Endereco(String logradouro) {
 		super();
-		this.endLogradouro = endLogradouro;
+		this.logradouro = logradouro;
+	}
+	
+	public Endereco(Long id, String logradouro) {
+		super();
+		this.id = id;
+		this.logradouro = logradouro;
+	}
+	
+	public Endereco(Long id, String logradouro, String cidade, String cep) {
+		super();
+		this.id = id;
+		this.logradouro = logradouro;
+		this.cidade = cidade;
+		this.cep = cep;
 	}
 
-	public Endereco(Long endId, String endLogradouro) {
+	public Endereco(Long id, String logradouro, String cidade, String cep, String bairro, Estado estado) {
 		super();
-		this.endId = endId;
-		this.endLogradouro = endLogradouro;
-	}
-
-	public Endereco(Long endId, String endLogradouro, String endCidade, String endCep) {
-		super();
-		this.endId = endId;
-		this.endLogradouro = endLogradouro;
-		this.endCidade = endCidade;
-		this.endCep = endCep;
+		this.id = id;
+		this.logradouro = logradouro;
+		this.cidade = cidade;
+		this.cep = cep;
+		this.bairro = bairro;
+		this.estado = estado;
 	}
 	
 	
-	public Endereco(Long endId, String endLogradouro, String endCidade, String endCep, String endBairro,
-			Estado endEstado) {
+
+	public Endereco(String logradouro, String cidade, String cep, String bairro, Estado estado) {
 		super();
-		this.endId = endId;
-		this.endLogradouro = endLogradouro;
-		this.endCidade = endCidade;
-		this.endCep = endCep;
-		this.endBairro = endBairro;
-		this.endEstado = endEstado;
+		this.logradouro = logradouro;
+		this.cidade = cidade;
+		this.cep = cep;
+		this.bairro = bairro;
+		this.estado = estado;
+	}
+	
+	public Long getId() {
+		return id;
 	}
 
-	public Endereco(String endLogradouro, String endCidade, String endCep, String endBairro, Estado endEstado) {
-		super();
-		this.endLogradouro = endLogradouro;
-		this.endCidade = endCidade;
-		this.endCep = endCep;
-		this.endBairro = endBairro;
-		this.endEstado = endEstado;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
-	public Long getEndId() {
-		return endId;
+	public String getLogradouro() {
+		return logradouro;
 	}
 
-	public void setEndId(Long endId) {
-		this.endId = endId;
+	public void setLogradouro(String logradouro) {
+		this.logradouro = logradouro;
 	}
 
-	public String getEndLogradouro() {
-		return endLogradouro;
+	public String getCidade() {
+		return cidade;
 	}
 
-	public void setEndLogradouro(String endLogradouro) {
-		this.endLogradouro = endLogradouro;
+	public void setCidade(String cidade) {
+		this.cidade = cidade;
 	}
 
-	public String getEndCidade() {
-		return endCidade;
+	public String getCep() {
+		return cep;
 	}
 
-	public void setEndCidade(String endCidade) {
-		this.endCidade = endCidade;
+	public void setCep(String cep) {
+		this.cep = cep;
 	}
 
-	public String getEndCep() {
-		return endCep;
+	public String getBairro() {
+		return bairro;
 	}
 
-	public void setEndCep(String endCep) {
-		this.endCep = endCep;
+	public void setBairro(String bairro) {
+		this.bairro = bairro;
 	}
 
-	public String getEndBairro() {
-		return endBairro;
+	public Estado getEstado() {
+		return estado;
 	}
 
-	public void setEndBairro(String endBairro) {
-		this.endBairro = endBairro;
-	}
-
-	// Metodos
-
-	public Estado getEndEstado() {
-		return endEstado;
-	}
-
-	public void setEndEstado(Estado endEstado) {
-		this.endEstado = endEstado;
+	public void setEstado(Estado estado) {
+		this.estado = estado;
 	}
 
 	// Método toString para mostrar o logradouro no combobox.
 	@Override
 	public String toString() {
-		return endLogradouro;
+		return logradouro;
 	}
+	
+	
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(endLogradouro);
+		return Objects.hash(logradouro);
 	}
 
 	/*
@@ -138,7 +138,7 @@ public class Endereco {
 		if (getClass() != obj.getClass())
 			return false;
 		Endereco other = (Endereco) obj;
-		return Objects.equals(endLogradouro, other.endLogradouro);
+		return Objects.equals(logradouro, other.logradouro);
 	}
 
 	public <T> StringProperty getProperty(Function<Endereco, T> propertyAccessor) {
@@ -153,9 +153,9 @@ public class Endereco {
 		return stringProperty;
 	}
 
-	public String getEstado() {
-		if (this.endEstado != null) {
-			return this.getEstado();
+	public String getStringEstado() {
+		if (this.estado != null) {
+			return this.getEstado().getDescricao();
 		} else {
 			return null; // or handle the case when docProcesso is null
 		}

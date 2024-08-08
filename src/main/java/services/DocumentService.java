@@ -106,7 +106,7 @@ public class DocumentService {
 
 	public ServiceResponse<?> update(Documento documento) {
 		try {
-			URL apiUrl = new URL(localUrl + "/document/update?id=" + documento.getDocId());
+			URL apiUrl = new URL(localUrl + "/document/update?id=" + documento.getId());
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
 			connection.setRequestMethod("PUT");
 			connection.setRequestProperty("Content-Type", "application/json");

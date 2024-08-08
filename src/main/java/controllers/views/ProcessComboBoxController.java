@@ -38,7 +38,7 @@ public class ProcessComboBoxController {
 		cbProcess.setEditable(true);
 
 		utilities.FxUtilComboBoxSearchable.autoCompleteComboBoxPlus(cbProcess, (typedText,
-				itemToCompare) -> itemToCompare.getProcNumero().toLowerCase().contains(typedText.toLowerCase()));
+				itemToCompare) -> itemToCompare.getNumero().toLowerCase().contains(typedText.toLowerCase()));
 
 		utilities.FxUtilComboBoxSearchable.getComboBoxValue(cbProcess);
 
@@ -53,29 +53,40 @@ public class ProcessComboBoxController {
 				
 				if (newValue != null && !newValue.isEmpty() && newValue != "") {
 					
-					obsList.clear();
+					
 					
 					// Verifica se a nova busca é uma continuação da busca anterior, tanto
 					// adicionando como removendo caracteres
 					if (lastSearch.contains(newValue) || newValue.contains(lastSearch)) {
 						
+						obsList.clear();
+						
 						boolean containsSearchTerm = dbObjects.stream().anyMatch(
-								object -> object.getProcNumero().toLowerCase().contains(newValue.toLowerCase()));
+								object -> object.getNumero().toLowerCase().contains(newValue.toLowerCase()));
 						
 						if (containsSearchTerm) {
+							
+							obsList.clear();
 							obsList.addAll(dbObjects);
 						} else {
+							obsList.clear();
+							
 							fetchAndUpdate(newValue);
 						}
-					} /*else {
-						System.out.println("cbProcess else | last " + lastSearch + " new " + newValue);
-						// Nova busca completamente diferente, então limpamos o conjunto e fazemos uma
-						// nova busca
-						dbObjects.clear();
-						fetchAndUpdate(newValue);
-					}*/
+					} 
 
 					lastSearch = newValue;
+					
+					// Ordena a lista colocando o newValue no início e assim podendo buscar (obsList.get(0) no método getSelectedObject.
+		            obsList.sort((object1, object2) -> {
+		                if (object1.getNumero().equalsIgnoreCase(newValue)) {
+		                    return -1; // Coloca endereco1 (com logradouro igual ao newValue) no início
+		                } else if (object2.getNumero().equalsIgnoreCase(newValue)) {
+		                    return 1;  // Coloca endereco2 no início, se for o newValue
+		                }
+		                return 0;
+		            });
+		            
 				}
 				
 				
@@ -83,7 +94,7 @@ public class ProcessComboBoxController {
 		});
 		
 		
-		//System.out.println(cbProcess.getItems().get(0).getProcNumero());
+		//System.out.println(cbProcess.getItems().get(0).getNumero());
 	}
 	/* Ao selecionar algo na table view `DocumentController`, este ítem é adicionado aqui para que não seja preciso 
 	buscá-lo no banco de dados e assim não ficando lento a seleção. 
@@ -132,7 +143,7 @@ public class ProcessComboBoxController {
 	public Processo getSelectedObject() {
 		// Verifica se nulo, se não nulo preenche objeto e retorna.
 		Processo object = cbProcess.selectionModelProperty().get().isEmpty() ? null
-				: new Processo(obsList.get(0).getProcId(), obsList.get(0).getProcNumero());
+				: new Processo(obsList.get(0).getId(), obsList.get(0).getNumero());
 		return object;
 	}
 	

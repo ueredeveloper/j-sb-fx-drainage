@@ -2,53 +2,50 @@ package models;
 
 public class Subterranea extends Interferencia {
 
-	private Boolean subCaesb; // tem caesb () sim () não
+	private Boolean caesb; // tem caesb () sim () não
 
-	private String subNivelEstatico; // em metros
+	private String nivelEstatico; // em metros
 
-	private String subDinamico; // em metros
+	private String nivelDinamico; // em metros
 
 	public Subterranea() {
 		super();
 	}
 
 	public Subterranea(Double interLatitude, Double interLongitude, Endereco interEndereco,
-			InterferenciaTipo interferenciaTipo) {
+			TipoInterferencia interferenciaTipo) {
 		super(interLatitude, interLongitude, interEndereco, interferenciaTipo);
 	}
 
-	public Boolean getSubCaesb() {
-		return subCaesb;
+	public Boolean getCaesb() {
+		return caesb;
 	}
 
-	public void setSubCaesb(Boolean subCaesb) {
-		this.subCaesb = subCaesb;
+	public void setCaesb(Boolean caesb) {
+		this.caesb = caesb;
 	}
 
-	public String getSubNivelEstatico() {
-		return subNivelEstatico;
+	public String getNivelEstatico() {
+		return nivelEstatico;
 	}
 
-	public void setSubNivelEstatico(String subNivelEstatico) {
-		this.subNivelEstatico = subNivelEstatico;
+	public void setNivelEstatico(String nivelEstatico) {
+		this.nivelEstatico = nivelEstatico;
 	}
 
-	public String getSubDinamico() {
-		return subDinamico;
+	public String getNivelDinamico() {
+		return nivelDinamico;
 	}
 
-	public void setSubDinamico(String subDinamico) {
-		this.subDinamico = subDinamico;
+	public void setNivelDinamico(String nivelDinamico) {
+		this.nivelDinamico = nivelDinamico;
 	}
 
 	@Override
 	public String toString() {
-		return "Subterranea [getInterLatitude()=" + getInterLatitude()
-				+ ", getInterLongitude()=" + getInterLongitude() + ", getInterEndereco()=" + getInterEndereco()
-				+ ", getInterferenciaTipo()=" + getInterferenciaTipo() + ", toString()=" + super.toString()
-				+ ", getClass()=" + getClass() + ", hashCode()=" + hashCode() + "]";
+		return "Subterranea [getLatitude()=" + getLatitude() + ", getLongitude()=" + getLongitude() + ", getEndereco()="
+				+ getEndereco() + ", getTipoInterferencia()=" + getTipoInterferencia() + ", toString()="
+				+ super.toString() + ", getClass()=" + getClass() + ", hashCode()=" + hashCode() + "]";
 	}
-	
-	
 
 }

@@ -5,9 +5,9 @@ import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import models.Estado;
-import models.InterferenciaTipo;
+import models.TipoInterferencia;
 import services.EstadoService;
-import services.InterferenciaTipoService;
+import services.TipoInterferenciaService;
 import utilities.URLUtility;
 
 public enum StaticData {
@@ -19,16 +19,16 @@ public enum StaticData {
 		this.localUrl = URLUtility.getURLService();
 	}
 
-	private ObservableList<InterferenciaTipo> obsListInterferenciaTipo;
+	private ObservableList<TipoInterferencia> obsListTipoInterferencia;
 	private ObservableList<Estado> obsListEstado;
 
-	public List<InterferenciaTipo> fetchInterferenciaTipo() {
+	public List<TipoInterferencia> fetchTipoInterferencia() {
 
 		try {
 
-			InterferenciaTipoService service = new InterferenciaTipoService(localUrl);
+			TipoInterferenciaService service = new TipoInterferenciaService(localUrl);
 
-			List<InterferenciaTipo> list = service.fetchAll();
+			List<TipoInterferencia> list = service.fetchAll();
 
 			return list;
 
@@ -39,15 +39,15 @@ public enum StaticData {
 	}
 
 	//
-	public ObservableList<InterferenciaTipo> getInterferenciaTipo() {
+	public ObservableList<TipoInterferencia> getTipoInterferencia() {
 		// Se já houver solicitado uma vez não precisa solicitar mais.
-		if (obsListInterferenciaTipo == null) {
+		if (obsListTipoInterferencia == null) {
 
-			obsListInterferenciaTipo = FXCollections.observableArrayList(fetchInterferenciaTipo());
+			obsListTipoInterferencia = FXCollections.observableArrayList(fetchTipoInterferencia());
 
-			return obsListInterferenciaTipo;
+			return obsListTipoInterferencia;
 		}
-		return obsListInterferenciaTipo;
+		return obsListTipoInterferencia;
 	}
 
 	public List<Estado> fetchEstado() {
@@ -69,7 +69,7 @@ public enum StaticData {
 	//
 	public ObservableList<Estado> getEstados() {
 		// Se já houver solicitado uma vez não precisa solicitar mais.
-		if (obsListInterferenciaTipo == null) {
+		if (obsListTipoInterferencia == null) {
 
 			obsListEstado = FXCollections.observableArrayList(fetchEstado());
 

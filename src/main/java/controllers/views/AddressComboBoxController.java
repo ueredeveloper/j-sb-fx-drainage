@@ -31,7 +31,20 @@ public class AddressComboBoxController {
 		comboBox.setEditable(true);
 
 		utilities.FxUtilComboBoxSearchable.autoCompleteComboBoxPlus(comboBox, (typedText,
-				itemToCompare) -> itemToCompare.getEndLogradouro().toLowerCase().contains(typedText.toLowerCase()));
+				itemToCompare) -> itemToCompare.getLogradouro().toLowerCase().contains(typedText.toLowerCase()));
+
+		/*
+		 * comboBox.setCellFactory(cellFactory -> new ListCell<Endereco>() {
+		 * 
+		 * @Override protected void updateItem(Endereco item, boolean empty) {
+		 * super.updateItem(item, empty); if (item == null || empty) { setText(null); }
+		 * else { setText(item.getLogradouro());
+		 * 
+		 * } } });
+		 */
+
+		// Não está funcionando, ao clicar em um valor aparece no combobox o objeto. Eu
+		// quero que apareça o logradouro.
 
 		comboBox.getEditor().textProperty().addListener(new ChangeListener<String>() {
 			private String lastSearch = "";
@@ -39,54 +52,63 @@ public class AddressComboBoxController {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
 				if (newValue != null && !newValue.isEmpty() && newValue != "") {
-					obsList.clear();
+					
+					
 
 					// Verifica se a nova busca é uma continuação da busca anterior, tanto
 					// adicionando como removendo caracteres
 					if (lastSearch.contains(newValue) || newValue.contains(lastSearch)) {
+
+						obsList.clear();
+
 						boolean containsSearchTerm = dbObjects.stream().anyMatch(
-								endereco -> endereco.getEndLogradouro().toLowerCase().contains(newValue.toLowerCase()));
+								endereco -> endereco.getLogradouro().toLowerCase().contains(newValue.toLowerCase()));
 
 						if (containsSearchTerm) {
+							obsList.clear();
 							obsList.addAll(dbObjects);
 						} else {
-							
-							
+							obsList.clear();
 							fetchAndUpdate(newValue);
 						}
-					} 
-					/*else {
-						// Nova busca completamente diferente, então limpamos o conjunto e fazemos uma
-						// nova busca
-						
-						System.out.println("else fetch" + newValue + "last " + lastSearch);
-						dbObjects.clear();
-						fetchAndUpdate(newValue);
-					}*/
+					}
 
 					lastSearch = newValue;
+					
+					// Ordena a lista colocando o newValue no início e assim podendo buscar (obsList.get(0) no método getSelectedObject.
+		            obsList.sort((object1, object2) -> {
+		                if (object1.getLogradouro().equalsIgnoreCase(newValue)) {
+		                    return -1; // Coloca endereco1 (com logradouro igual ao newValue) no início
+		                } else if (object2.getLogradouro().equalsIgnoreCase(newValue)) {
+		                    return 1;  // Coloca endereco2 no início, se for o newValue
+		                }
+		                return 0;
+		            });
 				}
 			}
 		});
 	}
-	
-	/* Ao selecionar algo na table view `DocumentController`, este ítem é adicionado aqui para que não seja preciso 
-	buscá-lo no banco de dados e assim não ficando lento a seleção. 
-	*/
-	public void addItemToDbObjects (Endereco object) {
+
+	/*
+	 * Ao selecionar algo na table view `DocumentController`, este ítem é adicionado
+	 * aqui para que não seja preciso buscá-lo no banco de dados e assim não ficando
+	 * lento a seleção.
+	 */
+	public void addItemToDbObjects(Endereco object) {
 		dbObjects.add(object);
 	}
 
 	private void fetchAndUpdate(String keyword) {
-		
-		System.out.println("Adddres  cb fetch and up");
+
 		try {
 			EnderecoService service = new EnderecoService(localUrl);
 			Set<Endereco> fetchedAddresses = new HashSet<>(service.fetchAddressByKeyword(keyword));
 
 			if (!fetchedAddresses.isEmpty()) {
+
 				dbObjects.addAll(fetchedAddresses);
 				obsList.addAll(dbObjects);
+
 			} else {
 				// Se não houver resultados, adiciona o novo endereço diretamente
 				Endereco newAddress = new Endereco(keyword);
@@ -100,9 +122,10 @@ public class AddressComboBoxController {
 	}
 
 	public Endereco getSelectedObject() {
+
 		// Verifica se nulo, se não nulo preenche objeto e retorna.
 		Endereco object = comboBox.selectionModelProperty().get().isEmpty() ? null
-				: new Endereco(obsList.get(0).getEndId(), obsList.get(0).getEndLogradouro());
+				: new Endereco(obsList.get(0).getId(), obsList.get(0).getLogradouro());
 		return object;
 	}
 

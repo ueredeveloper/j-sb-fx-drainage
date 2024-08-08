@@ -38,7 +38,7 @@ public class SaveUsingAddAddressController extends ApplicationTest {
 		// Seleciona algo dentro do ComboBox
 		Platform.runLater(() -> {
 			for (DocumentoTipo tipo : cbDocType.getItems()) {
-				if (tipo.getDtDescricao().equals("Ofício")) {
+				if (tipo.getDescricao().equals("Ofício")) {
 					cbDocType.getSelectionModel().select(tipo);
 					break;
 				}

@@ -18,19 +18,19 @@ map.on('click', function(e) {
 
 
 let json = {
-	"docId":1,
-	"docNumero":"12/2015",
-	"docProcesso":{"procId":2,"procNumero":"456/2015"},
-	"docSei":455,"docTipo":{"dtId":1,"dtDescricao":"Requerimento"},
-	"docEndereco":{
-		"endId":3,"endLogradouro":"Rua das Flores, Apartamento 5","endCidade":"br","endCEP":"22"
+	"id":1,
+	"numero":"12/2015",
+	"processo":{"id":2,"numero":"456/2015"},
+	"numeroSei":455,"tipo":{"id":1,"descricao":"Requerimento"},
+	"endereco":{
+		"id":3,"logradouro":"Rua das Flores, Apartamento 5","endCidade":"br","cep":"22"
 	},
-	"interLatitude": -15.710520042184267,
-	"interLongitude": -47.76868726015565
+	"latitude": -15.710520042184267,
+	"longitude": -47.76868726015565
 	}
 
 	
-	L.marker([json.interLatitude, json.interLongitude]).addTo(map);
+	L.marker([json.latitude, json.longitude]).addTo(map);
 	
 
 // Definindo as camadas
@@ -87,8 +87,8 @@ let json = {
 		    if (currentMarker) {
 		        map.removeLayer(currentMarker);
 		    }
-		    currentMarker = L.marker([json.interLatitude, json.interLongitude]).addTo(map);
-		    map.setView([json.interLatitude, json.interLongitude], 11); // Centralizar o mapa no novo marcador
+		    currentMarker = L.marker([json.latitude, json.longitude]).addTo(map);
+		    map.setView([json.latitude, json.longitude], 11); // Centralizar o mapa no novo marcador
 		}
 	
 	

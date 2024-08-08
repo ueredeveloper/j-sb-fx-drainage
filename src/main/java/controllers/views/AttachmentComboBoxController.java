@@ -52,27 +52,38 @@ public class AttachmentComboBoxController implements Initializable {
 
 				
 				if (newValue != null && !newValue.isEmpty() && newValue != "") {
-					obsList.clear();
+					
 
 					// Verifica se a nova busca é uma continuação da busca anterior, tanto
 					// adicionando como removendo caracteres
 					if (lastSearch.contains(newValue) || newValue.contains(lastSearch)) {
+						
+						obsList.clear();
+						
 						boolean containsSearchTerm = dbObjects.stream().anyMatch(
 								object -> object.getNumero().toLowerCase().contains(newValue.toLowerCase()));
 
 						if (containsSearchTerm) {
+							obsList.clear();
+							
 							obsList.addAll(dbObjects);
 						} else {
+							obsList.clear();
 							fetchAndUpdate(newValue);
 						}
-					} /*else {
-						// Nova busca completamente diferente, então limpamos o conjunto e fazemos uma
-						// nova busca
-						dbObjects.clear();
-						fetchAndUpdate(newValue);
-					}*/
+					} 
 
 					lastSearch = newValue;
+					
+					// Ordena a lista colocando o newValue no início e assim podendo buscar (obsList.get(0) no método getSelectedObject.
+		            obsList.sort((object1, object2) -> {
+		                if (object1.getNumero().equalsIgnoreCase(newValue)) {
+		                    return -1; // Coloca endereco1 (com logradouro igual ao newValue) no início
+		                } else if (object2.getNumero().equalsIgnoreCase(newValue)) {
+		                    return 1;  // Coloca endereco2 no início, se for o newValue
+		                }
+		                return 0;
+		            });
 				}
 
 			}

@@ -4,44 +4,39 @@ import java.util.Objects;
 
 public class DocumentoTipo {
 
-	private Long dtId;
-	private String dtDescricao;
+	private Long id;
+	private String descricao;
 
 	// constructor
 	public DocumentoTipo() {
 		super();
 	}
 
-	public DocumentoTipo(Long dtId, String dtDescricao) {
-		this.dtId = dtId;
-		this.dtDescricao = dtDescricao;
+	public DocumentoTipo(Long id, String descricao) {
+		super();
+		this.id = id;
+		this.descricao = descricao;
 	}
 
-	public DocumentoTipo(Long dtId) {
-		this.dtId = dtId;
+	public Long getId() {
+		return id;
 	}
 
-	// getters and setters
-	public Long getDtId() {
-		return dtId;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
-	public void setDtId(Long dtId) {
-		this.dtId = dtId;
+	public String getDescricao() {
+		return descricao;
 	}
 
-	public String getDtDescricao() {
-		return dtDescricao;
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
 	}
 
-	public void setDtDescricao(String dtDescricao) {
-		this.dtDescricao = dtDescricao;
-	}
-	
-	
 	@Override
 	public int hashCode() {
-		return Objects.hash(dtId);
+		return Objects.hash(id);
 	}
 
 	@Override
@@ -53,12 +48,12 @@ public class DocumentoTipo {
 		if (getClass() != obj.getClass())
 			return false;
 		DocumentoTipo other = (DocumentoTipo) obj;
-		return Objects.equals(dtId, other.dtId);
+		return Objects.equals(id, other.id);
 	}
 
 	@Override
 	public String toString() {
-		return dtDescricao;
+		return descricao;
 	}
 
 }

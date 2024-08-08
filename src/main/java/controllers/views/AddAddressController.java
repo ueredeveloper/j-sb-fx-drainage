@@ -116,10 +116,10 @@ public class AddAddressController implements Initializable {
 		obsListState = StaticData.INSTANCE.getEstados();
 		cbState.setItems(obsListState);
 
-		tcAddress.setCellValueFactory(new PropertyValueFactory<Endereco, String>("endLogradouro"));
-		tcNeighborhood.setCellValueFactory(new PropertyValueFactory<Endereco, String>("endBairro"));
-		tcCity.setCellValueFactory(new PropertyValueFactory<Endereco, String>("endCidade"));
-		tcState.setCellValueFactory(new PropertyValueFactory<Endereco, String>("endEstado"));
+		tcAddress.setCellValueFactory(new PropertyValueFactory<Endereco, String>("logradouro"));
+		tcNeighborhood.setCellValueFactory(new PropertyValueFactory<Endereco, String>("bairro"));
+		tcCity.setCellValueFactory(new PropertyValueFactory<Endereco, String>("cidade"));
+		tcState.setCellValueFactory(new PropertyValueFactory<Endereco, String>("estado"));
 
 		tableView.setItems(obsList);
 
@@ -130,12 +130,12 @@ public class AddAddressController implements Initializable {
 				if (newValue != null) {
 					// Perform actions with the selected Endereco object
 
-					tfAddress.setText(newValue.getEndLogradouro());
-					tfNeighborhood.setText(newValue.getEndBairro());
-					tfZipCode.setText(newValue.getEndCep());
-					tfCity.setText(newValue.getEndCidade());
+					tfAddress.setText(newValue.getLogradouro());
+					tfNeighborhood.setText(newValue.getBairro());
+					tfZipCode.setText(newValue.getCep());
+					tfCity.setText(newValue.getCidade());
 					// tfArea.setText(newValue.getEndArea());
-					Estado selectedType = newValue.getEndEstado();
+					Estado selectedType = newValue.getEstado();
 					cbState.getSelectionModel().select(selectedType);
 
 				}
@@ -167,7 +167,7 @@ public class AddAddressController implements Initializable {
 
 	public void save(ActionEvent event) {
 
-		  	Long id = object.getEndId() !=null? object.getEndId(): null;
+		  	Long id = object.getId() !=null? object.getId(): null;
 		  	
 		  	System.out.println(id);
 			
@@ -208,7 +208,7 @@ public class AddAddressController implements Initializable {
 						Endereco newEndereco = new Gson().fromJson((String) service.getResponseBody(), Endereco.class);
 						
 						  // Remove o objeto com solicitado de salvamento ou id nulo, se estiver presente na tableView
-					    tableView.getItems().removeIf(end -> end.getEndId() == null || end.getEndId().equals(newEndereco.getEndId()));
+					    tableView.getItems().removeIf(end -> end.getId() == null || end.getId().equals(newEndereco.getId()));
 
 						// Adiciona com primeiro na lista
 						tableView.getItems().add(0, newEndereco);
@@ -246,7 +246,7 @@ public class AddAddressController implements Initializable {
 
 		Endereco seletedObject = tableView.getSelectionModel().getSelectedItem();
 
-			// Long id = seletedObject.getEndId();
+			// Long id = seletedObject.getId();
 			String logradouro = tfAddress.getText();
 			String bairro = tfNeighborhood.getText();
 			String cidade = tfCity.getText();
@@ -262,12 +262,12 @@ public class AddAddressController implements Initializable {
 				// estado);
 				
 				Endereco endereco = new Endereco();
-				endereco.setEndId(seletedObject.getEndId());
-				endereco.setEndLogradouro(logradouro);
-				endereco.setEndBairro(bairro);
-				endereco.setEndCidade(cidade);
-				endereco.setEndCep(cep);
-				endereco.setEndEstado(estado);
+				endereco.setId(seletedObject.getId());
+				endereco.setLogradouro(logradouro);
+				endereco.setBairro(bairro);
+				endereco.setCidade(cidade);
+				endereco.setCep(cep);
+				endereco.setEstado(estado);
 
 				ServiceResponse<?> service = enderecoService.update(endereco);
 
@@ -334,7 +334,7 @@ public class AddAddressController implements Initializable {
 		try {
 			EnderecoService service = new EnderecoService(urlService);
 
-			ServiceResponse<?> serviceResponse = service.deleteById(selected.getEndId());
+			ServiceResponse<?> serviceResponse = service.deleteById(selected.getId());
 
 			if (serviceResponse.getResponseCode() == 200) {
 

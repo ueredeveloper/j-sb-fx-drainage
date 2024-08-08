@@ -31,7 +31,7 @@ import javafx.stage.Stage;
 import models.Documento;
 import models.Endereco;
 import models.Interferencia;
-import models.InterferenciaTipo;
+import models.TipoInterferencia;
 import models.Subterranea;
 import services.DocumentService;
 import services.InterferenciaService;
@@ -63,7 +63,7 @@ public class AddInterferenceController implements Initializable {
 	private FontAwesomeIconView iconMarker;
 
 	@FXML
-	private JFXComboBox<InterferenciaTipo> cbInterferenceType;
+	private JFXComboBox<TipoInterferencia> cbInterferenceType;
 
 	@FXML
 	private JFXComboBox<?> cbGrant;
@@ -137,13 +137,13 @@ public class AddInterferenceController implements Initializable {
 		this.mapController = MapController.getInstance();
 	}
 
-	ObservableList<InterferenciaTipo> obsListInterType;// = FXCollections.observableArrayList();
+	ObservableList<TipoInterferencia> obsListInterType;// = FXCollections.observableArrayList();
 	ObservableList<Interferencia> obsListInterference = FXCollections.observableArrayList();
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
-		obsListInterType = StaticData.INSTANCE.getInterferenciaTipo();
+		obsListInterType = StaticData.INSTANCE.getTipoInterferencia();
 		
 		cbInterferenceType.setItems(obsListInterType);
 	
@@ -153,11 +153,11 @@ public class AddInterferenceController implements Initializable {
 		addressCbController = new AddressComboBoxController(urlService, cbAddress);
 
 		tcInterferenceType.setCellValueFactory(
-				cellData -> cellData.getValue().getProperty(Interferencia::getInterferenciaTipoDescricao));
+				cellData -> cellData.getValue().getProperty(Interferencia::getTipoInterferenciaDescricao));
 		tcAddress
 				.setCellValueFactory(cellData -> cellData.getValue().getProperty(Interferencia::getEnderecoLogradouro));
-		tcLatitude.setCellValueFactory(new PropertyValueFactory<Interferencia, String>("interLatitude"));
-		tcLongitude.setCellValueFactory(new PropertyValueFactory<Interferencia, String>("interLongitude"));
+		tcLatitude.setCellValueFactory(new PropertyValueFactory<Interferencia, String>("latitude"));
+		tcLongitude.setCellValueFactory(new PropertyValueFactory<Interferencia, String>("longitude"));
 
 		tableView.setItems(obsListInterference);
 
@@ -165,12 +165,12 @@ public class AddInterferenceController implements Initializable {
 
 			if (newValue != null) {
 
-				tfLatitude.setText(newValue.getInterLatitude().toString());
-				tfLongitude.setText(newValue.getInterLongitude().toString());
+				tfLatitude.setText(newValue.getLatitude().toString());
+				tfLongitude.setText(newValue.getLongitude().toString());
 				
-				cbAddress.getSelectionModel().select(newValue.getInterEndereco());
+				cbAddress.getSelectionModel().select(newValue.getEndereco());
 				
-				 InterferenciaTipo selectedType = newValue.getInterferenciaTipo();
+				 TipoInterferencia selectedType = newValue.getTipoInterferencia();
 			        cbInterferenceType.getSelectionModel().select(selectedType);
 
 			} else {
@@ -232,7 +232,7 @@ public class AddInterferenceController implements Initializable {
 
 			String latitude = tfLatitude.getText();
 			String longitude = tfLongitude.getText();
-			InterferenciaTipo interferenciaTipo = cbInterferenceType.selectionModelProperty().get().isEmpty() ? null
+			TipoInterferencia interferenciaTipo = cbInterferenceType.selectionModelProperty().get().isEmpty() ? null
 					: cbInterferenceType.getValue();
 
 			// Verifica se o tipo de interferência está vazio.
@@ -312,10 +312,10 @@ public class AddInterferenceController implements Initializable {
 	
 
 		// Edita objeto com novos valores
-		selectedObject.setInterLatitude(Double.parseDouble(latitude));
-		selectedObject.setInterLongitude(Double.parseDouble(longitude));
-		selectedObject.setInterEndereco(addressCbController.getSelectedObject());
-		selectedObject.setInterferenciaTipo(cbInterferenceType.getValue());
+		selectedObject.setLatitude(Double.parseDouble(latitude));
+		selectedObject.setLongitude(Double.parseDouble(longitude));
+		selectedObject.setEndereco(addressCbController.getSelectedObject());
+		selectedObject.setTipoInterferencia(cbInterferenceType.getValue());
 
 		try {
 			InterferenciaService service = new InterferenciaService(urlService);
@@ -391,7 +391,7 @@ public class AddInterferenceController implements Initializable {
 		try {
 			InterferenciaService service = new InterferenciaService(urlService);
 
-			ServiceResponse<?> response = service.deleteById(selected.getInterId());
+			ServiceResponse<?> response = service.deleteById(selected.getId());
 
 			if (response.getResponseCode() == 200) {
 
@@ -448,8 +448,8 @@ public class AddInterferenceController implements Initializable {
 	 */
 	public void updateCoordinates(Interferencia interferencia) {
 
-		tfLatitude.setText(String.valueOf(interferencia.getInterLatitude()));
-		tfLongitude.setText(String.valueOf(interferencia.getInterLongitude()));
+		tfLatitude.setText(String.valueOf(interferencia.getLatitude()));
+		tfLongitude.setText(String.valueOf(interferencia.getLongitude()));
 
 	}
 }
