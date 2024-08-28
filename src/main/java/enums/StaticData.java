@@ -1,11 +1,16 @@
 package enums;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import models.Dominio;
 import models.Estado;
+import models.TipoAto;
 import models.TipoInterferencia;
+import models.TipoOutorga;
+import services.DominioService;
 import services.EstadoService;
 import services.TipoInterferenciaService;
 import utilities.URLUtility;
@@ -20,7 +25,11 @@ public enum StaticData {
 	}
 
 	private ObservableList<TipoInterferencia> obsListTipoInterferencia;
+	private ObservableList<TipoOutorga> obsListTipoOutorga;
+	private ObservableList<TipoAto> obsListTipoAto;
 	private ObservableList<Estado> obsListEstado;
+
+	private Dominio dominio;
 
 	public List<TipoInterferencia> fetchTipoInterferencia() {
 
@@ -38,16 +47,86 @@ public enum StaticData {
 		return null;
 	}
 
+	public Dominio fetchAllDomainsTables() {
+
+		try {
+
+			DominioService service = new DominioService(localUrl);
+
+			Dominio domain = service.fetchAllDomainsTables();
+
+			return domain;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	//
 	public ObservableList<TipoInterferencia> getTipoInterferencia() {
+
 		// Se já houver solicitado uma vez não precisa solicitar mais.
 		if (obsListTipoInterferencia == null) {
 
-			obsListTipoInterferencia = FXCollections.observableArrayList(fetchTipoInterferencia());
+			if (dominio == null) {
+				dominio = fetchAllDomainsTables();
+			}
+
+			List<TipoInterferencia> list = new ArrayList<TipoInterferencia>(dominio.getTipoInterferencia().values());
+			obsListTipoInterferencia = FXCollections.observableArrayList(list);
 
 			return obsListTipoInterferencia;
 		}
 		return obsListTipoInterferencia;
+	}
+
+	public ObservableList<TipoOutorga> getTipoOutorga() {
+
+		// Se já houver solicitado uma vez não precisa solicitar mais.
+		if (obsListTipoOutorga == null) {
+
+			if (dominio == null) {
+				dominio = fetchAllDomainsTables();
+			}
+			List<TipoOutorga> list = new ArrayList<TipoOutorga>(dominio.getTipoOutorga().values());
+			obsListTipoOutorga = FXCollections.observableArrayList(list);
+
+			return obsListTipoOutorga;
+		}
+		return obsListTipoOutorga;
+	}
+
+	public ObservableList<TipoAto> getTipoAto() {
+
+		// Se já houver solicitado uma vez não precisa solicitar mais.
+		if (obsListTipoAto == null) {
+
+			if (dominio == null) {
+				dominio = fetchAllDomainsTables();
+			}
+			List<TipoAto> list = new ArrayList<TipoAto>(dominio.getTipoAto().values());
+			obsListTipoAto = FXCollections.observableArrayList(list);
+
+			return obsListTipoAto;
+		}
+		return obsListTipoAto;
+	}
+
+	public ObservableList<Estado> getEstado () {
+
+		// Se já houver solicitado uma vez não precisa solicitar mais.
+		if (obsListEstado == null) {
+
+			if (dominio == null) {
+				dominio = fetchAllDomainsTables();
+			}
+			List<Estado> list = new ArrayList<Estado>(dominio.getEstado().values());
+			obsListEstado = FXCollections.observableArrayList(list);
+
+			return obsListEstado;
+		}
+		return obsListEstado;
 	}
 
 	public List<Estado> fetchEstado() {
