@@ -275,7 +275,6 @@ public class DocumentController implements Initializable {
 			}
 		});
 
-		
 		// Listener do TextField
 		tfNumber.textProperty().addListener(new ChangeListener<String>() {
 			@Override

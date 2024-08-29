@@ -6,15 +6,10 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
 
 import com.google.gson.Gson;
 
 import models.Dominio;
-import models.TipoAto;
-import models.TipoInterferencia;
-import models.TipoOutorga;
 
 public class DominioService {
 
@@ -60,13 +55,10 @@ public class DominioService {
 		String line;
 
 		while ((line = reader.readLine()) != null) {
-
 			response.append(line);
 		}
 
 		reader.close();
-		
-		System.out.println(response.toString());
 
 		// Parse the JSON into a Dominio object
 		Gson gson = new Gson();

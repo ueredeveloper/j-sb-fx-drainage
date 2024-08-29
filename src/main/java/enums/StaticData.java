@@ -7,12 +7,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import models.Dominio;
 import models.Estado;
+import models.SituacaoProcesso;
+import models.SubtipoOutorga;
 import models.TipoAto;
 import models.TipoInterferencia;
 import models.TipoOutorga;
 import services.DominioService;
-import services.EstadoService;
-import services.TipoInterferenciaService;
 import utilities.URLUtility;
 
 public enum StaticData {
@@ -24,28 +24,14 @@ public enum StaticData {
 		this.localUrl = URLUtility.getURLService();
 	}
 
-	private ObservableList<TipoInterferencia> obsListTipoInterferencia;
-	private ObservableList<TipoOutorga> obsListTipoOutorga;
-	private ObservableList<TipoAto> obsListTipoAto;
-	private ObservableList<Estado> obsListEstado;
+	private ObservableList<TipoInterferencia> obsTypesOfInterferences;
+	private ObservableList<TipoOutorga> obsTypeOfGrants;
+	private ObservableList<SubtipoOutorga> obsSubtypesOfGrants;
+	private ObservableList<SituacaoProcesso> obsProcessesSituations;
+	private ObservableList<TipoAto> obsTypesOfActs;
+	private ObservableList<Estado> obsStates;
 
 	private Dominio dominio;
-
-	public List<TipoInterferencia> fetchTipoInterferencia() {
-
-		try {
-
-			TipoInterferenciaService service = new TipoInterferenciaService(localUrl);
-
-			List<TipoInterferencia> list = service.fetchAll();
-
-			return list;
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
 
 	public Dominio fetchAllDomainsTables() {
 
@@ -64,97 +50,102 @@ public enum StaticData {
 	}
 
 	//
-	public ObservableList<TipoInterferencia> getTipoInterferencia() {
+	public ObservableList<TipoInterferencia> getTypesOfInterferences() {
 
 		// Se já houver solicitado uma vez não precisa solicitar mais.
-		if (obsListTipoInterferencia == null) {
+		if (obsTypesOfInterferences == null) {
 
 			if (dominio == null) {
 				dominio = fetchAllDomainsTables();
 			}
 
-			List<TipoInterferencia> list = new ArrayList<TipoInterferencia>(dominio.getTipoInterferencia().values());
-			obsListTipoInterferencia = FXCollections.observableArrayList(list);
+			List<TipoInterferencia> list = new ArrayList<TipoInterferencia>(
+					dominio.getTypesOfInterferencesMap().values());
+			obsTypesOfInterferences = FXCollections.observableArrayList(list);
 
-			return obsListTipoInterferencia;
+			return obsTypesOfInterferences;
 		}
-		return obsListTipoInterferencia;
+		return obsTypesOfInterferences;
 	}
 
-	public ObservableList<TipoOutorga> getTipoOutorga() {
+	public ObservableList<TipoOutorga> getTypesOfGrants() {
 
 		// Se já houver solicitado uma vez não precisa solicitar mais.
-		if (obsListTipoOutorga == null) {
+		if (obsTypeOfGrants == null) {
 
 			if (dominio == null) {
 				dominio = fetchAllDomainsTables();
 			}
-			List<TipoOutorga> list = new ArrayList<TipoOutorga>(dominio.getTipoOutorga().values());
-			obsListTipoOutorga = FXCollections.observableArrayList(list);
+			List<TipoOutorga> list = new ArrayList<TipoOutorga>(dominio.getTypesOfGrantsMap().values());
+			obsTypeOfGrants = FXCollections.observableArrayList(list);
 
-			return obsListTipoOutorga;
+			return obsTypeOfGrants;
 		}
-		return obsListTipoOutorga;
+		return obsTypeOfGrants;
 	}
 
-	public ObservableList<TipoAto> getTipoAto() {
+	public ObservableList<SubtipoOutorga> getSubtypesOfGrants() {
 
 		// Se já houver solicitado uma vez não precisa solicitar mais.
-		if (obsListTipoAto == null) {
+		if (obsSubtypesOfGrants == null) {
 
 			if (dominio == null) {
 				dominio = fetchAllDomainsTables();
 			}
-			List<TipoAto> list = new ArrayList<TipoAto>(dominio.getTipoAto().values());
-			obsListTipoAto = FXCollections.observableArrayList(list);
+			List<SubtipoOutorga> list = new ArrayList<SubtipoOutorga>(dominio.getSubtypesOfGrantsMap().values());
+			obsSubtypesOfGrants = FXCollections.observableArrayList(list);
 
-			return obsListTipoAto;
+			return obsSubtypesOfGrants;
 		}
-		return obsListTipoAto;
+		return obsSubtypesOfGrants;
 	}
 
-	public ObservableList<Estado> getEstado () {
+	public ObservableList<TipoAto> getTypesOfActs() {
 
 		// Se já houver solicitado uma vez não precisa solicitar mais.
-		if (obsListEstado == null) {
+		if (obsTypesOfActs == null) {
 
 			if (dominio == null) {
 				dominio = fetchAllDomainsTables();
 			}
-			List<Estado> list = new ArrayList<Estado>(dominio.getEstado().values());
-			obsListEstado = FXCollections.observableArrayList(list);
+			List<TipoAto> list = new ArrayList<TipoAto>(dominio.getTypesOfActsMap().values());
+			obsTypesOfActs = FXCollections.observableArrayList(list);
 
-			return obsListEstado;
+			return obsTypesOfActs;
 		}
-		return obsListEstado;
+		return obsTypesOfActs;
 	}
 
-	public List<Estado> fetchEstado() {
+	public ObservableList<SituacaoProcesso> getProcessesSituations() {
 
-		try {
-
-			EstadoService service = new EstadoService(localUrl);
-
-			List<Estado> list = service.fetchAll();
-
-			return list;
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	//
-	public ObservableList<Estado> getEstados() {
 		// Se já houver solicitado uma vez não precisa solicitar mais.
-		if (obsListTipoInterferencia == null) {
+		if (obsProcessesSituations == null) {
 
-			obsListEstado = FXCollections.observableArrayList(fetchEstado());
+			if (dominio == null) {
+				dominio = fetchAllDomainsTables();
+			}
+			List<SituacaoProcesso> list = new ArrayList<SituacaoProcesso>(dominio.getProcessesSituationsMap().values());
+			obsProcessesSituations = FXCollections.observableArrayList(list);
 
-			return obsListEstado;
+			return obsProcessesSituations;
 		}
-		return obsListEstado;
+		return obsProcessesSituations;
+	}
+
+	public ObservableList<Estado> getStates() {
+
+		// Se já houver solicitado uma vez não precisa solicitar mais.
+		if (obsStates == null) {
+
+			if (dominio == null) {
+				dominio = fetchAllDomainsTables();
+			}
+			List<Estado> list = new ArrayList<Estado>(dominio.getStatesMap().values());
+			obsStates = FXCollections.observableArrayList(list);
+
+			return obsStates;
+		}
+		return obsStates;
 	}
 
 }

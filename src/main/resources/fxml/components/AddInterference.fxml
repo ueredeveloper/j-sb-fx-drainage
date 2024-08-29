@@ -60,27 +60,27 @@
                               <Insets left="10.0" right="10.0" />
                            </GridPane.margin>
                         </JFXTextField>
-                        <JFXComboBox fx:id="cbInterferenceType" prefHeight="30.0" prefWidth="200.0" promptText="Tipo de Interferência" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2">
+                        <JFXComboBox fx:id="cbTypeOfInterference" prefHeight="30.0" prefWidth="200.0" promptText="Tipo de Interferência" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2">
                            <GridPane.margin>
                               <Insets left="10.0" right="10.0" />
                            </GridPane.margin>
                         </JFXComboBox>
-                        <JFXComboBox fx:id="cbGrant" prefHeight="30.0" prefWidth="200.0" promptText="Tipo de Outorga" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2">
+                        <JFXComboBox fx:id="cbTypeOfGrant" prefHeight="30.0" prefWidth="200.0" promptText="Tipo de Outorga" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2">
                            <GridPane.margin>
                               <Insets left="10.0" right="10.0" />
                            </GridPane.margin>
                         </JFXComboBox>
-                        <JFXComboBox fx:id="cbGrantSubtype" prefHeight="30.0" prefWidth="200.0" promptText="Subtipo de Outorga" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2">
+                        <JFXComboBox fx:id="cbSubtypeOfGrant" prefHeight="30.0" prefWidth="200.0" promptText="Subtipo de Outorga" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2">
                            <GridPane.margin>
                               <Insets left="10.0" right="10.0" />
                            </GridPane.margin>
                         </JFXComboBox>
-                        <JFXComboBox fx:id="cbSituation" prefHeight="30.0" prefWidth="200.0" promptText="Situação" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2">
+                        <JFXComboBox fx:id="cbProcessSituation" prefHeight="30.0" prefWidth="200.0" promptText="Situação" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2">
                            <GridPane.margin>
                               <Insets left="10.0" right="10.0" />
                            </GridPane.margin>
                         </JFXComboBox>
-                        <JFXComboBox fx:id="cbActType" prefHeight="30.0" prefWidth="200.0" promptText="Tipo de Ato" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3">
+                        <JFXComboBox fx:id="cbTypeOfAct" prefHeight="30.0" prefWidth="200.0" promptText="Tipo de Ato" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3">
                            <GridPane.margin>
                               <Insets left="10.0" right="10.0" />
                            </GridPane.margin>

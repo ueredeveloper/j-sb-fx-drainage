@@ -113,7 +113,7 @@ public class AddAddressController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
-		obsListState = StaticData.INSTANCE.getEstados();
+		obsListState = StaticData.INSTANCE.getStates();
 		cbState.setItems(obsListState);
 
 		tcAddress.setCellValueFactory(new PropertyValueFactory<Endereco, String>("logradouro"));

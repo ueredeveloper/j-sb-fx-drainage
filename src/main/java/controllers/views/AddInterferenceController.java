@@ -19,7 +19,6 @@ import javafx.animation.TranslateTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -28,12 +27,14 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import models.Documento;
 import models.Endereco;
 import models.Interferencia;
-import models.TipoInterferencia;
+import models.SituacaoProcesso;
 import models.Subterranea;
-import services.DocumentService;
+import models.SubtipoOutorga;
+import models.TipoAto;
+import models.TipoInterferencia;
+import models.TipoOutorga;
 import services.InterferenciaService;
 import services.ServiceResponse;
 import utilities.JsonConverter;
@@ -54,6 +55,27 @@ public class AddInterferenceController implements Initializable {
 	JFXComboBox<Endereco> cbAddress;
 
 	@FXML
+	private JFXComboBox<TipoInterferencia> cbTypeOfInterference;
+
+	@FXML
+	private JFXComboBox<TipoOutorga> cbTypeOfGrant;
+
+	@FXML
+	private JFXComboBox<SubtipoOutorga> cbSubtypeOfGrant;
+
+	@FXML
+	private JFXComboBox<SituacaoProcesso> cbProcessSituation;
+
+	@FXML
+	private JFXComboBox<TipoAto> cbTypeOfAct;
+
+	@FXML
+	private JFXComboBox<?> cbWatershedBasin;
+
+	@FXML
+	private JFXComboBox<?> cbHydrographicUnit;
+	
+	@FXML
 	private JFXTextField tfLatitude;
 
 	@FXML
@@ -61,27 +83,6 @@ public class AddInterferenceController implements Initializable {
 
 	@FXML
 	private FontAwesomeIconView iconMarker;
-
-	@FXML
-	private JFXComboBox<TipoInterferencia> cbInterferenceType;
-
-	@FXML
-	private JFXComboBox<?> cbGrant;
-
-	@FXML
-	private JFXComboBox<?> cbGrantSubtype;
-
-	@FXML
-	private JFXComboBox<?> cbSituation;
-
-	@FXML
-	private JFXComboBox<?> cbActType;
-
-	@FXML
-	private JFXComboBox<?> cbWatershedBasin;
-
-	@FXML
-	private JFXComboBox<?> cbHydrographicUnit;
 
 	@FXML
 	private JFXTextField tfSearch;
@@ -137,16 +138,32 @@ public class AddInterferenceController implements Initializable {
 		this.mapController = MapController.getInstance();
 	}
 
-	ObservableList<TipoInterferencia> obsListInterType;// = FXCollections.observableArrayList();
-	ObservableList<Interferencia> obsListInterference = FXCollections.observableArrayList();
+	ObservableList<TipoInterferencia> obsTypesOfInterferences;// = FXCollections.observableArrayList();
+	ObservableList<TipoOutorga> obsTypesOfGrants;
+	ObservableList<SubtipoOutorga> obsSubtypesOfGrants;
+	ObservableList<SituacaoProcesso> obsProcessSituations;
+	ObservableList<TipoAto> obsTypesOfActs;
+
+	ObservableList<Interferencia> obsInterferences = FXCollections.observableArrayList();
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
-		obsListInterType = StaticData.INSTANCE.getTipoInterferencia();
-		
-		cbInterferenceType.setItems(obsListInterType);
-	
+		obsTypesOfInterferences = StaticData.INSTANCE.getTypesOfInterferences();
+		cbTypeOfInterference.setItems(obsTypesOfInterferences);
+
+		/*obsTypesOfGrants = StaticData.INSTANCE.getTypesOfGrants();
+		cbTypeOfGrant.setItems(obsTypesOfGrants);
+
+		obsSubtypesOfGrants = StaticData.INSTANCE.getSubtypesOfGrants();
+		cbSubtypeOfGrant.setItems(obsSubtypesOfGrants);
+
+		obsProcessSituations = StaticData.INSTANCE.getProcessesSituations();
+		cbProcessSituation.setItems(obsProcessSituations);
+
+		obsTypesOfActs = StaticData.INSTANCE.getTypesOfActs();
+		cbTypeOfAct.setItems(obsTypesOfActs);*/
+
 		tfLatitude.setText(latitude);
 		tfLongitude.setText(longitude);
 
@@ -159,7 +176,7 @@ public class AddInterferenceController implements Initializable {
 		tcLatitude.setCellValueFactory(new PropertyValueFactory<Interferencia, String>("latitude"));
 		tcLongitude.setCellValueFactory(new PropertyValueFactory<Interferencia, String>("longitude"));
 
-		tableView.setItems(obsListInterference);
+		tableView.setItems(obsInterferences);
 
 		tableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newValue) -> {
 
@@ -167,11 +184,11 @@ public class AddInterferenceController implements Initializable {
 
 				tfLatitude.setText(newValue.getLatitude().toString());
 				tfLongitude.setText(newValue.getLongitude().toString());
-				
+
 				cbAddress.getSelectionModel().select(newValue.getEndereco());
-				
-				 TipoInterferencia selectedType = newValue.getTipoInterferencia();
-			        cbInterferenceType.getSelectionModel().select(selectedType);
+
+				TipoInterferencia selectedType = newValue.getTipoInterferencia();
+				cbTypeOfInterference.getSelectionModel().select(selectedType);
 
 			} else {
 
@@ -232,8 +249,8 @@ public class AddInterferenceController implements Initializable {
 
 			String latitude = tfLatitude.getText();
 			String longitude = tfLongitude.getText();
-			TipoInterferencia interferenciaTipo = cbInterferenceType.selectionModelProperty().get().isEmpty() ? null
-					: cbInterferenceType.getValue();
+			TipoInterferencia interferenciaTipo = cbTypeOfInterference.selectionModelProperty().get().isEmpty() ? null
+					: cbTypeOfInterference.getValue();
 
 			// Verifica se o tipo de interferência está vazio.
 			if (interferenciaTipo == null) {
@@ -309,13 +326,11 @@ public class AddInterferenceController implements Initializable {
 		String latitude = tfLatitude.getText();
 		String longitude = tfLongitude.getText();
 
-	
-
 		// Edita objeto com novos valores
 		selectedObject.setLatitude(Double.parseDouble(latitude));
 		selectedObject.setLongitude(Double.parseDouble(longitude));
 		selectedObject.setEndereco(addressCbController.getSelectedObject());
-		selectedObject.setTipoInterferencia(cbInterferenceType.getValue());
+		selectedObject.setTipoInterferencia(cbTypeOfInterference.getValue());
 
 		try {
 			InterferenciaService service = new InterferenciaService(urlService);
@@ -332,7 +347,8 @@ public class AddInterferenceController implements Initializable {
 
 				tableView.getItems().remove(selectedObject);
 				// Converte objeto editado para Json
-				Interferencia jsonObject = new Gson().fromJson((String) response.getResponseBody(), Interferencia.class);
+				Interferencia jsonObject = new Gson().fromJson((String) response.getResponseBody(),
+						Interferencia.class);
 				// Adiciona objeto editado como primeiro �tem ma fila na table view
 				tableView.getItems().add(0, jsonObject);
 				// Seleciona o objeto editado na table view
@@ -375,8 +391,8 @@ public class AddInterferenceController implements Initializable {
 			System.out.println(json);
 
 			// Create a list of Document objects
-			obsListInterference.clear();
-			obsListInterference.addAll(list);
+			obsInterferences.clear();
+			obsInterferences.addAll(list);
 			// cbDocType.setValue(obsDocumentTypes.get(0));
 
 		} catch (Exception e) {
@@ -416,14 +432,14 @@ public class AddInterferenceController implements Initializable {
 		}
 
 	}
-	
+
 	public void clearAllComponents() {
 		// Limpa o combobox no controlador específico.
 		addressCbController.clearComponent();
 		// Limpa os componentes deste controlador.
 		tfLatitude.clear();
 		tfLongitude.clear();
-		cbInterferenceType.getSelectionModel().clearSelection();
+		cbTypeOfInterference.getSelectionModel().clearSelection();
 
 	}
 
