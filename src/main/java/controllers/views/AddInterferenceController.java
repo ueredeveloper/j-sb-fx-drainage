@@ -74,7 +74,7 @@ public class AddInterferenceController implements Initializable {
 
 	@FXML
 	private JFXComboBox<?> cbHydrographicUnit;
-	
+
 	@FXML
 	private JFXTextField tfLatitude;
 
@@ -152,7 +152,7 @@ public class AddInterferenceController implements Initializable {
 		obsTypesOfInterferences = StaticData.INSTANCE.getTypesOfInterferences();
 		cbTypeOfInterference.setItems(obsTypesOfInterferences);
 
-		/*obsTypesOfGrants = StaticData.INSTANCE.getTypesOfGrants();
+		obsTypesOfGrants = StaticData.INSTANCE.getTypesOfGrants();
 		cbTypeOfGrant.setItems(obsTypesOfGrants);
 
 		obsSubtypesOfGrants = StaticData.INSTANCE.getSubtypesOfGrants();
@@ -162,7 +162,7 @@ public class AddInterferenceController implements Initializable {
 		cbProcessSituation.setItems(obsProcessSituations);
 
 		obsTypesOfActs = StaticData.INSTANCE.getTypesOfActs();
-		cbTypeOfAct.setItems(obsTypesOfActs);*/
+		cbTypeOfAct.setItems(obsTypesOfActs);
 
 		tfLatitude.setText(latitude);
 		tfLongitude.setText(longitude);
