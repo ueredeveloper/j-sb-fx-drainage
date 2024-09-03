@@ -12,6 +12,7 @@ import models.SubtipoOutorga;
 import models.TipoAto;
 import models.TipoInterferencia;
 import models.TipoOutorga;
+import models.TipoPoco;
 import services.DominioService;
 import utilities.URLUtility;
 
@@ -30,6 +31,7 @@ public enum StaticData {
 	private ObservableList<SituacaoProcesso> obsProcessesSituations;
 	private ObservableList<TipoAto> obsTypesOfActs;
 	private ObservableList<Estado> obsStates;
+	private ObservableList<TipoPoco> obsTypeOfWells;
 
 	private Dominio dominio;
 
@@ -146,6 +148,22 @@ public enum StaticData {
 			return obsStates;
 		}
 		return obsStates;
+	}
+
+	public ObservableList<TipoPoco> getTypesOfWells() {
+
+		// Se já houver solicitado uma vez não precisa solicitar mais.
+		if (obsTypeOfWells == null) {
+
+			if (dominio == null) {
+				dominio = fetchAllDomainsTables();
+			}
+			List<TipoPoco> list = new ArrayList<TipoPoco>(dominio.getTypesOfWellsMap().values());
+			obsTypeOfWells = FXCollections.observableArrayList(list);
+
+			return obsTypeOfWells;
+		}
+		return obsTypeOfWells;
 	}
 
 }

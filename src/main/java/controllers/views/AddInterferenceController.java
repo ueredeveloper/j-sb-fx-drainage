@@ -1,5 +1,6 @@
 package controllers.views;
 
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.URL;
 import java.util.List;
@@ -12,6 +13,7 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 
 import controllers.MapController;
+import controllers.NavigationController;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import enums.StaticData;
 import enums.ToastType;
@@ -20,6 +22,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.TableColumn;
@@ -118,6 +121,9 @@ public class AddInterferenceController implements Initializable {
 
 	@FXML
 	private JFXButton btnClose;
+
+	@FXML
+	AnchorPane apTypeOfInterference;
 
 	String urlService;
 	TranslateTransition ttClose;
@@ -227,19 +233,47 @@ public class AddInterferenceController implements Initializable {
 
 		// Mostra a coordenada no mapa.
 		iconMarker.setOnMouseClicked(event -> {
-			mapController.handleAddMarker(JsonConverter.convertObjectToJson(new Interferencia(
-					Double.parseDouble(tfLatitude.getText()), Double.parseDouble(tfLongitude.getText()))));
+			
+			
+			// Verifica se o valor está vazio.
+			if (!tfLatitude.getText().isEmpty() && !tfLongitude.getText().isEmpty()) {
+
+				// ALERTA!! Adicionar verificação se o valor é mesmo double ou float,
+				// representando uma coordenada.
+
+				mapController.handleAddMarker(JsonConverter.convertObjectToJson(new Interferencia(
+						Double.parseDouble(tfLatitude.getText()), Double.parseDouble(tfLongitude.getText()))));
+			} else {
+				// Alerta (Toast) de sucesso na edi��o
+				Node source = (Node) event.getSource();
+				Stage ownerStage = (Stage) source.getScene().getWindow();
+				String toastMsg = "Adicione as Coordenadas!!!";
+				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+			}
+
 		});
 
+		cbTypeOfInterference.setOnAction((event) -> {
+			TipoInterferencia item = cbTypeOfInterference.getSelectionModel().getSelectedItem();
+
+			// Limpa antes de adicionar os detalhes de cada tipo de interferência.
+			// No momento só há detalhes para a interferência subterrânea.
+			apTypeOfInterference.getChildren().clear();
+
+			if (item.getDescricao().equals("Subterrânea")) {
+				openTypeOfInterferenceDetails();
+			}
+			// No action needed for other cases, so the else block is removed
+		});
 	}
 
 	public void save(ActionEvent event) {
 
-		Endereco endereco = cbAddress.selectionModelProperty().get().isEmpty() ? null
+		Endereco address = cbAddress.selectionModelProperty().get().isEmpty() ? null
 				: addressCbController.getSelectedObject();
 
 		// Verifica se o endereço está vazio.
-		if (endereco == null) {
+		if (address == null) {
 
 			Node source = (Node) event.getSource();
 			Stage ownerStage = (Stage) source.getScene().getWindow();
@@ -249,11 +283,11 @@ public class AddInterferenceController implements Initializable {
 
 			String latitude = tfLatitude.getText();
 			String longitude = tfLongitude.getText();
-			TipoInterferencia interferenciaTipo = cbTypeOfInterference.selectionModelProperty().get().isEmpty() ? null
+			TipoInterferencia typeOfInterference = cbTypeOfInterference.selectionModelProperty().get().isEmpty() ? null
 					: cbTypeOfInterference.getValue();
 
 			// Verifica se o tipo de interferência está vazio.
-			if (interferenciaTipo == null) {
+			if (typeOfInterference == null) {
 
 				Node source = (Node) event.getSource();
 				Stage ownerStage = (Stage) source.getScene().getWindow();
@@ -268,7 +302,7 @@ public class AddInterferenceController implements Initializable {
 					InterferenciaService service = new InterferenciaService(urlService);
 
 					Subterranea newInterference = new Subterranea(Double.parseDouble(latitude),
-							Double.parseDouble(longitude), endereco, interferenciaTipo);
+							Double.parseDouble(longitude), address, typeOfInterference);
 
 					ServiceResponse<?> response = service.save(newInterference);
 
@@ -468,4 +502,36 @@ public class AddInterferenceController implements Initializable {
 		tfLongitude.setText(String.valueOf(interferencia.getLongitude()));
 
 	}
+
+	private AnchorPane loadTypeOfInterferenceDetails() {
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/components/AddSubterraneanDetails.fxml"));
+			// Setting the custom controller factory for NavigationController
+			loader.setControllerFactory(controllerClass -> {
+				if (controllerClass == NavigationController.class) {
+					return new AddSubterraneanDetailsController();
+				} else {
+					try {
+						return controllerClass.getDeclaredConstructor().newInstance();
+					} catch (Exception e) {
+						throw new RuntimeException(e);
+					}
+				}
+			});
+			return loader.load();
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public void openTypeOfInterferenceDetails() {
+		AnchorPane anchorPane = loadTypeOfInterferenceDetails();
+		if (anchorPane != null) {
+			apTypeOfInterference.getChildren().add(anchorPane);
+			AnchorPane.setLeftAnchor(anchorPane, 10.0);
+			AnchorPane.setRightAnchor(anchorPane, 10.0);
+		}
+	}
+
 }

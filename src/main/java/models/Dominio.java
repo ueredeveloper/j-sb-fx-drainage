@@ -10,6 +10,7 @@ public class Dominio {
 	private Map<String, SituacaoProcesso> situacaoProcesso;
 	private Map<String, TipoAto> tipoAto;
 	private Map<String, Estado> estado;
+	private Map<String, TipoPoco> tipoPoco;
 
 	public Dominio() {
 		super();
@@ -61,6 +62,14 @@ public class Dominio {
 
 	public void setStatesMap(Map<String, Estado> estado) {
 		this.estado = estado;
+	}
+
+	public Map<String, TipoPoco> getTypesOfWellsMap() {
+		return tipoPoco;
+	}
+
+	public void setTypesOfWellsMap(Map<String, TipoPoco> tipoPoco) {
+		this.tipoPoco = tipoPoco;
 	}
 
 }

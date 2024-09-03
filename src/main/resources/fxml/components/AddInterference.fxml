@@ -193,7 +193,7 @@
                         </TableView>
                      </children>
                   </AnchorPane>
-                  <AnchorPane layoutX="14.0" layoutY="598.0" prefHeight="390.0" prefWidth="900.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" />
+                  <AnchorPane fx:id="apTypeOfInterference" layoutX="14.0" layoutY="598.0" maxHeight="390.0" prefHeight="390.0" prefWidth="900.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" />
                </children>
             </AnchorPane>
         </content>

@@ -3,6 +3,7 @@
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
@@ -12,12 +13,11 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<fx:root fx:id="apContainer" prefHeight="370.0" prefWidth="900.0" styleClass="container" stylesheets="@../css/root-light.css" type="AnchorPane" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="420.0" prefWidth="900.0" styleClass="container" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.views.AddSubterraneanDetailsController">
    <children>
-      <Label layoutX="388.0" layoutY="14.0" text="Subterrâneo" />
-      <GridPane layoutX="50.0" layoutY="51.0" prefHeight="95.0" prefWidth="800.0">
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="338.0" layoutY="14.0" text="Detalhes - Outorga Subterrânea" textAlignment="CENTER" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" />
+      <GridPane layoutX="23.0" layoutY="52.0" prefHeight="95.0" prefWidth="800.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">
          <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -29,60 +29,60 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <JFXComboBox fx:id="cbWellType" prefHeight="30.0" prefWidth="200.0">
+            <JFXComboBox fx:id="cbWellType" prefHeight="30.0" prefWidth="200.0" promptText="Tipo de Poço">
                <padding>
                   <Insets left="10.0" right="10.0" />
                </padding>
             </JFXComboBox>
-            <JFXComboBox fx:id="cbSubsystem" prefHeight="30.0" prefWidth="200.0" GridPane.columnIndex="1">
+            <JFXComboBox fx:id="cbSubsystem" prefHeight="30.0" prefWidth="200.0" promptText="Subsistema" GridPane.columnIndex="1">
                <padding>
                   <Insets left="10.0" right="10.0" />
                </padding>
             </JFXComboBox>
-            <JFXTextField fx:id="tfCodeSystem" prefHeight="30.0" prefWidth="200.0" GridPane.columnIndex="2">
+            <JFXTextField fx:id="tfCodeSystem" prefHeight="30.0" prefWidth="166.0" promptText="Código do Subsistema" GridPane.columnIndex="2">
                <padding>
                   <Insets left="10.0" right="10.0" />
                </padding>
             </JFXTextField>
-            <JFXTextField fx:id="tfSystemFlow" prefHeight="30.0" prefWidth="200.0" GridPane.columnIndex="3">
+            <JFXTextField fx:id="tfSystemFlow" prefHeight="30.0" prefWidth="200.0" promptText="Vazão do Subsistema" GridPane.columnIndex="3">
                <padding>
                   <Insets left="10.0" right="10.0" />
                </padding>
             </JFXTextField>
-            <JFXTextField fx:id="tfSystemTest" prefHeight="30.0" prefWidth="200.0" GridPane.columnIndex="4">
+            <JFXTextField fx:id="tfSystemTest" prefHeight="30.0" prefWidth="200.0" promptText="Vazão de Teste" GridPane.rowIndex="1">
                <padding>
                   <Insets left="10.0" right="10.0" />
                </padding>
             </JFXTextField>
-            <JFXTextField fx:id="tfSystemGrant" prefHeight="30.0" prefWidth="200.0" GridPane.columnIndex="5">
+            <JFXTextField fx:id="tfSystemGrant" prefHeight="30.0" prefWidth="200.0" promptText="Vazão Outorgável" GridPane.columnIndex="4">
                <padding>
                   <Insets left="10.0" right="10.0" />
                </padding>
             </JFXTextField>
-            <JFXTextField fx:id="tfStaticLevel" prefHeight="30.0" prefWidth="200.0" GridPane.rowIndex="1">
+            <JFXTextField fx:id="tfStaticLevel" prefHeight="30.0" prefWidth="200.0" promptText="Nível Estático" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
             </JFXTextField>
-            <JFXTextField fx:id="tfDynamicLevel" prefHeight="30.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <JFXTextField fx:id="tfDynamicLevel" prefHeight="30.0" prefWidth="200.0" promptText="Nível Dinâmico" GridPane.columnIndex="2" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
             </JFXTextField>
-            <JFXTextField fx:id="tfWaterDepth" prefHeight="30.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+            <JFXTextField fx:id="tfWaterDepth" prefHeight="30.0" prefWidth="200.0" promptText="Profundidade do Poço" GridPane.columnIndex="3" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
             </JFXTextField>
          </children>
       </GridPane>
-      <TabPane layoutX="11.0" layoutY="155.0" prefHeight="249.0" prefWidth="878.0" tabClosingPolicy="UNAVAILABLE">
+      <TabPane layoutX="11.0" layoutY="160.0" prefHeight="249.0" prefWidth="878.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">
          <tabs>
             <Tab text="Finalidade Requerida">
                <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="205.0" prefWidth="878.0">
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="800.0">
                      <children>
-                        <GridPane layoutX="14.0" layoutY="14.0" prefHeight="150.0" prefWidth="855.0">
+                        <GridPane layoutX="14.0" layoutY="14.0" prefHeight="150.0" prefWidth="855.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">
                            <columnConstraints>
                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="160.0" minWidth="10.0" prefWidth="135.0" />
                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="56.0" minWidth="20.0" prefWidth="20.0" />
@@ -98,7 +98,7 @@
                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="110.0" minWidth="20.0" prefWidth="20.0" />
                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="122.0" minWidth="20.0" prefWidth="20.0" />
                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="40.0" prefWidth="50.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="20.0" minWidth="10.0" prefWidth="20.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="20.0" minWidth="30.0" prefWidth="20.0" />
                            </columnConstraints>
                            <rowConstraints>
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -306,15 +306,18 @@
                               <FontAwesomeIconView glyphName="EDIT" styleClass="icon-light-dark" GridPane.columnIndex="14" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" GridPane.vgrow="ALWAYS">
                                  <GridPane.margin>
                                     <Insets left="20.0" right="20.0" />
-                                 </GridPane.margin></FontAwesomeIconView>
+                                 </GridPane.margin>
+                              </FontAwesomeIconView>
                               <FontAwesomeIconView glyphName="EDIT" styleClass="icon-light-dark" GridPane.columnIndex="14" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" GridPane.vgrow="ALWAYS">
                                  <GridPane.margin>
                                     <Insets left="20.0" right="20.0" />
-                                 </GridPane.margin></FontAwesomeIconView>
+                                 </GridPane.margin>
+                              </FontAwesomeIconView>
                               <FontAwesomeIconView glyphName="EDIT" styleClass="icon-light-dark" GridPane.columnIndex="14" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="BOTTOM" GridPane.vgrow="ALWAYS">
                                  <GridPane.margin>
                                     <Insets left="20.0" right="20.0" />
-                                 </GridPane.margin></FontAwesomeIconView>
+                                 </GridPane.margin>
+                              </FontAwesomeIconView>
                               <JFXComboBox prefHeight="30.0" prefWidth="10.0" GridPane.columnIndex="13" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2">
                                  <GridPane.margin>
                                     <Insets />
@@ -337,4 +340,8 @@
          </tabs>
       </TabPane>
    </children>
-</fx:root>
+   <stylesheets>
+      <URL value="@../css/root.css" />
+      <URL value="@../css/root-light.css" />
+   </stylesheets>
+</AnchorPane>
