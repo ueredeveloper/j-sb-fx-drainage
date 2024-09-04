@@ -21,6 +21,14 @@ public class Interferencia {
 
 	private TipoInterferencia tipoInterferencia;
 
+	private TipoOutorga tipoOutorga;
+
+	private SubtipoOutorga subtipoOutorga;
+
+	private SituacaoProcesso situacaoProcesso;
+
+	private TipoAto tipoAto;
+
 	public Interferencia() {
 		super();
 	}
@@ -42,6 +50,20 @@ public class Interferencia {
 		this.longitude = longitude;
 		this.endereco = endereco;
 		this.tipoInterferencia = tipoInterferencia;
+	}
+
+	public Interferencia(Double latitude, Double longitude, Endereco endereco, TipoInterferencia tipoInterferencia,
+			TipoOutorga tipoOutorga, SubtipoOutorga subtipoOutorga, SituacaoProcesso situacaoProcesso,
+			TipoAto tipoAto) {
+		super();
+		this.latitude = latitude;
+		this.longitude = longitude;
+		this.endereco = endereco;
+		this.tipoInterferencia = tipoInterferencia;
+		this.tipoOutorga = tipoOutorga;
+		this.subtipoOutorga = subtipoOutorga;
+		this.situacaoProcesso = situacaoProcesso;
+		this.tipoAto = tipoAto;
 	}
 
 	public Long getId() {
@@ -83,6 +105,40 @@ public class Interferencia {
 	public void setTipoInterferencia(TipoInterferencia tipoInterferencia) {
 		this.tipoInterferencia = tipoInterferencia;
 	}
+
+	public TipoOutorga getTipoOutorga() {
+		return tipoOutorga;
+	}
+
+	public void setTipoOutorga(TipoOutorga tipoOutorga) {
+		this.tipoOutorga = tipoOutorga;
+	}
+
+	public SubtipoOutorga getSubtipoOutorga() {
+		return subtipoOutorga;
+	}
+
+	public void setSubtipoOutorga(SubtipoOutorga subtipoOutorga) {
+		this.subtipoOutorga = subtipoOutorga;
+	}
+
+	public SituacaoProcesso getSituacaoProcesso() {
+		return situacaoProcesso;
+	}
+
+	public void setSituacaoProcesso(SituacaoProcesso situacaoProcesso) {
+		this.situacaoProcesso = situacaoProcesso;
+	}
+
+	public TipoAto getTipoAto() {
+		return tipoAto;
+	}
+
+	public void setTipoAto(TipoAto tipoAto) {
+		this.tipoAto = tipoAto;
+	}
+
+	// Métodos de visualização de dados e comparação
 
 	@Override
 	public String toString() {

@@ -233,8 +233,7 @@ public class AddInterferenceController implements Initializable {
 
 		// Mostra a coordenada no mapa.
 		iconMarker.setOnMouseClicked(event -> {
-			
-			
+
 			// Verifica se o valor está vazio.
 			if (!tfLatitude.getText().isEmpty() && !tfLongitude.getText().isEmpty()) {
 
@@ -272,6 +271,23 @@ public class AddInterferenceController implements Initializable {
 		Endereco address = cbAddress.selectionModelProperty().get().isEmpty() ? null
 				: addressCbController.getSelectedObject();
 
+		TipoInterferencia typeOfInterference = cbTypeOfInterference.selectionModelProperty().get().isEmpty() ? null
+				: cbTypeOfInterference.getValue();
+		TipoOutorga typeOfGrant = cbTypeOfGrant.selectionModelProperty().get().isEmpty() ? null
+				: cbTypeOfGrant.getValue();
+
+		SubtipoOutorga subtypeOfGrant = cbSubtypeOfGrant.selectionModelProperty().get().isEmpty() ? null
+				: cbSubtypeOfGrant.getValue();
+
+		SituacaoProcesso processSituation = cbProcessSituation.selectionModelProperty().get().isEmpty() ? null
+				: cbProcessSituation.getValue();
+
+		TipoAto typeOfAct = cbTypeOfAct.selectionModelProperty().get().isEmpty() ? null : cbTypeOfAct.getValue();
+
+		String latitude = tfLatitude.getText();
+		String longitude = tfLongitude.getText();
+		
+		
 		// Verifica se o endereço está vazio.
 		if (address == null) {
 
@@ -279,62 +295,99 @@ public class AddInterferenceController implements Initializable {
 			Stage ownerStage = (Stage) source.getScene().getWindow();
 			String toastMsg = "Endereço vazio!";
 			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
-		} else {
+		} else if (latitude.isEmpty() || longitude.isEmpty()) {
 
-			String latitude = tfLatitude.getText();
-			String longitude = tfLongitude.getText();
-			TipoInterferencia typeOfInterference = cbTypeOfInterference.selectionModelProperty().get().isEmpty() ? null
-					: cbTypeOfInterference.getValue();
+			Node source = (Node) event.getSource();
+			Stage ownerStage = (Stage) source.getScene().getWindow();
+			String toastMsg = "Preencha a Latitude e Longitude!";
+			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
 
-			// Verifica se o tipo de interferência está vazio.
-			if (typeOfInterference == null) {
+		} // Verifica se o tipo de interferência está vazio.
+		else if (typeOfInterference == null) {
 
-				Node source = (Node) event.getSource();
-				Stage ownerStage = (Stage) source.getScene().getWindow();
-				String toastMsg = "Tipo de Interferencia vazio!";
-				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+			Node source = (Node) event.getSource();
+			Stage ownerStage = (Stage) source.getScene().getWindow();
+			String toastMsg = "Tipo de Interferencia vazio!";
+			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
 
-			} else {
+			// Verifica se o tipo de outorga não foi selecionado
+		} else if (typeOfGrant == null) {
+			Node source = (Node) event.getSource();
+			Stage ownerStage = (Stage) source.getScene().getWindow();
+			String toastMsg = "Selecione o Tipo de Outorga!";
+			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
 
-				try {
+		} else if (subtypeOfGrant == null) {
+			Node source = (Node) event.getSource();
+			Stage ownerStage = (Stage) source.getScene().getWindow();
+			String toastMsg = "Selecione o Subtipo de Outorga!";
+			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
 
-					// DocumentService documentService = new DocumentService(localUrl);
-					InterferenciaService service = new InterferenciaService(urlService);
+		} else if (processSituation == null) {
+			Node source = (Node) event.getSource();
+			Stage ownerStage = (Stage) source.getScene().getWindow();
+			String toastMsg = "Selecione a Situação do Processo!";
+			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+		} else if (typeOfAct == null) {
+			Node source = (Node) event.getSource();
+			Stage ownerStage = (Stage) source.getScene().getWindow();
+			String toastMsg = "Selecione o Tipo de Ato!";
+			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+		}
 
-					Subterranea newInterference = new Subterranea(Double.parseDouble(latitude),
-							Double.parseDouble(longitude), address, typeOfInterference);
+		else {
 
-					ServiceResponse<?> response = service.save(newInterference);
+			try {
 
-					if (response.getResponseCode() == 201) {
+				// DocumentService documentService = new DocumentService(localUrl);
+				InterferenciaService service = new InterferenciaService(urlService);
 
-						// Mensagem
-						Node source = (Node) event.getSource();
-						Stage ownerStage = (Stage) source.getScene().getWindow();
-						String toastMsg = "Sucesso!";
-						utilities.Toast.makeText(ownerStage, toastMsg, ToastType.SUCCESS);
+				/*Subterranea newInterference = new Subterranea(Double.parseDouble(latitude),
+						Double.parseDouble(longitude), address, typeOfInterference);*/
+				Subterranea newInterference = new Subterranea(
+						Double.parseDouble(latitude),
+				Double.parseDouble(longitude), 
+				address, 
+				typeOfInterference,
+				typeOfGrant, 
+				subtypeOfGrant, 
+				processSituation,
+				typeOfAct
+				);
+				
+				/*Subterranea(Double latitude, Double longitude, Endereco endereco, TipoInterferencia tipoInterferencia,
+						TipoOutorga tipoOutorga, SubtipoOutorga subtipoOutorga, SituacaoProcesso situacaoProcesso,
+						TipoAto tipoAto) */
 
-						// Adiciona resposta na tabela
-						Subterranea newInterferencia = new Gson().fromJson((String) response.getResponseBody(),
-								Subterranea.class);
-						// Adiciona com primeiro na lista
-						tableView.getItems().add(0, newInterferencia);
-						// Seleciona o objeto salvo na table view
-						tableView.getSelectionModel().select(newInterferencia);
+				ServiceResponse<?> response = service.save(newInterference);
 
-					} else {
-						Node source = (Node) event.getSource();
-						Stage ownerStage = (Stage) source.getScene().getWindow();
-						String toastMsg = "Erro!";
-						utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+				if (response.getResponseCode() == 201) {
 
-					}
+					// Mensagem
+					Node source = (Node) event.getSource();
+					Stage ownerStage = (Stage) source.getScene().getWindow();
+					String toastMsg = "Sucesso!";
+					utilities.Toast.makeText(ownerStage, toastMsg, ToastType.SUCCESS);
 
-				} catch (Exception e) {
-					// adicionar Toast de erro
-					e.printStackTrace();
+					// Adiciona resposta na tabela
+					Subterranea newInterferencia = new Gson().fromJson((String) response.getResponseBody(),
+							Subterranea.class);
+					// Adiciona com primeiro na lista
+					tableView.getItems().add(0, newInterferencia);
+					// Seleciona o objeto salvo na table view
+					tableView.getSelectionModel().select(newInterferencia);
+
+				} else {
+					Node source = (Node) event.getSource();
+					Stage ownerStage = (Stage) source.getScene().getWindow();
+					String toastMsg = "Erro!";
+					utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+
 				}
 
+			} catch (Exception e) {
+				// adicionar Toast de erro
+				e.printStackTrace();
 			}
 
 		}
