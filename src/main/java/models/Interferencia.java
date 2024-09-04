@@ -14,6 +14,7 @@ public class Interferencia {
 	private Double latitude;
 
 	private Double longitude;
+	
 
 	// private Geometry interGeometry;
 

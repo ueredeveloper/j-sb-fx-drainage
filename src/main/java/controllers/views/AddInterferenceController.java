@@ -258,10 +258,13 @@ public class AddInterferenceController implements Initializable {
 			// Limpa antes de adicionar os detalhes de cada tipo de interferência.
 			// No momento só há detalhes para a interferência subterrânea.
 			apTypeOfInterference.getChildren().clear();
-
-			if (item.getDescricao().equals("Subterrânea")) {
-				openTypeOfInterferenceDetails();
+		
+			if (item != null && item.getDescricao() != null && !item.getDescricao().isEmpty()) {
+				if (item.getDescricao().equals("Subterrânea")) {
+					openTypeOfInterferenceDetails();
+				}
 			}
+
 			// No action needed for other cases, so the else block is removed
 		});
 	}
@@ -286,8 +289,7 @@ public class AddInterferenceController implements Initializable {
 
 		String latitude = tfLatitude.getText();
 		String longitude = tfLongitude.getText();
-		
-		
+
 		// Verifica se o endereço está vazio.
 		if (address == null) {
 
@@ -342,22 +344,19 @@ public class AddInterferenceController implements Initializable {
 				// DocumentService documentService = new DocumentService(localUrl);
 				InterferenciaService service = new InterferenciaService(urlService);
 
-				/*Subterranea newInterference = new Subterranea(Double.parseDouble(latitude),
-						Double.parseDouble(longitude), address, typeOfInterference);*/
-				Subterranea newInterference = new Subterranea(
-						Double.parseDouble(latitude),
-				Double.parseDouble(longitude), 
-				address, 
-				typeOfInterference,
-				typeOfGrant, 
-				subtypeOfGrant, 
-				processSituation,
-				typeOfAct
-				);
-				
-				/*Subterranea(Double latitude, Double longitude, Endereco endereco, TipoInterferencia tipoInterferencia,
-						TipoOutorga tipoOutorga, SubtipoOutorga subtipoOutorga, SituacaoProcesso situacaoProcesso,
-						TipoAto tipoAto) */
+				/*
+				 * Subterranea newInterference = new Subterranea(Double.parseDouble(latitude),
+				 * Double.parseDouble(longitude), address, typeOfInterference);
+				 */
+				Subterranea newInterference = new Subterranea(Double.parseDouble(latitude),
+						Double.parseDouble(longitude), address, typeOfInterference, typeOfGrant, subtypeOfGrant,
+						processSituation, typeOfAct);
+
+				/*
+				 * Subterranea(Double latitude, Double longitude, Endereco endereco,
+				 * TipoInterferencia tipoInterferencia, TipoOutorga tipoOutorga, SubtipoOutorga
+				 * subtipoOutorga, SituacaoProcesso situacaoProcesso, TipoAto tipoAto)
+				 */
 
 				ServiceResponse<?> response = service.save(newInterference);
 
@@ -479,6 +478,8 @@ public class AddInterferenceController implements Initializable {
 
 			// Create a list of Document objects
 			obsInterferences.clear();
+			
+			System.out.println(list);
 			obsInterferences.addAll(list);
 			// cbDocType.setValue(obsDocumentTypes.get(0));
 
