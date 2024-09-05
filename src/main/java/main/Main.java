@@ -13,7 +13,6 @@ import javafx.stage.Stage;
  */
 public class Main extends Application {
 
-	
 	/**
 	 * Método principal que inicia a aplicação
 	 *
@@ -32,7 +31,7 @@ public class Main extends Application {
 	 */
 	@Override
 	public void start(Stage stage) {
-		
+
 		Parent root = null;
 		try {
 			// Carrega o arquivo FXML que define a interface de login.

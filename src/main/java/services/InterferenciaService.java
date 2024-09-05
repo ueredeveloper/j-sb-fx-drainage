@@ -10,7 +10,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import com.google.gson.Gson;
@@ -18,6 +20,7 @@ import com.google.gson.reflect.TypeToken;
 
 import models.Interferencia;
 import models.Subterranea;
+import models.WrapInterferencia;
 
 public class InterferenciaService {
 
@@ -26,7 +29,6 @@ public class InterferenciaService {
 	public InterferenciaService(String localUrl) {
 		this.localUrl = localUrl;
 	}
-	
 
 	public ServiceResponse<?> save(Subterranea obj) {
 		try {
@@ -38,7 +40,7 @@ public class InterferenciaService {
 
 			// Convert Documento object to JSON
 			String jsonInputString = convertObjectToJson(obj);
-			
+
 			System.out.println(jsonInputString);
 
 			// Write JSON to request body
@@ -88,7 +90,7 @@ public class InterferenciaService {
 
 			// Convert Documento object to JSON
 			String jsonInputString = convertObjectToJson(object);
-			
+
 			System.out.println(jsonInputString);
 
 			// Write JSON to request body
@@ -129,7 +131,7 @@ public class InterferenciaService {
 
 		try {
 			URL apiUrl = new URL(
-					localUrl + "/interference/subterranean/list?keyword=" + URLEncoder.encode(keyword, "UTF-8"));
+					localUrl + "/interference/list-by-keyword?keyword=" + URLEncoder.encode(keyword, "UTF-8"));
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
 			connection.setRequestMethod("GET");
 
@@ -178,7 +180,9 @@ public class InterferenciaService {
 			return new ServiceResponse<>(-1, null); // You might want to use a different code for errors
 		}
 	}
+
 	private List<Interferencia> handleSuccessResponse(HttpURLConnection connection) throws IOException {
+
 		BufferedReader reader = new BufferedReader(
 				new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8));
 		StringBuilder response = new StringBuilder();
@@ -189,6 +193,10 @@ public class InterferenciaService {
 		}
 
 		reader.close();
+
+		System.out.println(response.toString());
+		
+		 unWrapInterferencies(response.toString());
 
 		return new Gson().fromJson(response.toString(), new TypeToken<List<Interferencia>>() {
 		}.getType());
@@ -214,6 +222,37 @@ public class InterferenciaService {
 	private String convertObjectToJson(Object object) {
 		Gson gson = new Gson();
 		return gson.toJson(object);
+	}
+
+	private List<Interferencia> unWrapInterferencies(String str) {
+		
+		/*
+		 [
+        "{\"interferencia\": {\"id\": 4, \"latitude\": \"5.0\", \"longitude\": \"6.0\"}}",
+        "{\"tipoInterferencia\": {\"id\": 2, \"descricao\": \"Subterrânea\"}}",
+        "{\"tipoOutorga\": {\"id\": 1, \"descricao\": \"Outorga\"}}",
+        "{\"subtipoOutorga\": {\"id\": 2, \"descricao\": \"Modificação\"}}",
+        "{\"situacaoProcesso\": {\"id\": 2, \"descricao\": \"Em Análise\"}}",
+        "{\"tipoAto\": {\"id\": 2, \"descricao\": \"Portaria\"}}",
+        "{\"endereco\": {\"id\": 2, \"logradouro\": \"Avenida Principal, Bloco A\"}}"
+    ]
+		 */
+
+		List<List<Object>> results = new Gson().fromJson(str, new TypeToken<List<List<Object>>>() {
+		}.getType());
+
+		List<Interferencia> interferencies = new ArrayList<>();
+
+		for (List<Object> result : results) {
+
+			Map<String, WrapInterferencia> wrappped = new Gson().fromJson((String) results.toString(),
+					new TypeToken<Map<String, WrapInterferencia>>() {
+					}.getType());
+			
+			// Continuar a leitura daqui 05/09/2024
+			
+		}
+		return interferencies;
 	}
 
 }
