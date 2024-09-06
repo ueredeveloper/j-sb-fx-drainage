@@ -26,7 +26,6 @@ public class InterferenciaService {
 	public InterferenciaService(String localUrl) {
 		this.localUrl = localUrl;
 	}
-	
 
 	public ServiceResponse<?> save(Subterranea obj) {
 		try {
@@ -38,7 +37,7 @@ public class InterferenciaService {
 
 			// Convert Documento object to JSON
 			String jsonInputString = convertObjectToJson(obj);
-			
+
 			System.out.println(jsonInputString);
 
 			// Write JSON to request body
@@ -88,7 +87,7 @@ public class InterferenciaService {
 
 			// Convert Documento object to JSON
 			String jsonInputString = convertObjectToJson(object);
-			
+
 			System.out.println(jsonInputString);
 
 			// Write JSON to request body
@@ -156,6 +155,7 @@ public class InterferenciaService {
 	}
 
 	public ServiceResponse<?> deleteById(Long id) {
+
 		try {
 			URL apiUrl = new URL(localUrl + "/interference/delete?id=" + id); // Updated URL
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
@@ -178,6 +178,7 @@ public class InterferenciaService {
 			return new ServiceResponse<>(-1, null); // You might want to use a different code for errors
 		}
 	}
+
 	private List<Interferencia> handleSuccessResponse(HttpURLConnection connection) throws IOException {
 		BufferedReader reader = new BufferedReader(
 				new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8));
