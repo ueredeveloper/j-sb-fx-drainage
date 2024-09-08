@@ -84,6 +84,8 @@ public class EnderecoService {
 
 			// Convert Documento object to JSON
 			String jsonInputString = convertObjectToJson(endereco);
+			
+			System.out.println("edited string return");
 
 			System.out.println(jsonInputString);
 
@@ -191,6 +193,8 @@ public class EnderecoService {
 		}
 
 		reader.close();
+		
+		System.out.println(response.toString());
 
 		return new Gson().fromJson(response.toString(), new TypeToken<List<Endereco>>() {
 		}.getType());

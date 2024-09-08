@@ -38,8 +38,6 @@ public class InterferenciaService {
 			// Convert Documento object to JSON
 			String jsonInputString = convertObjectToJson(obj);
 
-			System.out.println(jsonInputString);
-
 			// Write JSON to request body
 			try (OutputStream os = connection.getOutputStream();
 					OutputStreamWriter osw = new OutputStreamWriter(os, "UTF-8")) {
@@ -51,7 +49,7 @@ public class InterferenciaService {
 
 			String responseBody;
 			if (responseCode == HttpURLConnection.HTTP_CREATED) {
-				// System.out.println("service created");
+				
 				try (BufferedReader br = new BufferedReader(
 						new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
 					StringBuilder response = new StringBuilder();
@@ -88,7 +86,6 @@ public class InterferenciaService {
 			// Convert Documento object to JSON
 			String jsonInputString = convertObjectToJson(object);
 
-			System.out.println(jsonInputString);
 
 			// Write JSON to request body
 			try (OutputStream os = connection.getOutputStream();
@@ -128,7 +125,7 @@ public class InterferenciaService {
 
 		try {
 			URL apiUrl = new URL(
-					localUrl + "/interference/subterranean/list?keyword=" + URLEncoder.encode(keyword, "UTF-8"));
+					localUrl + "/interference/list-by-keyword?keyword=" + URLEncoder.encode(keyword, "UTF-8"));
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
 			connection.setRequestMethod("GET");
 
@@ -154,7 +151,11 @@ public class InterferenciaService {
 		return null;
 	}
 
-	public ServiceResponse<?> deleteById(Long id) {
+	public ServiceResponse<?> deleteById(Long id, Long tipoInterferenciaId) {
+		
+		if (tipoInterferenciaId == 2) {
+			System.out.println(tipoInterferenciaId);
+		}
 
 		try {
 			URL apiUrl = new URL(localUrl + "/interference/delete?id=" + id); // Updated URL
@@ -190,7 +191,7 @@ public class InterferenciaService {
 		}
 
 		reader.close();
-
+		
 		return new Gson().fromJson(response.toString(), new TypeToken<List<Interferencia>>() {
 		}.getType());
 	}

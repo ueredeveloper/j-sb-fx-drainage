@@ -1,6 +1,8 @@
 package models;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 import java.util.function.Function;
 
 import javafx.beans.property.SimpleStringProperty;
@@ -9,10 +11,19 @@ import javafx.beans.property.StringProperty;
 public class Endereco {
 
 	private Long id;
+
 	private String logradouro;
+
 	private String cidade;
-	private String cep;
+
 	private String bairro;
+
+	private String cep;
+
+	private Set<Documento> documentos = new HashSet<>();
+
+	private Set<Interferencia> interferencias = new HashSet<>();
+
 	private Estado estado;
 
 	public Endereco() {
@@ -23,13 +34,13 @@ public class Endereco {
 		super();
 		this.logradouro = logradouro;
 	}
-	
+
 	public Endereco(Long id, String logradouro) {
 		super();
 		this.id = id;
 		this.logradouro = logradouro;
 	}
-	
+
 	public Endereco(Long id, String logradouro, String cidade, String cep) {
 		super();
 		this.id = id;
@@ -47,8 +58,6 @@ public class Endereco {
 		this.bairro = bairro;
 		this.estado = estado;
 	}
-	
-	
 
 	public Endereco(String logradouro, String cidade, String cep, String bairro, Estado estado) {
 		super();
@@ -58,7 +67,7 @@ public class Endereco {
 		this.bairro = bairro;
 		this.estado = estado;
 	}
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -107,13 +116,27 @@ public class Endereco {
 		this.estado = estado;
 	}
 
+	public Set<Documento> getDocumentos() {
+		return documentos;
+	}
+
+	public void setDocumentos(Set<Documento> documentos) {
+		this.documentos = documentos;
+	}
+
+	public Set<Interferencia> getInterferencias() {
+		return interferencias;
+	}
+
+	public void setInterferencias(Set<Interferencia> interferencias) {
+		this.interferencias = interferencias;
+	}
+
 	// Método toString para mostrar o logradouro no combobox.
 	@Override
 	public String toString() {
 		return logradouro;
 	}
-	
-	
 
 	@Override
 	public int hashCode() {
