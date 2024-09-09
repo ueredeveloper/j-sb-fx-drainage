@@ -463,23 +463,9 @@ public class AddInterferenceController implements Initializable {
 
 			List<Interferencia> list = service.fetchByKeyword(keyword);
 
-			// Create a Gson instance
-			Gson gson = new Gson();
-
-			// Define the Type for the list
-			Type listType = new TypeToken<List<Interferencia>>() {
-			}.getType();
-
-			// Convert the list to JSON
-			String json = gson.toJson(list, listType);
-
-			// Print the JSON string
-			System.out.println(json);
-
 			// Create a list of Document objects
 			obsInterferences.clear();
 			
-			System.out.println(list);
 			obsInterferences.addAll(list);
 			// cbDocType.setValue(obsDocumentTypes.get(0));
 
@@ -494,8 +480,10 @@ public class AddInterferenceController implements Initializable {
 
 		try {
 			InterferenciaService service = new InterferenciaService(urlService);
-
-			ServiceResponse<?> response = service.deleteById(selected.getId());
+			
+			System.out.println(selected.getTipoInterferencia().getId() +" desc " + selected.getTipoInterferenciaDescricao());
+			// É preciso informar o tipo de
+			ServiceResponse<?> response = service.deleteById(selected.getId(), selected.getTipoInterferencia().getId());
 
 			if (response.getResponseCode() == 200) {
 

@@ -14,9 +14,8 @@ public class Interferencia {
 	private Double latitude;
 
 	private Double longitude;
-	
 
-	// private Geometry interGeometry;
+	private String geometry;
 
 	private Endereco endereco;
 
@@ -29,6 +28,10 @@ public class Interferencia {
 	private SituacaoProcesso situacaoProcesso;
 
 	private TipoAto tipoAto;
+
+	private BaciaHidrografica baciaHidrografica;
+
+	private UnidadeHidrografica unidadeHidrografica;
 
 	public Interferencia() {
 		super();
@@ -91,6 +94,14 @@ public class Interferencia {
 		this.longitude = longitude;
 	}
 
+	public String getGeometry() {
+		return geometry;
+	}
+
+	public void setGeometry(String geometry) {
+		this.geometry = geometry;
+	}
+
 	public Endereco getEndereco() {
 		return endereco;
 	}
@@ -139,7 +150,21 @@ public class Interferencia {
 		this.tipoAto = tipoAto;
 	}
 
-	// Métodos de visualização de dados e comparação
+	public BaciaHidrografica getBaciaHidrografica() {
+		return baciaHidrografica;
+	}
+
+	public void setBaciaHidrografica(BaciaHidrografica baciaHidrografica) {
+		this.baciaHidrografica = baciaHidrografica;
+	}
+
+	public UnidadeHidrografica getUnidadeHidrografica() {
+		return unidadeHidrografica;
+	}
+
+	public void setUnidadeHidrografica(UnidadeHidrografica unidadeHidrografica) {
+		this.unidadeHidrografica = unidadeHidrografica;
+	}
 
 	@Override
 	public String toString() {
