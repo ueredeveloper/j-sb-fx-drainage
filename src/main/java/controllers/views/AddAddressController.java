@@ -142,10 +142,9 @@ public class AddAddressController implements Initializable {
 			}
 		});
 
-
 		btnClose.setOnAction(e -> {
 			ttClose.play();
-			
+
 			Endereco seletedObject = tableView.getSelectionModel().getSelectedItem();
 			this.documentController.fillAndSelectComboBoxAddress(seletedObject);
 
@@ -167,74 +166,75 @@ public class AddAddressController implements Initializable {
 
 	public void save(ActionEvent event) {
 
-		  	Long id = object.getId() !=null? object.getId(): null;
-		  	
-		  	System.out.println(id);
-			
-			String logradouro = tfAddress.getText();
-			String bairro = tfNeighborhood.getText();
-			String cidade = tfCity.getText();
-			String cep = tfZipCode.getText();
-			Estado estado = cbState.getValue();
+		Long id = object != null && object.getId() != null ? object.getId() : null;
 
-			// Se logradouro preenchido
-			if (logradouro == null) {
+		System.out.println(id);
 
-				// Informa salvamento com sucesso
-				Node source = (Node) event.getSource();
-				Stage ownerStage = (Stage) source.getScene().getWindow();
-				String toastMsg = "Logradouro vazio!!!";
-				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+		String logradouro = tfAddress.getText();
+		String bairro = tfNeighborhood.getText();
+		String cidade = tfCity.getText();
+		String cep = tfZipCode.getText();
+		Estado estado = cbState.getValue();
 
-			} else {
-				
-				try {
+		// Se o logradouro não estiver preenchido não salvar
+		if (logradouro == null || logradouro.isEmpty()) {
 
-					// DocumentService documentService = new DocumentService(localUrl);
-					EnderecoService enderecoService = new EnderecoService(urlService);
+			// Informa salvamento com sucesso
+			Node source = (Node) event.getSource();
+			Stage ownerStage = (Stage) source.getScene().getWindow();
+			String toastMsg = "O Logradouro deve estar preenchido !!!";
+			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
 
-					Endereco endereco = new Endereco(id, logradouro, bairro, cidade, cep, estado);
-					ServiceResponse<?> service = enderecoService.save(endereco);
+		} else {
 
-					if (service.getResponseCode() == 201) {
+			try {
 
-						// Mensagem
-						Node source = (Node) event.getSource();
-						Stage ownerStage = (Stage) source.getScene().getWindow();
-						String toastMsg = "Sucesso!";
-						utilities.Toast.makeText(ownerStage, toastMsg, ToastType.SUCCESS);
+				// DocumentService documentService = new DocumentService(localUrl);
+				EnderecoService enderecoService = new EnderecoService(urlService);
 
-						// Adiciona resposta na tabela
-						Endereco newEndereco = new Gson().fromJson((String) service.getResponseBody(), Endereco.class);
-						
-						  // Remove o objeto com solicitado de salvamento ou id nulo, se estiver presente na tableView
-					    tableView.getItems().removeIf(end -> end.getId() == null || end.getId().equals(newEndereco.getId()));
+				Endereco endereco = new Endereco(id, logradouro, bairro, cidade, cep, estado);
+				ServiceResponse<?> service = enderecoService.save(endereco);
 
-						// Adiciona com primeiro na lista
-						tableView.getItems().add(0, newEndereco);
-						// Seleciona o objeto salvo na table view
-						tableView.getSelectionModel().select(newEndereco);
-						// Atualiza objeto vindo do DocumentController
-						object = newEndereco;
+				if (service.getResponseCode() == 201) {
 
-					} else {
-						Node source = (Node) event.getSource();
-						Stage ownerStage = (Stage) source.getScene().getWindow();
-						String toastMsg = "Erro! + " + service.getResponseCode() ;
-						utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
-
-					}
-
-				} catch (Exception e) {
+					// Mensagem
 					Node source = (Node) event.getSource();
 					Stage ownerStage = (Stage) source.getScene().getWindow();
-					String toastMsg = "Erro! + " + e.getMessage() ;
-					utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
-					e.printStackTrace();
-				}
-			}
+					String toastMsg = "Sucesso!";
+					utilities.Toast.makeText(ownerStage, toastMsg, ToastType.SUCCESS);
 
-		
+					// Adiciona resposta na tabela
+					Endereco newEndereco = new Gson().fromJson((String) service.getResponseBody(), Endereco.class);
+
+					// Remove o objeto com solicitado de salvamento ou id nulo, se estiver presente
+					// na tableView
+					tableView.getItems()
+							.removeIf(end -> end.getId() == null || end.getId().equals(newEndereco.getId()));
+
+					// Adiciona com primeiro na lista
+					tableView.getItems().add(0, newEndereco);
+					// Seleciona o objeto salvo na table view
+					tableView.getSelectionModel().select(newEndereco);
+					// Atualiza objeto vindo do DocumentController
+					object = newEndereco;
+
+				} else {
+					Node source = (Node) event.getSource();
+					Stage ownerStage = (Stage) source.getScene().getWindow();
+					String toastMsg = "Erro! + " + service.getResponseCode();
+					utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+
+				}
+
+			} catch (Exception e) {
+				Node source = (Node) event.getSource();
+				Stage ownerStage = (Stage) source.getScene().getWindow();
+				String toastMsg = "Erro! + " + e.getMessage();
+				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+				e.printStackTrace();
+			}
+		}
+
 	}
 
 	public void update(ActionEvent event) {
@@ -246,63 +246,63 @@ public class AddAddressController implements Initializable {
 
 		Endereco seletedObject = tableView.getSelectionModel().getSelectedItem();
 
-			// Long id = seletedObject.getId();
-			String logradouro = tfAddress.getText();
-			String bairro = tfNeighborhood.getText();
-			String cidade = tfCity.getText();
-			String cep = tfZipCode.getText();
-			Estado estado = cbState.getValue();
+		// Long id = seletedObject.getId();
+		String logradouro = tfAddress.getText();
+		String bairro = tfNeighborhood.getText();
+		String cidade = tfCity.getText();
+		String cep = tfZipCode.getText();
+		Estado estado = cbState.getValue();
 
-			try {
+		try {
 
-				// DocumentService documentService = new DocumentService(localUrl);
-				EnderecoService enderecoService = new EnderecoService(urlService);
+			// DocumentService documentService = new DocumentService(localUrl);
+			EnderecoService enderecoService = new EnderecoService(urlService);
 
-				// Endereco endereco = new Endereco(id, logradouro, bairro, cidade, cep,
-				// estado);
-				
-				Endereco endereco = new Endereco();
-				endereco.setId(seletedObject.getId());
-				endereco.setLogradouro(logradouro);
-				endereco.setBairro(bairro);
-				endereco.setCidade(cidade);
-				endereco.setCep(cep);
-				endereco.setEstado(estado);
+			// Endereco endereco = new Endereco(id, logradouro, bairro, cidade, cep,
+			// estado);
 
-				ServiceResponse<?> service = enderecoService.update(endereco);
+			Endereco endereco = new Endereco();
+			
+			
+			endereco.setId(seletedObject.getId());
+			endereco.setLogradouro(logradouro);
+			endereco.setBairro(bairro);
+			endereco.setCidade(cidade);
+			endereco.setCep(cep);
+			endereco.setEstado(estado);
 
-				if (service.getResponseCode() == 200) {
+			ServiceResponse<?> service = enderecoService.update(endereco);
 
-					// Mensagem
-					Node source = (Node) event.getSource();
-					Stage ownerStage = (Stage) source.getScene().getWindow();
-					String toastMsg = "Sucesso!";
-					utilities.Toast.makeText(ownerStage, toastMsg, ToastType.SUCCESS);
+			if (service.getResponseCode() == 200) {
 
-					// Adiciona resposta na tabela
-					Endereco newEndereco = new Gson().fromJson((String) service.getResponseBody(), Endereco.class);
+				// Mensagem
+				Node source = (Node) event.getSource();
+				Stage ownerStage = (Stage) source.getScene().getWindow();
+				String toastMsg = "Sucesso!";
+				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.SUCCESS);
 
-					// Remove objeto solicitado da tableView
-					tableView.getItems().remove(seletedObject);
-					// Adiciona objeto já editado como primeiro da lista.
-					tableView.getItems().add(0, newEndereco);
-					// Seleciona o objeto na table view
-					tableView.getSelectionModel().select(newEndereco);
+				// Adiciona resposta na tabela
+				Endereco newEndereco = new Gson().fromJson((String) service.getResponseBody(), Endereco.class);
 
-				} else {
-					Node source = (Node) event.getSource();
-					Stage ownerStage = (Stage) source.getScene().getWindow();
-					String toastMsg = "Erro!";
-					utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+				// Remove objeto solicitado da tableView
+				tableView.getItems().remove(seletedObject);
+				// Adiciona objeto já editado como primeiro da lista.
+				tableView.getItems().add(0, newEndereco);
+				// Seleciona o objeto na table view
+				tableView.getSelectionModel().select(newEndereco);
 
-				}
+			} else {
+				Node source = (Node) event.getSource();
+				Stage ownerStage = (Stage) source.getScene().getWindow();
+				String toastMsg = "Erro!";
+				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
 
-			} catch (Exception e) {
-				// adicionar Toast de erro
-				e.printStackTrace();
 			}
 
-		
+		} catch (Exception e) {
+			// adicionar Toast de erro
+			e.printStackTrace();
+		}
 
 	}
 
@@ -348,23 +348,25 @@ public class AddAddressController implements Initializable {
 				tableView.getItems().remove(selected);
 
 			} else {
-	            // Informa erro em deletar
-	            Node source = (Node) event.getSource();
-	            Stage ownerStage = (Stage) source.getScene().getWindow();
-	            String toastMsg = "Erro ao deletar! " + serviceResponse.getResponseBody();
-	            utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
-	        }
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	        Node source = (Node) event.getSource();
-	        Stage ownerStage = (Stage) source.getScene().getWindow();
-	        String toastMsg = "Erro ao deletar! " + e.getMessage();
-	        utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
-	    }
+				// Informa erro em deletar
+				Node source = (Node) event.getSource();
+				Stage ownerStage = (Stage) source.getScene().getWindow();
+				String toastMsg = "Erro ao deletar! " + serviceResponse.getResponseBody();
+				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			Node source = (Node) event.getSource();
+			Stage ownerStage = (Stage) source.getScene().getWindow();
+			String toastMsg = "Erro ao deletar! " + e.getMessage();
+			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+		}
 
 	}
 
 	public void clearAllComponents() {
+		object = null;
+		
 		tfAddress.clear();
 		tfNeighborhood.clear();
 		tfCity.clear();
