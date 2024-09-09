@@ -50,6 +50,11 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
+                        <JFXComboBox fx:id="cbAddress" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="400.0" promptText="Logradouro" GridPane.columnSpan="4">
+                           <GridPane.margin>
+                              <Insets left="10.0" right="10.0" />
+                           </GridPane.margin>
+                        </JFXComboBox>
                         <JFXTextField fx:id="tfLatitude" prefHeight="30.0" promptText="Latitude" GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <GridPane.margin>
                               <Insets left="10.0" right="10.0" />
@@ -91,11 +96,6 @@
                            </GridPane.margin>
                         </JFXComboBox>
                         <JFXComboBox fx:id="cbHydrographicUnit" prefHeight="30.0" prefWidth="200.0" promptText="Unidade Hidrográfica" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3">
-                           <GridPane.margin>
-                              <Insets left="10.0" right="10.0" />
-                           </GridPane.margin>
-                        </JFXComboBox>
-                        <JFXComboBox fx:id="cbAddress" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="400.0" promptText="Logradouro" GridPane.columnSpan="4">
                            <GridPane.margin>
                               <Insets left="10.0" right="10.0" />
                            </GridPane.margin>

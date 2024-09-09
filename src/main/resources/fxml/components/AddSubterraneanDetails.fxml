@@ -3,9 +3,11 @@
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import java.lang.String?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -13,9 +15,8 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="420.0" prefWidth="900.0" styleClass="container" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.views.AddSubterraneanDetailsController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="632.0" prefWidth="900.0" styleClass="container" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.views.AddSubterraneanDetailsController">
    <children>
-      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="338.0" layoutY="14.0" text="Detalhes - Outorga Subterrânea" textAlignment="CENTER" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" />
       <GridPane layoutX="23.0" layoutY="52.0" prefHeight="95.0" prefWidth="800.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -49,12 +50,12 @@
                   <Insets left="10.0" right="10.0" />
                </padding>
             </JFXTextField>
-            <JFXTextField fx:id="tfSystemTest" prefHeight="30.0" prefWidth="200.0" promptText="Vazão de Teste" GridPane.rowIndex="1">
+            <JFXTextField fx:id="tfSystemGrant" prefHeight="30.0" prefWidth="200.0" promptText="Vazão Outorgável" GridPane.columnIndex="4">
                <padding>
                   <Insets left="10.0" right="10.0" />
                </padding>
             </JFXTextField>
-            <JFXTextField fx:id="tfSystemGrant" prefHeight="30.0" prefWidth="200.0" promptText="Vazão Outorgável" GridPane.columnIndex="4">
+            <JFXTextField fx:id="tfSystemTest" prefHeight="30.0" prefWidth="200.0" promptText="Vazão de Teste" GridPane.rowIndex="1">
                <padding>
                   <Insets left="10.0" right="10.0" />
                </padding>
@@ -76,28 +77,92 @@
             </JFXTextField>
          </children>
       </GridPane>
-      <TabPane layoutX="11.0" layoutY="160.0" prefHeight="249.0" prefWidth="878.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">
+      <TabPane layoutX="11.0" layoutY="160.0" prefHeight="469.0" prefWidth="890.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">
          <tabs>
             <Tab text="Finalidade Requerida">
                <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="800.0">
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="328.0" prefWidth="890.0">
                      <children>
-                        <GridPane layoutX="14.0" layoutY="14.0" prefHeight="150.0" prefWidth="855.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">
+                        <ScrollPane layoutX="14.0" layoutY="3.0" prefHeight="150.0" prefWidth="870.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0">
+                           <content>
+                              <GridPane prefHeight="112.0" prefWidth="870.0">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <JFXTextField fx:id="tfPurpose" prefHeight="30.0" prefWidth="200.0" promptText="Nível Dinâmico" text="Finalidade">
+                                       <GridPane.margin>
+                                          <Insets left="5.0" right="5.0" />
+                                       </GridPane.margin>
+                                    </JFXTextField>
+                                    <JFXTextField fx:id="tfSubpurpose" prefHeight="30.0" prefWidth="200.0" promptText="Nível Dinâmico" text="Subfinalidade" GridPane.columnIndex="1">
+                                       <GridPane.margin>
+                                          <Insets left="5.0" right="5.0" />
+                                       </GridPane.margin>
+                                    </JFXTextField>
+                                    <JFXTextField fx:id="tfConsumption" prefHeight="30.0" prefWidth="200.0" promptText="Nível Dinâmico" text="Consumo (l/dia)" GridPane.columnIndex="2">
+                                       <GridPane.margin>
+                                          <Insets left="5.0" right="5.0" />
+                                       </GridPane.margin>
+                                    </JFXTextField>
+                                    <JFXTextField fx:id="tfTotalConsumption" prefHeight="30.0" prefWidth="200.0" promptText="Nível Dinâmico" text="Total (l/dia)" GridPane.columnIndex="3">
+                                       <GridPane.margin>
+                                          <Insets left="5.0" right="5.0" />
+                                       </GridPane.margin>
+                                    </JFXTextField>
+                                    <FontAwesomeIconView fx:id="btnCalculate" glyphName="EDIT" styleClass="icon-light-dark" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                                    <FontAwesomeIconView fx:id="btnPlus" glyphName="PLUS" styleClass="icon-light-dark" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                                 </children>
+                              </GridPane>
+                           </content>
+                        </ScrollPane>
+                        <GridPane layoutX="15.0" layoutY="156.0" prefHeight="30.0" prefWidth="870.0">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <children>
+                              <JFXTextField fx:id="lblTotalConsumption" prefHeight="30.0" prefWidth="200.0" promptText="Nível Dinâmico" text="DEMANDA TOTAL (l/dia)" GridPane.columnIndex="3">
+                                 <GridPane.margin>
+                                    <Insets left="5.0" right="5.0" />
+                                 </GridPane.margin>
+                              </JFXTextField>
+                              <FontAwesomeIconView fx:id="btnTotalCalculate" glyphName="CHECK_SQUARE_ALT" styleClass="icon-light-dark" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                           </children>
+                        </GridPane>
+                        <GridPane layoutX="2.0" layoutY="223.0" prefHeight="180.0" prefWidth="855.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0">
                            <columnConstraints>
                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="160.0" minWidth="10.0" prefWidth="135.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="56.0" minWidth="20.0" prefWidth="20.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="61.0" minWidth="20.0" prefWidth="20.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="113.0" minWidth="20.0" prefWidth="20.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="97.0" minWidth="20.0" prefWidth="20.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="109.0" minWidth="20.0" prefWidth="20.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="115.0" minWidth="20.0" prefWidth="20.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="120.0" minWidth="20.0" prefWidth="20.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="122.0" minWidth="20.0" prefWidth="20.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="115.0" minWidth="20.0" prefWidth="20.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="105.0" minWidth="20.0" prefWidth="20.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="110.0" minWidth="20.0" prefWidth="20.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="122.0" minWidth="20.0" prefWidth="20.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="40.0" prefWidth="50.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="65.0" minWidth="20.0" prefWidth="40.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="65.0" minWidth="20.0" prefWidth="40.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="65.0" minWidth="20.0" prefWidth="40.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="65.0" minWidth="20.0" prefWidth="40.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="65.0" minWidth="20.0" prefWidth="40.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="65.0" minWidth="20.0" prefWidth="40.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="65.0" minWidth="20.0" prefWidth="40.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="65.0" minWidth="20.0" prefWidth="40.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="65.0" minWidth="20.0" prefWidth="40.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="65.0" minWidth="20.0" prefWidth="40.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="65.0" minWidth="20.0" prefWidth="40.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="65.0" minWidth="20.0" prefWidth="40.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="80.0" minWidth="30.0" prefWidth="43.0" />
                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="20.0" minWidth="30.0" prefWidth="20.0" />
                            </columnConstraints>
                            <rowConstraints>
@@ -121,184 +186,184 @@
                               <Label text="NOV" GridPane.columnIndex="11" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" />
                               <Label text="DEZ" GridPane.columnIndex="12" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" />
                               <Label text="Vazão (l/dia)" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
-                              <JFXTextField GridPane.columnIndex="1" GridPane.rowIndex="1">
+                              <JFXTextField fx:id="tfFlowJan" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                  <GridPane.margin>
                                     <Insets left="5.0" right="5.0" />
                                  </GridPane.margin>
                               </JFXTextField>
-                              <JFXTextField GridPane.columnIndex="2" GridPane.rowIndex="1">
+                              <JFXTextField fx:id="tfFlowFev" GridPane.columnIndex="2" GridPane.rowIndex="1">
                                  <GridPane.margin>
                                     <Insets left="5.0" right="5.0" />
                                  </GridPane.margin>
                               </JFXTextField>
-                              <JFXTextField GridPane.columnIndex="3" GridPane.rowIndex="1">
+                              <JFXTextField fx:id="tfFlowMar" GridPane.columnIndex="3" GridPane.rowIndex="1">
                                  <GridPane.margin>
                                     <Insets left="5.0" right="5.0" />
                                  </GridPane.margin>
                               </JFXTextField>
-                              <JFXTextField GridPane.columnIndex="4" GridPane.rowIndex="1">
+                              <JFXTextField fx:id="tfFlowApr" GridPane.columnIndex="4" GridPane.rowIndex="1">
                                  <GridPane.margin>
                                     <Insets left="5.0" right="5.0" />
                                  </GridPane.margin>
                               </JFXTextField>
-                              <JFXTextField GridPane.columnIndex="5" GridPane.rowIndex="1">
+                              <JFXTextField fx:id="tfFlowMay" GridPane.columnIndex="5" GridPane.rowIndex="1">
                                  <GridPane.margin>
                                     <Insets left="5.0" right="5.0" />
                                  </GridPane.margin>
                               </JFXTextField>
-                              <JFXTextField GridPane.columnIndex="6" GridPane.rowIndex="1">
+                              <JFXTextField fx:id="tfFlowJun" GridPane.columnIndex="6" GridPane.rowIndex="1">
                                  <GridPane.margin>
                                     <Insets left="5.0" right="5.0" />
                                  </GridPane.margin>
                               </JFXTextField>
-                              <JFXTextField GridPane.columnIndex="7" GridPane.rowIndex="1">
+                              <JFXTextField fx:id="tfFlowJul" GridPane.columnIndex="7" GridPane.rowIndex="1">
                                  <GridPane.margin>
                                     <Insets left="5.0" right="5.0" />
                                  </GridPane.margin>
                               </JFXTextField>
-                              <JFXTextField GridPane.columnIndex="8" GridPane.rowIndex="1">
+                              <JFXTextField fx:id="tfFlowAug" GridPane.columnIndex="8" GridPane.rowIndex="1">
                                  <GridPane.margin>
                                     <Insets left="5.0" right="5.0" />
                                  </GridPane.margin>
                               </JFXTextField>
-                              <JFXTextField GridPane.columnIndex="9" GridPane.rowIndex="1">
+                              <JFXTextField fx:id="tfFlowSep" GridPane.columnIndex="9" GridPane.rowIndex="1">
                                  <GridPane.margin>
                                     <Insets left="5.0" right="5.0" />
                                  </GridPane.margin>
                               </JFXTextField>
-                              <JFXTextField GridPane.columnIndex="10" GridPane.rowIndex="1">
+                              <JFXTextField fx:id="tfFlowOct" GridPane.columnIndex="10" GridPane.rowIndex="1">
                                  <GridPane.margin>
                                     <Insets left="5.0" right="5.0" />
                                  </GridPane.margin>
                               </JFXTextField>
-                              <JFXTextField GridPane.columnIndex="11" GridPane.rowIndex="1">
+                              <JFXTextField fx:id="tfFlowNov" GridPane.columnIndex="11" GridPane.rowIndex="1">
                                  <GridPane.margin>
                                     <Insets left="5.0" right="5.0" />
                                  </GridPane.margin>
                               </JFXTextField>
-                              <JFXTextField GridPane.columnIndex="12" GridPane.rowIndex="1">
+                              <JFXTextField fx:id="tfFlowDec" GridPane.columnIndex="12" GridPane.rowIndex="1">
                                  <GridPane.margin>
                                     <Insets left="5.0" right="5.0" />
                                  </GridPane.margin>
                               </JFXTextField>
                               <Label text="Tempo (h/dia)" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
-                              <JFXTextField GridPane.columnIndex="1" GridPane.rowIndex="2">
+                              <JFXTextField fx:id="tfTimeJan" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                  <GridPane.margin>
                                     <Insets left="5.0" right="5.0" />
                                  </GridPane.margin>
                               </JFXTextField>
-                              <JFXTextField GridPane.columnIndex="2" GridPane.rowIndex="2">
+                              <JFXTextField fx:id="tfTimeFev" GridPane.columnIndex="2" GridPane.rowIndex="2">
                                  <GridPane.margin>
                                     <Insets left="5.0" right="5.0" />
                                  </GridPane.margin>
                               </JFXTextField>
-                              <JFXTextField GridPane.columnIndex="3" GridPane.rowIndex="2">
+                              <JFXTextField fx:id="tfTimeMar" GridPane.columnIndex="3" GridPane.rowIndex="2">
                                  <GridPane.margin>
                                     <Insets left="5.0" right="5.0" />
                                  </GridPane.margin>
                               </JFXTextField>
-                              <JFXTextField GridPane.columnIndex="4" GridPane.rowIndex="2">
+                              <JFXTextField fx:id="tfTimeApr" GridPane.columnIndex="4" GridPane.rowIndex="2">
                                  <GridPane.margin>
                                     <Insets left="5.0" right="5.0" />
                                  </GridPane.margin>
                               </JFXTextField>
-                              <JFXTextField GridPane.columnIndex="5" GridPane.rowIndex="2">
+                              <JFXTextField fx:id="tfTimeMay" GridPane.columnIndex="5" GridPane.rowIndex="2">
                                  <GridPane.margin>
                                     <Insets left="5.0" right="5.0" />
                                  </GridPane.margin>
                               </JFXTextField>
-                              <JFXTextField GridPane.columnIndex="6" GridPane.rowIndex="2">
+                              <JFXTextField fx:id="tfTimeJun" GridPane.columnIndex="6" GridPane.rowIndex="2">
                                  <GridPane.margin>
                                     <Insets left="5.0" right="5.0" />
                                  </GridPane.margin>
                               </JFXTextField>
-                              <JFXTextField GridPane.columnIndex="7" GridPane.rowIndex="2">
+                              <JFXTextField fx:id="tfTimeJul" GridPane.columnIndex="7" GridPane.rowIndex="2">
                                  <GridPane.margin>
                                     <Insets left="5.0" right="5.0" />
                                  </GridPane.margin>
                               </JFXTextField>
-                              <JFXTextField GridPane.columnIndex="8" GridPane.rowIndex="2">
+                              <JFXTextField fx:id="tfTimeAug" GridPane.columnIndex="8" GridPane.rowIndex="2">
                                  <GridPane.margin>
                                     <Insets left="5.0" right="5.0" />
                                  </GridPane.margin>
                               </JFXTextField>
-                              <JFXTextField GridPane.columnIndex="9" GridPane.rowIndex="2">
+                              <JFXTextField fx:id="tfTimeSep" GridPane.columnIndex="9" GridPane.rowIndex="2">
                                  <GridPane.margin>
                                     <Insets left="5.0" right="5.0" />
                                  </GridPane.margin>
                               </JFXTextField>
-                              <JFXTextField GridPane.columnIndex="10" GridPane.rowIndex="2">
+                              <JFXTextField fx:id="tfTimeOct" GridPane.columnIndex="10" GridPane.rowIndex="2">
                                  <GridPane.margin>
                                     <Insets left="5.0" right="5.0" />
                                  </GridPane.margin>
                               </JFXTextField>
-                              <JFXTextField GridPane.columnIndex="11" GridPane.rowIndex="2">
+                              <JFXTextField fx:id="tfTimeNov" GridPane.columnIndex="11" GridPane.rowIndex="2">
                                  <GridPane.margin>
                                     <Insets left="5.0" right="5.0" />
                                  </GridPane.margin>
                               </JFXTextField>
-                              <JFXTextField GridPane.columnIndex="12" GridPane.rowIndex="2">
+                              <JFXTextField fx:id="tfTimeDec" GridPane.columnIndex="12" GridPane.rowIndex="2">
                                  <GridPane.margin>
                                     <Insets left="5.0" right="5.0" />
                                  </GridPane.margin>
                               </JFXTextField>
                               <Label text="Período (dia/mês)" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="BOTTOM" />
-                              <JFXTextField GridPane.columnIndex="1" GridPane.rowIndex="3">
+                              <JFXTextField fx:id="tfDaysJan" GridPane.columnIndex="1" GridPane.rowIndex="3">
                                  <GridPane.margin>
                                     <Insets left="5.0" right="5.0" />
                                  </GridPane.margin>
                               </JFXTextField>
-                              <JFXTextField GridPane.columnIndex="2" GridPane.rowIndex="3">
+                              <JFXTextField fx:id="tfDaysFeb" GridPane.columnIndex="2" GridPane.rowIndex="3">
                                  <GridPane.margin>
                                     <Insets left="5.0" right="5.0" />
                                  </GridPane.margin>
                               </JFXTextField>
-                              <JFXTextField GridPane.columnIndex="3" GridPane.rowIndex="3">
+                              <JFXTextField fx:id="tfDaysMar" GridPane.columnIndex="3" GridPane.rowIndex="3">
                                  <GridPane.margin>
                                     <Insets left="5.0" right="5.0" />
                                  </GridPane.margin>
                               </JFXTextField>
-                              <JFXTextField GridPane.columnIndex="4" GridPane.rowIndex="3">
+                              <JFXTextField fx:id="tfDaysApr" GridPane.columnIndex="4" GridPane.rowIndex="3">
                                  <GridPane.margin>
                                     <Insets left="5.0" right="5.0" />
                                  </GridPane.margin>
                               </JFXTextField>
-                              <JFXTextField GridPane.columnIndex="5" GridPane.rowIndex="3">
+                              <JFXTextField fx:id="tfDaysMay" GridPane.columnIndex="5" GridPane.rowIndex="3">
                                  <GridPane.margin>
                                     <Insets left="5.0" right="5.0" />
                                  </GridPane.margin>
                               </JFXTextField>
-                              <JFXTextField GridPane.columnIndex="6" GridPane.rowIndex="3">
+                              <JFXTextField fx:id="tfDaysJun" GridPane.columnIndex="6" GridPane.rowIndex="3">
                                  <GridPane.margin>
                                     <Insets left="5.0" right="5.0" />
                                  </GridPane.margin>
                               </JFXTextField>
-                              <JFXTextField GridPane.columnIndex="7" GridPane.rowIndex="3">
+                              <JFXTextField fx:id="tfDaysJul" GridPane.columnIndex="7" GridPane.rowIndex="3">
                                  <GridPane.margin>
                                     <Insets left="5.0" right="5.0" />
                                  </GridPane.margin>
                               </JFXTextField>
-                              <JFXTextField GridPane.columnIndex="8" GridPane.rowIndex="3">
+                              <JFXTextField fx:id="tfDaysAug" GridPane.columnIndex="8" GridPane.rowIndex="3">
                                  <GridPane.margin>
                                     <Insets left="5.0" right="5.0" />
                                  </GridPane.margin>
                               </JFXTextField>
-                              <JFXTextField GridPane.columnIndex="9" GridPane.rowIndex="3">
+                              <JFXTextField fx:id="tfDaysSep" GridPane.columnIndex="9" GridPane.rowIndex="3">
                                  <GridPane.margin>
                                     <Insets left="5.0" right="5.0" />
                                  </GridPane.margin>
                               </JFXTextField>
-                              <JFXTextField GridPane.columnIndex="10" GridPane.rowIndex="3">
+                              <JFXTextField fx:id="tfDaysOct" GridPane.columnIndex="10" GridPane.rowIndex="3">
                                  <GridPane.margin>
                                     <Insets left="5.0" right="5.0" />
                                  </GridPane.margin>
                               </JFXTextField>
-                              <JFXTextField GridPane.columnIndex="11" GridPane.rowIndex="3">
+                              <JFXTextField fx:id="tfDaysNov" GridPane.columnIndex="11" GridPane.rowIndex="3">
                                  <GridPane.margin>
                                     <Insets left="5.0" right="5.0" />
                                  </GridPane.margin>
                               </JFXTextField>
-                              <JFXTextField GridPane.columnIndex="12" GridPane.rowIndex="3">
+                              <JFXTextField fx:id="tfDaysDec" GridPane.columnIndex="12" GridPane.rowIndex="3">
                                  <GridPane.margin>
                                     <Insets left="5.0" right="5.0" />
                                  </GridPane.margin>
@@ -339,9 +404,15 @@
             </Tab>
          </tabs>
       </TabPane>
+      <Label alignment="TOP_CENTER" contentDisplay="TOP" layoutX="342.0" layoutY="14.0" text="Detalhes - Subterrânea" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">
+         <styleClass>
+            <String fx:value="title" />
+            <String fx:value="text-color" />
+         </styleClass>
+      </Label>
    </children>
    <stylesheets>
-      <URL value="@../css/root.css" />
       <URL value="@../css/root-light.css" />
+      <URL value="@../css/root.css" />
    </stylesheets>
 </AnchorPane>
