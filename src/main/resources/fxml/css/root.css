@@ -33,3 +33,10 @@
     -fx-font-size: 28px; /* Novo tamanho ao passar o mouse ou focar */
     -fx-fill: -fx-accent-color; /* Cor ao passar o mouse ou focar */
 }
+
+.text-field-subpurpose {
+    -fx-padding: 0 5px 0 5px; /* Padding */
+    -fx-pref-height: 30px;   /* Preferred height */
+    -fx-pref-width: 200px;   /* Preferred width */
+    /* Add any other styles as needed */
+}
