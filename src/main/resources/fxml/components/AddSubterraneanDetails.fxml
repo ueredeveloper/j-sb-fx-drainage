@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="632.0" prefWidth="900.0" styleClass="container" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.views.AddSubterraneanDetailsController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="900.0" styleClass="container" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.views.AddSubterraneanDetailsController">
    <children>
       <GridPane layoutX="23.0" layoutY="52.0" prefHeight="95.0" prefWidth="800.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">
          <columnConstraints>
@@ -77,27 +77,27 @@
             </JFXTextField>
          </children>
       </GridPane>
-      <TabPane layoutX="11.0" layoutY="160.0" prefHeight="469.0" prefWidth="890.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">
+      <TabPane layoutX="11.0" layoutY="160.0" prefHeight="536.0" prefWidth="890.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">
          <tabs>
             <Tab text="Finalidade Requerida">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="328.0" prefWidth="890.0">
                      <children>
-                        <ScrollPane layoutX="14.0" layoutY="3.0" prefHeight="150.0" prefWidth="870.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0">
+                        <ScrollPane fitToWidth="true" layoutX="2.0" layoutY="7.0" prefHeight="179.0" prefWidth="886.0" style="-fx-background-color: red; -fx-border-color: blue;" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0">
                            <content>
-                              <GridPane prefHeight="112.0" prefWidth="870.0">
+                              <GridPane fx:id="gpPurpouses" alignment="CENTER" prefHeight="120.0" prefWidth="870.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
                                 <columnConstraints>
-                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+                                  <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
                                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" />
                                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" />
                                 </columnConstraints>
                                 <rowConstraints>
-                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                                  <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                                  <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
                                 </rowConstraints>
                                  <children>
                                     <JFXTextField fx:id="tfPurpose" prefHeight="30.0" prefWidth="200.0" promptText="Nível Dinâmico" text="Finalidade">
@@ -122,16 +122,56 @@
                                     </JFXTextField>
                                     <FontAwesomeIconView fx:id="btnCalculate" glyphName="EDIT" styleClass="icon-light-dark" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                                     <FontAwesomeIconView fx:id="btnPlus" glyphName="PLUS" styleClass="icon-light-dark" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                                    <JFXTextField fx:id="tfPurpose1" prefHeight="30.0" prefWidth="200.0" promptText="Nível Dinâmico" text="Finalidade" GridPane.rowIndex="1">
+                                       <padding>
+                                          <Insets left="5.0" right="5.0" />
+                                       </padding>
+                                    </JFXTextField>
+                                    <JFXTextField fx:id="tfSubpurpose1" prefHeight="30.0" prefWidth="200.0" promptText="Nível Dinâmico" text="Subfinalidade" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                       <padding>
+                                          <Insets left="5.0" right="5.0" />
+                                       </padding>
+                                    </JFXTextField>
+                                    <JFXTextField fx:id="tfPurpose11" prefHeight="30.0" prefWidth="200.0" promptText="Nível Dinâmico" text="Finalidade" GridPane.rowIndex="2">
+                                       <padding>
+                                          <Insets left="5.0" right="5.0" />
+                                       </padding>
+                                    </JFXTextField>
+                                    <JFXTextField fx:id="tfConsumption1" prefHeight="30.0" prefWidth="200.0" promptText="Nível Dinâmico" text="Consumo (l/dia)" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                       <padding>
+                                          <Insets left="5.0" right="5.0" />
+                                       </padding>
+                                    </JFXTextField>
+                                    <JFXTextField fx:id="tfTotalConsumption1" prefHeight="30.0" prefWidth="200.0" promptText="Nível Dinâmico" text="Total (l/dia)" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                                       <padding>
+                                          <Insets left="5.0" right="5.0" />
+                                       </padding>
+                                    </JFXTextField>
+                                    <JFXTextField fx:id="tfSubpurpose11" prefHeight="30.0" prefWidth="200.0" promptText="Nível Dinâmico" text="Subfinalidade" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                       <padding>
+                                          <Insets left="5.0" right="5.0" />
+                                       </padding>
+                                    </JFXTextField>
+                                    <JFXTextField fx:id="tfConsumption11" prefHeight="30.0" prefWidth="200.0" promptText="Nível Dinâmico" text="Consumo (l/dia)" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                                       <padding>
+                                          <Insets left="5.0" right="5.0" />
+                                       </padding>
+                                    </JFXTextField>
+                                    <JFXTextField fx:id="tfTotalConsumption11" prefHeight="30.0" prefWidth="200.0" promptText="Nível Dinâmico" text="Total (l/dia)" GridPane.columnIndex="3" GridPane.rowIndex="2">
+                                       <padding>
+                                          <Insets left="5.0" right="5.0" />
+                                       </padding>
+                                    </JFXTextField>
                                  </children>
                               </GridPane>
                            </content>
                         </ScrollPane>
-                        <GridPane layoutX="15.0" layoutY="156.0" prefHeight="30.0" prefWidth="870.0">
+                        <GridPane layoutX="15.0" layoutY="200.0" prefHeight="30.0" prefWidth="870.0">
                            <columnConstraints>
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" />
                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" />
                            </columnConstraints>
@@ -147,21 +187,21 @@
                               <FontAwesomeIconView fx:id="btnTotalCalculate" glyphName="CHECK_SQUARE_ALT" styleClass="icon-light-dark" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                            </children>
                         </GridPane>
-                        <GridPane layoutX="2.0" layoutY="223.0" prefHeight="180.0" prefWidth="855.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0">
+                        <GridPane layoutX="2.0" layoutY="280.0" prefHeight="180.0" prefWidth="855.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0">
                            <columnConstraints>
                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="160.0" minWidth="10.0" prefWidth="135.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="65.0" minWidth="20.0" prefWidth="40.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="65.0" minWidth="20.0" prefWidth="40.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="65.0" minWidth="20.0" prefWidth="40.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="65.0" minWidth="20.0" prefWidth="40.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="65.0" minWidth="20.0" prefWidth="40.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="65.0" minWidth="20.0" prefWidth="40.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="65.0" minWidth="20.0" prefWidth="40.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="65.0" minWidth="20.0" prefWidth="40.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="65.0" minWidth="20.0" prefWidth="40.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="65.0" minWidth="20.0" prefWidth="40.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="65.0" minWidth="20.0" prefWidth="40.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="65.0" minWidth="20.0" prefWidth="40.0" />
+                              <ColumnConstraints hgrow="ALWAYS" minWidth="20.0" prefWidth="40.0" />
+                              <ColumnConstraints hgrow="ALWAYS" minWidth="20.0" prefWidth="40.0" />
+                              <ColumnConstraints hgrow="ALWAYS" minWidth="20.0" prefWidth="40.0" />
+                              <ColumnConstraints hgrow="ALWAYS" minWidth="20.0" prefWidth="40.0" />
+                              <ColumnConstraints hgrow="ALWAYS" minWidth="20.0" prefWidth="40.0" />
+                              <ColumnConstraints hgrow="ALWAYS" minWidth="20.0" prefWidth="40.0" />
+                              <ColumnConstraints hgrow="ALWAYS" minWidth="20.0" prefWidth="40.0" />
+                              <ColumnConstraints hgrow="ALWAYS" minWidth="20.0" prefWidth="40.0" />
+                              <ColumnConstraints hgrow="ALWAYS" minWidth="20.0" prefWidth="40.0" />
+                              <ColumnConstraints hgrow="ALWAYS" minWidth="20.0" prefWidth="40.0" />
+                              <ColumnConstraints hgrow="ALWAYS" minWidth="20.0" prefWidth="40.0" />
+                              <ColumnConstraints hgrow="ALWAYS" minWidth="20.0" prefWidth="40.0" />
                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="80.0" minWidth="30.0" prefWidth="43.0" />
                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="20.0" minWidth="30.0" prefWidth="20.0" />
                            </columnConstraints>
