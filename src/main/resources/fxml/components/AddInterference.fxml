@@ -102,7 +102,11 @@
                         </JFXComboBox>
                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
                            <children>
-                               <FontAwesomeIconView fx:id="iconMarker" glyphName="MAP_MARKER" styleClass="icons" textAlignment="CENTER" wrappingWidth="30.0" HBox.hgrow="ALWAYS" />
+                               <FontAwesomeIconView fx:id="iconMarker" glyphName="MAP_MARKER" textAlignment="CENTER" wrappingWidth="30.0" HBox.hgrow="ALWAYS">
+                                 <styleClass>
+                                    <String fx:value="icons" />
+                                    <String fx:value="icon-light-dark" />
+                                 </styleClass></FontAwesomeIconView>
                            </children>
                         </HBox>
                      </children>
