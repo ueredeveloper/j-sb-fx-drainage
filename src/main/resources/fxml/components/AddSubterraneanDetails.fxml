@@ -15,6 +15,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
+
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="900.0" styleClass="container" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.views.AddSubterraneanDetailsController">
    <children>
       <GridPane layoutX="23.0" layoutY="52.0" prefHeight="95.0" prefWidth="800.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">
@@ -83,9 +84,9 @@
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="328.0" prefWidth="890.0">
                      <children>
-                        <ScrollPane fitToWidth="true" layoutX="2.0" layoutY="7.0" prefHeight="179.0" prefWidth="886.0" style="-fx-background-color: red; -fx-border-color: blue;" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0">
+                        <ScrollPane fitToWidth="true" layoutX="2.0" layoutY="7.0" prefHeight="179.0" prefWidth="886.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0">
                            <content>
-                              <GridPane fx:id="gpPurpouses" alignment="CENTER" prefHeight="30.0" prefWidth="880.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+                              <GridPane fx:id="gpPurpouses" alignment="CENTER" prefHeight="40.0" prefWidth="880.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
                                 <columnConstraints>
                                   <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
                                     <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
@@ -97,7 +98,7 @@
                                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="30.0" minWidth="30.0" prefWidth="100.0" />
                                 </columnConstraints>
                                 <rowConstraints>
-                                  <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                                  <RowConstraints prefHeight="40.0" />
                                 </rowConstraints>
                               </GridPane>
                            </content>
@@ -108,7 +109,7 @@
                               <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
                               <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
                               <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="120.0" />
+                              <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="160.0" />
                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" />
                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="30.0" minWidth="30.0" prefWidth="100.0" />
                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" />

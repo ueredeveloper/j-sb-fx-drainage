@@ -10,6 +10,7 @@
 	
 }
 
+
 .container {
 	-fx-background-color: -fx-primary-color;
 }
@@ -31,7 +32,8 @@
 
 .icons:hover {
     -fx-font-size: 28px; /* Novo tamanho ao passar o mouse ou focar */
-    -fx-fill: -fx-accent-color; /* Cor ao passar o mouse ou focar */
+    -fx-fill: -fx-addictional-color; /* Cor ao passar o mouse ou focar */
+   
 }
 
 .text-field-subpurpose {

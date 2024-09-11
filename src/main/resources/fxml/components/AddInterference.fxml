@@ -19,6 +19,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 
+
 <fx:root fx:id="anchorPaneContainer" prefHeight="842.0" prefWidth="900.0" styleClass="container" type="AnchorPane" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <ScrollPane hbarPolicy="NEVER" layoutX="10.0" layoutY="14.0" prefHeight="900.0" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -104,9 +105,12 @@
                            <children>
                                <FontAwesomeIconView fx:id="iconMarker" glyphName="MAP_MARKER" textAlignment="CENTER" wrappingWidth="30.0" HBox.hgrow="ALWAYS">
                                  <styleClass>
-                                    <String fx:value="icons" />
                                     <String fx:value="icon-light-dark" />
-                                 </styleClass></FontAwesomeIconView>
+                                    <String fx:value="icons" />
+                                 </styleClass>
+                                 <HBox.margin>
+                                    <Insets left="5.0" right="5.0" />
+                                 </HBox.margin></FontAwesomeIconView>
                            </children>
                         </HBox>
                      </children>

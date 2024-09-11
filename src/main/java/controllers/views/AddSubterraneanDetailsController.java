@@ -1,7 +1,9 @@
 package controllers.views;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.ResourceBundle;
 import java.util.Set;
 
@@ -66,6 +68,7 @@ public class AddSubterraneanDetailsController implements Initializable {
 
 	// Use set para não repetir finalidade
 	Set<Finalidade> purpouses = new HashSet<>();
+	
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -73,12 +76,11 @@ public class AddSubterraneanDetailsController implements Initializable {
 		cbWellType.setItems(obsTypesOfWells);
 
 		// Adiciona cadastro de finalidade
-		addPurpouseComponents(0);
+		addRow(0);
 
 	}
 
-	public void addPurpouseComponents(int index) {
-		String[] strPurpouses = { "Finalidade", "Subfinalidade", "Quantidade", "Consumo", "Subtotal", "B1", "B2" };
+	public void addRow(int index) {
 
 		JFXTextField tfPurpouse = new JFXTextField();
 		JFXTextField tfSubpurpose = new JFXTextField();
@@ -104,27 +106,32 @@ public class AddSubterraneanDetailsController implements Initializable {
 		// Adiciona finalidade com única na lista (Set)
 		purpouses.add(obj);
 
-		tfPurpouse.setPrefHeight(30.0);
+		tfPurpouse.setPrefHeight(40.0);
+		tfPurpouse.setMinHeight(40.00);
 		tfPurpouse.setPrefWidth(200.0);
 		tfPurpouse.getStyleClass().add("text-field-subpurpose");
 		tfPurpouse.setPromptText("Finalidade");
 
-		tfSubpurpose.setPrefHeight(30.0);
+		tfSubpurpose.setPrefHeight(40.0);
+		tfSubpurpose.setMinHeight(40.0);
 		tfSubpurpose.setPrefWidth(200.0);
 		tfSubpurpose.getStyleClass().add("text-field-subpurpose");
 		tfSubpurpose.setPromptText("Subfinalidade");
 
-		tfQuantity.setPrefHeight(30.0);
+		tfQuantity.setPrefHeight(40.0);
+		tfQuantity.setMinHeight(40.0);
 		tfQuantity.setPrefWidth(200.0);
 		tfQuantity.getStyleClass().add("text-field-subpurpose");
 		tfQuantity.setPromptText("Quantidade");
 
-		tfConsumption.setPrefHeight(30.0);
+		tfConsumption.setPrefHeight(40.0);
+		tfConsumption.setMinHeight(40.0);
 		tfConsumption.setPrefWidth(200.0);
 		tfConsumption.getStyleClass().add("text-field-subpurpose");
 		tfConsumption.setPromptText("Consumo");
 
-		tfSubtotal.setPrefHeight(30.0);
+		tfSubtotal.setPrefHeight(40.0);
+		tfPurpouse.setMinHeight(40.0);
 		tfSubtotal.setPrefWidth(200.0);
 		tfSubtotal.getStyleClass().add("text-field-subpurpose");
 		tfSubtotal.setPromptText("Subtotal");
@@ -199,8 +206,6 @@ public class AddSubterraneanDetailsController implements Initializable {
 				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
 			}
 
-			System.out.println(obj.toString() + " size: " + purpouses.size());
-
 		});
 
 		btnCalculate.setOnMouseClicked(event -> {
@@ -215,7 +220,43 @@ public class AddSubterraneanDetailsController implements Initializable {
 		});
 
 		btnPlus.setOnMouseClicked(event -> {
-			addPurpouseComponents(index + 1);
+
+			// Busca a última linha com componente para adicionar mais uma linha com
+			// componentes na sequêcia.
+			Integer rowIndex = null;
+			int lastRow = -1;
+
+			for (javafx.scene.Node child : gpPurpouses.getChildren()) {
+				// Get the row index of the current child
+				rowIndex = GridPane.getRowIndex(child);
+
+				// If rowIndex is null, it defaults to 0
+				if (rowIndex == null) {
+					rowIndex = 0;
+				}
+
+				// Update the lastRow if the current row is greater
+				if (rowIndex > lastRow) {
+					lastRow = rowIndex;
+				}
+			}
+
+			addRow(rowIndex + 1);
+
+		});
+
+		btnMinus.setOnMouseClicked(event -> {
+
+			Integer rowIndex = GridPane.getRowIndex(btnMinus);
+
+			if (rowIndex == null) {
+				rowIndex = 0; // If the row index is not set, it defaults to 0
+			}
+
+			// Remove a linha de finalidade
+			removeRowAndShift(gpPurpouses, rowIndex);
+			// Remove do Set a finalidade removida
+			purpouses.remove(obj);
 
 		});
 
@@ -232,6 +273,40 @@ public class AddSubterraneanDetailsController implements Initializable {
 			gpPurpouses.add(btnMinus, 7, index);
 		}
 
+	}
+
+	// Method to remove a row and shift other rows up
+	public static void removeRowAndShift(GridPane gridPane, int rowIndex) {
+		// Create a list to store nodes that should be shifted
+		ArrayList<javafx.scene.Node> nodesToShift = new ArrayList<>();
+
+		// Use an iterator to remove nodes in the specified row
+		Iterator<javafx.scene.Node> iterator = gridPane.getChildren().iterator();
+
+		while (iterator.hasNext()) {
+			javafx.scene.Node node = iterator.next();
+
+			// Get the row index of the node
+			Integer row = GridPane.getRowIndex(node);
+			if (row == null) {
+				row = 0; // Default to row 0 if no row index is set
+			}
+
+			// If the node is in the row to be removed, remove it
+			if (row == rowIndex) {
+				iterator.remove();
+			} else if (row > rowIndex) {
+				// If the node is in a row below the one to be removed, it needs to be shifted
+				// up
+				nodesToShift.add(node);
+			}
+		}
+
+		// Shift the remaining nodes up by 1 row
+		for (javafx.scene.Node node : nodesToShift) {
+			int currentRow = GridPane.getRowIndex(node);
+			GridPane.setRowIndex(node, currentRow - 1);
+		}
 	}
 
 	public Finalidade getFinalidade() {
