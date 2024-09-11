@@ -1,0 +1,49 @@
+removi do document.css
+
+.jfx-text-field {
+  -jfx-unfocus-color: -fx-primary-color; /* borda inferior */
+  /*-fx-prompt-text-fill: -fx-primary-color;*/ /* prompt text */
+  -jfx-focus-color: -fx-addictional-color; /* prompt text ao subir no text field */
+
+}
+.jfx-text-field:focused {
+  -jfx-unfocus-color: -fx-secondary-color; /* borda inferior ao clicar (un focus) */
+  -fx-text-fill: -fx-accent-color; /* texto que o usário escreve */
+}
+
+
+light
+
+.container .jfx-text-field {
+  -jfx-unfocus-color: -fx-light-secondary-color; /* borda inferior */
+  -jfx-focus-color: -fx-light-addictional-color; /* prompt text ao subir no text field */
+
+}
+.container .jfx-text-field:focused {
+  -jfx-unfocus-color: -fx-light-secondary-color; /* borda inferior ao clicar (un focus) */
+  -fx-text-fill: -fx-light-accent-color; /* texto que o usário escreve */
+}
+
+
+.content .jfx-text-field {
+  -jfx-unfocus-color: -fx-light-primary-color; /* borda inferior */
+  /*-fx-prompt-text-fill: -fx-light-primary-color;*/ /* prompt text */
+  -jfx-focus-color: -fx-light-addictional-color; /* prompt text ao subir no text field */
+
+}
+.content .jfx-text-field:focused {
+  -jfx-unfocus-color: -fx-light-secondary-color; /* borda inferior ao clicar (un focus) */
+  -fx-text-fill: -fx-light-accent-color; /* texto que o usário escreve */
+}
+
+
+.jfx-text-field {
+  -jfx-unfocus-color: -fx-light-primary-color; /* borda inferior */
+  /*-fx-prompt-text-fill: -fx-light-primary-color;*/ /* prompt text */
+  -jfx-focus-color: -fx-light-addictional-color; /* prompt text ao subir no text field */
+
+}
+.jfx-text-field:focused {
+  -jfx-unfocus-color: -fx-light-secondary-color; /* borda inferior ao clicar (un focus) */
+  -fx-text-fill: -fx-light-accent-color; /* texto que o usário escreve */
+}

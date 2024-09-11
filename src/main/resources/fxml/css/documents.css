@@ -33,13 +33,3 @@
   -jfx-focus-color: -fx-addictional-color; /* cor do prompt text ao subir no text field */
 }
 
-.jfx-text-field {
-  -jfx-unfocus-color: -fx-primary-color; /* borda inferior */
-  /*-fx-prompt-text-fill: -fx-primary-color;*/ /* prompt text */
-  -jfx-focus-color: -fx-addictional-color; /* prompt text ao subir no text field */
-
-}
-.jfx-text-field:focused {
-  -jfx-unfocus-color: -fx-secondary-color; /* borda inferior ao clicar (un focus) */
-  -fx-text-fill: -fx-accent-color; /* texto que o usário escreve */
-}
