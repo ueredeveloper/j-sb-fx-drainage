@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.HBox?>
 
 
-<AnchorPane fx:id="apContent" prefHeight="45.0" styleClass="container" stylesheets="@css/root-light.css" AnchorPane.bottomAnchor="5.0" AnchorPane.topAnchor="5.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.NavigationController">
+<AnchorPane fx:id="apContent" prefHeight="45.0" styleClass="secondary-content" stylesheets="@css/root-light.css" AnchorPane.bottomAnchor="5.0" AnchorPane.topAnchor="5.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.NavigationController">
    <children>
    
       <HBox fx:id="hbNavigation" alignment="CENTER_RIGHT" prefHeight="50.0" prefWidth="500.0">
