@@ -64,8 +64,6 @@ import utilities.URLUtility;
  * Controlador para lidar com operações relacionadas aos documentos.
  */
 public class DocumentController implements Initializable {
-	
-	
 
 	@FXML
 	private ComboBox<Documento> cbDocument;
@@ -180,8 +178,10 @@ public class DocumentController implements Initializable {
 	/**
 	 * Inicializa o controlador e configura a interface.
 	 *
-	 * @param location  O URL para localização do recurso.
-	 * @param resources Os recursos utilizados pelo controlador.
+	 * @param location
+	 *            O URL para localização do recurso.
+	 * @param resources
+	 *            Os recursos utilizados pelo controlador.
 	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -254,6 +254,12 @@ public class DocumentController implements Initializable {
 
 				}
 				cbProcess.getSelectionModel().select(processo);
+				
+				if (processo.getAnexo() != null) {
+					Anexo anexo = processo.getAnexo();
+
+					cbAttachment.getSelectionModel().select(anexo);
+				}
 
 				Endereco endereco = newSelection.getEndereco();
 				// Adiciona o objeto à lista para não precisar buscar no banco de dados.
@@ -264,7 +270,7 @@ public class DocumentController implements Initializable {
 				cbAddress.getSelectionModel().select(endereco);
 
 				// Limpar componentes que não são preenchidos.
-				// ERRO: VER FORMA DE SELECIONAR TAMBÉM O ANEXO AO BUSCAR NO BANCO
+
 				cbAttachment.getSelectionModel().clearSelection();
 				cbUser.getSelectionModel().clearSelection();
 				tfLatitude.clear();
@@ -723,7 +729,8 @@ public class DocumentController implements Initializable {
 	/**
 	 * Manipula a ação de pesquisa de documentos por parâmetro.
 	 *
-	 * @param event O evento de ação associado à pesquisa.
+	 * @param event
+	 *            O evento de ação associado à pesquisa.
 	 */
 	public void searchDocument(ActionEvent event) {
 
@@ -750,7 +757,8 @@ public class DocumentController implements Initializable {
 	/**
 	 * Manipula a ação de salvar um documento.
 	 *
-	 * @param event O evento de ação associado à edição do documento.
+	 * @param event
+	 *            O evento de ação associado à edição do documento.
 	 */
 	public void saveDocument(ActionEvent event) {
 
@@ -830,7 +838,8 @@ public class DocumentController implements Initializable {
 	/**
 	 * Manipula a ação de editar um documento existente.
 	 *
-	 * @param event O evento de ação associado à edição do documento.
+	 * @param event
+	 *            O evento de ação associado à edição do documento.
 	 */
 	public void editDocument(ActionEvent event) {
 		// Get the selected document from the TableView
@@ -944,7 +953,8 @@ public class DocumentController implements Initializable {
 	/**
 	 * Manipula a ação de deletar um documento existente.
 	 *
-	 * @param event O evento de ação associado à exclusão do documento.
+	 * @param event
+	 *            O evento de ação associado à exclusão do documento.
 	 */
 	public void deleteDocument(ActionEvent event) {
 
