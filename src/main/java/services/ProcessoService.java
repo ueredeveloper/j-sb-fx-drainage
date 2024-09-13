@@ -25,7 +25,7 @@ public class ProcessoService {
 	public List<Processo> fetchByKeyword(String keyword) {
 
 		try {
-			URL apiUrl = new URL(localUrl + "/process/list?keyword=" + URLEncoder.encode(keyword, "UTF-8"));
+			URL apiUrl = new URL(localUrl + "/process/list-by-keyword?keyword=" + URLEncoder.encode(keyword, "UTF-8"));
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
 			connection.setRequestMethod("GET");
 
