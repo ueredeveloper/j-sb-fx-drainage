@@ -6,21 +6,20 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 
-
 <AnchorPane fx:id="apContent" prefHeight="45.0" styleClass="secondary-content" stylesheets="@css/root-light.css" AnchorPane.bottomAnchor="5.0" AnchorPane.topAnchor="5.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.NavigationController">
    <children>
    
       <HBox fx:id="hbNavigation" alignment="CENTER_RIGHT" prefHeight="50.0" prefWidth="500.0">
          <children>
-            <JFXButton fx:id="btnRegistration" prefHeight="20.0" prefWidth="150.0" styleClass="nav-buttons" text="Cadastro">
+            <JFXButton fx:id="btnRegistration" prefHeight="20.0" prefWidth="150.0" styleClass="sec-main-buttons" text="Cadastro">
                <HBox.margin>
                   <Insets left="10.0" right="10.0" />
                </HBox.margin></JFXButton>
-            <JFXButton fx:id="btnModels" prefHeight="20.0" prefWidth="150.0" styleClass="nav-buttons" text="Modelos">
+            <JFXButton fx:id="btnModels" prefHeight="20.0" prefWidth="150.0" styleClass="sec-main-buttons" text="Modelos">
                <HBox.margin>
                   <Insets left="10.0" right="10.0" />
                </HBox.margin></JFXButton>
-            <JFXButton fx:id="btnMap" prefHeight="20.0" prefWidth="150.0" styleClass="nav-buttons" text="Mapa">
+            <JFXButton fx:id="btnMap" prefHeight="20.0" prefWidth="150.0" styleClass="sec-main-buttons" text="Mapa">
                <HBox.margin>
                   <Insets left="10.0" right="10.0" />
                </HBox.margin></JFXButton>

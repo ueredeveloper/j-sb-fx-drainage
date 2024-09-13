@@ -254,7 +254,7 @@ public class DocumentController implements Initializable {
 
 				}
 				cbProcess.getSelectionModel().select(processo);
-				
+
 				if (processo.getAnexo() != null) {
 					Anexo anexo = processo.getAnexo();
 

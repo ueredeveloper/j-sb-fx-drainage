@@ -26,7 +26,7 @@
                   <String fx:value="text-color" />
                </styleClass>
             </Label>
-            <JFXButton fx:id="btnClose" layoutX="643.0" layoutY="19.0" styleClass="sec-addictional-buttons" text="Fechar" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0" />
+            <JFXButton fx:id="btnClose" layoutX="643.0" layoutY="19.0" styleClass="sec-main-buttons" text="Fechar" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0" />
          </children>
       </AnchorPane>
       <GridPane layoutX="32.0" layoutY="90.0" prefHeight="50.0" prefWidth="870.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">
@@ -96,7 +96,7 @@
                   <Tooltip text="Digite uma busca. Pode ser pesquisado número, sei, processo e endereço relacionado." />
                </tooltip>
             </JFXTextField>
-            <JFXButton fx:id="btnSearch" minWidth="100.0" prefHeight="30.0" styleClass="buttons" text="Buscar" HBox.hgrow="ALWAYS">
+            <JFXButton fx:id="btnSearch" minWidth="100.0" prefHeight="30.0" styleClass="sec-main-buttons" text="Buscar" HBox.hgrow="ALWAYS">
                <HBox.margin>
                   <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
                </HBox.margin>

@@ -5,19 +5,20 @@ import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
 
+import com.jfoenix.controls.JFXTextField;
+
 import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import main.Main;
 import models.DocumentoTipo;
 import models.Usuario;
 
-public class EditDocumentTest extends ApplicationTest {
+public class DocumentEditTest extends ApplicationTest {
 
 	public void start(Stage stage) throws Exception {
 		new Main().start(stage);
@@ -35,17 +36,19 @@ public class EditDocumentTest extends ApplicationTest {
 		clickOn(btnSearch);
 
 		TableView<?> tvDocs = lookup("#tvDocs").query();
+		// Verifica se existe
 		assertNotNull(tvDocs);
 		// Clica no primeiro resultado da lista de documentos
-		clickOn(".table-row-cell").clickOn(".table-row-cell");
+		Platform.runLater(() -> tvDocs.getSelectionModel().select(0)); // Select the first row
 
+		sleep(500);
 		// Começa a edição dos dados
 
 		ComboBox<DocumentoTipo> cbDocType = lookup("#cbDocType").query();
 		Node item = lookup(".list-cell").nth(0).query();
 		assertNotNull(item);
 		clickOn(item);
-		sleep(500);
+		sleep(1500);
 
 		Platform.runLater(() -> {
 			for (DocumentoTipo tipo : cbDocType.getItems()) {
@@ -58,46 +61,62 @@ public class EditDocumentTest extends ApplicationTest {
 		// fechar a seleção
 		clickOn(item);
 
-		javafx.scene.control.TextField tfNumber = lookup("#tfNumber").query();
-		tfNumber.setText("11111/2024");
+		JFXTextField tfNumber = lookup("#tfNumber").query();
+		tfNumber.setText("195.456.789/2024");
 		sleep(1000);
-		javafx.scene.control.TextField tfNumberSei = lookup("#tfNumberSei").query();
-		tfNumberSei.setText("111111");
+
+		JFXTextField tfNumberSei = lookup("#tfNumberSei").query();
+		tfNumberSei.setText("987/2052");
 		sleep(1000);
 
 		ComboBox<?> cbAddress = lookup("#cbAddress").query();
+		assertNotNull(cbAddress); // Ensure the ComboBox exists
+		// Limpa o combobox
+		Platform.runLater(() -> {
+			cbAddress.setValue(null); // Limpa o valor selecionado
+			if (cbAddress.isEditable()) {
+				cbAddress.getEditor().clear(); // Limpa o editor
+			}
+		});
+
+		sleep(500);
 		clickOn(cbAddress).write("Rua das Acássias, 19");
 
 		sleep(500);
 		selectFirstItemInComboBox(cbAddress);
 
-		Platform.runLater(() -> {
+		/*
+		 * JFXTextField tfLat itude = lookup("#tfLatitude").query();
+		 * tfLatitude.setText("-15.123"); sleep(1000);
+		 */
 
-			clickOn(cbAddress);
-			cbAddress.getSelectionModel().select(0);
-		});
-
-		TextField tfLatitude = lookup("#tfLatitude").query();
-		tfLatitude.setText("-15.123");
-		sleep(1000);
-
-		TextField tfLongitude = lookup("#tfLongitude").query();
+		JFXTextField tfLongitude = lookup("#tfLongitude").query();
 		tfLongitude.setText("-47.123");
 		sleep(1000);
 
 		ComboBox<Usuario> cbUser = lookup("#cbUser").query();
+		assertNotNull(cbUser); // Ensure the ComboBox exists
+		// Limpa o combobox
+		Platform.runLater(() -> {
+			cbUser.setValue(null); // Limpa o valor selecionado
+			if (cbUser.isEditable()) {
+				cbUser.getEditor().clear(); // Limpa o editor
+			}
+		});
 		clickOn(cbUser).write("Carlos José");
 
 		sleep(500);
 		selectFirstItemInComboBox(cbUser);
 
-		Platform.runLater(() -> {
-
-			clickOn(cbUser);
-			cbUser.getSelectionModel().select(0);
-		});
-
 		ComboBox<?> cbProcess = lookup("#cbProcess").query();
+		assertNotNull(cbProcess); // Ensure the ComboBox exists
+		// Limpa o combobox
+		Platform.runLater(() -> {
+			cbProcess.setValue(null); // Limpa o valor selecionado
+			if (cbProcess.isEditable()) {
+				cbProcess.getEditor().clear(); // Limpa o editor
+			}
+		});
 		clickOn(cbProcess).write("195.123.564/2012");
 
 		sleep(500);
@@ -109,23 +128,23 @@ public class EditDocumentTest extends ApplicationTest {
 		});
 
 		ComboBox<?> cbAttachment = lookup("#cbAttachment").query();
+		assertNotNull(cbAttachment); // Ensure the ComboBox exists
+		// Limpa o combobox
+		Platform.runLater(() -> {
+			cbAttachment.setValue(null); // Limpa o valor selecionado
+			if (cbAttachment.isEditable()) {
+				cbAttachment.getEditor().clear(); // Limpa o editor
+			}
+		});
 		clickOn(cbAttachment).write("195.123.555/2015");
 
 		sleep(500);
-
-		Platform.runLater(() -> {
-
-			clickOn(cbAttachment);
-			cbAttachment.getSelectionModel().select(0);
-		});
-
+		selectFirstItemInComboBox(cbAttachment);
 		sleep(500);
 
-		/*
-		 * 
-		 * Button btnEdit = lookup("#btnEdit").query(); assertNotNull(btnEdit);
-		 * clickOn(btnEdit);
-		 */
+		Button btnEdit = lookup("#btnEdit").query();
+		assertNotNull(btnEdit);
+		clickOn(btnEdit);
 
 		sleep(3000);
 

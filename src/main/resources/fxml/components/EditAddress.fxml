@@ -8,8 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.web.WebView?>
 
-
-<fx:root fx:id="apContainer" styleClass="container" stylesheets="@../css/root-light.css" type="AnchorPane" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root fx:id="apContainer" styleClass="secondary-content" stylesheets="@../css/root-light.css" type="AnchorPane" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
          <children>
@@ -31,8 +30,8 @@
                   <String fx:value="title" />
                   <String fx:value="text-color" />
                </styleClass></Label>
-            <JFXButton fx:id="btnEdit" layoutX="250.0" layoutY="239.0" prefWidth="70.0" text="Editar" AnchorPane.rightAnchor="10.0" />
-            <JFXButton fx:id="btnClose" layoutX="255.0" layoutY="12.0" prefWidth="70.0" text="Sair" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
+            <JFXButton fx:id="btnEdit" layoutX="250.0" layoutY="239.0" prefWidth="70.0" styleClass="sec-main-buttons" text="Editar" AnchorPane.rightAnchor="10.0" />
+            <JFXButton fx:id="btnClose" layoutX="255.0" layoutY="12.0" prefWidth="70.0" styleClass="sec-main-buttons" text="Sair" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
             <Label layoutX="14.0" layoutY="271.0" styleClass="text-color" text="Área" AnchorPane.leftAnchor="10.0">
                <padding>
                   <Insets left="10.0" right="10.0" />

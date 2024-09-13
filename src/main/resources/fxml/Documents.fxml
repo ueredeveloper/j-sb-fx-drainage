@@ -190,7 +190,7 @@
 						<Tooltip text="Digite uma busca. Pode ser pesquisado número, sei, processo e endereço relacionado." />
 					</tooltip>
 				</JFXTextField>
-				<JFXButton fx:id="btnSearch" minWidth="100.0" prefHeight="30.0" text="Buscar" HBox.hgrow="ALWAYS">
+				<JFXButton fx:id="btnSearch" minWidth="100.0" prefHeight="30.0" styleClass="cont-main-button" text="Buscar" HBox.hgrow="ALWAYS">
 					<HBox.margin>
 						<Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
 					</HBox.margin>
