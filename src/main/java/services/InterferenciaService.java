@@ -37,6 +37,9 @@ public class InterferenciaService {
 
 			// Convert Documento object to JSON
 			String jsonInputString = convertObjectToJson(obj);
+			
+			
+			System.out.println("save " + jsonInputString);
 
 			// Write JSON to request body
 			try (OutputStream os = connection.getOutputStream();

@@ -60,6 +60,9 @@ public class AddSubterraneanDetailsController implements Initializable {
 
 	@FXML
 	private JFXTextField tfWaterDepth;
+	
+	@FXML
+	private JFXTextField tfTotalConsumption;
 
 	@FXML
 	private GridPane gpPurpouses;
@@ -68,6 +71,9 @@ public class AddSubterraneanDetailsController implements Initializable {
 
 	// Use set para não repetir finalidade
 	Set<Finalidade> purpouses = new HashSet<>();
+	
+	@FXML
+	FontAwesomeIconView btnTotalCalculate;
 	
 
 	@Override
@@ -86,7 +92,7 @@ public class AddSubterraneanDetailsController implements Initializable {
 		JFXTextField tfSubpurpose = new JFXTextField();
 		JFXTextField tfQuantity = new JFXTextField();
 		JFXTextField tfConsumption = new JFXTextField();
-		JFXTextField tfSubtotal = new JFXTextField();
+		JFXTextField tfTotal = new JFXTextField();
 		// Criando o ícone FontAwesome
 		FontAwesomeIconView btnCalculate = new FontAwesomeIconView();
 		FontAwesomeIconView btnPlus = new FontAwesomeIconView();
@@ -130,11 +136,11 @@ public class AddSubterraneanDetailsController implements Initializable {
 		tfConsumption.getStyleClass().add("text-field-subpurpose");
 		tfConsumption.setPromptText("Consumo");
 
-		tfSubtotal.setPrefHeight(40.0);
-		tfPurpouse.setMinHeight(40.0);
-		tfSubtotal.setPrefWidth(200.0);
-		tfSubtotal.getStyleClass().add("text-field-subpurpose");
-		tfSubtotal.setPromptText("Subtotal");
+		tfTotal.setPrefHeight(40.0);
+		tfTotal.setMinHeight(40.0);
+		tfTotal.setPrefWidth(200.0);
+		tfTotal.getStyleClass().add("text-field-subpurpose");
+		tfTotal.setPromptText("Total");
 
 		tfPurpouse.textProperty().addListener((observable, oldValue, newValue) -> {
 
@@ -213,9 +219,9 @@ public class AddSubterraneanDetailsController implements Initializable {
 			Double y = Double.parseDouble(tfQuantity.getText());
 
 			Double result = x * y;
-			obj.setSubtotal(result);
+			obj.setTotal(result);
 
-			tfSubtotal.setText(result.toString());
+			tfTotal.setText(result.toString());
 
 		});
 
@@ -259,12 +265,39 @@ public class AddSubterraneanDetailsController implements Initializable {
 			purpouses.remove(obj);
 
 		});
+		
+		btnTotalCalculate.setOnMouseClicked(event -> {
+			final Double[] total = {0.0};  // Usando um array para contornar a limitação de variáveis finais
+		    purpouses.forEach(p -> {
+		        Double subtotal = p.getTotal();
+		        if (subtotal != null) {
+		            total[0] += subtotal;
+		        }
+		    });
+		    
+		    tfTotalConsumption.setText(total[0].toString());
+		    
+		    
+		});
+		
+		
+			btnCalculate.setOnMouseClicked(event -> {
+			Double x = Double.parseDouble(tfConsumption.getText());
+			Double y = Double.parseDouble(tfQuantity.getText());
+
+			Double result = x * y;
+			obj.setTotal(result);
+
+			tfTotal.setText(result.toString());
+
+		});
+		
 
 		gpPurpouses.add(tfPurpouse, 0, index);
 		gpPurpouses.add(tfSubpurpose, 1, index);
 		gpPurpouses.add(tfQuantity, 2, index);
 		gpPurpouses.add(tfConsumption, 3, index);
-		gpPurpouses.add(tfSubtotal, 4, index);
+		gpPurpouses.add(tfTotal, 4, index);
 		gpPurpouses.add(btnCalculate, 5, index);
 		gpPurpouses.add(btnPlus, 6, index);
 		// Na primeira linha não coloca sinal de menos. O mínimo é uma linha, não
@@ -309,11 +342,9 @@ public class AddSubterraneanDetailsController implements Initializable {
 		}
 	}
 
-	public Finalidade getFinalidade() {
+	public Set<Finalidade> getPurpouses () {
 
-		Finalidade fin = new Finalidade();
-
-		return null;
+		return purpouses;
 	}
 
 }

@@ -1,13 +1,12 @@
 package controllers.views;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
@@ -30,7 +29,9 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import models.BaciaHidrografica;
 import models.Endereco;
+import models.Finalidade;
 import models.Interferencia;
 import models.SituacaoProcesso;
 import models.Subterranea;
@@ -38,14 +39,13 @@ import models.SubtipoOutorga;
 import models.TipoAto;
 import models.TipoInterferencia;
 import models.TipoOutorga;
+import models.UnidadeHidrografica;
 import services.InterferenciaService;
 import services.ServiceResponse;
 import utilities.JsonConverter;
 import utilities.URLUtility;
 
 public class AddInterferenceController implements Initializable {
-	
-	
 
 	private static AddInterferenceController instance;
 
@@ -154,6 +154,8 @@ public class AddInterferenceController implements Initializable {
 
 	ObservableList<Interferencia> obsInterferences = FXCollections.observableArrayList();
 
+	AddSubterraneanDetailsController addSubterraneanDetailsController;
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
@@ -195,8 +197,20 @@ public class AddInterferenceController implements Initializable {
 
 				cbAddress.getSelectionModel().select(newValue.getEndereco());
 
-				TipoInterferencia selectedType = newValue.getTipoInterferencia();
-				cbTypeOfInterference.getSelectionModel().select(selectedType);
+				TipoInterferencia ti = newValue.getTipoInterferencia();
+				cbTypeOfInterference.getSelectionModel().select(ti);
+
+				TipoOutorga to = newValue.getTipoOutorga();
+				cbTypeOfGrant.getSelectionModel().select(to);
+
+				SubtipoOutorga so = newValue.getSubtipoOutorga();
+				cbSubtypeOfGrant.getSelectionModel().select(so);
+
+				SituacaoProcesso sp = newValue.getSituacaoProcesso();
+				cbProcessSituation.getSelectionModel().select(sp);
+
+				TipoAto ta = newValue.getTipoAto();
+				cbTypeOfAct.getSelectionModel().select(ta);
 
 			} else {
 
@@ -260,7 +274,7 @@ public class AddInterferenceController implements Initializable {
 			// Limpa antes de adicionar os detalhes de cada tipo de interferência.
 			// No momento só há detalhes para a interferência subterrânea.
 			apTypeOfInterference.getChildren().clear();
-		
+
 			if (item != null && item.getDescricao() != null && !item.getDescricao().isEmpty()) {
 				if (item.getDescricao().equals("Subterrânea")) {
 					openTypeOfInterferenceDetails();
@@ -291,6 +305,14 @@ public class AddInterferenceController implements Initializable {
 
 		String latitude = tfLatitude.getText();
 		String longitude = tfLongitude.getText();
+
+		Set<Finalidade> purpouses = null;
+
+		if (addSubterraneanDetailsController != null) {
+			purpouses = addSubterraneanDetailsController.getPurpouses();
+
+			System.out.println(purpouses);
+		}
 
 		// Verifica se o endereço está vazio.
 		if (address == null) {
@@ -351,14 +373,11 @@ public class AddInterferenceController implements Initializable {
 				 * Double.parseDouble(longitude), address, typeOfInterference);
 				 */
 				Subterranea newInterference = new Subterranea(Double.parseDouble(latitude),
-						Double.parseDouble(longitude), address, typeOfInterference, typeOfGrant, subtypeOfGrant,
-						processSituation, typeOfAct);
-
-				/*
-				 * Subterranea(Double latitude, Double longitude, Endereco endereco,
-				 * TipoInterferencia tipoInterferencia, TipoOutorga tipoOutorga, SubtipoOutorga
-				 * subtipoOutorga, SituacaoProcesso situacaoProcesso, TipoAto tipoAto)
-				 */
+						Double.parseDouble(longitude), new String(), // Adicionar depois a coordenada geometry
+						address, typeOfInterference, typeOfGrant, subtypeOfGrant, processSituation, typeOfAct,
+						new BaciaHidrografica(), // Adicionar depois a bacia hidrográfica
+						new UnidadeHidrografica(), // Adicionar depois a unidade hidrográfica
+						purpouses);
 
 				ServiceResponse<?> response = service.save(newInterference);
 
@@ -467,7 +486,7 @@ public class AddInterferenceController implements Initializable {
 
 			// Create a list of Document objects
 			obsInterferences.clear();
-			
+
 			obsInterferences.addAll(list);
 			// cbDocType.setValue(obsDocumentTypes.get(0));
 
@@ -482,8 +501,9 @@ public class AddInterferenceController implements Initializable {
 
 		try {
 			InterferenciaService service = new InterferenciaService(urlService);
-			
-			System.out.println(selected.getTipoInterferencia().getId() +" desc " + selected.getTipoInterferenciaDescricao());
+
+			System.out.println(
+					selected.getTipoInterferencia().getId() + " desc " + selected.getTipoInterferenciaDescricao());
 			// É preciso informar o tipo de
 			ServiceResponse<?> response = service.deleteById(selected.getId(), selected.getTipoInterferencia().getId());
 
@@ -553,10 +573,13 @@ public class AddInterferenceController implements Initializable {
 			// Setting the custom controller factory for NavigationController
 			loader.setControllerFactory(controllerClass -> {
 				if (controllerClass == NavigationController.class) {
-					return new AddSubterraneanDetailsController();
+					addSubterraneanDetailsController = new AddSubterraneanDetailsController();
+					return addSubterraneanDetailsController;
 				} else {
 					try {
-						return controllerClass.getDeclaredConstructor().newInstance();
+						addSubterraneanDetailsController = (AddSubterraneanDetailsController) controllerClass
+								.getDeclaredConstructor().newInstance();
+						return addSubterraneanDetailsController;
 					} catch (Exception e) {
 						throw new RuntimeException(e);
 					}

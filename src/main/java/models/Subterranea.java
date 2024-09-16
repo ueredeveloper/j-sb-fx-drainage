@@ -1,5 +1,7 @@
 package models;
 
+import java.util.Set;
+
 public class Subterranea extends Interferencia {
 
 	private Boolean caesb; // tem caesb () sim () não
@@ -24,12 +26,30 @@ public class Subterranea extends Interferencia {
 			TipoAto tipoAto) {
 		super(latitude, longitude, endereco, tipoInterferencia, tipoOutorga, subtipoOutorga, situacaoProcesso, tipoAto);
 	}
+	
+	public Subterranea(Double latitude, Double longitude, String geometry, Endereco endereco,
+			TipoInterferencia tipoInterferencia, TipoOutorga tipoOutorga, SubtipoOutorga subtipoOutorga,
+			SituacaoProcesso situacaoProcesso, TipoAto tipoAto, BaciaHidrografica baciaHidrografica,
+			UnidadeHidrografica unidadeHidrografica, Set<Finalidade> finalidades) {
+		super(latitude, longitude, geometry, endereco, tipoInterferencia, tipoOutorga, subtipoOutorga, situacaoProcesso,
+				tipoAto, baciaHidrografica, unidadeHidrografica, finalidades);
+	}
+
+	public Subterranea(Long id, Double latitude, Double longitude, String geometry, Endereco endereco,
+			TipoInterferencia tipoInterferencia, TipoOutorga tipoOutorga, SubtipoOutorga subtipoOutorga,
+			SituacaoProcesso situacaoProcesso, TipoAto tipoAto, BaciaHidrografica baciaHidrografica,
+			UnidadeHidrografica unidadeHidrografica, Set<Finalidade> finalidades) {
+		super(id, latitude, longitude, geometry, endereco, tipoInterferencia, tipoOutorga, subtipoOutorga, situacaoProcesso,
+				tipoAto, baciaHidrografica, unidadeHidrografica, finalidades);
+	}
 
 	public Subterranea(Double latitude, Double longitude) {
 		super(latitude, longitude);
 		// TODO Auto-generated constructor stub
 	}
 
+	
+	
 	public Subterranea(Endereco endereco) {
 		super(endereco);
 		// TODO Auto-generated constructor stub

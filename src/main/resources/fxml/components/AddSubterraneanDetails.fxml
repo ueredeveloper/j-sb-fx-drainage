@@ -117,16 +117,12 @@
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
-                              <JFXTextField fx:id="lblTotalConsumption" editable="false" prefHeight="30.0" prefWidth="200.0" promptText="DEMANDA TOTAL (l/dia)" GridPane.columnIndex="4">
-                                 <GridPane.margin>
-                                    <Insets left="5.0" right="5.0" />
-                                 </GridPane.margin>
-                              </JFXTextField>
                               <FontAwesomeIconView fx:id="btnTotalCalculate" glyphName="CHECK_SQUARE_ALT" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                                  <styleClass>
                                     <String fx:value="icon-light-dark" />
                                     <String fx:value="icons" />
                                  </styleClass></FontAwesomeIconView>
+                              <JFXTextField fx:id="tfTotalConsumption" prefHeight="30.0" prefWidth="200.0" promptText="DEMANDA TOTAL (l/dia)" GridPane.columnIndex="4" />
                            </children>
                         </GridPane>
                         <GridPane layoutX="2.0" layoutY="280.0" prefHeight="180.0" prefWidth="855.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0">

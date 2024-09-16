@@ -1,5 +1,7 @@
 package models;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.function.Function;
 
 import javafx.beans.property.SimpleStringProperty;
@@ -32,6 +34,8 @@ public class Interferencia {
 	private BaciaHidrografica baciaHidrografica;
 
 	private UnidadeHidrografica unidadeHidrografica;
+
+	private Set<Finalidade> finalidades = new HashSet<>();
 
 	public Interferencia() {
 		super();
@@ -68,6 +72,45 @@ public class Interferencia {
 		this.subtipoOutorga = subtipoOutorga;
 		this.situacaoProcesso = situacaoProcesso;
 		this.tipoAto = tipoAto;
+	}
+
+	public Interferencia(Long id, Double latitude, Double longitude, String geometry, Endereco endereco,
+			TipoInterferencia tipoInterferencia, TipoOutorga tipoOutorga, SubtipoOutorga subtipoOutorga,
+			SituacaoProcesso situacaoProcesso, TipoAto tipoAto, BaciaHidrografica baciaHidrografica,
+			UnidadeHidrografica unidadeHidrografica, Set<Finalidade> finalidades) {
+		super();
+		this.id = id;
+		this.latitude = latitude;
+		this.longitude = longitude;
+		this.geometry = geometry;
+		this.endereco = endereco;
+		this.tipoInterferencia = tipoInterferencia;
+		this.tipoOutorga = tipoOutorga;
+		this.subtipoOutorga = subtipoOutorga;
+		this.situacaoProcesso = situacaoProcesso;
+		this.tipoAto = tipoAto;
+		this.baciaHidrografica = baciaHidrografica;
+		this.unidadeHidrografica = unidadeHidrografica;
+		this.finalidades = finalidades;
+	}
+
+	public Interferencia(Double latitude, Double longitude, String geometry, Endereco endereco,
+			TipoInterferencia tipoInterferencia, TipoOutorga tipoOutorga, SubtipoOutorga subtipoOutorga,
+			SituacaoProcesso situacaoProcesso, TipoAto tipoAto, BaciaHidrografica baciaHidrografica,
+			UnidadeHidrografica unidadeHidrografica, Set<Finalidade> finalidades) {
+		super();
+		this.latitude = latitude;
+		this.longitude = longitude;
+		this.geometry = geometry;
+		this.endereco = endereco;
+		this.tipoInterferencia = tipoInterferencia;
+		this.tipoOutorga = tipoOutorga;
+		this.subtipoOutorga = subtipoOutorga;
+		this.situacaoProcesso = situacaoProcesso;
+		this.tipoAto = tipoAto;
+		this.baciaHidrografica = baciaHidrografica;
+		this.unidadeHidrografica = unidadeHidrografica;
+		this.finalidades = finalidades;
 	}
 
 	public Long getId() {
@@ -164,6 +207,14 @@ public class Interferencia {
 
 	public void setUnidadeHidrografica(UnidadeHidrografica unidadeHidrografica) {
 		this.unidadeHidrografica = unidadeHidrografica;
+	}
+
+	public Set<Finalidade> getFinalidades() {
+		return finalidades;
+	}
+
+	public void setFinalidades(Set<Finalidade> finalidades) {
+		this.finalidades = finalidades;
 	}
 
 	@Override
