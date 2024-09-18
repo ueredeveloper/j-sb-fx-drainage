@@ -34,6 +34,8 @@ public class Subterranea extends Interferencia {
 		super(latitude, longitude, geometry, endereco, tipoInterferencia, tipoOutorga, subtipoOutorga, situacaoProcesso,
 				tipoAto, baciaHidrografica, unidadeHidrografica, finalidades);
 	}
+	
+	
 
 	public Subterranea(Long id, Double latitude, Double longitude, String geometry, Endereco endereco,
 			TipoInterferencia tipoInterferencia, TipoOutorga tipoOutorga, SubtipoOutorga subtipoOutorga,
@@ -41,6 +43,24 @@ public class Subterranea extends Interferencia {
 			UnidadeHidrografica unidadeHidrografica, Set<Finalidade> finalidades) {
 		super(id, latitude, longitude, geometry, endereco, tipoInterferencia, tipoOutorga, subtipoOutorga, situacaoProcesso,
 				tipoAto, baciaHidrografica, unidadeHidrografica, finalidades);
+	}
+	
+	
+
+	public Subterranea(Double latitude, Double longitude, Endereco endereco, TipoInterferencia tipoInterferencia,
+			TipoOutorga tipoOutorga, SubtipoOutorga subtipoOutorga, SituacaoProcesso situacaoProcesso, TipoAto tipoAto,
+			Set<Finalidade> finalidades) {
+		super(latitude, longitude, endereco, tipoInterferencia, tipoOutorga, subtipoOutorga, situacaoProcesso, tipoAto,
+				finalidades);
+		// TODO Auto-generated constructor stub
+	}
+
+	public Subterranea(Long id, Double latitude, Double longitude, Endereco endereco,
+			TipoInterferencia tipoInterferencia, TipoOutorga tipoOutorga, SubtipoOutorga subtipoOutorga,
+			SituacaoProcesso situacaoProcesso, TipoAto tipoAto, Set<Finalidade> finalidades) {
+		super(id, latitude, longitude, endereco, tipoInterferencia, tipoOutorga, subtipoOutorga, situacaoProcesso, tipoAto,
+				finalidades);
+		// TODO Auto-generated constructor stub
 	}
 
 	public Subterranea(Double latitude, Double longitude) {

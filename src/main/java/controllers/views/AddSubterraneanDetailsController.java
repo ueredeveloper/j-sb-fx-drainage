@@ -21,6 +21,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import models.Finalidade;
+import models.TipoFinalidade;
 import models.TipoPoco;
 
 public class AddSubterraneanDetailsController implements Initializable {
@@ -60,21 +61,25 @@ public class AddSubterraneanDetailsController implements Initializable {
 
 	@FXML
 	private JFXTextField tfWaterDepth;
-	
+
 	@FXML
 	private JFXTextField tfTotalConsumption;
 
 	@FXML
-	private GridPane gpPurpouses;
+	private GridPane requestedPurposesGrid, authorizedPurposesGrid;
 
 	ObservableList<TipoPoco> obsTypesOfWells;
 
 	// Use set para não repetir finalidade
 	Set<Finalidade> purpouses = new HashSet<>();
-	
+
 	@FXML
 	FontAwesomeIconView btnTotalCalculate;
-	
+
+	@FXML
+	FontAwesomeIconView btnRequestedTotalCalculate, btnAuthorizedTotalCalculate;
+	@FXML
+	private JFXTextField tfTotalRequestedConsumption, tfTotalAuthorizedConsumption;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -82,11 +87,15 @@ public class AddSubterraneanDetailsController implements Initializable {
 		cbWellType.setItems(obsTypesOfWells);
 
 		// Adiciona cadastro de finalidade
-		addRow(0);
+		addRow(0, requestedPurposesGrid, tfTotalRequestedConsumption, btnRequestedTotalCalculate,
+				new TipoFinalidade(1L));
+		addRow(0, authorizedPurposesGrid, tfTotalAuthorizedConsumption, btnAuthorizedTotalCalculate,
+				new TipoFinalidade(2L));
 
 	}
 
-	public void addRow(int index) {
+	public void addRow(int index, GridPane gridPane, JFXTextField tfTotalConsumption,
+			FontAwesomeIconView btnTotalConsumption, TipoFinalidade typeOfPurpouse) {
 
 		JFXTextField tfPurpouse = new JFXTextField();
 		JFXTextField tfSubpurpose = new JFXTextField();
@@ -108,7 +117,7 @@ public class AddSubterraneanDetailsController implements Initializable {
 		btnMinus.getStyleClass().addAll("icon-light-dark", "icons");
 
 		// Cria finalidade
-		Finalidade obj = new Finalidade();
+		Finalidade obj = new Finalidade(typeOfPurpouse);
 		// Adiciona finalidade com única na lista (Set)
 		purpouses.add(obj);
 
@@ -232,7 +241,7 @@ public class AddSubterraneanDetailsController implements Initializable {
 			Integer rowIndex = null;
 			int lastRow = -1;
 
-			for (javafx.scene.Node child : gpPurpouses.getChildren()) {
+			for (javafx.scene.Node child : gridPane.getChildren()) {
 				// Get the row index of the current child
 				rowIndex = GridPane.getRowIndex(child);
 
@@ -247,7 +256,7 @@ public class AddSubterraneanDetailsController implements Initializable {
 				}
 			}
 
-			addRow(rowIndex + 1);
+			addRow(rowIndex + 1, gridPane, tfTotalConsumption, btnTotalConsumption, typeOfPurpouse);
 
 		});
 
@@ -260,28 +269,26 @@ public class AddSubterraneanDetailsController implements Initializable {
 			}
 
 			// Remove a linha de finalidade
-			removeRowAndShift(gpPurpouses, rowIndex);
+			removeRowAndShift(gridPane, rowIndex);
 			// Remove do Set a finalidade removida
 			purpouses.remove(obj);
 
 		});
-		
-		btnTotalCalculate.setOnMouseClicked(event -> {
-			final Double[] total = {0.0};  // Usando um array para contornar a limitação de variáveis finais
-		    purpouses.forEach(p -> {
-		        Double subtotal = p.getTotal();
-		        if (subtotal != null) {
-		            total[0] += subtotal;
-		        }
-		    });
-		    
-		    tfTotalConsumption.setText(total[0].toString());
-		    
-		    
+
+		btnTotalConsumption.setOnMouseClicked(event -> {
+			final Double[] total = { 0.0 }; // Usando um array para contornar a limitação de variáveis finais
+			purpouses.forEach(p -> {
+				Double subtotal = p.getTotal();
+				if (subtotal != null) {
+					total[0] += subtotal;
+				}
+			});
+
+			tfTotalConsumption.setText(total[0].toString());
+
 		});
-		
-		
-			btnCalculate.setOnMouseClicked(event -> {
+
+		btnCalculate.setOnMouseClicked(event -> {
 			Double x = Double.parseDouble(tfConsumption.getText());
 			Double y = Double.parseDouble(tfQuantity.getText());
 
@@ -291,19 +298,18 @@ public class AddSubterraneanDetailsController implements Initializable {
 			tfTotal.setText(result.toString());
 
 		});
-		
 
-		gpPurpouses.add(tfPurpouse, 0, index);
-		gpPurpouses.add(tfSubpurpose, 1, index);
-		gpPurpouses.add(tfQuantity, 2, index);
-		gpPurpouses.add(tfConsumption, 3, index);
-		gpPurpouses.add(tfTotal, 4, index);
-		gpPurpouses.add(btnCalculate, 5, index);
-		gpPurpouses.add(btnPlus, 6, index);
+		gridPane.add(tfPurpouse, 0, index);
+		gridPane.add(tfSubpurpose, 1, index);
+		gridPane.add(tfQuantity, 2, index);
+		gridPane.add(tfConsumption, 3, index);
+		gridPane.add(tfTotal, 4, index);
+		gridPane.add(btnCalculate, 5, index);
+		gridPane.add(btnPlus, 6, index);
 		// Na primeira linha não coloca sinal de menos. O mínimo é uma linha, não
 		// podendo retirar a primeira.
 		if (index != 0) {
-			gpPurpouses.add(btnMinus, 7, index);
+			gridPane.add(btnMinus, 7, index);
 		}
 
 	}
@@ -342,7 +348,7 @@ public class AddSubterraneanDetailsController implements Initializable {
 		}
 	}
 
-	public Set<Finalidade> getPurpouses () {
+	public Set<Finalidade> getPurpouses() {
 
 		return purpouses;
 	}

@@ -88,6 +88,8 @@ public class InterferenciaService {
 
 			// Convert Documento object to JSON
 			String jsonInputString = convertObjectToJson(object);
+			
+			System.out.println("sub update " + jsonInputString);
 
 
 			// Write JSON to request body
@@ -109,6 +111,8 @@ public class InterferenciaService {
 					while ((responseLine = br.readLine()) != null) {
 						response.append(responseLine);
 					}
+					
+					System.out.println("edited res to string " + response.toString());
 					responseBody = response.toString();
 				}
 			} else {

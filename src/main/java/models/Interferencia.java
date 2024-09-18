@@ -40,7 +40,7 @@ public class Interferencia {
 	public Interferencia() {
 		super();
 	}
-
+	
 	public Interferencia(Endereco endereco) {
 		super();
 		this.endereco = endereco;
@@ -110,6 +110,38 @@ public class Interferencia {
 		this.tipoAto = tipoAto;
 		this.baciaHidrografica = baciaHidrografica;
 		this.unidadeHidrografica = unidadeHidrografica;
+		this.finalidades = finalidades;
+	}
+	
+	public Interferencia(Double latitude, Double longitude, Endereco endereco, TipoInterferencia tipoInterferencia,
+			TipoOutorga tipoOutorga, SubtipoOutorga subtipoOutorga, SituacaoProcesso situacaoProcesso, TipoAto tipoAto,
+			Set<Finalidade> finalidades) {
+		super();
+		this.latitude = latitude;
+		this.longitude = longitude;
+		this.endereco = endereco;
+		this.tipoInterferencia = tipoInterferencia;
+		this.tipoOutorga = tipoOutorga;
+		this.subtipoOutorga = subtipoOutorga;
+		this.situacaoProcesso = situacaoProcesso;
+		this.tipoAto = tipoAto;
+		this.finalidades = finalidades;
+	}
+	
+
+	public Interferencia(Long id, Double latitude, Double longitude, Endereco endereco,
+			TipoInterferencia tipoInterferencia, TipoOutorga tipoOutorga, SubtipoOutorga subtipoOutorga,
+			SituacaoProcesso situacaoProcesso, TipoAto tipoAto, Set<Finalidade> finalidades) {
+		super();
+		this.id = id;
+		this.latitude = latitude;
+		this.longitude = longitude;
+		this.endereco = endereco;
+		this.tipoInterferencia = tipoInterferencia;
+		this.tipoOutorga = tipoOutorga;
+		this.subtipoOutorga = subtipoOutorga;
+		this.situacaoProcesso = situacaoProcesso;
+		this.tipoAto = tipoAto;
 		this.finalidades = finalidades;
 	}
 

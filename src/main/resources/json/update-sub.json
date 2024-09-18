@@ -1,0 +1,57 @@
+{
+	"id": 1,
+	"latitude": -15.123456789,
+	"longitude": -47.123456789,
+	"endereco": {
+		"id": 5,
+		"logradouro": "Rua Beatriz Nobre, 123",
+		"documentos": [],
+		"interferencias": []
+	},
+	"tipoInterferencia": {
+		"id": 2,
+		"descricao": "Subterrânea"
+	},
+	"tipoOutorga": {
+		"id": 2,
+		"descricao": "Outorga Prévia"
+	},
+	"subtipoOutorga": {
+		"id": 3,
+		"descricao": "Transferência"
+	},
+	"situacaoProcesso": {
+		"id": 3,
+		"descricao": "Outorgado"
+	},
+	"tipoAto": {
+		"id": 3,
+		"descricao": "Despacho"
+	},
+	"finalidades": [
+		{
+			"id": 1,
+			"finalidade": "Abastecimento Humano",
+			"subfinalidade": "Urbano",
+			"quantidade": 100.0,
+			"consumo": 200.0,
+			"total": 20000.0,
+			"tipoFinalidade": {
+				"id": 1,
+				"descricao": "Requerida"
+			}
+		},
+		{
+			"id": 2,
+			"finalidade": "Abastecimento Humano",
+			"subfinalidade": "Urbano",
+			"quantidade": 100.0,
+			"consumo": 300.0,
+			"total": 30000.0,
+			"tipoFinalidade": {
+				"id": 2,
+				"descricao": "Autorizada"
+			}
+		}
+	]
+}

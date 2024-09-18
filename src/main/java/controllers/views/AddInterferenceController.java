@@ -29,7 +29,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import models.BaciaHidrografica;
 import models.Endereco;
 import models.Finalidade;
 import models.Interferencia;
@@ -39,7 +38,6 @@ import models.SubtipoOutorga;
 import models.TipoAto;
 import models.TipoInterferencia;
 import models.TipoOutorga;
-import models.UnidadeHidrografica;
 import services.InterferenciaService;
 import services.ServiceResponse;
 import utilities.JsonConverter;
@@ -211,6 +209,8 @@ public class AddInterferenceController implements Initializable {
 
 				TipoAto ta = newValue.getTipoAto();
 				cbTypeOfAct.getSelectionModel().select(ta);
+				
+				newValue.getFinalidades().forEach(f-> System.out.println(f.getFinalidade()));
 
 			} else {
 
@@ -365,19 +365,13 @@ public class AddInterferenceController implements Initializable {
 
 			try {
 
-				// DocumentService documentService = new DocumentService(localUrl);
 				InterferenciaService service = new InterferenciaService(urlService);
 
-				/*
-				 * Subterranea newInterference = new Subterranea(Double.parseDouble(latitude),
-				 * Double.parseDouble(longitude), address, typeOfInterference);
-				 */
+				// ADICIOINAR GEOMETRY, BACIA E UNIDADE HIDROGRÁFICA
+
 				Subterranea newInterference = new Subterranea(Double.parseDouble(latitude),
-						Double.parseDouble(longitude), new String(), // Adicionar depois a coordenada geometry
-						address, typeOfInterference, typeOfGrant, subtypeOfGrant, processSituation, typeOfAct,
-						new BaciaHidrografica(), // Adicionar depois a bacia hidrográfica
-						new UnidadeHidrografica(), // Adicionar depois a unidade hidrográfica
-						purpouses);
+						Double.parseDouble(longitude), address, typeOfInterference, typeOfGrant, subtypeOfGrant,
+						processSituation, typeOfAct, purpouses);
 
 				ServiceResponse<?> response = service.save(newInterference);
 
@@ -429,7 +423,17 @@ public class AddInterferenceController implements Initializable {
 			return;
 		}
 
-		// Retrieve values from text fields
+		TipoOutorga typeOfGrant = cbTypeOfGrant.selectionModelProperty().get().isEmpty() ? null
+				: cbTypeOfGrant.getValue();
+
+		SubtipoOutorga subtypeOfGrant = cbSubtypeOfGrant.selectionModelProperty().get().isEmpty() ? null
+				: cbSubtypeOfGrant.getValue();
+
+		SituacaoProcesso processSituation = cbProcessSituation.selectionModelProperty().get().isEmpty() ? null
+				: cbProcessSituation.getValue();
+
+		TipoAto typeOfAct = cbTypeOfAct.selectionModelProperty().get().isEmpty() ? null : cbTypeOfAct.getValue();
+
 		String latitude = tfLatitude.getText();
 		String longitude = tfLongitude.getText();
 
@@ -437,12 +441,17 @@ public class AddInterferenceController implements Initializable {
 		selectedObject.setLatitude(Double.parseDouble(latitude));
 		selectedObject.setLongitude(Double.parseDouble(longitude));
 		selectedObject.setEndereco(addressCbController.getSelectedObject());
-		selectedObject.setTipoInterferencia(cbTypeOfInterference.getValue());
+		// Não é para permitir a edição do tipo de interferência
+		//selectedObject.setTipoInterferencia(cbTypeOfInterference.getValue());
+		selectedObject.setTipoOutorga(typeOfGrant);
+		selectedObject.setSubtipoOutorga(subtypeOfGrant);
+		selectedObject.setSituacaoProcesso(processSituation);
+		selectedObject.setTipoAto(typeOfAct);
 
 		try {
 			InterferenciaService service = new InterferenciaService(urlService);
 
-			// Requisi��o de resposta de edi��o
+			// Requisicao de edicao e reposta
 			ServiceResponse<?> response = service.update(selectedObject);
 
 			if (response.getResponseCode() == 200) {

@@ -22,6 +22,11 @@ public class Finalidade {
 	public Finalidade() {
 		super();
 	}
+	
+	public Finalidade(TipoFinalidade tipoFinalidade) {
+		super();
+		this.tipoFinalidade = tipoFinalidade;
+	}
 
 	public Finalidade(String finalidade, String subfinalidade, Double quantidade, Double consumo,
 			Interferencia interferencia, TipoFinalidade tipoFinalidade) {
