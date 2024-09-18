@@ -209,8 +209,10 @@ public class AddInterferenceController implements Initializable {
 
 				TipoAto ta = newValue.getTipoAto();
 				cbTypeOfAct.getSelectionModel().select(ta);
-				
-				newValue.getFinalidades().forEach(f-> System.out.println(f.getFinalidade()));
+
+				// Envia as finalidades para o controlador AddSubterraneanDetailsController
+				Set<Finalidade> purpouses = newValue.getFinalidades();
+				addSubterraneanDetailsController.setPurpouses(purpouses);
 
 			} else {
 
@@ -442,7 +444,7 @@ public class AddInterferenceController implements Initializable {
 		selectedObject.setLongitude(Double.parseDouble(longitude));
 		selectedObject.setEndereco(addressCbController.getSelectedObject());
 		// Não é para permitir a edição do tipo de interferência
-		//selectedObject.setTipoInterferencia(cbTypeOfInterference.getValue());
+		// selectedObject.setTipoInterferencia(cbTypeOfInterference.getValue());
 		selectedObject.setTipoOutorga(typeOfGrant);
 		selectedObject.setSubtipoOutorga(subtypeOfGrant);
 		selectedObject.setSituacaoProcesso(processSituation);

@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Set;
 
@@ -88,14 +89,14 @@ public class AddSubterraneanDetailsController implements Initializable {
 
 		// Adiciona cadastro de finalidade
 		addRow(0, requestedPurposesGrid, tfTotalRequestedConsumption, btnRequestedTotalCalculate,
-				new TipoFinalidade(1L));
+				new TipoFinalidade(1L), new Finalidade());
 		addRow(0, authorizedPurposesGrid, tfTotalAuthorizedConsumption, btnAuthorizedTotalCalculate,
-				new TipoFinalidade(2L));
+				new TipoFinalidade(2L), new Finalidade());
 
 	}
 
 	public void addRow(int index, GridPane gridPane, JFXTextField tfTotalConsumption,
-			FontAwesomeIconView btnTotalConsumption, TipoFinalidade typeOfPurpouse) {
+			FontAwesomeIconView btnTotalConsumption, TipoFinalidade typeOfPurpouse, Finalidade purpouse) {
 
 		JFXTextField tfPurpouse = new JFXTextField();
 		JFXTextField tfSubpurpose = new JFXTextField();
@@ -115,11 +116,23 @@ public class AddSubterraneanDetailsController implements Initializable {
 
 		btnMinus.setGlyphName("MINUS");
 		btnMinus.getStyleClass().addAll("icon-light-dark", "icons");
+		
+		PurpouseWrapper purpouseWrapper = new PurpouseWrapper(purpouse);
 
 		// Cria finalidade
-		Finalidade obj = new Finalidade(typeOfPurpouse);
-		// Adiciona finalidade com única na lista (Set)
-		purpouses.add(obj);
+		if (purpouse == null || purpouse.getTipoFinalidade() == null ) {
+			purpouse = new Finalidade(typeOfPurpouse);
+			// Adiciona finalidade com única na lista (Set)
+			purpouses.add(purpouse);
+			purpouseWrapper.setPurpouse(purpouse);
+		} else {
+			tfPurpouse.setText(purpouseWrapper.getPurpouse().getFinalidade());
+			tfSubpurpose.setText(purpouseWrapper.getPurpouse().getSubfinalidade());
+			tfQuantity.setText(purpouseWrapper.getPurpouse().getQuantidade().toString());
+			tfConsumption.setText(purpouseWrapper.getPurpouse().getConsumo().toString());
+			tfTotal.setText(purpouseWrapper.getPurpouse().getTotal().toString());
+		}
+		
 
 		tfPurpouse.setPrefHeight(40.0);
 		tfPurpouse.setMinHeight(40.00);
@@ -150,10 +163,10 @@ public class AddSubterraneanDetailsController implements Initializable {
 		tfTotal.setPrefWidth(200.0);
 		tfTotal.getStyleClass().add("text-field-subpurpose");
 		tfTotal.setPromptText("Total");
-
+		
 		tfPurpouse.textProperty().addListener((observable, oldValue, newValue) -> {
 
-			obj.setFinalidade(newValue);
+			purpouseWrapper.getPurpouse().setFinalidade(newValue);
 
 			// You can add custom logic here, for example:
 			if (newValue.length() > 20) {
@@ -171,7 +184,7 @@ public class AddSubterraneanDetailsController implements Initializable {
 
 		tfSubpurpose.textProperty().addListener((observable, oldValue, newValue) -> {
 
-			obj.setSubfinalidade(newValue);
+			purpouseWrapper.getPurpouse().setSubfinalidade(newValue);
 
 			// You can add custom logic here, for example:
 			if (newValue.length() > 20) {
@@ -189,7 +202,7 @@ public class AddSubterraneanDetailsController implements Initializable {
 
 		tfQuantity.textProperty().addListener((observable, oldValue, newValue) -> {
 
-			obj.setQuantidade(Double.parseDouble(newValue));
+			purpouseWrapper.getPurpouse().setQuantidade(Double.parseDouble(newValue));
 
 			// You can add custom logic here, for example:
 			if (newValue.length() > 20) {
@@ -207,7 +220,7 @@ public class AddSubterraneanDetailsController implements Initializable {
 
 		tfConsumption.textProperty().addListener((observable, oldValue, newValue) -> {
 
-			obj.setConsumo(Double.parseDouble((newValue)));
+			purpouseWrapper.getPurpouse().setConsumo(Double.parseDouble((newValue)));
 
 			// You can add custom logic here, for example:
 			if (newValue.length() > 20) {
@@ -228,11 +241,13 @@ public class AddSubterraneanDetailsController implements Initializable {
 			Double y = Double.parseDouble(tfQuantity.getText());
 
 			Double result = x * y;
-			obj.setTotal(result);
+			purpouseWrapper.getPurpouse().setTotal(result);
 
 			tfTotal.setText(result.toString());
 
 		});
+		
+		
 
 		btnPlus.setOnMouseClicked(event -> {
 
@@ -256,7 +271,7 @@ public class AddSubterraneanDetailsController implements Initializable {
 				}
 			}
 
-			addRow(rowIndex + 1, gridPane, tfTotalConsumption, btnTotalConsumption, typeOfPurpouse);
+			addRow(rowIndex + 1, gridPane, tfTotalConsumption, btnTotalConsumption, typeOfPurpouse, null);
 
 		});
 
@@ -271,7 +286,7 @@ public class AddSubterraneanDetailsController implements Initializable {
 			// Remove a linha de finalidade
 			removeRowAndShift(gridPane, rowIndex);
 			// Remove do Set a finalidade removida
-			purpouses.remove(obj);
+			purpouses.remove(purpouseWrapper.getPurpouse());
 
 		});
 
@@ -293,7 +308,7 @@ public class AddSubterraneanDetailsController implements Initializable {
 			Double y = Double.parseDouble(tfQuantity.getText());
 
 			Double result = x * y;
-			obj.setTotal(result);
+			purpouseWrapper.getPurpouse().setTotal(result);
 
 			tfTotal.setText(result.toString());
 
@@ -349,8 +364,51 @@ public class AddSubterraneanDetailsController implements Initializable {
 	}
 
 	public Set<Finalidade> getPurpouses() {
+		return this.purpouses;
+	}
 
-		return purpouses;
+	public void setPurpouses(Set<Finalidade> purpouses) {
+		this.purpouses = new HashSet<>(purpouses);
+
+		requestedPurposesGrid.getChildren().clear();
+		authorizedPurposesGrid.getChildren().clear();
+		
+		 Set<Finalidade> purpousesCopy = new HashSet<>(this.purpouses); // Use a copy for iteration
+
+
+		 purpousesCopy.forEach(item -> {
+
+			int reqIndex = 0;
+			int autIndex = 0;
+
+			if (item.getTipoFinalidade().getId() == 1) {
+				addRow(reqIndex, requestedPurposesGrid, tfTotalRequestedConsumption, btnRequestedTotalCalculate,
+						item.getTipoFinalidade(), item);
+				reqIndex++;
+
+			} else {
+				addRow(autIndex, authorizedPurposesGrid, tfTotalAuthorizedConsumption, btnAuthorizedTotalCalculate,
+						item.getTipoFinalidade(), item);
+				autIndex++;
+			}
+		});
+
+	}
+	// Modifica as finalidade dentro de uma  expressão lambda.
+	public class PurpouseWrapper {
+	    private Finalidade purpouse;
+
+	    public PurpouseWrapper(Finalidade purpouse) {
+	        this.purpouse = purpouse;
+	    }
+
+	    public Finalidade getPurpouse() {
+	        return purpouse;
+	    }
+
+	    public void setPurpouse(Finalidade purpouse) {
+	        this.purpouse = purpouse;
+	    }
 	}
 
 }
