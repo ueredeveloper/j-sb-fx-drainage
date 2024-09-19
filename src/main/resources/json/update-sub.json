@@ -1,57 +1,75 @@
 {
 	"id": 1,
-	"latitude": -47.0,
-	"longitude": -78.0,
+	"latitude": -15.0,
+	"longitude": -47.0,
+	"geometry": null,
 	"endereco": {
-		"id": 2,
-		"logradouro": "Avenida Principal, Bloco A",
-		"documentos": [],
-		"interferencias": []
+		"id": 1,
+		"logradouro": "Log 1 Inter 1",
+		"cidade": null,
+		"bairro": null,
+		"cep": null,
+		"interferencias": [],
+		"estado": null
 	},
 	"tipoInterferencia": {
 		"id": 2,
-		"descricao": "Subterrânea"
+		"descricao": "Subterrânea",
+		"interferencias": []
 	},
 	"tipoOutorga": {
 		"id": 1,
-		"descricao": "Outorga"
+		"descricao": "Outorga",
+		"interferencias": []
 	},
 	"subtipoOutorga": {
-		"id": 1,
-		"descricao": "Renovação"
+		"id": 2,
+		"descricao": "Modificação",
+		"interferencias": []
 	},
 	"situacaoProcesso": {
-		"id": 1,
-		"descricao": "Arquivado"
+		"id": 3,
+		"descricao": "Outorgado",
+		"interferencias": []
 	},
 	"tipoAto": {
-		"id": 1,
-		"descricao": "Despacho"
+		"id": 3,
+		"descricao": "Despacho",
+		"interferencias": []
 	},
+	"baciaHidrografica": null,
+	"unidadeHidrografica": null,
 	"finalidades": [
 		{
-			"id": 1,
-			"finalidade": "Indústria",
-			"subfinalidade": "Isopor",
-			"quantidade": 500.0,
-			"consumo": 50.0,
-			"total": 25000.0,
+			"id": 2,
+			"finalidade": "Abastecimento req 1",
+			"subfinalidade": "Ur req 1",
+			"quantidade": 12.0,
+			"consumo": 150.0,
+			"total": 1800.0,
+			"interferencia": null,
 			"tipoFinalidade": {
-				"id": 2,
-				"descricao": "Autorizada"
+				"id": 1,
+				"descricao": "Requerida",
+				"finalidades": []
 			}
 		},
 		{
-			"id": 2,
-			"finalidade": "Abastecimento Humano",
-			"subfinalidade": "Urbano",
-			"quantidade": 100.0,
-			"consumo": 200.0,
-			"total": 20000.0,
+			"id": 1,
+			"finalidade": "Criação de Auth 1",
+			"subfinalidade": "Bov Auth 1",
+			"quantidade": 45.0,
+			"consumo": 123.0,
+			"total": 5535.0,
+			"interferencia": null,
 			"tipoFinalidade": {
-				"id": 1,
-				"descricao": "Requerida"
+				"id": 2,
+				"descricao": "Autorizada",
+				"finalidades": []
 			}
 		}
-	]
+	],
+	"caesb": null,
+	"nivelEstatico": null,
+	"nivelDinamico": null
 }

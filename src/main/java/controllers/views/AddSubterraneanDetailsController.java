@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
@@ -15,17 +16,29 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import enums.StaticData;
 import enums.ToastType;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import models.Documento;
 import models.Finalidade;
 import models.TipoFinalidade;
 import models.TipoPoco;
+import services.FinalidadeService;
+import services.ServiceResponse;
+import utilities.URLUtility;
 
 public class AddSubterraneanDetailsController implements Initializable {
+	
+	private String localUrl;
+
+	public AddSubterraneanDetailsController() {
+		this.localUrl = URLUtility.getURLService();
+	}
 
 	private static AddInterferenceController instance;
 
@@ -71,9 +84,7 @@ public class AddSubterraneanDetailsController implements Initializable {
 
 	ObservableList<TipoPoco> obsTypesOfWells;
 
-	// Use set para não repetir finalidade
-	Set<Finalidade> purpouses = new HashSet<>();
-
+	
 	@FXML
 	FontAwesomeIconView btnTotalCalculate;
 
@@ -81,6 +92,8 @@ public class AddSubterraneanDetailsController implements Initializable {
 	FontAwesomeIconView btnRequestedTotalCalculate, btnAuthorizedTotalCalculate;
 	@FXML
 	private JFXTextField tfTotalRequestedConsumption, tfTotalAuthorizedConsumption;
+	
+	PurpousesWrapper purpouses = new PurpousesWrapper(new HashSet<>());
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -117,15 +130,25 @@ public class AddSubterraneanDetailsController implements Initializable {
 		btnMinus.setGlyphName("MINUS");
 		btnMinus.getStyleClass().addAll("icon-light-dark", "icons");
 		
-		PurpouseWrapper purpouseWrapper = new PurpouseWrapper(purpouse);
-
+		PurpouseWrapper purpouseWrapper = new PurpouseWrapper();
+		
 		// Cria finalidade
 		if (purpouse == null || purpouse.getTipoFinalidade() == null ) {
+			
 			purpouse = new Finalidade(typeOfPurpouse);
-			// Adiciona finalidade com única na lista (Set)
-			purpouses.add(purpouse);
+			
 			purpouseWrapper.setPurpouse(purpouse);
+			// Adiciona finalidade com única na lista (Set)
+
+			purpouses.getPurpouses().add(purpouseWrapper.getPurpouse());
+
 		} else {
+			
+			purpouseWrapper.setPurpouse(purpouse);
+			
+			purpouses.getPurpouses().add(purpouseWrapper.getPurpouse());
+			
+			System.out.println("else: fill textfields ");
 			tfPurpouse.setText(purpouseWrapper.getPurpouse().getFinalidade());
 			tfSubpurpose.setText(purpouseWrapper.getPurpouse().getSubfinalidade());
 			tfQuantity.setText(purpouseWrapper.getPurpouse().getQuantidade().toString());
@@ -277,22 +300,31 @@ public class AddSubterraneanDetailsController implements Initializable {
 
 		btnMinus.setOnMouseClicked(event -> {
 
-			Integer rowIndex = GridPane.getRowIndex(btnMinus);
+		    Integer rowIndex = GridPane.getRowIndex(btnMinus);
 
-			if (rowIndex == null) {
-				rowIndex = 0; // If the row index is not set, it defaults to 0
-			}
+		    if (rowIndex == null) {
+		        rowIndex = 0; // If the row index is not set, it defaults to 0
+		    }
 
-			// Remove a linha de finalidade
-			removeRowAndShift(gridPane, rowIndex);
-			// Remove do Set a finalidade removida
-			purpouses.remove(purpouseWrapper.getPurpouse());
+		    // Remove the row from the gridPane
+		    removeRowAndShift(gridPane, rowIndex);
 
+		    // Retrieve the purpose object to be deleted
+		    Finalidade purpouseToDelete = purpouseWrapper.getPurpouse();
+
+		    // Check if the purpose object and its ID are not null before attempting to delete
+		    if (purpouseToDelete != null && purpouseToDelete.getId() != null) {
+		    	delete(btnMinus, purpouseToDelete);
+		    }
+
+		    // Remove the purpose from the Set
+		    purpouses.getPurpouses().remove(purpouseToDelete);
 		});
+
 
 		btnTotalConsumption.setOnMouseClicked(event -> {
 			final Double[] total = { 0.0 }; // Usando um array para contornar a limitação de variáveis finais
-			purpouses.forEach(p -> {
+			purpouses.getPurpouses().forEach(p -> {
 				Double subtotal = p.getTotal();
 				if (subtotal != null) {
 					total[0] += subtotal;
@@ -364,42 +396,38 @@ public class AddSubterraneanDetailsController implements Initializable {
 	}
 
 	public Set<Finalidade> getPurpouses() {
-		return this.purpouses;
-	}
-
-	public void setPurpouses(Set<Finalidade> purpouses) {
-		this.purpouses = new HashSet<>(purpouses);
-
-		requestedPurposesGrid.getChildren().clear();
-		authorizedPurposesGrid.getChildren().clear();
 		
-		 Set<Finalidade> purpousesCopy = new HashSet<>(this.purpouses); // Use a copy for iteration
-
-
-		 purpousesCopy.forEach(item -> {
-
-			int reqIndex = 0;
-			int autIndex = 0;
-
-			if (item.getTipoFinalidade().getId() == 1) {
-				addRow(reqIndex, requestedPurposesGrid, tfTotalRequestedConsumption, btnRequestedTotalCalculate,
-						item.getTipoFinalidade(), item);
-				reqIndex++;
-
-			} else {
-				addRow(autIndex, authorizedPurposesGrid, tfTotalAuthorizedConsumption, btnAuthorizedTotalCalculate,
-						item.getTipoFinalidade(), item);
-				autIndex++;
-			}
-		});
-
+		return purpouses.getPurpouses();
 	}
+
+	public void setPurpouses(Set<Finalidade> newPurpouses) {
+	    purpouses.setPurpouses(newPurpouses);
+
+	    requestedPurposesGrid.getChildren().clear();
+	    authorizedPurposesGrid.getChildren().clear();
+
+	    AtomicInteger reqIndex = new AtomicInteger(0);
+	    AtomicInteger autIndex = new AtomicInteger(0);
+
+	    purpouses.getPurpouses().forEach(item -> {
+	        if (item.getTipoFinalidade().getId() == 1) {
+	            System.out.println("req " + reqIndex.get());
+	            addRow(reqIndex.getAndIncrement(), requestedPurposesGrid, tfTotalRequestedConsumption, btnRequestedTotalCalculate,
+	                    item.getTipoFinalidade(), item);
+	        } else {
+	            System.out.println("aut " + autIndex.get());
+	            addRow(autIndex.getAndIncrement(), authorizedPurposesGrid, tfTotalAuthorizedConsumption, btnAuthorizedTotalCalculate,
+	                    item.getTipoFinalidade(), item);
+	        }
+	    });
+	}
+
 	// Modifica as finalidade dentro de uma  expressão lambda.
 	public class PurpouseWrapper {
+	
 	    private Finalidade purpouse;
 
-	    public PurpouseWrapper(Finalidade purpouse) {
-	        this.purpouse = purpouse;
+	    public PurpouseWrapper() {
 	    }
 
 	    public Finalidade getPurpouse() {
@@ -409,6 +437,59 @@ public class AddSubterraneanDetailsController implements Initializable {
 	    public void setPurpouse(Finalidade purpouse) {
 	        this.purpouse = purpouse;
 	    }
+	}
+	
+	public class PurpousesWrapper {
+		// Use set para não repetir finalidade
+		Set<Finalidade> purpouses;
+
+		public PurpousesWrapper(Set<Finalidade> purpouses) {
+			super();
+			this.purpouses = purpouses;
+		}
+
+		public Set<Finalidade> getPurpouses() {
+			return purpouses;
+		}
+
+		public void setPurpouses(Set<Finalidade> purpouses) {
+			this.purpouses = purpouses;
+		}
+		
+		
+	}
+	
+	public void delete (Node source, Finalidade purpouse) {
+
+		try {
+			FinalidadeService documentService = new FinalidadeService(localUrl);
+
+			ServiceResponse<?> serviceResponse = documentService.deleteById(purpouse.getId());
+
+			if (serviceResponse.getResponseCode() == 200) {
+
+				if (source != null && source.getScene() != null && source.getScene().getWindow() != null) {
+	                Stage ownerStage = (Stage) source.getScene().getWindow();
+	                String toastMsg = "Finalidade deletada com sucesso!";
+	                utilities.Toast.makeText(ownerStage, toastMsg, ToastType.SUCCESS);
+	            }
+
+				// retira objecto da tabela de documentos tvDocs
+				//tvDocs.getItems().remove(selectedDocument);
+
+			} else {
+				// Informa erro em deletar
+				
+				if (source != null && source.getScene() != null && source.getScene().getWindow() != null) {
+	                Stage ownerStage = (Stage) source.getScene().getWindow();
+	                String toastMsg = "Erro ao deletar!";
+	                utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+	            }
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 	}
 
 }

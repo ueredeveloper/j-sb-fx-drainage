@@ -323,7 +323,7 @@ public class DocumentController implements Initializable {
 		btnDelete.setOnAction(event -> deleteDocument(event));
 		btnEdit.setOnAction(event -> editDocument(event));
 
-		btnAddress.setOnMouseClicked(evert -> openAnchorPaneAddress());
+		btnAddress.setOnMouseClicked(event -> openAnchorPaneAddress());
 		btnInterference.setOnMouseClicked(event -> openAddInterference());
 		btnProcess.setOnMouseClicked(event -> openAddProcess());
 		btnAttachment.setOnMouseClicked(event -> openAnchorPaneAttrachment());

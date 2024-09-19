@@ -313,7 +313,7 @@ public class AddInterferenceController implements Initializable {
 		if (addSubterraneanDetailsController != null) {
 			purpouses = addSubterraneanDetailsController.getPurpouses();
 
-			System.out.println(purpouses);
+			System.out.println("finalidades: " + purpouses);
 		}
 
 		// Verifica se o endereço está vazio.
