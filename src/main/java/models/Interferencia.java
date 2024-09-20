@@ -37,13 +37,10 @@ public class Interferencia {
 
 	private Set<Finalidade> finalidades = new HashSet<>();
 
+	private Set<Demanda> demandas = new HashSet<>();
+
 	public Interferencia() {
 		super();
-	}
-	
-	public Interferencia(Endereco endereco) {
-		super();
-		this.endereco = endereco;
 	}
 
 	public Interferencia(Double latitude, Double longitude) {
@@ -52,86 +49,9 @@ public class Interferencia {
 		this.longitude = longitude;
 	}
 
-	public Interferencia(Double latitude, Double longitude, Endereco endereco, TipoInterferencia tipoInterferencia) {
-		super();
-		this.latitude = latitude;
-		this.longitude = longitude;
-		this.endereco = endereco;
-		this.tipoInterferencia = tipoInterferencia;
-	}
-
-	public Interferencia(Double latitude, Double longitude, Endereco endereco, TipoInterferencia tipoInterferencia,
-			TipoOutorga tipoOutorga, SubtipoOutorga subtipoOutorga, SituacaoProcesso situacaoProcesso,
-			TipoAto tipoAto) {
-		super();
-		this.latitude = latitude;
-		this.longitude = longitude;
-		this.endereco = endereco;
-		this.tipoInterferencia = tipoInterferencia;
-		this.tipoOutorga = tipoOutorga;
-		this.subtipoOutorga = subtipoOutorga;
-		this.situacaoProcesso = situacaoProcesso;
-		this.tipoAto = tipoAto;
-	}
-
-	public Interferencia(Long id, Double latitude, Double longitude, String geometry, Endereco endereco,
-			TipoInterferencia tipoInterferencia, TipoOutorga tipoOutorga, SubtipoOutorga subtipoOutorga,
-			SituacaoProcesso situacaoProcesso, TipoAto tipoAto, BaciaHidrografica baciaHidrografica,
-			UnidadeHidrografica unidadeHidrografica, Set<Finalidade> finalidades) {
-		super();
-		this.id = id;
-		this.latitude = latitude;
-		this.longitude = longitude;
-		this.geometry = geometry;
-		this.endereco = endereco;
-		this.tipoInterferencia = tipoInterferencia;
-		this.tipoOutorga = tipoOutorga;
-		this.subtipoOutorga = subtipoOutorga;
-		this.situacaoProcesso = situacaoProcesso;
-		this.tipoAto = tipoAto;
-		this.baciaHidrografica = baciaHidrografica;
-		this.unidadeHidrografica = unidadeHidrografica;
-		this.finalidades = finalidades;
-	}
-
-	public Interferencia(Double latitude, Double longitude, String geometry, Endereco endereco,
-			TipoInterferencia tipoInterferencia, TipoOutorga tipoOutorga, SubtipoOutorga subtipoOutorga,
-			SituacaoProcesso situacaoProcesso, TipoAto tipoAto, BaciaHidrografica baciaHidrografica,
-			UnidadeHidrografica unidadeHidrografica, Set<Finalidade> finalidades) {
-		super();
-		this.latitude = latitude;
-		this.longitude = longitude;
-		this.geometry = geometry;
-		this.endereco = endereco;
-		this.tipoInterferencia = tipoInterferencia;
-		this.tipoOutorga = tipoOutorga;
-		this.subtipoOutorga = subtipoOutorga;
-		this.situacaoProcesso = situacaoProcesso;
-		this.tipoAto = tipoAto;
-		this.baciaHidrografica = baciaHidrografica;
-		this.unidadeHidrografica = unidadeHidrografica;
-		this.finalidades = finalidades;
-	}
-	
-	public Interferencia(Double latitude, Double longitude, Endereco endereco, TipoInterferencia tipoInterferencia,
-			TipoOutorga tipoOutorga, SubtipoOutorga subtipoOutorga, SituacaoProcesso situacaoProcesso, TipoAto tipoAto,
-			Set<Finalidade> finalidades) {
-		super();
-		this.latitude = latitude;
-		this.longitude = longitude;
-		this.endereco = endereco;
-		this.tipoInterferencia = tipoInterferencia;
-		this.tipoOutorga = tipoOutorga;
-		this.subtipoOutorga = subtipoOutorga;
-		this.situacaoProcesso = situacaoProcesso;
-		this.tipoAto = tipoAto;
-		this.finalidades = finalidades;
-	}
-	
-
 	public Interferencia(Long id, Double latitude, Double longitude, Endereco endereco,
 			TipoInterferencia tipoInterferencia, TipoOutorga tipoOutorga, SubtipoOutorga subtipoOutorga,
-			SituacaoProcesso situacaoProcesso, TipoAto tipoAto, Set<Finalidade> finalidades) {
+			SituacaoProcesso situacaoProcesso, TipoAto tipoAto, Set<Finalidade> finalidades, Set<Demanda> demandas) {
 		super();
 		this.id = id;
 		this.latitude = latitude;
@@ -143,6 +63,23 @@ public class Interferencia {
 		this.situacaoProcesso = situacaoProcesso;
 		this.tipoAto = tipoAto;
 		this.finalidades = finalidades;
+		this.demandas = demandas;
+	}
+
+	public Interferencia(Double latitude, Double longitude, Endereco endereco, TipoInterferencia tipoInterferencia,
+			TipoOutorga tipoOutorga, SubtipoOutorga subtipoOutorga, SituacaoProcesso situacaoProcesso, TipoAto tipoAto,
+			Set<Finalidade> finalidades, Set<Demanda> demandas) {
+		super();
+		this.latitude = latitude;
+		this.longitude = longitude;
+		this.endereco = endereco;
+		this.tipoInterferencia = tipoInterferencia;
+		this.tipoOutorga = tipoOutorga;
+		this.subtipoOutorga = subtipoOutorga;
+		this.situacaoProcesso = situacaoProcesso;
+		this.tipoAto = tipoAto;
+		this.finalidades = finalidades;
+		this.demandas = demandas;
 	}
 
 	public Long getId() {
@@ -167,14 +104,6 @@ public class Interferencia {
 
 	public void setLongitude(Double longitude) {
 		this.longitude = longitude;
-	}
-
-	public String getGeometry() {
-		return geometry;
-	}
-
-	public void setGeometry(String geometry) {
-		this.geometry = geometry;
 	}
 
 	public Endereco getEndereco() {
@@ -225,28 +154,20 @@ public class Interferencia {
 		this.tipoAto = tipoAto;
 	}
 
-	public BaciaHidrografica getBaciaHidrografica() {
-		return baciaHidrografica;
-	}
-
-	public void setBaciaHidrografica(BaciaHidrografica baciaHidrografica) {
-		this.baciaHidrografica = baciaHidrografica;
-	}
-
-	public UnidadeHidrografica getUnidadeHidrografica() {
-		return unidadeHidrografica;
-	}
-
-	public void setUnidadeHidrografica(UnidadeHidrografica unidadeHidrografica) {
-		this.unidadeHidrografica = unidadeHidrografica;
-	}
-
 	public Set<Finalidade> getFinalidades() {
 		return finalidades;
 	}
 
 	public void setFinalidades(Set<Finalidade> finalidades) {
 		this.finalidades = finalidades;
+	}
+
+	public Set<Demanda> getDemandas() {
+		return demandas;
+	}
+
+	public void setDemandas(Set<Demanda> demandas) {
+		this.demandas = demandas;
 	}
 
 	@Override

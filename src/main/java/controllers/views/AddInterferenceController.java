@@ -29,6 +29,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import models.Demanda;
 import models.Endereco;
 import models.Finalidade;
 import models.Interferencia;
@@ -214,6 +215,11 @@ public class AddInterferenceController implements Initializable {
 				Set<Finalidade> purpouses = newValue.getFinalidades();
 				addSubterraneanDetailsController.setPurpouses(purpouses);
 
+				// Preenchimento das demandas buscadas (AddSubterraneanController)
+				Set<Demanda> demands = newValue.getDemandas();
+
+				addSubterraneanDetailsController.fillDemandsDetails(demands);
+
 			} else {
 
 				clearAllComponents();
@@ -309,11 +315,11 @@ public class AddInterferenceController implements Initializable {
 		String longitude = tfLongitude.getText();
 
 		Set<Finalidade> purpouses = null;
+		Set<Demanda> demands = null;
 
 		if (addSubterraneanDetailsController != null) {
 			purpouses = addSubterraneanDetailsController.getPurpouses();
-
-			System.out.println("finalidades: " + purpouses);
+			demands = addSubterraneanDetailsController.getDemands();
 		}
 
 		// Verifica se o endereço está vazio.
@@ -373,7 +379,7 @@ public class AddInterferenceController implements Initializable {
 
 				Subterranea newInterference = new Subterranea(Double.parseDouble(latitude),
 						Double.parseDouble(longitude), address, typeOfInterference, typeOfGrant, subtypeOfGrant,
-						processSituation, typeOfAct, purpouses);
+						processSituation, typeOfAct, purpouses, demands);
 
 				ServiceResponse<?> response = service.save(newInterference);
 

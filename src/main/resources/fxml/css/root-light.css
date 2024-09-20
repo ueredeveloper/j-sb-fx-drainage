@@ -250,3 +250,6 @@
     /* Add any other styles as needed */
 }
 
+.tf-demands {
+    -fx-padding: 5px; /* Top/Bottom 0px, Left/Right 20px padding */
+}
