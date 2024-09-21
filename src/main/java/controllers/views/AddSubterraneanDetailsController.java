@@ -24,6 +24,7 @@ import models.Finalidade;
 import models.TipoPoco;
 
 public class AddSubterraneanDetailsController implements Initializable {
+	
 
 	private static AddInterferenceController instance;
 

@@ -46,6 +46,7 @@ import utilities.URLUtility;
 public class AddInterferenceController implements Initializable {
 	
 	
+	
 
 	private static AddInterferenceController instance;
 
