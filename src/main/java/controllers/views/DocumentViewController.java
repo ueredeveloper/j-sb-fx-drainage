@@ -2,11 +2,18 @@ package controllers.views;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import com.google.gson.Gson;
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXTextField;
 
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.concurrent.Worker;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -17,12 +24,19 @@ import javafx.scene.web.HTMLEditor;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import models.Documento;
+import models.Interferencia;
 import netscape.javascript.JSObject;
+import services.InterferenciaService;
 import utilities.HTMLFileLoader;
+import utilities.URLUtility;
 
 public class DocumentViewController implements Initializable {
-	
-	
+
+	private static DocumentViewController instance;
+
+	public static DocumentViewController getInstance() {
+		return instance;
+	}
 
 	private Documento selectedDocument;
 
@@ -32,16 +46,30 @@ public class DocumentViewController implements Initializable {
 	}
 
 	@FXML
+	private Button btnSelectAndCopy;
+
+	@FXML
+	private WebView webView;
+
+	@FXML
 	private AnchorPane apContainer;
+
+	@FXML
+	private JFXTextField tfDocument;
+
+	@FXML
+	private JFXTextField tfAddress;
+
+	@FXML
+	private JFXComboBox<Interferencia> cbInterference;
 
 	@FXML
 	private HTMLEditor htmlEditor;
 
 	@FXML
-	private Button btnSelectAndCopy;
+	private FontAwesomeIconView iconCopyDocument;
 
-	@FXML
-	private WebView webView;
+	ObservableList<Interferencia> obsList = FXCollections.observableArrayList();
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -63,11 +91,11 @@ public class DocumentViewController implements Initializable {
 		// Replace a placeholder in the HTML content with JSON data.
 		String json = new Gson().toJson(selectedDocument);
 
-	
 		htmlContent = htmlContent.replace("${json}", json);
 		htmlEditor.setHtmlText(htmlContent);
 
-		btnSelectAndCopy.setOnAction(e -> {
+		// Copiar o modelo de ato para colar no SEI.
+		iconCopyDocument.setOnMouseClicked(event -> {
 			Clipboard clipboard = Clipboard.getSystemClipboard();
 			ClipboardContent content = new ClipboardContent();
 			content.putHtml(htmlEditor.getHtmlText());
@@ -104,6 +132,33 @@ public class DocumentViewController implements Initializable {
 			}
 		});
 
+		tfDocument.setText(
+				"Número: " + this.selectedDocument.getNumero() + " | Sei: " + this.selectedDocument.getNumeroSei());
+		tfAddress.setText(this.selectedDocument.getEnderecoLogradouro());
+		
+		String logradouro = this.selectedDocument.getEnderecoLogradouro();
+		
+		System.out.println(logradouro);
+		fetchInterferenciesByLogradouro (logradouro);
+
+	}
+
+	public void fetchInterferenciesByLogradouro(String logradouro) {
+
+		try {
+
+			String urlService = URLUtility.getURLService();
+
+			InterferenciaService service = new InterferenciaService(urlService);
+
+			List<Interferencia> list = service.fetchByKeyword(logradouro);
+
+			obsList.addAll(list);
+			cbInterference.setItems(obsList);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }
