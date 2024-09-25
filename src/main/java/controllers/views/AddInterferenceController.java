@@ -193,6 +193,8 @@ public class AddInterferenceController implements Initializable {
 
 				tfLatitude.setText(newValue.getLatitude().toString());
 				tfLongitude.setText(newValue.getLongitude().toString());
+				
+				System.out.println(newValue.getEndereco());
 
 				cbAddress.getSelectionModel().select(newValue.getEndereco());
 

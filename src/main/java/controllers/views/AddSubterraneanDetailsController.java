@@ -94,6 +94,7 @@ public class AddSubterraneanDetailsController implements Initializable {
 	private JFXTextField tfTotalRequestedConsumption, tfTotalAuthorizedConsumption;
 
 	PurpousesWrapper purpousesWrapper = new PurpousesWrapper(new HashSet<>());
+
 	DemandsWrapper demandsWrapper = new DemandsWrapper(new HashSet<>());
 
 	@Override
@@ -107,88 +108,88 @@ public class AddSubterraneanDetailsController implements Initializable {
 		addPurpouseRow(0, authorizedPurposesGrid, tfTotalAuthorizedConsumption, btnAuthorizedTotalCalculate,
 				new TipoFinalidade(2L), new Finalidade());
 
-		addDemandsCollumns(gpRequestedDemands, new Demanda(), new TipoFinalidade(1L));
-		addDemandsCollumns(gpAuthorizedDemands, new Demanda(), new TipoFinalidade(2L));
+		// Adiciona demandas vazias para finalidades requeridas
+		for (int month = 1; month <= 12; month++) {
 
-	}
+			Demanda demand = new Demanda(month, new TipoFinalidade(1L));
+			addDemandColumn(gpRequestedDemands, month, demand);
 
-	/**
-	 * Adiciona colunas com demandas por mês. Cada mês tem uma vazão, tempo de
-	 * captação e perído mensal de captação.
-	 */
-	public void addDemandsCollumns(GridPane gridPane, Demanda demand, TipoFinalidade typeOfPurpouse) {
-
-		for (int columnIndex = 1; columnIndex < 13; columnIndex++) {
-
-			JFXTextField tfFlow = new JFXTextField();
-			JFXTextField tfTime = new JFXTextField();
-			JFXTextField tfPeriod = new JFXTextField();
-
-			tfFlow.getStyleClass().addAll("tf-demands");
-			tfTime.getStyleClass().addAll("tf-demands");
-			tfPeriod.getStyleClass().addAll("tf-demands");
-
-			// Adiciona textfields por colunas
-
-			// o index é a coluna em que serão acrescentados os textfields de vazão, tempo e
-			// perído
-
-			gridPane.add(tfFlow, columnIndex, 1);
-			gridPane.add(tfTime, columnIndex, 2);
-			gridPane.add(tfPeriod, columnIndex, 3);
-
-			DemandWrapper demandWrapper = new DemandWrapper();
-
-			// Se a demanda estiver vazia, cria uma demanda.
-			if (demand.getId() == null) {
-
-				// Inicializa com o mês de referência. Mês 1: Jan.
-				demand = new Demanda(columnIndex, typeOfPurpouse);
-				// Adiciona demanda para manipulação nas arrow functions
-				demandWrapper.setDemand(demand);
-				// Adiciona demanda na lista de resultados únicos de demandas
-				demandsWrapper.getDemands().add(demand);
-
-			} else {
-
-				// Se não, é uma demanda buscada no banco e deve-se preencher os campos
-				tfFlow.setText(demand.getVazao().toString());
-				tfTime.setText(String.valueOf(demand.getTempo()));
-				tfPeriod.setText(String.valueOf(demand.getPeriodo()));
-
-				// Adiciona demanda para manipulação nas arrow functions
-				demandWrapper.setDemand(demand);
-				// Adiciona demanda na lista de resultados únicos de demandas
-				demandsWrapper.getDemands().add(demand);
-
-			}
-
-			tfFlow.textProperty().addListener((observable, oldValue, newValue) -> {
-
-				demandWrapper.getDemand().setVazao(Double.parseDouble(newValue));
-
-				System.out.println(demandsWrapper);
-
-			});
-			tfTime.textProperty().addListener((observable, oldValue, newValue) -> {
-
-				demandWrapper.getDemand().setTempo(Integer.valueOf(newValue));
-
-				System.out.println(demandsWrapper);
-
-			});
-			tfPeriod.textProperty().addListener((observable, oldValue, newValue) -> {
-
-				demandWrapper.getDemand().setPeriodo(Integer.valueOf(newValue));
-
-				System.out.println(demandsWrapper);
-
-			});
-
-			;
+			demandsWrapper.getDemands().add(demand);
 		}
 
+		// Adiciona demandas vazias para finalidades autorizadas
+		for (int month = 1; month <= 12; month++) {
+			Demanda demand = new Demanda(month, new TipoFinalidade(2L));
+			addDemandColumn(gpAuthorizedDemands, month, demand);
+
+			demandsWrapper.getDemands().add(demand);
+		}
+
+
 	}
+
+	public void addDemandColumn(GridPane gridPane, int month, Demanda demand) {
+
+		JFXTextField tfFlow = new JFXTextField();
+		JFXTextField tfTime = new JFXTextField();
+		JFXTextField tfPeriod = new JFXTextField();
+
+		tfFlow.getStyleClass().addAll("tf-demands");
+		tfTime.getStyleClass().addAll("tf-demands");
+		tfPeriod.getStyleClass().addAll("tf-demands");
+
+		// Limpa a célula para adicionar novo Textfield.
+		clearGridCell(gridPane, month, 1);
+		// Adiciona Textfields por célula
+		gridPane.add(tfFlow, month, 1);
+		clearGridCell(gridPane, month, 2);
+		gridPane.add(tfTime, month, 2);
+		clearGridCell(gridPane, month, 3);
+		gridPane.add(tfPeriod, month, 3);
+
+		if (demand.getId() != null) {
+			// Se não, é uma demanda buscada no banco e deve-se preencher os campos
+			tfFlow.setText(demand.getVazao().toString());
+			tfTime.setText(String.valueOf(demand.getTempo()));
+			tfPeriod.setText(String.valueOf(demand.getPeriodo()));
+		}
+
+		DemandWrapper demandWrapper = new DemandWrapper(demand);
+		// Listeners
+		tfFlow.textProperty().addListener((observable, oldValue, newValue) -> {
+			demandWrapper.getDemand().setVazao(Double.parseDouble(newValue));
+		
+		});
+		tfTime.textProperty().addListener((observable, oldValue, newValue) -> {
+			demandWrapper.getDemand().setTempo(Integer.valueOf(newValue));
+		
+		});
+		tfPeriod.textProperty().addListener((observable, oldValue, newValue) -> {
+			demandWrapper.getDemand().setPeriodo(Integer.valueOf(newValue));
+		
+		});
+
+	}
+
+	// Verifica se há filhos na célula do GridPane, se houver limpa a célula onde está um TextField.
+	private void clearGridCell(GridPane gridPane, int column, int row) {
+	    // Check if the cell has any children (avoid null pointer exception)
+	    boolean hasChildren = gridPane.getChildren().stream().anyMatch(node -> {
+	        Integer nodeColumn = GridPane.getColumnIndex(node);
+	        Integer nodeRow = GridPane.getRowIndex(node);
+	        return nodeColumn != null && nodeRow != null && nodeColumn == column && nodeRow == row;
+	    });
+
+	    // Only attempt to remove nodes if children are present in the specified cell
+	    if (hasChildren) {
+	        gridPane.getChildren().removeIf(node -> {
+	            Integer nodeColumn = GridPane.getColumnIndex(node);
+	            Integer nodeRow = GridPane.getRowIndex(node);
+	            return nodeColumn != null && nodeRow != null && nodeColumn == column && nodeRow == row;
+	        });
+	    }
+	}
+
 
 	/**
 	 * Adiciona linhas de finalidades, cada linha tem uma finalidade, subfinalidade,
@@ -241,7 +242,6 @@ public class AddSubterraneanDetailsController implements Initializable {
 
 			purpousesWrapper.getPurpouses().add(purpouseWrapper.getPurpouse());
 
-			System.out.println("else: fill textfields ");
 			tfPurpouse.setText(purpouseWrapper.getPurpouse().getFinalidade());
 			tfSubpurpose.setText(purpouseWrapper.getPurpouse().getSubfinalidade());
 			tfQuantity.setText(purpouseWrapper.getPurpouse().getQuantidade().toString());
@@ -501,11 +501,11 @@ public class AddSubterraneanDetailsController implements Initializable {
 
 		purpousesWrapper.getPurpouses().forEach(item -> {
 			if (item.getTipoFinalidade().getId() == 1) {
-				System.out.println("req " + reqIndex.get());
+
 				addPurpouseRow(reqIndex.getAndIncrement(), requestedPurposesGrid, tfTotalRequestedConsumption,
 						btnRequestedTotalCalculate, item.getTipoFinalidade(), item);
 			} else {
-				System.out.println("aut " + autIndex.get());
+		
 				addPurpouseRow(autIndex.getAndIncrement(), authorizedPurposesGrid, tfTotalAuthorizedConsumption,
 						btnAuthorizedTotalCalculate, item.getTipoFinalidade(), item);
 			}
@@ -513,29 +513,29 @@ public class AddSubterraneanDetailsController implements Initializable {
 	}
 
 	public void fillDemandsDetails(Set<Demanda> newSet) {
-		demandsWrapper.setDemands(newSet);
 
-		gpRequestedDemands.getChildren().clear();
-		gpAuthorizedDemands.getChildren().clear();
+		demandsWrapper.setDemands(newSet);
 
 		if (demandsWrapper.getDemands() != null) {
 
 			// Demanda por tipo de finalidade requerida
 			List<Demanda> demandsByRequestedTypePurpouse = demandsWrapper.getDemands().stream()
-					.filter(d -> d.getTipoFinalidade().getId() == 1L)
-					.sorted(Comparator.comparing(d -> d.getTipoFinalidade().getId())).collect(Collectors.toList());
+					.filter(d -> d.getTipoFinalidade().getId() == 1L).sorted(Comparator.comparing(d -> d.getMes()))
+					.collect(Collectors.toList());
 
 			demandsByRequestedTypePurpouse.forEach(demand -> {
-				addDemandsCollumns(gpRequestedDemands, demand, demand.getTipoFinalidade());
+				//addDemandsCollumns(gpRequestedDemands, demand, demand.getTipoFinalidade());
+				addDemandColumn(gpRequestedDemands, demand.getMes(), demand);
 			});
 
 			// Demanda por tipo de finalidade autorizada
 			List<Demanda> demandsByAuthorizedTypePurpouse = demandsWrapper.getDemands().stream()
-					.filter(d -> d.getTipoFinalidade().getId() == 2L)
-					.sorted(Comparator.comparing(d -> d.getTipoFinalidade().getId())).collect(Collectors.toList());
+					.filter(d -> d.getTipoFinalidade().getId() == 2L).sorted(Comparator.comparing(d -> d.getMes()))
+					.collect(Collectors.toList());
 
 			demandsByAuthorizedTypePurpouse.forEach(demand -> {
-				addDemandsCollumns(gpRequestedDemands, demand, demand.getTipoFinalidade());
+				//addDemandsCollumns(gpAuthorizedDemands, demand, demand.getTipoFinalidade());
+				addDemandColumn(gpAuthorizedDemands, demand.getMes(), demand);
 			});
 
 		}
@@ -587,6 +587,11 @@ public class AddSubterraneanDetailsController implements Initializable {
 
 		public DemandWrapper() {
 			super();
+		}
+
+		public DemandWrapper(Demanda demand) {
+			super();
+			this.demand = demand;
 		}
 
 		public Demanda getDemand() {
