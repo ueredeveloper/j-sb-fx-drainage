@@ -52,27 +52,27 @@ function convertDocumentoToEChartTree(jsonData) {
 		children : [
 				{
 					name : 'Tipo',
-					value : jsonData.docTipo != null ? jsonData.docTipo.dtDescricao != null ? jsonData.docTipo.dtDescricao
+					value : jsonData.tipo != null ? jsonData.tipo.dtDescricao != null ? jsonData.tipo.dtDescricao
 							: 'desconhecido'
 							: 'desconhecido'
 				},
 				{
 					name : 'Número',
-					value : jsonData.docNumero || 'desconhecido'
+					value : jsonData.numero || 'desconhecido'
 				},
 				{
 					name : 'SEI',
-					value : jsonData.docSei || 'desconhecido'
+					value : jsonData.numeroSei || 'desconhecido'
 				},
 				{
 					name : 'Processo',
-					value : jsonData.docProcesso != null ? jsonData.docProcesso.procNumero != null ? jsonData.docProcesso.procNumero
+					value : jsonData.processo != null ? jsonData.processo.numero != null ? jsonData.processo.numero
 							: 'desconhecido'
 							: 'desconhecido'
 				},
 				{
 					name : 'Endereço',
-					value : jsonData.docEndereco != null ? jsonData.docEndereco.endLogradouro != null ? jsonData.docEndereco.endLogradouro
+					value : jsonData.endereco != null ? jsonData.endereco.logradouro != null ? jsonData.endereco.logradouro
 							: 'desconhecido'
 							: 'desconhecido'
 
