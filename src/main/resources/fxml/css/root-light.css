@@ -1,80 +1,83 @@
 
 * {
 
-	-fx-light-primary-color: #68c4c3;/* #fefffe;*/
-    -fx-secondary-color: #f0eaec;/* #000750;*/
+	-fx-primary-color: #68c4c3;
+    -fx-secondary-color: #f0eaec;
     -fx-accent-color: #4a333e;
     -fx-addictional-color: #715b92;
 	-fx-google-color: #FF3B00;
-	/* tamanho da fonte */
 	-fx-font-size: 14px;
 	
 }
-
-.container {
-	-fx-background-color: -fx-light-primary-color;
+.content {
+	-fx-background-color: -fx-secondary-color;
 }
-.container .title{
+
+.content .combo-box .list-cell {
+  -fx-text-fill: -fx-text-inner-color; /* texto na lista do combobox */
+}
+.content .combo-box {
+  -jfx-unfocus-color: -fx-secondary-color; /* cor da borda inferior ao clicar (un focus) */
+  -fx-text-fill: -fx-accent-color; /*cor da escrita */
+  -jfx-unfocus-color: -fx-primary-color; /* cor da borda inferior */
+  /*-fx-prompt-text-fill: -fx-primary-color;*/ /* cor do prompt  */
+  -jfx-focus-color: -fx-addictional-color; /* cor do prompt text ao subir no text field */
+}
+.secondary-content .sec-combo-box .list-cell {
+  -fx-text-fill: -fx-text-inner-color; /* texto na lista do combobox */
+}
+.secondary-content .sec-combo-box {
+  -jfx-unfocus-color: -fx-secondary-color; /* cor da borda inferior ao clicar (un focus) */
+  /*-fx-text-fill: red; testei e não é, deletar *//*cor da escrita */
+  -jfx-unfocus-color:-fx-secondary-color; /* cor da borda inferior */
+  /*-fx-prompt-text-fill: -fx-primary-color;*/ /* cor do prompt  */
+  -jfx-focus-color: -fx-accent-color; /* cor do prompt text ao subir no text field */
+}
+
+.content .cont-main-button {
+	-fx-background-color: -fx-accent-color;
+	-fx-text-fill: -fx-primary-color; 
+	-fx-font-weight: BOLD;
+}
+.content .cont-addictional-button {
+  -fx-background-color: -fx-addictional-color;
+  -fx-text-fill: -fx-primary-color;
+  -fx-font-weight: BOLD;
+}
+
+.secondary-content {
+	-fx-background-color: -fx-primary-color;
+}
+.secondary-content .title{
         -fx-font: normal bold 22px 'serif';
         -fx-text-fill: -fx-addictional-color;
 }
-.container .text-color {
+.secondary-content .sec-text-color {
 	-fx-text-fill: -fx-addictional-color;
 }
-.container .button{
+.secondary-content .sec-main-buttons{
   -fx-background-color: -fx-addictional-color;
   -fx-text-fill: -fx-secondary-color;
   -fx-font-weight: BOLD;
 }
-
-.content {
-	-fx-background-color: -fx-secondary-color;
-}
-/* Styling for combo box list cells */
-.content .jfx-combo-box .list-cell:empty {
-  -fx-text-fill: -fx-light-primary-color;
-  -fx-prompt-text-fill: red;
-}
-
-.content .jfx-combo-box .list-cell {
-  -fx-text-fill: -fx-text-inner-color; /* texto na lista do combobox */
-}
-.content .jfx-combo-box {
-  -jfx-unfocus-color: -fx-secondary-color; /* cor da borda inferior ao clicar (un focus) */
-  -fx-text-fill: -fx-accent-color; /*cor da escrita */
-  -jfx-unfocus-color: -fx-light-primary-color; /* cor da borda inferior */
-  /*-fx-prompt-text-fill: -fx-light-primary-color;*/ /* cor do prompt  */
-  -jfx-focus-color: -fx-addictional-color; /* cor do prompt text ao subir no text field */
+.secondary-content .sec-addictional-buttons{
+  -fx-background-color: -fx-accent-color;
+  -fx-text-fill: -fx-primary-color; 
+  -fx-font-weight: BOLD;
 }
 
 .label{
     -fx-text-fill: -fx-accent-color;
 }
 .pane-grid {
-    -fx-background-color: -fx-light-primary-color;
-    background-color: -fx-light-primary-color;
+    -fx-background-color: -fx-primary-color;
+    background-color: -fx-primary-color;
 }
 
 .tab-pane-grid {
-    -fx-background-color: -fx-light-primary-color;
-    background-color: -fx-light-primary-color;
+    -fx-background-color: -fx-primary-color;
+    background-color: -fx-primary-color;
     -fx-background-insets: 3 0 0 0;
-}
-
-.text-field {
-    -fx-text-fill: -fx-accent-color;
-
-}
-.button {
-  	-fx-font-weight: BOLD;
-}
-.content .primary-button {
-	-fx-background-color: -fx-accent-color;
-	-fx-text-fill: -fx-light-primary-color; 
-}
-.content .addictional-button {
-  -fx-background-color: -fx-addictional-color;
-  -fx-text-fill: -fx-light-primary-color;
 }
 
 /* TableView */
@@ -83,20 +86,20 @@
     border-width: 1;
     -fx-border-radius: 0;
     border-radius: 0;
-    -fx-border-color: -fx-light-primary-color;
-    border-color: -fx-light-primary-color;
+    -fx-border-color: -fx-primary-color;
+    border-color: -fx-primary-color;
     -fx-background-radius: 0;
     -fx-background-color: -fx-secondary-color; /* fundo */
     background-color: -fx-secondary-color;
-    -fx-table-cell-border-color: -fx-light-primary-color; /* linhas verticais */
+    -fx-table-cell-border-color: -fx-primary-color; /* linhas verticais */
 }
 .table-view:focused{
     -fx-border-width: 1;
     border-width: 1;
     -fx-border-radius: 0;
     border-radius: 0;
-    -fx-border-color: -fx-light-primary-color; /* borda ao clicar */
-    border-color: -fx-light-primary-color;
+    -fx-border-color: -fx-primary-color; /* borda ao clicar */
+    border-color: -fx-primary-color;
     -fx-background-insets: 1;
     -fx-background-radius: 0;
     -fx-background-color: -fx-secondary-color;
@@ -105,8 +108,8 @@
 .table-view .column-header-background{
     -fx-border-width: 0 0 1 0;
     border-width: 0 0 1 0;
-    -fx-border-color: -fx-light-primary-color; /* borda inferiro da coluna */
-    border-color: -fx-light-primary-color;
+    -fx-border-color: -fx-primary-color; /* borda inferiro da coluna */
+    border-color: -fx-primary-color;
     -fx-background-radius: 0;
     -fx-background-color: -fx-secondary-color; /* fundo da coluna */
     background-color: -fx-secondary-color;
@@ -115,8 +118,8 @@
 .table-view .column-header {
     -fx-background-color: transparent;
     background-color: transparent;
-    -fx-border-color: -fx-light-primary-color;
-    border-color: -fx-light-primary-color;
+    -fx-border-color: -fx-primary-color;
+    border-color: -fx-primary-color;
 }
 .table-view .column-resize-line {
     -fx-background-color: -fx-secondary-color;
@@ -132,7 +135,7 @@
 }
 .table-row-cell:hover {
     -fx-background-color: -fx-addictional-color;
-    background-color: -fx-light-primary-color;
+    background-color: -fx-primary-color;
     -fx-background-insets: 0;
     -fx-background-radius: 0;
 }
@@ -144,8 +147,8 @@
     -fx-background-radius: 0;
 }
 .table-row-cell:pressed {
-    -fx-background-color: -fx-light-primary-color; /* cor ao pressionar */
-    background-color: -fx-light-primary-color;
+    -fx-background-color: -fx-primary-color; /* cor ao pressionar */
+    background-color: -fx-primary-color;
     -fx-background-insets: 0;
     -fx-background-radius: 0;
 }
@@ -158,10 +161,10 @@
     background-color: transparent;
 }
 .table-view .column-drag-header{
-    -fx-background-color: -fx-light-primary-color;
-    background-color: -fx-light-primary-color;
+    -fx-background-color: -fx-primary-color;
+    background-color: -fx-primary-color;
 }
-.icon-light-dark {
+.icon-dark {
 	-fx-font-size: 20px;
 	-fx-fill: -fx-addictional-color; /*cor do ícone */
 }
@@ -214,21 +217,13 @@
   
 }
 .login #lbl-google{
-	-fx-text-fill: -fx-light-primary-color;
+	-fx-text-fill: -fx-primary-color;
 }
 .login #icon-google {
 	-fx-fill: -fx-secondary-color;
 	-fx-font-size: 1.5em;
 }
 
-/* Trazendo classe roots.css */
-
-.container {
-	-fx-background-color: -fx-light-primary-color;
-}
-.content {
-	-fx-background-color: -fx-secondary-color;
-}
 .scroll-bar .decrement-arrow {
     -fx-padding:1;
  }
@@ -255,3 +250,6 @@
     /* Add any other styles as needed */
 }
 
+.tf-demands {
+    -fx-padding: 5px; /* Top/Bottom 0px, Left/Right 20px padding */
+}

@@ -6,21 +6,21 @@
 	-fx-background-color: rgba(240, 240, 240, 0.8);
 }
 
-.button-container {
+.button-secondary-content {
   -fx-background-color: -fx-addictional-color;
   -fx-text-fill: -fx-secondary-color;
   -fx-font-weight: BOLD;
 }
 
-.tf-container-on-prompt-move {
+.tf-secondary-content-on-prompt-move {
 	-jfx-focus-color: -fx-secondary-color; /* prompt text ao subir no text field */
 }
-.tf-container-bottom-border {
+.tf-secondary-content-bottom-border {
 	 -jfx-unfocus-color: -fx-addictional-color; /* borda inferior */
 }
-.lbl-container-text-color {
+.lbl-secondary-content-text-color {
 	-fx-text-fill: -fx-addictional-color; 
 }
-.tf-container-prompt-text {
+.tf-secondary-content-prompt-text {
 	-fx-prompt-text-fill: -fx-addictional-color; /* label de descriçaõ */
 }

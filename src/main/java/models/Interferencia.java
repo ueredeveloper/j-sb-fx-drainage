@@ -1,5 +1,7 @@
 package models;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.function.Function;
 
 import javafx.beans.property.SimpleStringProperty;
@@ -33,13 +35,12 @@ public class Interferencia {
 
 	private UnidadeHidrografica unidadeHidrografica;
 
+	private Set<Finalidade> finalidades = new HashSet<>();
+
+	private Set<Demanda> demandas = new HashSet<>();
+
 	public Interferencia() {
 		super();
-	}
-
-	public Interferencia(Endereco endereco) {
-		super();
-		this.endereco = endereco;
 	}
 
 	public Interferencia(Double latitude, Double longitude) {
@@ -48,17 +49,26 @@ public class Interferencia {
 		this.longitude = longitude;
 	}
 
-	public Interferencia(Double latitude, Double longitude, Endereco endereco, TipoInterferencia tipoInterferencia) {
+	public Interferencia(Long id, Double latitude, Double longitude, Endereco endereco,
+			TipoInterferencia tipoInterferencia, TipoOutorga tipoOutorga, SubtipoOutorga subtipoOutorga,
+			SituacaoProcesso situacaoProcesso, TipoAto tipoAto, Set<Finalidade> finalidades, Set<Demanda> demandas) {
 		super();
+		this.id = id;
 		this.latitude = latitude;
 		this.longitude = longitude;
 		this.endereco = endereco;
 		this.tipoInterferencia = tipoInterferencia;
+		this.tipoOutorga = tipoOutorga;
+		this.subtipoOutorga = subtipoOutorga;
+		this.situacaoProcesso = situacaoProcesso;
+		this.tipoAto = tipoAto;
+		this.finalidades = finalidades;
+		this.demandas = demandas;
 	}
 
 	public Interferencia(Double latitude, Double longitude, Endereco endereco, TipoInterferencia tipoInterferencia,
-			TipoOutorga tipoOutorga, SubtipoOutorga subtipoOutorga, SituacaoProcesso situacaoProcesso,
-			TipoAto tipoAto) {
+			TipoOutorga tipoOutorga, SubtipoOutorga subtipoOutorga, SituacaoProcesso situacaoProcesso, TipoAto tipoAto,
+			Set<Finalidade> finalidades, Set<Demanda> demandas) {
 		super();
 		this.latitude = latitude;
 		this.longitude = longitude;
@@ -68,6 +78,8 @@ public class Interferencia {
 		this.subtipoOutorga = subtipoOutorga;
 		this.situacaoProcesso = situacaoProcesso;
 		this.tipoAto = tipoAto;
+		this.finalidades = finalidades;
+		this.demandas = demandas;
 	}
 
 	public Long getId() {
@@ -92,14 +104,6 @@ public class Interferencia {
 
 	public void setLongitude(Double longitude) {
 		this.longitude = longitude;
-	}
-
-	public String getGeometry() {
-		return geometry;
-	}
-
-	public void setGeometry(String geometry) {
-		this.geometry = geometry;
 	}
 
 	public Endereco getEndereco() {
@@ -150,20 +154,20 @@ public class Interferencia {
 		this.tipoAto = tipoAto;
 	}
 
-	public BaciaHidrografica getBaciaHidrografica() {
-		return baciaHidrografica;
+	public Set<Finalidade> getFinalidades() {
+		return finalidades;
 	}
 
-	public void setBaciaHidrografica(BaciaHidrografica baciaHidrografica) {
-		this.baciaHidrografica = baciaHidrografica;
+	public void setFinalidades(Set<Finalidade> finalidades) {
+		this.finalidades = finalidades;
 	}
 
-	public UnidadeHidrografica getUnidadeHidrografica() {
-		return unidadeHidrografica;
+	public Set<Demanda> getDemandas() {
+		return demandas;
 	}
 
-	public void setUnidadeHidrografica(UnidadeHidrografica unidadeHidrografica) {
-		this.unidadeHidrografica = unidadeHidrografica;
+	public void setDemandas(Set<Demanda> demandas) {
+		this.demandas = demandas;
 	}
 
 	@Override

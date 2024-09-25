@@ -1,5 +1,7 @@
 package models;
 
+import java.util.Set;
+
 public class Subterranea extends Interferencia {
 
 	private Boolean caesb; // tem caesb () sim () não
@@ -12,28 +14,28 @@ public class Subterranea extends Interferencia {
 		super();
 	}
 
-	public Subterranea(Double interLatitude, Double interLongitude, Endereco interEndereco,
-			TipoInterferencia interferenciaTipo) {
-		super(interLatitude, interLongitude, interEndereco, interferenciaTipo);
-	}
-	
-	
-
-	public Subterranea(Double latitude, Double longitude, Endereco endereco, TipoInterferencia tipoInterferencia,
-			TipoOutorga tipoOutorga, SubtipoOutorga subtipoOutorga, SituacaoProcesso situacaoProcesso,
-			TipoAto tipoAto) {
-		super(latitude, longitude, endereco, tipoInterferencia, tipoOutorga, subtipoOutorga, situacaoProcesso, tipoAto);
-	}
 
 	public Subterranea(Double latitude, Double longitude) {
 		super(latitude, longitude);
 		// TODO Auto-generated constructor stub
 	}
 
-	public Subterranea(Endereco endereco) {
-		super(endereco);
+	public Subterranea(Long id, Double latitude, Double longitude, Endereco endereco,
+			TipoInterferencia tipoInterferencia, TipoOutorga tipoOutorga, SubtipoOutorga subtipoOutorga,
+			SituacaoProcesso situacaoProcesso, TipoAto tipoAto, Set<Finalidade> finalidades, Set<Demanda> demandas) {
+		super(id, latitude, longitude, endereco, tipoInterferencia, tipoOutorga, subtipoOutorga, situacaoProcesso, tipoAto,
+				finalidades, demandas);
 		// TODO Auto-generated constructor stub
 	}
+	
+	public Subterranea(Double latitude, Double longitude, Endereco endereco, TipoInterferencia tipoInterferencia,
+			TipoOutorga tipoOutorga, SubtipoOutorga subtipoOutorga, SituacaoProcesso situacaoProcesso, TipoAto tipoAto,
+			Set<Finalidade> finalidades, Set<Demanda> demandas) {
+		super(latitude, longitude, endereco, tipoInterferencia, tipoOutorga, subtipoOutorga, situacaoProcesso, tipoAto,
+				finalidades, demandas);
+		// TODO Auto-generated constructor stub
+	}
+
 
 	public Boolean getCaesb() {
 		return caesb;

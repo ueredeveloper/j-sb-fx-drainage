@@ -22,7 +22,17 @@ public class TipoInterferencia {
 		this.descricao = descricao;
 	}
 	
-	 @Override
+	 public TipoInterferencia() {
+		super();
+	}
+
+	public TipoInterferencia(Long id, String descricao) {
+		super();
+		this.id = id;
+		this.descricao = descricao;
+	}
+
+	@Override
 	    public boolean equals(Object o) {
 	        if (this == o) return true;
 	        if (o == null || getClass() != o.getClass()) return false;

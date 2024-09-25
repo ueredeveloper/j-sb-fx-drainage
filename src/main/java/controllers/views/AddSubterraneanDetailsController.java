@@ -2,10 +2,14 @@ package controllers.views;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
@@ -20,11 +24,22 @@ import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import models.Demanda;
 import models.Finalidade;
+import models.TipoFinalidade;
 import models.TipoPoco;
+import services.FinalidadeService;
+import services.ServiceResponse;
+import utilities.URLUtility;
 
 public class AddSubterraneanDetailsController implements Initializable {
 	
+
+	private String localUrl;
+
+	public AddSubterraneanDetailsController() {
+		this.localUrl = URLUtility.getURLService();
+	}
 
 	private static AddInterferenceController instance;
 
@@ -63,13 +78,23 @@ public class AddSubterraneanDetailsController implements Initializable {
 	private JFXTextField tfWaterDepth;
 
 	@FXML
-	private GridPane gpPurpouses;
+	private JFXTextField tfTotalConsumption;
+
+	@FXML
+	private GridPane requestedPurposesGrid, authorizedPurposesGrid, gpRequestedDemands, gpAuthorizedDemands;
 
 	ObservableList<TipoPoco> obsTypesOfWells;
 
-	// Use set para não repetir finalidade
-	Set<Finalidade> purpouses = new HashSet<>();
-	
+	@FXML
+	FontAwesomeIconView btnTotalCalculate;
+
+	@FXML
+	FontAwesomeIconView btnRequestedTotalCalculate, btnAuthorizedTotalCalculate;
+	@FXML
+	private JFXTextField tfTotalRequestedConsumption, tfTotalAuthorizedConsumption;
+
+	PurpousesWrapper purpousesWrapper = new PurpousesWrapper(new HashSet<>());
+	DemandsWrapper demandsWrapper = new DemandsWrapper(new HashSet<>());
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -77,17 +102,113 @@ public class AddSubterraneanDetailsController implements Initializable {
 		cbWellType.setItems(obsTypesOfWells);
 
 		// Adiciona cadastro de finalidade
-		addRow(0);
+		addPurpouseRow(0, requestedPurposesGrid, tfTotalRequestedConsumption, btnRequestedTotalCalculate,
+				new TipoFinalidade(1L), new Finalidade());
+		addPurpouseRow(0, authorizedPurposesGrid, tfTotalAuthorizedConsumption, btnAuthorizedTotalCalculate,
+				new TipoFinalidade(2L), new Finalidade());
+
+		addDemandsCollumns(gpRequestedDemands, new Demanda(), new TipoFinalidade(1L));
+		addDemandsCollumns(gpAuthorizedDemands, new Demanda(), new TipoFinalidade(2L));
 
 	}
 
-	public void addRow(int index) {
+	/**
+	 * Adiciona colunas com demandas por mês. Cada mês tem uma vazão, tempo de
+	 * captação e perído mensal de captação.
+	 */
+	public void addDemandsCollumns(GridPane gridPane, Demanda demand, TipoFinalidade typeOfPurpouse) {
+
+		for (int columnIndex = 1; columnIndex < 13; columnIndex++) {
+
+			JFXTextField tfFlow = new JFXTextField();
+			JFXTextField tfTime = new JFXTextField();
+			JFXTextField tfPeriod = new JFXTextField();
+
+			tfFlow.getStyleClass().addAll("tf-demands");
+			tfTime.getStyleClass().addAll("tf-demands");
+			tfPeriod.getStyleClass().addAll("tf-demands");
+
+			// Adiciona textfields por colunas
+
+			// o index é a coluna em que serão acrescentados os textfields de vazão, tempo e
+			// perído
+
+			gridPane.add(tfFlow, columnIndex, 1);
+			gridPane.add(tfTime, columnIndex, 2);
+			gridPane.add(tfPeriod, columnIndex, 3);
+
+			DemandWrapper demandWrapper = new DemandWrapper();
+
+			// Se a demanda estiver vazia, cria uma demanda.
+			if (demand.getId() == null) {
+
+				// Inicializa com o mês de referência. Mês 1: Jan.
+				demand = new Demanda(columnIndex, typeOfPurpouse);
+				// Adiciona demanda para manipulação nas arrow functions
+				demandWrapper.setDemand(demand);
+				// Adiciona demanda na lista de resultados únicos de demandas
+				demandsWrapper.getDemands().add(demand);
+
+			} else {
+
+				// Se não, é uma demanda buscada no banco e deve-se preencher os campos
+				tfFlow.setText(demand.getVazao().toString());
+				tfTime.setText(String.valueOf(demand.getTempo()));
+				tfPeriod.setText(String.valueOf(demand.getPeriodo()));
+
+				// Adiciona demanda para manipulação nas arrow functions
+				demandWrapper.setDemand(demand);
+				// Adiciona demanda na lista de resultados únicos de demandas
+				demandsWrapper.getDemands().add(demand);
+
+			}
+
+			tfFlow.textProperty().addListener((observable, oldValue, newValue) -> {
+
+				demandWrapper.getDemand().setVazao(Double.parseDouble(newValue));
+
+				System.out.println(demandsWrapper);
+
+			});
+			tfTime.textProperty().addListener((observable, oldValue, newValue) -> {
+
+				demandWrapper.getDemand().setTempo(Integer.valueOf(newValue));
+
+				System.out.println(demandsWrapper);
+
+			});
+			tfPeriod.textProperty().addListener((observable, oldValue, newValue) -> {
+
+				demandWrapper.getDemand().setPeriodo(Integer.valueOf(newValue));
+
+				System.out.println(demandsWrapper);
+
+			});
+
+			;
+		}
+
+	}
+
+	/**
+	 * Adiciona linhas de finalidades, cada linha tem uma finalidade, subfinalidade,
+	 * quantidade, consumo e total por finalidade.
+	 * 
+	 * @param index
+	 * @param gridPane
+	 * @param tfTotalConsumption
+	 * @param btnTotalConsumption
+	 * @param typeOfPurpouse
+	 * @param purpouse
+	 */
+	public void addPurpouseRow(int index, GridPane gridPane, JFXTextField tfTotalConsumption,
+			FontAwesomeIconView btnTotalConsumption, TipoFinalidade typeOfPurpouse, Finalidade purpouse) {
 
 		JFXTextField tfPurpouse = new JFXTextField();
 		JFXTextField tfSubpurpose = new JFXTextField();
 		JFXTextField tfQuantity = new JFXTextField();
 		JFXTextField tfConsumption = new JFXTextField();
-		JFXTextField tfSubtotal = new JFXTextField();
+		JFXTextField tfTotal = new JFXTextField();
 		// Criando o ícone FontAwesome
 		FontAwesomeIconView btnCalculate = new FontAwesomeIconView();
 		FontAwesomeIconView btnPlus = new FontAwesomeIconView();
@@ -102,10 +223,31 @@ public class AddSubterraneanDetailsController implements Initializable {
 		btnMinus.setGlyphName("MINUS");
 		btnMinus.getStyleClass().addAll("icon-light-dark", "icons");
 
+		PurpouseWrapper purpouseWrapper = new PurpouseWrapper();
+
 		// Cria finalidade
-		Finalidade obj = new Finalidade();
-		// Adiciona finalidade com única na lista (Set)
-		purpouses.add(obj);
+		if (purpouse == null || purpouse.getTipoFinalidade() == null) {
+
+			purpouse = new Finalidade(typeOfPurpouse);
+
+			purpouseWrapper.setPurpouse(purpouse);
+			// Adiciona finalidade com única na lista (Set)
+
+			purpousesWrapper.getPurpouses().add(purpouseWrapper.getPurpouse());
+
+		} else {
+
+			purpouseWrapper.setPurpouse(purpouse);
+
+			purpousesWrapper.getPurpouses().add(purpouseWrapper.getPurpouse());
+
+			System.out.println("else: fill textfields ");
+			tfPurpouse.setText(purpouseWrapper.getPurpouse().getFinalidade());
+			tfSubpurpose.setText(purpouseWrapper.getPurpouse().getSubfinalidade());
+			tfQuantity.setText(purpouseWrapper.getPurpouse().getQuantidade().toString());
+			tfConsumption.setText(purpouseWrapper.getPurpouse().getConsumo().toString());
+			tfTotal.setText(purpouseWrapper.getPurpouse().getTotal().toString());
+		}
 
 		tfPurpouse.setPrefHeight(40.0);
 		tfPurpouse.setMinHeight(40.00);
@@ -131,15 +273,15 @@ public class AddSubterraneanDetailsController implements Initializable {
 		tfConsumption.getStyleClass().add("text-field-subpurpose");
 		tfConsumption.setPromptText("Consumo");
 
-		tfSubtotal.setPrefHeight(40.0);
-		tfPurpouse.setMinHeight(40.0);
-		tfSubtotal.setPrefWidth(200.0);
-		tfSubtotal.getStyleClass().add("text-field-subpurpose");
-		tfSubtotal.setPromptText("Subtotal");
+		tfTotal.setPrefHeight(40.0);
+		tfTotal.setMinHeight(40.0);
+		tfTotal.setPrefWidth(200.0);
+		tfTotal.getStyleClass().add("text-field-subpurpose");
+		tfTotal.setPromptText("Total");
 
 		tfPurpouse.textProperty().addListener((observable, oldValue, newValue) -> {
 
-			obj.setFinalidade(newValue);
+			purpouseWrapper.getPurpouse().setFinalidade(newValue);
 
 			// You can add custom logic here, for example:
 			if (newValue.length() > 20) {
@@ -157,7 +299,7 @@ public class AddSubterraneanDetailsController implements Initializable {
 
 		tfSubpurpose.textProperty().addListener((observable, oldValue, newValue) -> {
 
-			obj.setSubfinalidade(newValue);
+			purpouseWrapper.getPurpouse().setSubfinalidade(newValue);
 
 			// You can add custom logic here, for example:
 			if (newValue.length() > 20) {
@@ -175,7 +317,7 @@ public class AddSubterraneanDetailsController implements Initializable {
 
 		tfQuantity.textProperty().addListener((observable, oldValue, newValue) -> {
 
-			obj.setQuantidade(Double.parseDouble(newValue));
+			purpouseWrapper.getPurpouse().setQuantidade(Double.parseDouble(newValue));
 
 			// You can add custom logic here, for example:
 			if (newValue.length() > 20) {
@@ -193,7 +335,7 @@ public class AddSubterraneanDetailsController implements Initializable {
 
 		tfConsumption.textProperty().addListener((observable, oldValue, newValue) -> {
 
-			obj.setConsumo(Double.parseDouble((newValue)));
+			purpouseWrapper.getPurpouse().setConsumo(Double.parseDouble((newValue)));
 
 			// You can add custom logic here, for example:
 			if (newValue.length() > 20) {
@@ -214,9 +356,9 @@ public class AddSubterraneanDetailsController implements Initializable {
 			Double y = Double.parseDouble(tfQuantity.getText());
 
 			Double result = x * y;
-			obj.setSubtotal(result);
+			purpouseWrapper.getPurpouse().setTotal(result);
 
-			tfSubtotal.setText(result.toString());
+			tfTotal.setText(result.toString());
 
 		});
 
@@ -227,7 +369,7 @@ public class AddSubterraneanDetailsController implements Initializable {
 			Integer rowIndex = null;
 			int lastRow = -1;
 
-			for (javafx.scene.Node child : gpPurpouses.getChildren()) {
+			for (javafx.scene.Node child : gridPane.getChildren()) {
 				// Get the row index of the current child
 				rowIndex = GridPane.getRowIndex(child);
 
@@ -242,7 +384,7 @@ public class AddSubterraneanDetailsController implements Initializable {
 				}
 			}
 
-			addRow(rowIndex + 1);
+			addPurpouseRow(rowIndex + 1, gridPane, tfTotalConsumption, btnTotalConsumption, typeOfPurpouse, null);
 
 		});
 
@@ -254,24 +396,57 @@ public class AddSubterraneanDetailsController implements Initializable {
 				rowIndex = 0; // If the row index is not set, it defaults to 0
 			}
 
-			// Remove a linha de finalidade
-			removeRowAndShift(gpPurpouses, rowIndex);
-			// Remove do Set a finalidade removida
-			purpouses.remove(obj);
+			// Remove the row from the gridPane
+			removeRowAndShift(gridPane, rowIndex);
+
+			// Retrieve the purpose object to be deleted
+			Finalidade purpouseToDelete = purpouseWrapper.getPurpouse();
+
+			// Check if the purpose object and its ID are not null before attempting to
+			// delete
+			if (purpouseToDelete != null && purpouseToDelete.getId() != null) {
+				deletePurpouse(btnMinus, purpouseToDelete);
+			}
+
+			// Remove the purpose from the Set
+			purpousesWrapper.getPurpouses().remove(purpouseToDelete);
+		});
+
+		btnTotalConsumption.setOnMouseClicked(event -> {
+			final Double[] total = { 0.0 }; // Usando um array para contornar a limitação de variáveis finais
+			purpousesWrapper.getPurpouses().forEach(p -> {
+				Double subtotal = p.getTotal();
+				if (subtotal != null) {
+					total[0] += subtotal;
+				}
+			});
+
+			tfTotalConsumption.setText(total[0].toString());
 
 		});
 
-		gpPurpouses.add(tfPurpouse, 0, index);
-		gpPurpouses.add(tfSubpurpose, 1, index);
-		gpPurpouses.add(tfQuantity, 2, index);
-		gpPurpouses.add(tfConsumption, 3, index);
-		gpPurpouses.add(tfSubtotal, 4, index);
-		gpPurpouses.add(btnCalculate, 5, index);
-		gpPurpouses.add(btnPlus, 6, index);
+		btnCalculate.setOnMouseClicked(event -> {
+			Double x = Double.parseDouble(tfConsumption.getText());
+			Double y = Double.parseDouble(tfQuantity.getText());
+
+			Double result = x * y;
+			purpouseWrapper.getPurpouse().setTotal(result);
+
+			tfTotal.setText(result.toString());
+
+		});
+
+		gridPane.add(tfPurpouse, 0, index);
+		gridPane.add(tfSubpurpose, 1, index);
+		gridPane.add(tfQuantity, 2, index);
+		gridPane.add(tfConsumption, 3, index);
+		gridPane.add(tfTotal, 4, index);
+		gridPane.add(btnCalculate, 5, index);
+		gridPane.add(btnPlus, 6, index);
 		// Na primeira linha não coloca sinal de menos. O mínimo é uma linha, não
 		// podendo retirar a primeira.
 		if (index != 0) {
-			gpPurpouses.add(btnMinus, 7, index);
+			gridPane.add(btnMinus, 7, index);
 		}
 
 	}
@@ -310,11 +485,195 @@ public class AddSubterraneanDetailsController implements Initializable {
 		}
 	}
 
-	public Finalidade getFinalidade() {
+	public Set<Finalidade> getPurpouses() {
 
-		Finalidade fin = new Finalidade();
+		return purpousesWrapper.getPurpouses();
+	}
 
-		return null;
+	public void setPurpouses(Set<Finalidade> newPurpouses) {
+		purpousesWrapper.setPurpouses(newPurpouses);
+
+		requestedPurposesGrid.getChildren().clear();
+		authorizedPurposesGrid.getChildren().clear();
+
+		AtomicInteger reqIndex = new AtomicInteger(0);
+		AtomicInteger autIndex = new AtomicInteger(0);
+
+		purpousesWrapper.getPurpouses().forEach(item -> {
+			if (item.getTipoFinalidade().getId() == 1) {
+				System.out.println("req " + reqIndex.get());
+				addPurpouseRow(reqIndex.getAndIncrement(), requestedPurposesGrid, tfTotalRequestedConsumption,
+						btnRequestedTotalCalculate, item.getTipoFinalidade(), item);
+			} else {
+				System.out.println("aut " + autIndex.get());
+				addPurpouseRow(autIndex.getAndIncrement(), authorizedPurposesGrid, tfTotalAuthorizedConsumption,
+						btnAuthorizedTotalCalculate, item.getTipoFinalidade(), item);
+			}
+		});
+	}
+
+	public void fillDemandsDetails(Set<Demanda> newSet) {
+		demandsWrapper.setDemands(newSet);
+
+		gpRequestedDemands.getChildren().clear();
+		gpAuthorizedDemands.getChildren().clear();
+
+		if (demandsWrapper.getDemands() != null) {
+
+			// Demanda por tipo de finalidade requerida
+			List<Demanda> demandsByRequestedTypePurpouse = demandsWrapper.getDemands().stream()
+					.filter(d -> d.getTipoFinalidade().getId() == 1L)
+					.sorted(Comparator.comparing(d -> d.getTipoFinalidade().getId())).collect(Collectors.toList());
+
+			demandsByRequestedTypePurpouse.forEach(demand -> {
+				addDemandsCollumns(gpRequestedDemands, demand, demand.getTipoFinalidade());
+			});
+
+			// Demanda por tipo de finalidade autorizada
+			List<Demanda> demandsByAuthorizedTypePurpouse = demandsWrapper.getDemands().stream()
+					.filter(d -> d.getTipoFinalidade().getId() == 2L)
+					.sorted(Comparator.comparing(d -> d.getTipoFinalidade().getId())).collect(Collectors.toList());
+
+			demandsByAuthorizedTypePurpouse.forEach(demand -> {
+				addDemandsCollumns(gpRequestedDemands, demand, demand.getTipoFinalidade());
+			});
+
+		}
+
+	}
+
+	public Set<Demanda> getDemands() {
+		return demandsWrapper.getDemands();
+	}
+
+	// Modifica as finalidade dentro de uma expressão lambda.
+	public class PurpouseWrapper {
+
+		private Finalidade purpouse;
+
+		public PurpouseWrapper() {
+		}
+
+		public Finalidade getPurpouse() {
+			return purpouse;
+		}
+
+		public void setPurpouse(Finalidade purpouse) {
+			this.purpouse = purpouse;
+		}
+	}
+
+	public class PurpousesWrapper {
+		// Use set para não repetir finalidade
+		Set<Finalidade> purpouses;
+
+		public PurpousesWrapper(Set<Finalidade> purpouses) {
+			super();
+			this.purpouses = purpouses;
+		}
+
+		public Set<Finalidade> getPurpouses() {
+			return purpouses;
+		}
+
+		public void setPurpouses(Set<Finalidade> purpouses) {
+			this.purpouses = purpouses;
+		}
+
+	}
+
+	public class DemandWrapper {
+		private Demanda demand;
+
+		public DemandWrapper() {
+			super();
+		}
+
+		public Demanda getDemand() {
+			return demand;
+		}
+
+		public void setDemand(Demanda demand) {
+			this.demand = demand;
+		}
+
+		@Override
+		public String toString() {
+			return "Demanda: Vazão = " + demand.getVazao() + " Tempo: " + demand.getTempo() + " Perído: "
+					+ demand.getPeriodo() + "\n";
+		}
+
+	}
+
+	public class DemandsWrapper {
+		// Use set para não repetir finalidade
+		Set<Demanda> demands;
+
+		public DemandsWrapper(Set<Demanda> demands) {
+			super();
+			this.demands = demands;
+		}
+
+		public Set<Demanda> getDemands() {
+			return demands;
+		}
+
+		public void setDemands(Set<Demanda> demands) {
+			this.demands = demands;
+		}
+
+		// Listar por mês, assim preencher o grid de demanda mês a mês, do mes 1 até o
+		// mes 12.
+		public List<Demanda> sortByMes() {
+			// Convert Set to List
+			List<Demanda> sortedList = new ArrayList<>(demands);
+
+			// Sort by 'mes' field
+			sortedList.sort(Comparator.comparingInt(Demanda::getMes));
+
+			return sortedList;
+		}
+
+		@Override
+		public String toString() {
+			// Use stream to concatenate all demands into a single string
+			return demands.stream().map(Demanda::toString) // Call Demanda's toString method for each demand
+					.collect(Collectors.joining(", ", "Demands: [", "]")); // Join all results with commas
+		}
+
+	}
+
+	public void deletePurpouse(Node source, Finalidade purpouse) {
+
+		try {
+			FinalidadeService documentService = new FinalidadeService(localUrl);
+
+			ServiceResponse<?> serviceResponse = documentService.deleteById(purpouse.getId());
+
+			if (serviceResponse.getResponseCode() == 200) {
+
+				if (source != null && source.getScene() != null && source.getScene().getWindow() != null) {
+					Stage ownerStage = (Stage) source.getScene().getWindow();
+					String toastMsg = "Finalidade deletada com sucesso!";
+					utilities.Toast.makeText(ownerStage, toastMsg, ToastType.SUCCESS);
+				}
+
+				// retira objecto da tabela de documentos tvDocs
+				// tvDocs.getItems().remove(selectedDocument);
+
+			} else {
+				// Informa erro em deletar
+
+				if (source != null && source.getScene() != null && source.getScene().getWindow() != null) {
+					Stage ownerStage = (Stage) source.getScene().getWindow();
+					String toastMsg = "Erro ao deletar!";
+					utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 	}
 
 }

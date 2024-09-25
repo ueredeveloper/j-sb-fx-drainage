@@ -12,7 +12,7 @@ public class Finalidade {
 
 	private Double consumo;
 	
-	private Double subtotal;
+	private Double total;
 
 	private Interferencia interferencia;
 
@@ -21,6 +21,11 @@ public class Finalidade {
 	
 	public Finalidade() {
 		super();
+	}
+	
+	public Finalidade(TipoFinalidade tipoFinalidade) {
+		super();
+		this.tipoFinalidade = tipoFinalidade;
 	}
 
 	public Finalidade(String finalidade, String subfinalidade, Double quantidade, Double consumo,
@@ -97,18 +102,18 @@ public class Finalidade {
 		this.tipoFinalidade = tipoFinalidade;
 	}
 
-	public Double getSubtotal() {
-		return subtotal;
+	public Double getTotal() {
+		return total;
 	}
 
-	public void setSubtotal(Double subtotal) {
-		this.subtotal = subtotal;
+	public void setTotal(Double total) {
+		this.total = total;
 	}
 
 	@Override
 	public String toString() {
 		return "Finalidade [finalidade=" + finalidade + ", subfinalidade=" + subfinalidade + ", quantidade="
-				+ quantidade + ", consumo=" + consumo + ", subtotal=" + subtotal + "]";
+				+ quantidade + ", consumo=" + consumo + ", total=" + total + "]";
 	}
 	
 	

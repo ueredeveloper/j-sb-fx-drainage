@@ -9,6 +9,11 @@ public class TipoFinalidade {
 	public TipoFinalidade() {
 		super();
 	}
+	
+	public TipoFinalidade(Long id) {
+		super();
+		this.id = id;
+	}
 
 	public Long getId() {
 		return id;

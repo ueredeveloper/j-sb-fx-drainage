@@ -1,12 +1,11 @@
 
-* {
+*{
 
-	-fx-primary-color: #192c01;/* #fefffe;*/
-    -fx-secondary-color: #231c19;/* #000750;*/
+	-fx-primary-color: #192c01;
+    -fx-secondary-color: #231c19;
     -fx-accent-color: #f8f8f7;
     -fx-addictional-color: #fab21a;
 	-fx-google-color: #FF3B00;
-	/* tamanho da fonte */
 	-fx-font-size: 14px;
 	
 }
@@ -16,27 +15,27 @@
     background-color: -fx-primary-color;
 }
 
-.container {
+.secondary-content {
 	-fx-background-color: -fx-primary-color;
 }
-.container .button{
+.secondary-content .button{
   -fx-background-color: -fx-addictional-color;
   -fx-text-fill: -fx-secondary-color;
   -fx-font-weight: BOLD;
 }
-.container .on-prompt-move {
+.secondary-content .on-prompt-move {
         -jfx-focus-color: -fx-secondary-color; /* prompt text ao subir no text field */
 }
-.container .bottom-border {
+.secondary-content .bottom-border {
          -jfx-unfocus-color: -fx-addictional-color; /* borda inferior */
 }
-.container .text-color {
+.secondary-content .text-color {
         -fx-text-fill: -fx-addictional-color;
 }
-.container .prompt-text {
+.secondary-content .prompt-text {
         -fx-prompt-text-fill: -fx-addictional-color; /* label de descriçaõ */
 }
-.container .title{
+.secondary-content .title{
         -fx-font: normal bold 22px 'serif';
 }
 .content {
