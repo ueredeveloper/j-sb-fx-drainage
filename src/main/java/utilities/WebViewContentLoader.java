@@ -97,13 +97,10 @@ public class WebViewContentLoader {
 	}
 
 	public void updateTableInfo() {
-		invokeJS("document.addEventListener('DOMContentLoaded', function() {" + // Ensure the DOM is loaded
-				"  let interferencia = {" + "    baciaHidrografica: { id: 1, descricao: 'Bacia do Maranhão' },"
-				+ "    unidadeHidrografica: { id: 1, descricao: 'Unidade do Maranhão' }," + "    latitude: 1.123456789,"
-				+ "    longitude: 2.987654321" + "  };" + "  let div = document.getElementById('geographic-table');"
-				+ "  if (div && typeof div.updateTableInfo === 'function') {" + // Ensure the element and method exist
-				"    div.updateTableInfo(interferencia);" + "  } else {"
-				+ "    console.error('div or updateTableInfo method not found');" + "  }" + "});");
+		invokeJS("let interferencia = {baciaHidrografica:{id: 1,descricao:'Bacia do Maranhão'},"
+				+ "unidadeHidrografica: { id: 1, descricao: 'Unidade do Maranhão' },latitude: 1.123456789,"
+
+				+ "longitude: 2.987654321};geoTable.updateTableInfo(interferencia);");
 
 	}
 	

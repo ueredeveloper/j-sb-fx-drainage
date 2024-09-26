@@ -143,12 +143,13 @@ function App() {
 			<div id="chief-signature"></div>
 		</div>`;
 	}
+var geoTable, authLimTable;
 
 document.addEventListener('DOMContentLoaded', function () {
 	App();
 
-	new GeographicTable();
-	new AuthorizedLimitsTable()
+	geoTable = new GeographicTable();
+	authLimTable = new AuthorizedLimitsTable()
 	new GrantRequirements();
 	new ChiefSignature();
 
