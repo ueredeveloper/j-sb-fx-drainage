@@ -30,12 +30,12 @@ td, th {
         return (
           <div>
 			<h1>Documento</h1>
-            <p>Tipo: {documento.docTipo.dtDescricao}</p>
+            <p>Tipo: {documento.tipo.descricao}</p>
             <p>ID: {documento.docId}</p>
-            <p>Número: {documento.docNumero}</p>
-            <p>Processo: {documento.docProcesso.procNumero}</p>
-            <p>Número SEI: {documento.docSEI}</p>
-			<p>Endereço: {documento.docEndereco.endLogradouro}</p>
+            <p>Número: {documento.numero}</p>
+            <p>Processo: {documento.processo.numero}</p>
+            <p>Número SEI: {documento.numeroSei}</p>
+			<p>Endereço: {documento.endereco.logradouro}</p>
        	  </div>
 		);
       }

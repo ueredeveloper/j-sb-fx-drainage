@@ -52,7 +52,7 @@ function convertDocumentoToEChartTree(jsonData) {
 		children : [
 				{
 					name : 'Tipo',
-					value : jsonData.tipo != null ? jsonData.tipo.dtDescricao != null ? jsonData.tipo.dtDescricao
+					value : jsonData.tipo != null ? jsonData.tipo.descricao != null ? jsonData.tipo.descricao
 							: 'desconhecido'
 							: 'desconhecido'
 				},

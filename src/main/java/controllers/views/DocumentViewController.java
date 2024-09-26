@@ -5,7 +5,10 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import com.google.gson.Gson;
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXTextField;
 
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -17,12 +20,23 @@ import javafx.scene.web.HTMLEditor;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import models.Documento;
+import models.Interferencia;
 import netscape.javascript.JSObject;
 import utilities.HTMLFileLoader;
 
 public class DocumentViewController implements Initializable {
-	
-	
+
+	@FXML
+	private JFXTextField tfDocument;
+
+	@FXML
+	private JFXTextField tfAddress;
+
+	@FXML
+	private JFXComboBox<Interferencia> cbInterference;
+
+	@FXML
+	private FontAwesomeIconView iconCopyDocument;
 
 	private Documento selectedDocument;
 
@@ -63,16 +77,16 @@ public class DocumentViewController implements Initializable {
 		// Replace a placeholder in the HTML content with JSON data.
 		String json = new Gson().toJson(selectedDocument);
 
-	
+		System.out.println(json);
 		htmlContent = htmlContent.replace("${json}", json);
 		htmlEditor.setHtmlText(htmlContent);
 
-		btnSelectAndCopy.setOnAction(e -> {
+		/*btnSelectAndCopy.setOnAction(e -> {
 			Clipboard clipboard = Clipboard.getSystemClipboard();
 			ClipboardContent content = new ClipboardContent();
 			content.putHtml(htmlEditor.getHtmlText());
 			clipboard.setContent(content);
-		});
+		});*/
 
 		// Load HTML content from a resource file.
 		String gojsDiagramPath = "/html/views/e-chart-tree/index.html";
