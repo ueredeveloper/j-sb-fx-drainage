@@ -7,6 +7,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
+import models.Interferencia;
 import netscape.javascript.JSException;
 import netscape.javascript.JSObject;
 
@@ -96,18 +97,19 @@ public class WebViewContentLoader {
 		}
 	}
 
-	public void updateTableInfo() {
-		invokeJS("let interferencia = {baciaHidrografica:{id: 1,descricao:'Bacia do Maranhão'},"
-				+ "unidadeHidrografica: { id: 1, descricao: 'Unidade do Maranhão' },latitude: 1.123456789,"
-
-				+ "longitude: 2.987654321};geoTable.updateTableInfo(interferencia);");
+	public void updateTableInfo(Interferencia object) {
+		
+		
+		String strJson = JsonConverter.convertObjectToJson(object);
+		
+		invokeJS("geoTable.updateTableInfo(" + strJson + ");");
 
 	}
-	
-	public String getHtml () {
+
+	public String getHtml() {
 		String script = "document.body.innerHTML;";
 		String finalHtml = (String) webEngine.executeScript(script);
-		
+
 		return finalHtml;
 	}
 }

@@ -146,7 +146,9 @@ public class DocumentViewController implements Initializable {
 		fetchInterferenciesByLogradouro(logradouro);
 
 		cbInterference.setOnAction(e -> {
-			documentLoader.updateTableInfo();
+			
+			Interferencia object =  cbInterference.getSelectionModel().getSelectedItem();
+			documentLoader.updateTableInfo(object);
 			
 			htmlEditor.setHtmlText(documentLoader.getHtml());
 		});

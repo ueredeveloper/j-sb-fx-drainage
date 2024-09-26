@@ -45,10 +45,10 @@ class GeographicTable {
     }
 
     updateTableInfo (interferencia){
-        document.getElementById('hydrographic-basin').textContent = interferencia.baciaHidrografica.descricao || 'N/A';
-        document.getElementById('hydrographic-unit').textContent = interferencia.unidadeHidrografica.descricao || 'N/A';
-        document.getElementById('latitude').textContent = interferencia.latitude ? interferencia.latitude.toFixed(6) : 'N/A';
-        document.getElementById('longitude').textContent = interferencia.longitude ? interferencia.longitude.toFixed(6) : 'N/A';
+      document.getElementById('hydrographic-basin').textContent = interferencia.baciaHidrografica?.descricao || 'Desconhecido';
+	  document.getElementById('hydrographic-unit').textContent = interferencia.unidadeHidrografica?.descricao || 'Desconhecido';
+	  document.getElementById('latitude').textContent = interferencia.latitude?.toFixed(6) || 'Desconhecido';
+	  document.getElementById('longitude').textContent = interferencia.longitude?.toFixed(6) || 'Desconhecido';
     }
    
 }
