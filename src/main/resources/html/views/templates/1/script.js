@@ -39,31 +39,9 @@ function App() {
 		"cpfCnpj": 12345678000100
 	};
 
-	const interferencia = new Interferencia().getInterference();
+	//const interferencia = new Interferencia().getInterference();
 
-	/**
-	 * Converte uma array de finalidades em um string
-	 * Tag anterior: <finalidades_tag></finalidades_tag>
-	 * @param {*} finalidades 
-	 * @returns 
-	 */
-	function createPurpouseString(finalidades) {
-		let arrayToString = finalidades.map(f => {
-			if (f.tipoFinalidade.id === 2) return f.finalidade
-			return '';
-			// converte array para string e coloca tudo em minúsculo
-		}).toString().toLowerCase();
-
-		// Remover a primeira vírgula
-		let result = arrayToString.replace(/^,/, '');
-
-		// Substituir a última vírgula por 'e'
-		result = result.replace(/,(?=[^,]*$)/, ' e ');
-		// Adicionar espaço após todas as vírgulas
-		result = result.replace(/,/g, ', ');
-
-		return result;
-	}
+	
 	/**
 	 * Cria máscara para CPF e CPNJ
 	 * Tag anterior: <us_cpfcnpj_tag></us_cpfcnpj_tag> 
@@ -102,6 +80,31 @@ function App() {
 	function addressToString(endereco) {
 		return endereco.logradouro;
 	}
+	
+	let finalidades = [] 
+	
+	
+	/**
+	 * Converte uma array de finalidades em um string
+	 * Tag anterior: <finalidades_tag></finalidades_tag>
+	 * @param {*} finalidades 
+	 * @returns 
+	 */
+	function createPurpouseString(finalidades) {
+		
+		// Filtra as finalidades autorizadas, transforma em string e tudo em minúsculo
+		let arrayToString = finalidades.filter(f=> f.tipoFinalidade.id === 2).map(f=> f.finalidade).toString().toLowerCase();
+
+		// Substituir a última vírgula por 'e'
+		result = arrayToString.replace(/,(?=[^,]*$)/, ' e ');
+		
+		// Adicionar espaço após todas as vírgulas
+		result = result.replace(/,/g, ', ');
+
+		return result;
+	}
+	
+	finalidades = interferencia.getInterference().finalidades;
 
 	const appDiv = document.getElementById("app");
 
@@ -109,7 +112,7 @@ function App() {
 		<div>
 			<div style="text-align: center;">&nbsp;</div>
 
-			<p style="margin-left: 400px;">Emite outorga prévia para reservar o direito de uso de água subterrânea a&nbsp;${usuario.nome}, para fins de ${createPurpouseString(interferencia.finalidades)} .
+			<p style="margin-left: 400px;">Emite outorga prévia para reservar o direito de uso de água subterrânea a ${usuario.nome}, para fins de ${createPurpouseString(finalidades)} .
 
 			</p><p>&nbsp;</p>
 		
@@ -117,7 +120,7 @@ function App() {
 			<div align="justify">
 			<p>O SUPERINTENDENTE DE RECURSOS HÍDRICOS DA AGÊNCIA REGULADORA DE ÁGUAS, ENERGIA E SANEAMENTO BÁSICO DO DISTRITO FEDERAL – ADASA, no uso de suas atribuições regimentais e com base na competência que lhe foi delegada pela Diretoria Colegiada, nos termos da Resolução nº 02, de 25 de janeiro de 2019, c/c Portaria nº 49, de 02 de maio de 2019 e com base no art. 12 da Lei nº 2.725, de 13 de junho de 2001, e inciso VII do art. 23 da Lei nº 4.285, de 26 de dezembro de 2008, tendo em vista o que consta do Processo SEI N.º <b>${documento.processo.anexo.numero}</b>, resolve:</p>
 
-			<p>Art. 1º Emitir outorga prévia para reservar o direito de uso de água subterrânea a&nbsp;<b>${usuario.nome}</b>, <b>CPF/CNPJ n.º ${formatCpfCnpj(usuario.cpfCnpj)}</b>, mediante a perfuração de 01 (um) poço <inter_tipo_poco_tag></inter_tipo_poco_tag>, para fins&nbsp; de ${createPurpouseString(interferencia.finalidades)}, localizado no endereço: ${addressToString(documento.endereco)} - Distrito Federal, tendo a seguinte característica:</p>
+			<p>Art. 1º Emitir outorga prévia para reservar o direito de uso de água subterrânea a <b>${usuario.nome}</b>, <b>CPF/CNPJ n.º ${formatCpfCnpj(usuario.cpfCnpj)}</b>, mediante a perfuração de 01 (um) poço <inter_tipo_poco_tag></inter_tipo_poco_tag>, para fins de ${createPurpouseString(finalidades)}, localizado no endereço: ${addressToString(documento.endereco)} - Distrito Federal, tendo a seguinte característica:</p>
 			</div>
 
 			<p>&nbsp;</p>
@@ -143,15 +146,17 @@ function App() {
 			<div id="chief-signature"></div>
 		</div>`;
 	}
-var geoTable, authLimTable;
+var geographicTable, limitsTable, interferencia;
 
 document.addEventListener('DOMContentLoaded', function () {
+	
+	interferencia = new Interferencia();
+	
 	App();
 
-	geoTable = new GeographicTable();
-	authLimTable = new AuthorizedLimitsTable()
+	geographicTable = new GeographicTable();
+	limitsTable = new LimitsTable()
 	new GrantRequirements();
 	new ChiefSignature();
 
-	new Buttons();
 });

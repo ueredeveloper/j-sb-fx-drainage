@@ -22,8 +22,7 @@ class Buttons {
         let button = document.getElementById('btn-update-lat');
 
         button.onclick = function () {
-            //  this.geoTab.updateTableInfo({'latitude': '1'})
-
+       
             new GeographicTable().updateTableInfo(
                 {
                     'latitude': -15.123456789, 'longitude': -16.78456123,

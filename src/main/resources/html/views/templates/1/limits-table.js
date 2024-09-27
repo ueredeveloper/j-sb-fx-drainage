@@ -4,7 +4,7 @@
  * Tag anterior: <tabela_limites_outorgados_tag></tabela_limites_outorgados_tag>
  * 
  */
-class AuthorizedLimitsTable {
+class LimitsTable {
     constructor() {
         this.div = document.getElementById('authorized-limits-table');
         this.render();

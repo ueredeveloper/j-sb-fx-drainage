@@ -1,7 +1,6 @@
 
 class Interferencia {
-    constructor(interferencia) {
-        this.interferencia = interferencia;
+    constructor() {
     }
 
     // Método para obter a interferência
@@ -65,6 +64,36 @@ class Interferencia {
                     }
                 },
                 {
+                    "id": 4,
+                    "finalidade": "Irrigação",
+                    "subfinalidade": "Aves",
+                    "quantidade": 300.0,
+                    "consumo": 30.0,
+                    "total": 9000.0,
+                    "interferencia": null,
+                    "tipoFinalidade": {
+                        "id": 1,
+                        "descricao": null,
+                        "finalidades": [],
+                        "demandas": []
+                    }
+                },
+                {
+                    "id": 4,
+                    "finalidade": "Paisagismo",
+                    "subfinalidade": "Aves",
+                    "quantidade": 300.0,
+                    "consumo": 30.0,
+                    "total": 9000.0,
+                    "interferencia": null,
+                    "tipoFinalidade": {
+                        "id": 2,
+                        "descricao": null,
+                        "finalidades": [],
+                        "demandas": []
+                    }
+                },
+                {
                     "id": 5,
                     "finalidade": "Comercial",
                     "subfinalidade": "Lavar Veículos",
@@ -88,7 +117,7 @@ class Interferencia {
                     "total": 1100.0,
                     "interferencia": null,
                     "tipoFinalidade": {
-                        "id": 1,
+                        "id": 2,
                         "descricao": null,
                         "finalidades": [],
                         "demandas": []
@@ -443,6 +472,7 @@ class Interferencia {
         }
         return interferencia;
     }
-
-
+    setLatitude (number){
+    	this.interferencia.latitude = number;
+    }
 }
