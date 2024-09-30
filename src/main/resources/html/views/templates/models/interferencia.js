@@ -1,7 +1,6 @@
 
 class Interferencia {
-    constructor(interferencia) {
-        this.interferencia = interferencia;
+    constructor() {
     }
 
     // Método para obter a interferência
@@ -11,6 +10,8 @@ class Interferencia {
             "id": 2,
             "latitude": -15.123456,
             "longitude": -47.123456,
+            "nome": "Poço 1",
+            "vazaoAutorizada": 550,
             "geometry": null,
             "endereco": {
                 "id": 1,
@@ -65,6 +66,36 @@ class Interferencia {
                     }
                 },
                 {
+                    "id": 4,
+                    "finalidade": "Irrigação",
+                    "subfinalidade": "Aves",
+                    "quantidade": 300.0,
+                    "consumo": 30.0,
+                    "total": 9000.0,
+                    "interferencia": null,
+                    "tipoFinalidade": {
+                        "id": 1,
+                        "descricao": null,
+                        "finalidades": [],
+                        "demandas": []
+                    }
+                },
+                {
+                    "id": 4,
+                    "finalidade": "Paisagismo",
+                    "subfinalidade": "Aves",
+                    "quantidade": 300.0,
+                    "consumo": 30.0,
+                    "total": 9000.0,
+                    "interferencia": null,
+                    "tipoFinalidade": {
+                        "id": 2,
+                        "descricao": null,
+                        "finalidades": [],
+                        "demandas": []
+                    }
+                },
+                {
                     "id": 5,
                     "finalidade": "Comercial",
                     "subfinalidade": "Lavar Veículos",
@@ -88,7 +119,7 @@ class Interferencia {
                     "total": 1100.0,
                     "interferencia": null,
                     "tipoFinalidade": {
-                        "id": 1,
+                        "id": 2,
                         "descricao": null,
                         "finalidades": [],
                         "demandas": []
@@ -98,9 +129,9 @@ class Interferencia {
             "demandas": [
                 {
                     "id": 29,
-                    "vazao": 55.0,
-                    "tempo": 55,
-                    "periodo": 55,
+                    "vazao": 20000,
+                    "tempo": 20,
+                    "periodo": 31,
                     "mes": 4,
                     "tipoFinalidade": {
                         "id": 2,
@@ -443,6 +474,7 @@ class Interferencia {
         }
         return interferencia;
     }
-
-
+    setLatitude (number){
+    	this.interferencia.latitude = number;
+    }
 }

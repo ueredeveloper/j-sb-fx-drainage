@@ -34,7 +34,7 @@ public class TemplateService {
 	        connection.setRequestMethod("POST");
 	        connection.setRequestProperty("Content-Type", "application/json");
 	        connection.setDoOutput(true);
-
+	       
 	        // Convert Template object to JSON
 	        String jsonInputString = JsonConverter.convertObjectToJson(object);
 	        System.out.println("Request JSON: " + jsonInputString);

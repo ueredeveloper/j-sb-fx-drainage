@@ -706,7 +706,7 @@ public class DocumentController implements Initializable {
 		try {
 			Documento selectedDocumentument = tvDocs.getSelectionModel().getSelectedItem();
 
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/views/DocumentView.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/DocumentView.fxml"));
 			DocumentViewController docViewController = new DocumentViewController(selectedDocumentument);
 			loader.setController(docViewController);
 

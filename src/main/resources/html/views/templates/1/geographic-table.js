@@ -17,7 +17,7 @@ class GeographicTable {
     render() {
         let index = `
             <div align="justify" style="margin-left: auto; margin-right: auto; overflow: auto;">
-                <table border="1" cellspacing="0" style="margin-left: auto; margin-right: auto; max-width: 800px;">
+                <table border="1" cellspacing="0" style="margin-left: auto; margin-right: auto; ">
                     <tbody>
                         <tr>
                             <td rowspan="2" style="width: 104px; height: 30px; text-align: center;">Ponto de Captação</td>
@@ -30,11 +30,11 @@ class GeographicTable {
                             <td style="width: 123px; height: 16px; text-align: center;">Longitude</td>
                         </tr>
                         <tr>
-                            <td style="width: 104px; height: 21px; text-align: center;">&nbsp;Poço 01</td>
+                            <td style="width: 104px; height: 21px; text-align: center;" id="well-name"></td>
                             <td style="width: 135px; height: 21px; text-align: center;" id="hydrographic-basin"></td>
                             <td style="width: 173px; height: 21px; text-align: center;" id="hydrographic-unit"></td>
-                            <td style="width: 125px; height: 21px; text-align: center;"><strong>&nbsp;<span id="latitude"></span></strong></td>
-                            <td style="width: 123px; height: 21px; text-align: center;"><strong>&nbsp;<span id="longitude"></span></strong></td>
+                            <td style="width: 125px; height: 21px; text-align: center;"><strong><span id="latitude"></span></strong></td>
+                            <td style="width: 123px; height: 21px; text-align: center;"><strong><span id="longitude"></span></strong></td>
                         </tr>
                     </tbody>
                 </table>
@@ -45,6 +45,8 @@ class GeographicTable {
     }
 
     updateTableInfo (interferencia){
+        
+      document.getElementById('well-name').textContent = interferencia.nome || 'Desconhecido';
       document.getElementById('hydrographic-basin').textContent = interferencia.baciaHidrografica?.descricao || 'Desconhecido';
 	  document.getElementById('hydrographic-unit').textContent = interferencia.unidadeHidrografica?.descricao || 'Desconhecido';
 	  document.getElementById('latitude').textContent = interferencia.latitude?.toFixed(6) || 'Desconhecido';

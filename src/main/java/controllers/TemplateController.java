@@ -31,10 +31,6 @@ import utilities.URLUtility;
 
 public class TemplateController implements Initializable {
 	
-	
-	
-	
-
 	private String localUrl;
 
 	public TemplateController() {
@@ -100,7 +96,7 @@ public class TemplateController implements Initializable {
 				if (newValue != null) {
 
 					tfDescription.setText(newValue.getDescricao());
-					htmlEditor.setHtmlText(newValue.getHtml());
+					htmlEditor.setHtmlText(newValue.getConteudo());
 
 				}
 			}

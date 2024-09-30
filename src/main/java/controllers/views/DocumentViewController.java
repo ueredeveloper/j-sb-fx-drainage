@@ -27,7 +27,6 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import models.Documento;
 import models.Interferencia;
-import netscape.javascript.JSException;
 import netscape.javascript.JSObject;
 import services.InterferenciaService;
 import utilities.HTMLFileLoader;
@@ -80,6 +79,8 @@ public class DocumentViewController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
+		
+		System.out.println(apContainer.getStylesheets());
 		// Html Editor
 		documentLoader = new WebViewContentLoader();
 		documentLoader.loadWebViewContent(finalHtml -> {
@@ -113,7 +114,7 @@ public class DocumentViewController implements Initializable {
 		}
 
 		htmlDiagramContent = htmlDiagramContent.replace("${json}", json);
-		
+
 		WebEngine webEngine;
 
 		webEngine = webView.getEngine();
@@ -134,9 +135,8 @@ public class DocumentViewController implements Initializable {
 			}
 		});
 
-		
 		// Componentes
-		
+
 		tfDocument.setText(
 				"Número: " + this.selectedDocument.getNumero() + " | Sei: " + this.selectedDocument.getNumeroSei());
 		tfAddress.setText(this.selectedDocument.getEnderecoLogradouro());
@@ -146,10 +146,10 @@ public class DocumentViewController implements Initializable {
 		fetchInterferenciesByLogradouro(logradouro);
 
 		cbInterference.setOnAction(e -> {
-			
-			Interferencia object =  cbInterference.getSelectionModel().getSelectedItem();
+
+			Interferencia object = cbInterference.getSelectionModel().getSelectedItem();
 			documentLoader.updateTableInfo(object);
-			
+
 			htmlEditor.setHtmlText(documentLoader.getHtml());
 		});
 

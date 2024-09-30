@@ -2,8 +2,6 @@ package utilities;
 
 import java.util.function.Consumer;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
@@ -12,104 +10,94 @@ import netscape.javascript.JSException;
 import netscape.javascript.JSObject;
 
 /**
- * Lê um arquivo html e script para depois inserir no Html Editor do javafx que
- * não lê javascript.
+ * Classe responsável por carregar conteúdo HTML em um WebView, permitindo
+ * comunicação bidirecional entre JavaScript e Java.
+ * 
+ * Carrega um arquivo HTML e permite inserir informações dinâmicas usando
+ * JavaScript.
  * 
  * @author fabricio.barrozo
- *
  */
 public class WebViewContentLoader {
 
-	// Para comunicação com o webview e webengine
-	JSObject jsObj;
-	public boolean ready;
-	WebView webView = new WebView();
-	WebEngine webEngine = webView.getEngine();
+	// Objeto JavaScript para comunicação com o WebView
+	private JSObject jsObj;
+	private boolean ready = false;
 
-	// Method that accepts a callback (Consumer) to return the HTML content when
-	// it's ready
+	// WebView e WebEngine usados para carregar e interagir com o conteúdo web
+	private WebView webView = new WebView();
+	private WebEngine webEngine = webView.getEngine();
+
+	/**
+	 * Carrega o conteúdo HTML no WebView e utiliza um callback para retornar o
+	 * conteúdo HTML.
+	 * 
+	 * @param callback
+	 *            Consumer para processar o conteúdo HTML quando carregado.
+	 */
 	public void loadWebViewContent(Consumer<String> callback) {
-
+		// Carrega o arquivo HTML especificado
 		webEngine.load(getClass().getResource("/html/views/templates/1/index.html").toExternalForm());
 
-		ready = false;
+		// Listener para verificar quando o conteúdo HTML foi carregado
+		webEngine.getLoadWorker().stateProperty().addListener((observableValue, oldState, newState) -> {
+			if (newState == Worker.State.SUCCEEDED) {
+				ready = true;
+				jsObj = (JSObject) webEngine.executeScript("window");
 
-		webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<Worker.State>() {
-			public void changed(final ObservableValue<? extends Worker.State> observableValue,
-					final Worker.State oldState, final Worker.State newState) {
+				// Permite que o JavaScript tenha acesso a métodos Java
+				jsObj.setMember("app", WebViewContentLoader.this);
 
-				if (newState == Worker.State.SUCCEEDED) {
-					ready = true;
-				}
-			}
-		});
-
-		webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<Worker.State>() {
-			public void changed(final ObservableValue<? extends Worker.State> observableValue,
-					final Worker.State oldState, final Worker.State newState) {
-				if (newState == Worker.State.SUCCEEDED) {
-					jsObj = (JSObject) webEngine.executeScript("window");
-
-					// Variável para voltar com dados do Webview para o Java. Por aqui tem-se acesso
-					// às funções java dentro do javascript.
-					jsObj.setMember("app", WebViewContentLoader.this);
-				}
-			}
-		});
-
-		webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<Worker.State>() {
-			@Override
-			public void changed(ObservableValue<? extends Worker.State> observable, Worker.State oldState,
-					Worker.State newState) {
-				if (newState == Worker.State.SUCCEEDED) {
-					// Once the content is fully loaded, retrieve the body content
-					String script = "document.body.innerHTML;";
-					String finalHtml = (String) webEngine.executeScript(script);
-
-					// Use the callback to return the final HTML content
-					callback.accept(finalHtml);
-				}
+				// Executa script JavaScript para obter o conteúdo HTML e passa para o callback
+				String finalHtml = (String) webEngine.executeScript("document.body.innerHTML;");
+				callback.accept(finalHtml);
 			}
 		});
 	}
 
-	private void invokeJS(final String str) {
-
+	/**
+	 * Invoca código JavaScript no WebView, esperando que o conteúdo esteja pronto.
+	 * 
+	 * @param script
+	 *            String com o código JavaScript a ser executado.
+	 */
+	private void invokeJS(final String script) {
 		if (ready) {
-			System.out.println(ready);
 			try {
-				jsObj.eval(str);
-			} catch (JSException js) {
-				System.out.println("erro na execução da leitura javascript: " + js);
+				jsObj.eval(script);
+			} catch (JSException e) {
+				System.err.println("Erro ao executar script JavaScript: " + e.getMessage());
 			}
 		} else {
-			webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<Worker.State>() {
-				@Override
-				public void changed(final ObservableValue<? extends Worker.State> observableValue,
-						final Worker.State oldState, final Worker.State newState) {
-					if (newState == Worker.State.SUCCEEDED) {
-						jsObj.eval(str);
-
-					}
+			// Aguarda até que o conteúdo esteja completamente carregado
+			webEngine.getLoadWorker().stateProperty().addListener((observableValue, oldState, newState) -> {
+				if (newState == Worker.State.SUCCEEDED) {
+					jsObj.eval(script);
 				}
 			});
-
 		}
 	}
 
-	public void updateTableInfo(Interferencia object) {
-		
-		
-		String strJson = JsonConverter.convertObjectToJson(object);
-		
-		invokeJS("geoTable.updateTableInfo(" + strJson + ");");
-
+	/**
+	 * Atualiza informações na tabela dentro do HTML, passando dados de um objeto
+	 * Interferencia.
+	 * 
+	 * @param interferencia
+	 *            Objeto com as informações a serem inseridas no HTML.
+	 */
+	public void updateTableInfo(Interferencia interferencia) {
+		// Converte o objeto Interferencia para JSON e o envia para o JavaScript
+		String strJson = JsonConverter.convertObjectToJson(interferencia);
+		invokeJS("geographicTable.updateTableInfo(" + strJson + ");" 
+				+ "limitsTable.updateAuthorizedLimits(" + strJson + ");");
 	}
 
+	/**
+	 * Retorna o conteúdo HTML atual do WebView.
+	 * 
+	 * @return String com o conteúdo HTML.
+	 */
 	public String getHtml() {
-		String script = "document.body.innerHTML;";
-		String finalHtml = (String) webEngine.executeScript(script);
-
-		return finalHtml;
+		return (String) webEngine.executeScript("document.body.innerHTML;");
 	}
 }
