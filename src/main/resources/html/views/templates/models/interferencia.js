@@ -10,6 +10,8 @@ class Interferencia {
             "id": 2,
             "latitude": -15.123456,
             "longitude": -47.123456,
+            "nome": "Poço 1",
+            "vazaoAutorizada": 550,
             "geometry": null,
             "endereco": {
                 "id": 1,
@@ -127,9 +129,9 @@ class Interferencia {
             "demandas": [
                 {
                     "id": 29,
-                    "vazao": 55.0,
-                    "tempo": 55,
-                    "periodo": 55,
+                    "vazao": 20000,
+                    "tempo": 20,
+                    "periodo": 31,
                     "mes": 4,
                     "tipoFinalidade": {
                         "id": 2,

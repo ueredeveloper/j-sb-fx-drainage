@@ -88,7 +88,8 @@ public class WebViewContentLoader {
 	public void updateTableInfo(Interferencia interferencia) {
 		// Converte o objeto Interferencia para JSON e o envia para o JavaScript
 		String strJson = JsonConverter.convertObjectToJson(interferencia);
-		invokeJS("geographicTable.updateTableInfo(" + strJson + ");");
+		invokeJS("geographicTable.updateTableInfo(" + strJson + ");" 
+				+ "limitsTable.updateAuthorizedLimits(" + strJson + ");");
 	}
 
 	/**

@@ -238,9 +238,13 @@
 }
 
 .icons:hover {
-    -fx-font-size: 28px; /* Novo tamanho ao passar o mouse ou focar */
+    -fx-font-size: 24px; /* Novo tamanho ao passar o mouse ou focar */
     -fx-fill: -fx-addictional-color; /* Cor ao passar o mouse ou focar */
    
+}
+.icons:pressed {
+    -fx-font-size: 28px; /* Novo tamanho ao clicar */
+    -fx-fill: -fx-addictional-color; /* Cor ao clicar, se desejar */
 }
 
 .text-field-subpurpose {

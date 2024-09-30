@@ -79,6 +79,8 @@ public class DocumentViewController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
+		
+		System.out.println(apContainer.getStylesheets());
 		// Html Editor
 		documentLoader = new WebViewContentLoader();
 		documentLoader.loadWebViewContent(finalHtml -> {

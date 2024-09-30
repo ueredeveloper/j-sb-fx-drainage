@@ -31,10 +31,6 @@ import utilities.URLUtility;
 
 public class TemplateController implements Initializable {
 	
-	
-	
-	
-
 	private String localUrl;
 
 	public TemplateController() {
