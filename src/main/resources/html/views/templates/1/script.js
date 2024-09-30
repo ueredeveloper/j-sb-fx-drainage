@@ -153,5 +153,5 @@ document.addEventListener('DOMContentLoaded', function () {
 	new GrantRequirements();
 	new ChiefSignature();
 
-	new Buttons();
+	//new Buttons();
 });
