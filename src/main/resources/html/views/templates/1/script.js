@@ -1,9 +1,8 @@
 /**
  * Arquivo principal
- * @id 5 @descricao Outorga Prévia Subterrânea
+ * @id 6 @descricao Despacho de Outorga Prévia Subterrânea
  * @pasta 1
  * @nome script.js
- * @conteudo
  */
 
 function App() {
@@ -667,6 +666,6 @@ document.addEventListener('DOMContentLoaded', function () {
 	limitsTable = new LimitsTable()
 	new GrantRequirements();
 	new ChiefSignature();
-	new Actions();
+	//new Actions();
 
 });

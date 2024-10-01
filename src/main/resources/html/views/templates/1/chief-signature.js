@@ -1,10 +1,10 @@
 /**
- * @id 1 @descricao Outorga Prévia Subterrânea
+ * @id 1 @descricao Despacho de Outorga Prévia Subterrânea
  * @pasta 1
  * @nome chief-signature.js 
- * @conteudo
  */
 class ChiefSignature {
+//comentário 12
     constructor() {
         this.div = document.getElementById('chief-signature');
         this.render();

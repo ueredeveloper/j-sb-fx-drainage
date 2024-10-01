@@ -62,7 +62,7 @@ public class TemplatePersistenceFiles {
 
 												Template responseObject = (Template) responseBody;
 												
-												System.out.println(responseObject.getId() + " - " +   template.getNome() + " - " + template.getPasta());
+												//System.out.println(responseObject.getId() + " - " +   template.getNome() + " - " + template.getPasta());
 
 												ReadAndUpdateTemplate.updateTemplate(filePath, responseObject.getId(), template.getNome(), template.getPasta());
 

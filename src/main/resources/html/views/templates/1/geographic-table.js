@@ -2,10 +2,9 @@
 /**
  * Tabela com descrições geográficas como latitude, longitude, bacia hidrográfica e unidade hidrográfica.
  * Tag anterior:
- * @id 2 @descricao Outorga Prévia Subterrânea
+ * @id 2 @descricao Despacho de Outorga Prévia Subterrânea
  * @pasta 1
  * @nome geographic-table.js
- * @conteudo
  */
 class GeographicTable {
     constructor() {

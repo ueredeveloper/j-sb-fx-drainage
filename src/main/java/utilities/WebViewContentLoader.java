@@ -37,7 +37,8 @@ public class WebViewContentLoader {
 	 */
 	public void loadWebViewContent(Consumer<String> callback) {
 		// Carrega o arquivo HTML especificado
-		webEngine.load(getClass().getResource("/html/views/templates/1/index.html").toExternalForm());
+		//webEngine.load(getClass().getResource("/html/views/templates/1/index.html").toExternalForm());
+		webEngine.loadContent("<h1 style='color: red;'>Hello World</h1>");
 
 		// Listener para verificar quando o conteúdo HTML foi carregado
 		webEngine.getLoadWorker().stateProperty().addListener((observableValue, oldState, newState) -> {
@@ -100,4 +101,39 @@ public class WebViewContentLoader {
 	public String getHtml() {
 		return (String) webEngine.executeScript("document.body.innerHTML;");
 	}
+
+	public JSObject getJsObj() {
+		return jsObj;
+	}
+
+	public void setJsObj(JSObject jsObj) {
+		this.jsObj = jsObj;
+	}
+
+	public boolean isReady() {
+		return ready;
+	}
+
+	public void setReady(boolean ready) {
+		this.ready = ready;
+	}
+
+	public WebView getWebView() {
+		return webView;
+	}
+
+	public void setWebView(WebView webView) {
+		this.webView = webView;
+	}
+
+	public WebEngine getWebEngine() {
+		return webEngine;
+	}
+
+	public void setWebEngine(WebEngine webEngine) {
+		this.webEngine = webEngine;
+	}
+	
+	
+	
 }

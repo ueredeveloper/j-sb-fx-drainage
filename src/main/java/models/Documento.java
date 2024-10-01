@@ -16,7 +16,7 @@ public class Documento {
 	private String numero;
 	private Processo processo;
 	private Long numeroSei;
-	private DocumentoTipo tipo;
+	private DocumentoTipo tipoDocumento;
 	private Endereco endereco;
 
 	private Set<Usuario> usuarios = new HashSet<>();
@@ -26,20 +26,20 @@ public class Documento {
 		super();
 	}
 
-	public Documento(String numero, Processo processo, Long numeroSei, DocumentoTipo tipo, Endereco endereco) {
+	public Documento(String numero, Processo processo, Long numeroSei, DocumentoTipo tipoDocumento, Endereco endereco) {
 		super();
 		this.numero = numero;
 		this.processo = processo;
 		this.numeroSei = numeroSei;
-		this.tipo = tipo;
+		this.tipoDocumento = tipoDocumento;
 		this.endereco = endereco;
 	}
 
-	public Documento(String numero, Processo processo, DocumentoTipo tipo) {
+	public Documento(String numero, Processo processo, DocumentoTipo tipoDocumento) {
 		super();
 		this.numero = numero;
 		this.processo = processo;
-		this.tipo = tipo;
+		this.tipoDocumento = tipoDocumento;
 	}
 
 	public Long getId() {
@@ -80,12 +80,13 @@ public class Documento {
 		this.numeroSei = numeroSei;
 	}
 
-	public DocumentoTipo getTipo() {
-		return tipo;
+	
+	public DocumentoTipo getTipoDocumento() {
+		return tipoDocumento;
 	}
 
-	public void setTipo(DocumentoTipo tipo) {
-		this.tipo = tipo;
+	public void setTipoDocumento(DocumentoTipo tipoDocumento) {
+		this.tipoDocumento = tipoDocumento;
 	}
 
 	public Endereco getEndereco() {
@@ -146,8 +147,8 @@ public class Documento {
 	}
 
 	public String getTipoDescricao() {
-		if (this.tipo != null) {
-			return this.tipo.getDescricao();
+		if (this.tipoDocumento != null) {
+			return this.tipoDocumento.getDescricao();
 		} else {
 			return null; // or handle the case when docProcesso is null
 		}

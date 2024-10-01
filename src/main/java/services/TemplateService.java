@@ -10,6 +10,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Set;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -37,7 +38,7 @@ public class TemplateService {
 	       
 	        // Convert Template object to JSON
 	        String jsonInputString = JsonConverter.convertObjectToJson(object);
-	        System.out.println("Request JSON: " + jsonInputString);
+	       // System.out.println("Request JSON: " + jsonInputString);
 
 	        // Write JSON to request body
 	        try (OutputStream os = connection.getOutputStream();
@@ -71,10 +72,10 @@ public class TemplateService {
 	        // Check if response body is a JSON object
 	        if (responseBody.trim().startsWith("{")) {
 	            Template responseObject = new Gson().fromJson(responseBody, Template.class);
-	            System.out.println("Parsed response object: " + responseObject);
+	            //System.out.println("Parsed response object: " + responseObject);
 	            return new ServiceResponse<>(responseCode, responseObject);
 	        } else {
-	            System.out.println("Unexpected response format: " + responseBody);
+	          //  System.out.println("Unexpected response format: " + responseBody);
 	            return new ServiceResponse<>(responseCode, responseBody);
 	        }
 	    } catch (Exception e) {
@@ -83,10 +84,6 @@ public class TemplateService {
 	        return null; // Return null if an error occurs
 	    }
 	}
-
-
-
-
 
 	public ServiceResponse<?> update(Template object) {
 		try {
@@ -137,7 +134,7 @@ public class TemplateService {
 		}
 	}
 
-	public List<Template> listByKeyword(String keyword) {
+	public Set<Template> listByKeyword(String keyword) {
 
 		try {
 			URL apiUrl = new URL(localUrl + "/template/list-by-keyword?keyword=" + URLEncoder.encode(keyword, "UTF-8"));
@@ -166,7 +163,7 @@ public class TemplateService {
 		return null;
 	}
 
-	private List<Template> handleSuccessResponse(HttpURLConnection connection) throws IOException {
+	private Set<Template> handleSuccessResponse(HttpURLConnection connection) throws IOException {
 		BufferedReader reader = new BufferedReader(
 				new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8));
 		StringBuilder response = new StringBuilder();
@@ -179,7 +176,7 @@ public class TemplateService {
 
 		reader.close();
 
-		return new Gson().fromJson(response.toString(), new TypeToken<List<Template>>() {
+		return new Gson().fromJson(response.toString(), new TypeToken<Set<Template>>() {
 		}.getType());
 	}
 

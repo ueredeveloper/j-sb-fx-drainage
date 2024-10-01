@@ -1,6 +1,6 @@
 /**
  * Classes modelos de tabelas no banco de dados
- * @id 8 @descricao Tabela Interferência
+ * @id 10 @descricao Tabela Interferência
  * @pasta models
  * @nome interferencia.js
  * @conteudo

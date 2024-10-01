@@ -1,8 +1,8 @@
 package controllers;
 
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
@@ -30,7 +30,7 @@ import services.TemplateService;
 import utilities.URLUtility;
 
 public class TemplateController implements Initializable {
-	
+
 	private String localUrl;
 
 	public TemplateController() {
@@ -190,7 +190,7 @@ public class TemplateController implements Initializable {
 
 			String keyword = tfSearch.getText();
 
-			List<Template> objects = service.listByKeyword(keyword);
+			Set<Template> objects = service.listByKeyword(keyword);
 
 			// Create a list of Document objects
 			obsList.clear();

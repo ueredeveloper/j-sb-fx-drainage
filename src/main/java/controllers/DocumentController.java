@@ -242,7 +242,7 @@ public class DocumentController implements Initializable {
 
 			if (newSelection != null) {
 				// Atualiza ComboBox (Tipo de Documento) a partir do documento selecionado
-				cbDocType.getSelectionModel().select(newSelection.getTipo());
+				cbDocType.getSelectionModel().select(newSelection.getTipoDocumento());
 				// Atualizar componentes de acordo com o documento selecionado
 				tfNumber.setText(newSelection.getNumero());
 				tfNumberSei.setText(String.valueOf(newSelection.getNumeroSei()));
@@ -802,7 +802,7 @@ public class DocumentController implements Initializable {
 			newDocument.setNumero(tfNumber.getText());
 			newDocument.setProcesso(obsProcessList0);
 			newDocument.setNumeroSei(numberSei);
-			newDocument.setTipo(docType);
+			newDocument.setTipoDocumento(docType);
 			newDocument.setEndereco(obsAddressList0);
 			newDocument.setUsuarios(usuarios);
 
@@ -890,7 +890,7 @@ public class DocumentController implements Initializable {
 		}
 
 		// Edita objeto com novos valores
-		selectedDocument.setTipo(updateDocumentoTipo);
+		selectedDocument.setTipoDocumento(updateDocumentoTipo);
 		selectedDocument.setNumero(updatedNumero);
 		selectedDocument.setNumeroSei(updatedSei);
 

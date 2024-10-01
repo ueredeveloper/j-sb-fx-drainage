@@ -23,7 +23,7 @@ public class ReadAndCreateTemplate {
 			Template template = new Template();
 
 			// Se o id diferente de nulo, inserir para editar e não salvar novamente o mesmo arquivo
-			if (!id.equals("*") && !id.equals("@")) {
+			if (!id.equals("*") && !id.equals("@") &!id.equals("")) {
 				template.setId(Long.parseLong(id));
 			} 
 			template.setNome(nome);

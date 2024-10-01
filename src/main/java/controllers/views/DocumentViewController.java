@@ -4,15 +4,13 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.function.Consumer;
+import java.util.Set;
 
 import com.google.gson.Gson;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Worker;
@@ -27,8 +25,10 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import models.Documento;
 import models.Interferencia;
+import models.Template;
 import netscape.javascript.JSObject;
 import services.InterferenciaService;
+import services.TemplateService;
 import utilities.HTMLFileLoader;
 import utilities.URLUtility;
 import utilities.WebViewContentLoader;
@@ -74,16 +74,14 @@ public class DocumentViewController implements Initializable {
 
 	ObservableList<Interferencia> obsList = FXCollections.observableArrayList();
 
-	WebViewContentLoader documentLoader;
+	WebViewContentLoader webViewContentLoader;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
-		
-		System.out.println(apContainer.getStylesheets());
 		// Html Editor
-		documentLoader = new WebViewContentLoader();
-		documentLoader.loadWebViewContent(finalHtml -> {
+		webViewContentLoader = new WebViewContentLoader();
+		webViewContentLoader.loadWebViewContent(finalHtml -> {
 			// Set the retrieved HTML content in the HTMLEditor
 			htmlEditor.setHtmlText(finalHtml);
 		});
@@ -148,34 +146,68 @@ public class DocumentViewController implements Initializable {
 		cbInterference.setOnAction(e -> {
 
 			Interferencia object = cbInterference.getSelectionModel().getSelectedItem();
-			documentLoader.updateTableInfo(object);
+			// webViewContentLoader.updateTableInfo(object);
 
-			htmlEditor.setHtmlText(documentLoader.getHtml());
+			// htmlEditor.setHtmlText(webViewContentLoader.getHtml());
+
+			if (object != null) {
+
+				Set<Template> templates = searchByKeyword("");
+				WebContent webContent = new WebContent();
+
+				
+				// Adiciona primeiro o index.html
+				templates.forEach(template -> {
+					System.out.println(template.getNome() + template.getNome().equals("index.html"));
+					if (template.getNome().equals("index.html")) {
+						webContent.setWebContent(template.getConteudo());
+					}
+					
+				});
+				
+				
+				// Adiciona depois os outros arquivos
+				templates.forEach(template -> {
+					
+					String str = webContent.getWebContent();
+
+					if (!template.getNome().equals("index.html")) {
+						str += "<script>" + template.getConteudo() + "</script>";
+					} 
+					webContent.setWebContent(str);
+
+				});
+				
+				System.out.println(webContent.getWebContent());
+
+				// Atualiza o WebView com o conteúdo atualizado
+				webViewContentLoader.getWebEngine().loadContent(webContent.getWebContent());
+
+				// Opcional: atualiza o HTMLEditor também
+				htmlEditor.setHtmlText(webViewContentLoader.getHtml());
+
+			}
+
 		});
 
 	}
 
-	// Method that accepts a callback (Consumer) to return the HTML content when
-	// it's ready
-	public void loadWebViewContent(Consumer<String> callback) {
-		WebView webView = new WebView();
-		WebEngine webEngine = webView.getEngine();
-		webEngine.load(getClass().getResource("/html/views/templates/1/index.html").toExternalForm());
+	public Set<Template> searchByKeyword(String keyword) {
 
-		webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<Worker.State>() {
-			@Override
-			public void changed(ObservableValue<? extends Worker.State> observable, Worker.State oldState,
-					Worker.State newState) {
-				if (newState == Worker.State.SUCCEEDED) {
-					// Once the content is fully loaded, retrieve the body content
-					String script = "document.body.innerHTML;";
-					String finalHtml = (String) webEngine.executeScript(script);
+		Set<Template> objects = null;
 
-					// Use the callback to return the final HTML content
-					callback.accept(finalHtml);
-				}
-			}
-		});
+		try {
+
+			String urlService = URLUtility.getURLService();
+
+			TemplateService service = new TemplateService(urlService);
+
+			objects = service.listByKeyword(keyword);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return objects;
 	}
 
 	public void fetchInterferenciesByLogradouro(String logradouro) {
@@ -194,6 +226,19 @@ public class DocumentViewController implements Initializable {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	class WebContent {
+		String webContent = "";
+
+		public String getWebContent() {
+			return webContent;
+		}
+
+		public void setWebContent(String webContent) {
+			this.webContent = webContent;
+		}
+
 	}
 
 }
