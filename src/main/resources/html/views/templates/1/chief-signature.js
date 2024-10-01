@@ -1,5 +1,8 @@
 /**
- * Assinatura da chefia
+ * @id 1 @descricao Outorga Prévia Subterrânea
+ * @pasta 1
+ * @nome chief-signature.js 
+ * @conteudo
  */
 class ChiefSignature {
     constructor() {
@@ -17,7 +20,5 @@ class ChiefSignature {
             `;
             this.div.innerHTML = index;
     }
-
-
 
 }

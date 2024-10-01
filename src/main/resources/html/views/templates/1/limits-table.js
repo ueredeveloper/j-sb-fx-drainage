@@ -2,7 +2,10 @@
 /**
  * Tabela de Limites Outorgados
  * Tag anterior:<tabela_limites_outorgados_tag></tabela_limites_outorgados_tag>
- * 
+ * @id 4 @descricao Outorga Prévia Subterrânea
+ * @pasta 1
+ * @nome limits-table.js
+ * @conteudo
  */
 class LimitsTable {
     constructor() {

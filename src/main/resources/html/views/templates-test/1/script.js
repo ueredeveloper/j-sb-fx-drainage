@@ -1,1 +1,0 @@
-document.getElementById("latitude").innerHTML = "-15.123456789";

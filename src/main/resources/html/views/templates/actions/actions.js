@@ -1,5 +1,9 @@
 /**
- * Assinatura da chefia
+ * Açoes de teste das funções
+ * @id 7 @descricao Ações de Teste
+ * @pasta actions
+ * @nome actions.js
+ * @conteudo
  */
 class Actions {
     constructor(geoTab) {
@@ -28,14 +32,14 @@ class Actions {
     	// Atualiza tabela com informações do ponto (latitude, longitude, bacia e subbacia
         document.getElementById('btn-update-geo-table').onclick = function () {
 
-            let interferencia = new Interferencia().getInterference()
+            let interferencia = new Interferencia().getTableExample()
        
             geographicTable.updateTableInfo(interferencia);
         };
         // Atualiza os limites outorgáveis
         document.getElementById('btn-update-limits-table').onclick = function () {
 
-            let interferencia = new Interferencia().getInterference()
+            let interferencia = new Interferencia().getTableExample()
        
             limitsTable.updateAuthorizedLimits(interferencia);
         };

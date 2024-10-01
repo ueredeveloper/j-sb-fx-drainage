@@ -1,13 +1,14 @@
 
 /**
- * Tabela de Limites Outorgados
- * Tag anterior: <tabela_limites_outorgados_tag></tabela_limites_outorgados_tag>
- * 
+ * Tabela com descrições geográficas como latitude, longitude, bacia hidrográfica e unidade hidrográfica.
+ * Tag anterior:
+ * @id 2 @descricao Outorga Prévia Subterrânea
+ * @pasta 1
+ * @nome geographic-table.js
+ * @conteudo
  */
 class GeographicTable {
     constructor() {
-    	
-    	console.log(this)
         this.div = document.getElementById('geographic-table');
     	// Dynamically assign the updateTableInfo method to the div element
         this.div.updateTableInfo = this.updateTableInfo.bind(this);

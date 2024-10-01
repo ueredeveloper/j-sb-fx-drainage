@@ -1,4 +1,10 @@
-/*script.js*/
+/**
+ * Arquivo principal
+ * @id 5 @descricao Outorga Prévia Subterrânea
+ * @pasta 1
+ * @nome script.js
+ * @conteudo
+ */
 
 function App() {
 
@@ -508,6 +514,10 @@ function App() {
 
 
 	/**
+ * @id 44
+
+
+
 	 * Cria máscara para CPF e CPNJ
 	 * Tag anterior: <us_cpfcnpj_tag></us_cpfcnpj_tag> 
 	 * @param {*} value 
@@ -571,7 +581,7 @@ function App() {
 
 
 
-	finalidades = interferencia.getInterference().finalidades;
+	finalidades = interferencia.getTableExample().finalidades;
 
 	const appDiv = document.getElementById("app");
 
@@ -659,8 +669,4 @@ document.addEventListener('DOMContentLoaded', function () {
 	new ChiefSignature();
 	new Actions();
 
-<<<<<<< HEAD
-	//new Buttons();
-=======
->>>>>>> 294f48c307d3f4c82baf24b9218dc9dadf28c349
 });

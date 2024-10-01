@@ -1,15 +1,21 @@
-
+/**
+ * Classes modelos de tabelas no banco de dados
+ * @id 8 @descricao Tabela Interferência
+ * @pasta models
+ * @nome interferencia.js
+ * @conteudo
+ */
 class Interferencia {
     constructor() {
     }
 
     // Método para obter a interferência
-    getInterference() {
+    getTableExample () {
 
         let interferencia = {
             "id": 2,
-            "latitude": -15.123456,
-            "longitude": -47.123456,
+            "latitude": -15.98754321,
+            "longitude": -47.123456789,
             "nome": "Poço 1",
             "vazaoAutorizada": 550,
             "geometry": null,
