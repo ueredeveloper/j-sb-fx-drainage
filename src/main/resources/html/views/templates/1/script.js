@@ -1,7 +1,7 @@
 /**
- * @descricao Despacho de Outorga Prévia
- * Arquivo principal
+ * Main
  * @id 5
+ * @descricao Despacho de Outorga Prévia
  * @pasta 1
  * @nome script.js
 
@@ -671,6 +671,3 @@ document.addEventListener('DOMContentLoaded', function () {
 	//new Actions();
 
 });
-
- * @pasta 1
- * @nome script.js.js.js

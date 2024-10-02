@@ -15,54 +15,48 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import models.Anexo;
 import models.Processo;
 import models.Usuario;
 import services.ProcessoService;
 import utilities.URLUtility;
 
 public class AddUserController implements Initializable {
-	
 
-	
+	@FXML
+	private JFXButton btnClose;
 
-    @FXML
-    private JFXButton btnClose;
+	@FXML
+	private JFXComboBox<Usuario> cbUser;
 
+	@FXML
+	private JFXComboBox<String> cbCpfCnpj;
 
-    @FXML
-    private JFXComboBox<Usuario> cbUser;
+	@FXML
+	private TableColumn<?, ?> tcAttachment;
 
-    @FXML
-    private JFXComboBox<String> cbCpfCnpj;
+	@FXML
+	private TableColumn<?, ?> tcUser;
 
-    @FXML
-    private TableColumn<?, ?> tcAttachment;
+	@FXML
+	private TableColumn<?, ?> tcProcess;
 
-    @FXML
-    private TableColumn<?, ?> tcUser;
+	@FXML
+	private JFXTextField tfSearch;
 
-    @FXML
-    private TableColumn<?, ?> tcProcess;
+	@FXML
+	private JFXButton btnSearch;
 
-    @FXML
-    private JFXTextField tfSearch;
+	@FXML
+	private JFXButton btnNew;
 
-    @FXML
-    private JFXButton btnSearch;
+	@FXML
+	private JFXButton btnSave;
 
-    @FXML
-    private JFXButton btnNew;
+	@FXML
+	private JFXButton btnEdit;
 
-    @FXML
-    private JFXButton btnSave;
-
-    @FXML
-    private JFXButton btnEdit;
-
-    @FXML
-    private JFXButton btnDelete;
+	@FXML
+	private JFXButton btnDelete;
 
 	private String urlService;
 	private TranslateTransition ttClose;
@@ -73,7 +67,8 @@ public class AddUserController implements Initializable {
 	UserComboBoxController userComboBoxController;
 	DocumentController documentController;
 
-	public AddUserController(DocumentController documentController, Usuario object, String urlService, TranslateTransition ttClose) {
+	public AddUserController(DocumentController documentController, Usuario object, String urlService,
+			TranslateTransition ttClose) {
 		this.documentController = documentController;
 		this.object = object;
 		this.urlService = URLUtility.getURLService();
@@ -83,14 +78,13 @@ public class AddUserController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		
 
-		// mudar para cpf processCbController = new ProcessComboBoxController(urlService, cbProcess);
+		// mudar para cpf processCbController = new
+		// ProcessComboBoxController(urlService, cbProcess);
 		new UserComboBoxController(urlService, cbUser);
 		userComboBoxController = new UserComboBoxController(urlService, cbUser);
-		
-		
-		if (object!= null) {
+
+		if (object != null) {
 			userComboBoxController.fillAndSelectComboBox(object);
 		}
 
@@ -122,8 +116,8 @@ public class AddUserController implements Initializable {
 		}
 		return null;
 	}
-	
-	public void fillAndSelectComboBoxProcess (Usuario process) {
+
+	public void fillAndSelectComboBoxProcess(Usuario process) {
 		ObservableList<Usuario> newObsList = FXCollections.observableArrayList();
 		cbUser.setItems(newObsList);
 

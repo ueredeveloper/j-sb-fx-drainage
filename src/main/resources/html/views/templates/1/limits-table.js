@@ -174,5 +174,3 @@ class LimitsTable {
     }
 
 }
- * @pasta 1
- * @nome limits-table.js-table.js-table.js

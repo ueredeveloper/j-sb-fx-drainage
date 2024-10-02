@@ -1,7 +1,6 @@
 package controllers.views;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import com.jfoenix.controls.JFXComboBox;
@@ -49,24 +48,23 @@ public class UserComboBoxController {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
 				if (newValue != null && !newValue.isEmpty() && newValue != "") {
-					
 
 					// Verifica se a nova busca é uma continuação da busca anterior, tanto
 					// adicionando como removendo caracteres
 					if (lastSearch.contains(newValue) || newValue.contains(lastSearch)) {
-						
+
 						obsList.clear();
-						
+
 						boolean containsSearchTerm = dbObjects.stream()
 								.anyMatch(object -> object.getNome().toLowerCase().contains(newValue.toLowerCase()));
 
 						if (containsSearchTerm) {
-							
+
 							obsList.clear();
-							
+
 							obsList.addAll(dbObjects);
 						} else {
-							
+
 							obsList.clear();
 							fetchAndUpdate(newValue);
 						}
@@ -76,17 +74,18 @@ public class UserComboBoxController {
 						 */
 
 					lastSearch = newValue;
-					
-					// Ordena a lista colocando o newValue no início e assim podendo buscar (obsList.get(0) no método getSelectedObject.
-		            obsList.sort((object1, object2) -> {
-		                if (object1.getNome().equalsIgnoreCase(newValue)) {
-		                    return -1; // Coloca endereco1 (com logradouro igual ao newValue) no início
-		                } else if (object2.getNome().equalsIgnoreCase(newValue)) {
-		                    return 1;  // Coloca endereco2 no início, se for o newValue
-		                }
-		                return 0;
-		            });
-		            
+
+					// Ordena a lista colocando o newValue no início e assim podendo buscar
+					// (obsList.get(0) no método getSelectedObject.
+					obsList.sort((object1, object2) -> {
+						if (object1.getNome().equalsIgnoreCase(newValue)) {
+							return -1; // Coloca endereco1 (com logradouro igual ao newValue) no início
+						} else if (object2.getNome().equalsIgnoreCase(newValue)) {
+							return 1; // Coloca endereco2 no início, se for o newValue
+						}
+						return 0;
+					});
+
 				}
 
 			}
@@ -105,7 +104,7 @@ public class UserComboBoxController {
 	private void fetchAndUpdate(String keyword) {
 		try {
 			UsuarioService service = new UsuarioService(localUrl);
-			Set<Usuario> fetchedObjects = new HashSet<>(service.fetchByKeyword(keyword));
+			Set<Usuario> fetchedObjects = new HashSet<>(service.listByUserName(keyword));
 
 			if (!fetchedObjects.isEmpty()) {
 				dbObjects.addAll(fetchedObjects);
@@ -123,12 +122,12 @@ public class UserComboBoxController {
 	}
 
 	// Método para buscar processos e preencher o ComboBox
-	public List<Usuario> fetchByKeyword(String keyword) {
+	public Set<Usuario> listByUserName(String keyword) {
 
 		try {
 			UsuarioService service = new UsuarioService(localUrl);
 
-			List<Usuario> list = service.fetchByKeyword(keyword);
+			Set<Usuario> list = service.listByUserName(keyword);
 
 			return list;
 

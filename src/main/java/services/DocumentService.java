@@ -25,6 +25,13 @@ public class DocumentService {
 	public DocumentService(String localUrl) {
 		this.localUrl = localUrl;
 	}
+	
+	/*
+	 * SELECT u.*
+		FROM usuario u
+		JOIN usuario_documento ud ON u.id = ud.usuario_id
+		WHERE ud.documento_id = 1;
+	 */
 
 	public List<Documento> fetchByParam(String keyword) {
 		

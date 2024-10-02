@@ -1,7 +1,7 @@
 /**
- * @descricao Tabela Interferência
  * Classes modelos de tabelas no banco de dados
  * @id 9
+ * @descricao Tabela Interferência
  * @nome interferencia.js
  * @pasta models
  */
@@ -485,5 +485,3 @@ class Interferencia {
     	this.interferencia.latitude = number;
     }
 }
- * @pasta models
- * @nome interferencia.js

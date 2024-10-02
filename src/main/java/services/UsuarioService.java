@@ -7,7 +7,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
+import java.util.Set;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -22,10 +22,10 @@ public class UsuarioService {
 		this.localUrl = localUrl;
 	}
 
-	public List<Usuario> fetchByKeyword(String keyword) {
+	public Set<Usuario> listByUserName(String keyword) {
 
 		try {
-			URL apiUrl = new URL(localUrl + "/user/list?keyword=" + URLEncoder.encode(keyword, "UTF-8"));
+			URL apiUrl = new URL(localUrl + "/user/list-by-name?keyword=" + URLEncoder.encode(keyword, "UTF-8"));
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
 			connection.setRequestMethod("GET");
 
@@ -51,7 +51,36 @@ public class UsuarioService {
 		return null;
 	}
 
-	private List<Usuario> handleSuccessResponse(HttpURLConnection connection) throws IOException {
+	public Set<Usuario> listUsersByDocumentId(Long id) {
+
+		try {
+			URL apiUrl = new URL(localUrl + "/user/list-by-document-id?id=" + id);
+			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
+			connection.setRequestMethod("GET");
+
+			int responseCode = connection.getResponseCode();
+
+			if (responseCode == HttpURLConnection.HTTP_OK) {
+
+				return handleSuccessResponse(connection);
+			} else if (responseCode == HttpURLConnection.HTTP_CREATED) {
+
+				return handleSuccessResponse(connection);
+			} else {
+				handleErrorResponse(connection);
+			}
+
+			connection.disconnect();
+		} catch (Exception e) {
+			e.printStackTrace();
+			// System.out.println("serv save e print ");
+
+			// showAlert("Erro na busca de algum documento", AlertType.ERROR);
+		}
+		return null;
+	}
+
+	private Set<Usuario> handleSuccessResponse(HttpURLConnection connection) throws IOException {
 		BufferedReader reader = new BufferedReader(
 				new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8));
 		StringBuilder response = new StringBuilder();
@@ -64,7 +93,7 @@ public class UsuarioService {
 
 		reader.close();
 
-		return new Gson().fromJson(response.toString(), new TypeToken<List<Usuario>>() {
+		return new Gson().fromJson(response.toString(), new TypeToken<Set<Usuario>>() {
 		}.getType());
 	}
 

@@ -2,7 +2,6 @@ package controllers.views;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Set;
 
@@ -193,7 +192,7 @@ public class AddInterferenceController implements Initializable {
 
 				tfLatitude.setText(newValue.getLatitude().toString());
 				tfLongitude.setText(newValue.getLongitude().toString());
-				
+
 				System.out.println(newValue.getEndereco());
 
 				cbAddress.getSelectionModel().select(newValue.getEndereco());
@@ -501,7 +500,7 @@ public class AddInterferenceController implements Initializable {
 
 			String keyword = tfSearch.getText();
 
-			List<Interferencia> list = service.fetchByKeyword(keyword);
+			Set<Interferencia> list = service.fetchByKeyword(keyword);
 
 			// Create a list of Document objects
 			obsInterferences.clear();

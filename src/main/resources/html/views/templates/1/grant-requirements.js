@@ -1,7 +1,7 @@
 /**
- * @descricao Despacho de Outorga Prévia
  * Obrigações da outorga.
  * @id 3
+ * @descricao Despacho de Outorga Prévia
  * @pasta 1
  * @nome grant-requirements.js
  */
@@ -210,5 +210,3 @@ class GrantRequirements {
 
 
 }
- * @pasta 1
- * @nome grant-requirements.js-requirements.js-requirements.js

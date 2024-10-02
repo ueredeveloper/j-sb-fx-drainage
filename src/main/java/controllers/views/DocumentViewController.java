@@ -2,6 +2,7 @@ package controllers.views;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashSet;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Set;
@@ -26,9 +27,11 @@ import javafx.scene.web.WebView;
 import models.Documento;
 import models.Interferencia;
 import models.Template;
+import models.Usuario;
 import netscape.javascript.JSObject;
 import services.InterferenciaService;
 import services.TemplateService;
+import services.UsuarioService;
 import utilities.HTMLFileLoader;
 import utilities.URLUtility;
 import utilities.WebViewContentLoader;
@@ -64,7 +67,13 @@ public class DocumentViewController implements Initializable {
 	private JFXTextField tfAddress;
 
 	@FXML
-	private JFXComboBox<Interferencia> cbInterference;
+    private JFXComboBox<Interferencia> cbInterferencies;
+
+    @FXML
+    private JFXComboBox<Template> cbTemplates;
+
+    @FXML
+    private JFXComboBox<Usuario> cbUsers;
 
 	@FXML
 	private HTMLEditor htmlEditor;
@@ -72,9 +81,13 @@ public class DocumentViewController implements Initializable {
 	@FXML
 	private FontAwesomeIconView iconCopyDocument;
 
-	ObservableList<Interferencia> obsList = FXCollections.observableArrayList();
+	ObservableList<Interferencia> obsListInterferencies = FXCollections.observableArrayList();
+	ObservableList<Usuario> obsListUsers = FXCollections.observableArrayList();
+	ObservableList<Template> obsListTemplates = FXCollections.observableArrayList();
 
 	WebViewContentLoader webViewContentLoader;
+
+	Set<Usuario> users = new HashSet<>();
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -140,45 +153,47 @@ public class DocumentViewController implements Initializable {
 		tfAddress.setText(this.selectedDocument.getEnderecoLogradouro());
 
 		String logradouro = this.selectedDocument.getEnderecoLogradouro();
+ System.out.println(logradouro);
+		Set<Interferencia> interferencies = listInterferenciesByLogradouro(logradouro);
+			obsListInterferencies.addAll(interferencies);
+			cbInterferencies.setItems(obsListInterferencies);
+		
+		Set<Usuario> users = listUsersByDocumentId( this.selectedDocument.getId());
+			obsListUsers.addAll(users);
+			cbUsers.setItems(obsListUsers);
+		
+		cbInterferencies.setOnAction(e -> {
 
-		fetchInterferenciesByLogradouro(logradouro);
-
-		cbInterference.setOnAction(e -> {
-
-			Interferencia object = cbInterference.getSelectionModel().getSelectedItem();
+			Interferencia object = cbInterferencies.getSelectionModel().getSelectedItem();
 			// webViewContentLoader.updateTableInfo(object);
 
 			// htmlEditor.setHtmlText(webViewContentLoader.getHtml());
 
 			if (object != null) {
 
-				Set<Template> templates = searchByKeyword("");
+				Set<Template> templates = searchTemplatesByKeyword("");
 				WebContent webContent = new WebContent();
 
-				
 				// Adiciona primeiro o index.html
 				templates.forEach(template -> {
 					System.out.println(template.getNome() + template.getNome().equals("index.html"));
 					if (template.getNome().equals("index.html")) {
 						webContent.setWebContent(template.getConteudo());
 					}
-					
+
 				});
-				
-				
+
 				// Adiciona depois os outros arquivos
 				templates.forEach(template -> {
-					
+
 					String str = webContent.getWebContent();
 
 					if (!template.getNome().equals("index.html")) {
 						str += "<script>" + template.getConteudo() + "</script>";
-					} 
+					}
 					webContent.setWebContent(str);
 
 				});
-				
-				System.out.println(webContent.getWebContent());
 
 				// Atualiza o WebView com o conteúdo atualizado
 				webViewContentLoader.getWebEngine().loadContent(webContent.getWebContent());
@@ -189,10 +204,12 @@ public class DocumentViewController implements Initializable {
 			}
 
 		});
+		
+		
 
 	}
 
-	public Set<Template> searchByKeyword(String keyword) {
+	public Set<Template> searchTemplatesByKeyword(String keyword) {
 
 		Set<Template> objects = null;
 
@@ -210,7 +227,27 @@ public class DocumentViewController implements Initializable {
 		return objects;
 	}
 
-	public void fetchInterferenciesByLogradouro(String logradouro) {
+	public Set<Usuario> listUsersByDocumentId(Long id) {
+
+		Set<Usuario> objects = null;
+
+		try {
+
+			String urlService = URLUtility.getURLService();
+
+			UsuarioService service = new UsuarioService(urlService);
+
+			objects = service.listUsersByDocumentId(id);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return objects;
+	}
+	
+	public Set<Interferencia> listInterferenciesByLogradouro(String logradouro) {
+
+		Set<Interferencia> objects = null;
 
 		try {
 
@@ -218,15 +255,14 @@ public class DocumentViewController implements Initializable {
 
 			InterferenciaService service = new InterferenciaService(urlService);
 
-			List<Interferencia> list = service.fetchByKeyword(logradouro);
-
-			obsList.addAll(list);
-			cbInterference.setItems(obsList);
+			objects = service.fetchByKeyword(logradouro);
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return objects;
 	}
+
 
 	class WebContent {
 		String webContent = "";

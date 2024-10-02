@@ -10,7 +10,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.google.gson.Gson;
@@ -38,9 +38,6 @@ public class InterferenciaService {
 			// Convert Documento object to JSON
 			String jsonInputString = convertObjectToJson(obj);
 			
-			
-			System.out.println("save " + jsonInputString);
-
 			// Write JSON to request body
 			try (OutputStream os = connection.getOutputStream();
 					OutputStreamWriter osw = new OutputStreamWriter(os, "UTF-8")) {
@@ -88,9 +85,6 @@ public class InterferenciaService {
 
 			// Convert Documento object to JSON
 			String jsonInputString = convertObjectToJson(object);
-			
-			System.out.println("sub update " + jsonInputString);
-
 
 			// Write JSON to request body
 			try (OutputStream os = connection.getOutputStream();
@@ -128,7 +122,7 @@ public class InterferenciaService {
 		}
 	}
 
-	public List<Interferencia> fetchByKeyword(String keyword) {
+	public Set<Interferencia> fetchByKeyword(String keyword) {
 
 		try {
 			URL apiUrl = new URL(
@@ -187,7 +181,7 @@ public class InterferenciaService {
 		}
 	}
 
-	private List<Interferencia> handleSuccessResponse(HttpURLConnection connection) throws IOException {
+	private Set<Interferencia> handleSuccessResponse(HttpURLConnection connection) throws IOException {
 		BufferedReader reader = new BufferedReader(
 				new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8));
 		StringBuilder response = new StringBuilder();
@@ -199,7 +193,7 @@ public class InterferenciaService {
 
 		reader.close();
 		
-		return new Gson().fromJson(response.toString(), new TypeToken<List<Interferencia>>() {
+		return new Gson().fromJson(response.toString(), new TypeToken<Set<Interferencia>>() {
 		}.getType());
 	}
 
