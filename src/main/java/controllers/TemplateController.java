@@ -129,7 +129,7 @@ public class TemplateController implements Initializable {
 			Template newObject = new Template();
 
 			newObject.setDescricao(description);
-			newObject.setHtml(html);
+			newObject.setConteudo(html);
 
 			ServiceResponse<?> response = service.save(newObject);
 

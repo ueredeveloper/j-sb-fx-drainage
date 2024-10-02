@@ -44,6 +44,7 @@ public class TemplatePersistenceFiles {
 									// Seta o nome e pasta
 									template.setNome(fileName);
 									template.setPasta(folderName);
+									
 
 									try {
 										// Serviço de persistencia
@@ -62,9 +63,7 @@ public class TemplatePersistenceFiles {
 
 												Template responseObject = (Template) responseBody;
 												
-												//System.out.println(responseObject.getId() + " - " +   template.getNome() + " - " + template.getPasta());
-
-												ReadAndUpdateTemplate.updateTemplate(filePath, responseObject.getId(), template.getNome(), template.getPasta());
+												ReadAndUpdateTemplate.updateTemplate(filePath, responseObject);
 
 											} else {
 												System.out.println("Erro ao salvar!");

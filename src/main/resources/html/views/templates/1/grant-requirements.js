@@ -2,14 +2,13 @@
  * Obrigações da outorga.
  * @id 3 @descricao Despacho de Outorga Prévia Subterrânea
  * @pasta 1
- * @nome grant-requirements.js
+ * @nome grant-requirements.js-requirements.js
  */
 class GrantRequirements {
     constructor() {
         this.div = document.getElementById('grant-requirements');
         this.render();
     }
-
 
     render() {
         let index = `
@@ -210,3 +209,5 @@ class GrantRequirements {
 
 
 }
+ * @pasta 1
+ * @nome grant-requirements.js-requirements.js-requirements.js

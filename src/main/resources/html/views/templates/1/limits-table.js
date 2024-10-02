@@ -4,7 +4,7 @@
  * Tag anterior:<tabela_limites_outorgados_tag></tabela_limites_outorgados_tag>
  * @id 5 @descricao Despacho de Outorga Prévia Subterrânea
  * @pasta 1
- * @nome limits-table.js
+ * @nome limits-table.js-table.js
  */
 class LimitsTable {
     constructor() {
@@ -173,3 +173,5 @@ class LimitsTable {
     }
 
 }
+ * @pasta 1
+ * @nome limits-table.js-table.js-table.js

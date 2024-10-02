@@ -4,39 +4,52 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+import models.Template;
+
 public class ReadAndUpdateTemplate {
 	
-	 public static void updateTemplate(String filePath, Long id, String name, String folder) {
+	 public static void updateTemplate(String filePath, Template template) {
 		 
-	        try {
+		 Long id = template.getId();
+		 String name = template.getNome();
+		 String folder = template.getPasta();
+		 String description = template.getDescricao();
+		 try {
 	            // Lê o conteúdo do arquivo
-	            String conteudo = new String(Files.readAllBytes(Paths.get(filePath)));
+	            String fileContent = new String(Files.readAllBytes(Paths.get(filePath)));
 	            
 	            // Update @id
-	            if (conteudo.contains("@id")) {
+	            if (fileContent.contains("@id")) {
 	                // Replace existing @id, even if it's empty
-	                conteudo = conteudo.replaceFirst("@id\\s*\\S*", "@id " + (id != null ? id : ""));
+	                fileContent = fileContent.replaceFirst("@id\\s*\\S*", "@id " + (id != null ? id : ""));
 	            } else {
 	                // If @id does not exist, add it after the start of the JSDoc comment
-	                conteudo = conteudo.replaceFirst("/\\*\\*", "/**" + System.lineSeparator() + " * @id " + (id != null ? id : "") + System.lineSeparator());
+	                fileContent = fileContent.replaceFirst("/\\*\\*", "/**" + System.lineSeparator() + " * @id " + (id != null ? id : "") + System.lineSeparator());
 	            }
 	            
-	            if (conteudo.contains("@nome")) {
-	                conteudo = conteudo.replaceFirst("@nome\\s+\\w+", "@nome " + name);
+	            if (fileContent.contains("@nome")) {
+	            	fileContent = fileContent.replaceFirst("@nome\\s+\\w+", "@nome " + name);
 	            } else {
-	                conteudo += "\n * @nome " + name; // Add at the end if not found
+	            	fileContent += "\n * @nome " + name; // Add at the end if not found
 	            }
 
-	            String currentNomeValue = "";
-	            if (conteudo.contains("@nome")) {
-	                currentNomeValue = conteudo.replaceFirst(".*?(@nome\\s+)(\\S+).*", "$2"); // Capture current value
-	                conteudo = conteudo.replaceFirst("@nome\\s+\\S+", "@nome " + name);
+	            
+	            // Update @pasta
+	            if (fileContent.contains("@pasta")) {
+	                fileContent = fileContent.replaceFirst("@pasta\\s+\\w+", "@pasta " + folder);
 	            } else {
-	                conteudo += "\n * @nome " + name; // Add at the end if not found
+	                fileContent += "\n * @pasta " + folder; // Add at the end if not found
+	            }
+
+	            // Update @descricao
+	            if (fileContent.contains("@descricao")) {
+	                fileContent = fileContent.replaceFirst("@descricao\\s+.*", "@descricao " + description);
+	            } else {
+	                fileContent += "\n * @descricao " + description; // Add at the end if not found
 	            }
 
 	            // Escreve o conteúdo atualizado de volta no arquivo
-	            Files.write(Paths.get(filePath), conteudo.getBytes());
+	            Files.write(Paths.get(filePath), fileContent.getBytes());
 
 	            System.out.println("Arquivo atualizado com sucesso!");
 

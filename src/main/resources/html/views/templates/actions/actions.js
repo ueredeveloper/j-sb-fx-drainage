@@ -2,7 +2,7 @@
  * Açoes de teste das funções
  * @id 9 @descricao Ações de Teste
  * @pasta actions
- * @nome actions.js
+ * @nome actions.js.js
  */
 class Actions {
     constructor(geoTab) {
@@ -11,7 +11,6 @@ class Actions {
         this.render();
         this.renderActions();
     }
-
     render() {
 
         let index = `
@@ -48,3 +47,5 @@ class Actions {
 
 
 }
+ * @pasta actions
+ * @nome actions.js.js.js
