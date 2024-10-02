@@ -87,8 +87,6 @@ public class DocumentViewController implements Initializable {
 
 	WebViewContentLoader webViewContentLoader;
 
-	Set<Usuario> users = new HashSet<>();
-
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
@@ -153,7 +151,7 @@ public class DocumentViewController implements Initializable {
 		tfAddress.setText(this.selectedDocument.getEnderecoLogradouro());
 
 		String logradouro = this.selectedDocument.getEnderecoLogradouro();
- System.out.println(logradouro);
+
 		Set<Interferencia> interferencies = listInterferenciesByLogradouro(logradouro);
 			obsListInterferencies.addAll(interferencies);
 			cbInterferencies.setItems(obsListInterferencies);
@@ -161,15 +159,24 @@ public class DocumentViewController implements Initializable {
 		Set<Usuario> users = listUsersByDocumentId( this.selectedDocument.getId());
 			obsListUsers.addAll(users);
 			cbUsers.setItems(obsListUsers);
+			
+			Set<Template> templates = listUsersByDocumentId( this.selectedDocument.getId());
+			obsListUsers.addAll(users);
+			cbUsers.setItems(obsListUsers);
 		
 		cbInterferencies.setOnAction(e -> {
 
-			Interferencia object = cbInterferencies.getSelectionModel().getSelectedItem();
+			Interferencia selectedInterference = cbInterferencies.getSelectionModel().getSelectedItem();
 			// webViewContentLoader.updateTableInfo(object);
 
 			// htmlEditor.setHtmlText(webViewContentLoader.getHtml());
+			
+			
 
-			if (object != null) {
+			if (selectedInterference != null) {
+				
+				this.selectedDocument.getEndereco().getInterferencias().clear();
+				this.selectedDocument.getEndereco().getInterferencias().add(selectedInterference);
 
 				Set<Template> templates = searchTemplatesByKeyword("");
 				WebContent webContent = new WebContent();
@@ -203,6 +210,19 @@ public class DocumentViewController implements Initializable {
 
 			}
 
+		});
+		
+		cbUsers.setOnAction(e -> {
+			Usuario user = cbUsers.getSelectionModel().getSelectedItem();
+			
+			if (user != null ) {
+				this.selectedDocument.getUsuarios().clear();
+				this.selectedDocument.getUsuarios().add(user);
+			}
+		});
+		
+		cbTemplates.setOnAction(e -> {
+			
 		});
 		
 		
