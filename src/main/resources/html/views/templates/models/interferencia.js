@@ -1,13 +1,14 @@
 /**
+ * @descricao Tabela Interferência
  * Classes modelos de tabelas no banco de dados
- * @id 10 @descricao Tabela Interferência
+ * @id 9
+ * @nome interferencia.js
  * @pasta models
- * @nome interferencia.js.js
- * @conteudo
  */
 class Interferencia {
     constructor() {
     }
+
 
     // Método para obter a interferência
     getTableExample () {
@@ -485,4 +486,4 @@ class Interferencia {
     }
 }
  * @pasta models
- * @nome interferencia.js.js.js
+ * @nome interferencia.js

@@ -16,23 +16,21 @@ public class ReadAndCreateTemplate {
 			String fileContent = new String(Files.readAllBytes(Paths.get(filePath)));
 
 			String id = extractTag(fileContent, "@id");
-			String nome = extractTag(fileContent, "@nome");
-			String descricao = extractTag(fileContent, "@descricao");
+			String name = extractTag(fileContent, "@name");
+			String description = extractTag(fileContent, "@descricao");
 			
-			System.out.println(descricao);
-
-			String pasta = extractTag(fileContent, "@pasta");
+			String folder = extractTag(fileContent, "@pasta");
 
 			Template template = new Template();
 
 			// Se o id diferente de nulo, inserir para editar e não salvar novamente o mesmo
 			// arquivo
-			if (!id.equals("*") && !id.equals("@") && !id.equals("")) {
+			if (!id.equals("*") && !id.equals("@") && !id.equals("") && !id.contains(" ")) {
 				template.setId(Long.parseLong(id));
 			}
-			template.setNome(nome);
-			template.setDescricao(descricao);
-			template.setPasta(pasta);
+			template.setNome(name);
+			template.setDescricao(description);
+			template.setPasta(folder);
 			template.setConteudo(fileContent);
 
 			return template;
