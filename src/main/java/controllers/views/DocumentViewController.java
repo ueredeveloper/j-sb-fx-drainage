@@ -2,10 +2,12 @@ package controllers.views;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.google.gson.Gson;
 import com.jfoenix.controls.JFXComboBox;
@@ -67,13 +69,13 @@ public class DocumentViewController implements Initializable {
 	private JFXTextField tfAddress;
 
 	@FXML
-    private JFXComboBox<Interferencia> cbInterferencies;
+	private JFXComboBox<Interferencia> cbInterferencies;
 
-    @FXML
-    private JFXComboBox<Template> cbTemplates;
+	@FXML
+	private JFXComboBox<String> cbTemplates;
 
-    @FXML
-    private JFXComboBox<Usuario> cbUsers;
+	@FXML
+	private JFXComboBox<Usuario> cbUsers;
 
 	@FXML
 	private HTMLEditor htmlEditor;
@@ -83,9 +85,12 @@ public class DocumentViewController implements Initializable {
 
 	ObservableList<Interferencia> obsListInterferencies = FXCollections.observableArrayList();
 	ObservableList<Usuario> obsListUsers = FXCollections.observableArrayList();
-	ObservableList<Template> obsListTemplates = FXCollections.observableArrayList();
+	ObservableList<String> obsListTemplates = FXCollections.observableArrayList();
 
 	WebViewContentLoader webViewContentLoader;
+
+	Set<Template> templates = new HashSet<>();
+	List<String> descricaoList = new ArrayList<String>();
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -153,83 +158,133 @@ public class DocumentViewController implements Initializable {
 		String logradouro = this.selectedDocument.getEnderecoLogradouro();
 
 		Set<Interferencia> interferencies = listInterferenciesByLogradouro(logradouro);
-			obsListInterferencies.addAll(interferencies);
-			cbInterferencies.setItems(obsListInterferencies);
-		
-		Set<Usuario> users = listUsersByDocumentId( this.selectedDocument.getId());
-			obsListUsers.addAll(users);
-			cbUsers.setItems(obsListUsers);
-			
-			Set<Template> templates = listUsersByDocumentId( this.selectedDocument.getId());
-			obsListUsers.addAll(users);
-			cbUsers.setItems(obsListUsers);
-		
+		obsListInterferencies.addAll(interferencies);
+		cbInterferencies.setItems(obsListInterferencies);
+
+		Set<Usuario> users = listUsersByDocumentId(this.selectedDocument.getId());
+		obsListUsers.addAll(users);
+		cbUsers.setItems(obsListUsers);
+
+		String typeOfDocument = this.selectedDocument.getTipoDocumento().getDescricao();
+
 		cbInterferencies.setOnAction(e -> {
 
+			Interferencia selectedInterference = cbInterferencies.getSelectionModel().getSelectedItem();
+
+			if (selectedInterference != null) {
+				this.selectedDocument.getEndereco().getInterferencias().clear();
+				this.selectedDocument.getEndereco().getInterferencias().add(selectedInterference);
+			}
+
+		});
+
+		cbUsers.setOnAction(e -> {
+			Usuario user = cbUsers.getSelectionModel().getSelectedItem();
+
+			if (user != null) {
+				this.selectedDocument.getUsuarios().clear();
+				this.selectedDocument.getUsuarios().add(user);
+			}
+
+			Interferencia selectedInterference = cbInterferencies.getSelectionModel().getSelectedItem();
+
+			String typeOfGrant = "";
+			String subtypeOfGrant = "";
+			if (selectedInterference != null) {
+				typeOfGrant = selectedInterference.getTipoOutorga().getDescricao();
+				subtypeOfGrant = selectedInterference.getSubtipoOutorga().getDescricao();
+			}
+
+			templates = listTemplatesByParams(typeOfDocument, typeOfGrant, subtypeOfGrant);
+
+			if (!templates.isEmpty() && templates != null) {
+				descricaoList = templates.stream()
+						// Seleciona por descrição, mas remove os arquivos das pastas compartilhadas (models, utils, actions)
+						 .filter(template -> !"utils".equals(template.getPasta()))
+						 .filter(template -> !"models".equals(template.getPasta()))
+						 .filter(template -> !"actions".equals(template.getPasta()))
+						.map(Template::getDescricao ) // Extract the 'descricao' attribute
+						.distinct() // Ensure only unique descriptions
+						.collect(Collectors.toList()); // Collect to a List
+
+				if (descricaoList != null) {
+					obsListTemplates.clear();
+					obsListTemplates.addAll(descricaoList);
+					cbTemplates.setItems(obsListTemplates);
+				}
+			}
+
+		});
+
+		cbTemplates.setOnAction(e -> {
 			Interferencia selectedInterference = cbInterferencies.getSelectionModel().getSelectedItem();
 			// webViewContentLoader.updateTableInfo(object);
 
 			// htmlEditor.setHtmlText(webViewContentLoader.getHtml());
-			
-			
 
 			if (selectedInterference != null) {
-				
+
 				this.selectedDocument.getEndereco().getInterferencias().clear();
 				this.selectedDocument.getEndereco().getInterferencias().add(selectedInterference);
 
-				Set<Template> templates = searchTemplatesByKeyword("");
 				WebContent webContent = new WebContent();
 
-				// Adiciona primeiro o index.html
-				templates.forEach(template -> {
-					System.out.println(template.getNome() + template.getNome().equals("index.html"));
-					if (template.getNome().equals("index.html")) {
-						webContent.setWebContent(template.getConteudo());
-					}
+				// Get the selected description from the ComboBox
+				String description = cbTemplates.getSelectionModel().getSelectedItem();
+				
+				System.out.println(description);
 
-				});
+				if (!descricaoList.isEmpty()) {
 
-				// Adiciona depois os outros arquivos
-				templates.forEach(template -> {
+					List<Template> filteredTemplates = templates.stream()
+						    .filter(t -> 
+						        t.getDescricao().equals(description)  // Filter by the selected description
+						        || "models".equals(t.getPasta())      // Include templates where 'pasta' is 'models'
+						        || "utils".equals(t.getPasta())       // Include templates where 'pasta' is 'utils'
+						        || "actions".equals(t.getPasta())     // Include templates where 'pasta' is 'actions'
+						    )
+						    .distinct() // Ensure unique templates
+						    .collect(Collectors.toList());
 
-					String str = webContent.getWebContent();
 
-					if (!template.getNome().equals("index.html")) {
-						str += "<script>" + template.getConteudo() + "</script>";
-					}
-					webContent.setWebContent(str);
+					// Adiciona primeiro o index.html
+					filteredTemplates.forEach(t -> {
+						System.out.println(t.getNome());
+						if (t.getNome().equals("index.html")) {
+							
+							webContent.setWebContent(t.getConteudo());
+						}
+					});
 
-				});
+					// Adiciona depois os outros arquivos
+					filteredTemplates.forEach(t -> {
 
-				// Atualiza o WebView com o conteúdo atualizado
-				webViewContentLoader.getWebEngine().loadContent(webContent.getWebContent());
+						String str = webContent.getWebContent();
 
-				// Opcional: atualiza o HTMLEditor também
-				htmlEditor.setHtmlText(webViewContentLoader.getHtml());
+						if (!t.getNome().equals("index.html")) {
+							str += "<script>" + t.getConteudo() + "</script>";
+						}
+						webContent.setWebContent(str);
+
+					});
+					
+					System.out.println(webContent.getWebContent());
+
+					// Atualiza o WebView com o conteúdo atualizado
+					webViewContentLoader.getWebEngine().loadContent(webContent.getWebContent());
+
+					// Opcional: atualiza o HTMLEditor também
+					htmlEditor.setHtmlText(webViewContentLoader.getHtml());
+
+				}
 
 			}
 
 		});
-		
-		cbUsers.setOnAction(e -> {
-			Usuario user = cbUsers.getSelectionModel().getSelectedItem();
-			
-			if (user != null ) {
-				this.selectedDocument.getUsuarios().clear();
-				this.selectedDocument.getUsuarios().add(user);
-			}
-		});
-		
-		cbTemplates.setOnAction(e -> {
-			
-		});
-		
-		
 
 	}
 
-	public Set<Template> searchTemplatesByKeyword(String keyword) {
+	public Set<Template> listTemplatesByParams(String typeOfDocument, String typeOfGrand, String subtypeOfGrant) {
 
 		Set<Template> objects = null;
 
@@ -239,7 +294,7 @@ public class DocumentViewController implements Initializable {
 
 			TemplateService service = new TemplateService(urlService);
 
-			objects = service.listByKeyword(keyword);
+			objects = service.listTemplatesByParams(typeOfDocument, typeOfGrand, subtypeOfGrant);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -264,7 +319,7 @@ public class DocumentViewController implements Initializable {
 		}
 		return objects;
 	}
-	
+
 	public Set<Interferencia> listInterferenciesByLogradouro(String logradouro) {
 
 		Set<Interferencia> objects = null;
@@ -282,7 +337,6 @@ public class DocumentViewController implements Initializable {
 		}
 		return objects;
 	}
-
 
 	class WebContent {
 		String webContent = "";

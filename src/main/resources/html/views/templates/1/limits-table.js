@@ -2,8 +2,7 @@
 /**
  * Tabela de Limites Outorgados
  * Tag anterior:<tabela_limites_outorgados_tag></tabela_limites_outorgados_tag>
- * @id 4
- * @descricao Despacho de Outorga Prévia
+ * @id 5
  * @pasta 1
  * @nome limits-table.js
  */

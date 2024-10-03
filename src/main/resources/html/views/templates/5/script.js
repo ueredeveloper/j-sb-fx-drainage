@@ -1,7 +1,6 @@
  /**
  * Main
- * @id 13
- * @descricao Registro de Uso
+ * @id 14
  * @pasta 5
  * @nome script.js
  */

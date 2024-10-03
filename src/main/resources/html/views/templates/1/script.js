@@ -1,7 +1,6 @@
 /**
  * Main
- * @id 5
- * @descricao Despacho de Outorga Prévia
+ * @id 6
  * @pasta 1
  * @nome script.js
 
@@ -515,10 +514,6 @@ function App() {
 
 
 	/**
- * @id 44
-
-
-
 	 * Cria máscara para CPF e CPNJ
 	 * Tag anterior: <us_cpfcnpj_tag></us_cpfcnpj_tag> 
 	 * @param {*} value 
@@ -668,6 +663,6 @@ document.addEventListener('DOMContentLoaded', function () {
 	limitsTable = new LimitsTable()
 	new GrantRequirements();
 	new ChiefSignature();
-	//new Actions();
+	new Actions();
 
 });

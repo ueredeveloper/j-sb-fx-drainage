@@ -1,0 +1,31 @@
+[
+	{
+		"id": 1,
+		"numero": "123456/58",
+		"numeroSei": "123456789",
+		"processo": {
+			"id": 1,
+			"numero": "123.456",
+			"anexo": {
+				"id": 3,
+				"numero": "Anexo 789",
+				"processos": []
+			},
+			"documentos": []
+		},
+		"tipoDocumento": {
+			"id": 2,
+			"descricao": "Ofício"
+		},
+		"endereco": {
+			"id": 4,
+			"logradouro": "Exemplo Demandas com Endereço 1",
+			"cidade": null,
+			"bairro": null,
+			"cep": null,
+			"interferencias": [],
+			"estado": null
+		},
+		"usuarios": []
+	}
+]

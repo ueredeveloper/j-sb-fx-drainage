@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -134,10 +135,20 @@ public class TemplateService {
 		}
 	}
 
-	public Set<Template> listByKeyword(String keyword) {
+	public Set<Template> listTemplatesByParams(String typeOfDocument, String typeOfGrand, String subtypeOfGrant) throws UnsupportedEncodingException {
+		
+		String url = localUrl + "/template/list-templates-by-params?"
+				+ "tipoDocumento="
+				+ URLEncoder.encode(typeOfDocument, "UTF-8")
+				+ "&tipoOutorga="
+				+ URLEncoder.encode(typeOfGrand, "UTF-8")
+				+ "&subtipoOutorga="
+				+ URLEncoder.encode(subtypeOfGrant, "UTF-8");
+		
+		System.out.println(url);
 
 		try {
-			URL apiUrl = new URL(localUrl + "/template/list-by-keyword?keyword=" + URLEncoder.encode(keyword, "UTF-8"));
+			URL apiUrl = new URL(url);
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
 			connection.setRequestMethod("GET");
 
@@ -170,11 +181,12 @@ public class TemplateService {
 		String line;
 
 		while ((line = reader.readLine()) != null) {
-
 			response.append(line);
 		}
 
 		reader.close();
+		
+		System.out.println("templates " + response.toString());
 
 		return new Gson().fromJson(response.toString(), new TypeToken<Set<Template>>() {
 		}.getType());
