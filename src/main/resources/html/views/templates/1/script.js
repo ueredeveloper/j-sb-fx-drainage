@@ -633,6 +633,6 @@ document.addEventListener('DOMContentLoaded', function () {
 	limitsTable = new LimitsTable()
 	new GrantRequirements();
 	new ChiefSignature();
-	//new Actions();
+	new Actions();
 
 });
