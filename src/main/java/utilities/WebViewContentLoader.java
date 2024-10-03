@@ -5,6 +5,7 @@ import java.util.function.Consumer;
 import javafx.concurrent.Worker;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
+import models.Documento;
 import models.Interferencia;
 import netscape.javascript.JSException;
 import netscape.javascript.JSObject;
@@ -38,7 +39,7 @@ public class WebViewContentLoader {
 	public void loadWebViewContent(Consumer<String> callback) {
 		// Carrega o arquivo HTML especificado
 		//webEngine.load(getClass().getResource("/html/views/templates/1/index.html").toExternalForm());
-		webEngine.loadContent("<h1 style='color: red;'>Hello World</h1>");
+		webEngine.loadContent("");
 
 		// Listener para verificar quando o conteúdo HTML foi carregado
 		webEngine.getLoadWorker().stateProperty().addListener((observableValue, oldState, newState) -> {
@@ -92,6 +93,19 @@ public class WebViewContentLoader {
 		invokeJS("geographicTable.updateTableInfo(" + strJson + ");" 
 				+ "limitsTable.updateAuthorizedLimits(" + strJson + ");");
 	}
+	
+	public void updateHtmlDocument (Documento documento) {
+		
+		webEngine.setOnError(event -> {
+		    System.out.println("Erro no JavaScript: " + event.getMessage());
+		});
+		
+		String strJson = JsonConverter.convertObjectToJson(documento);
+		invokeJS("let utils = new Utils();"
+				+ "utils.updateHtmlDocument(" + strJson + ");"
+				);
+	}
+
 
 	/**
 	 * Retorna o conteúdo HTML atual do WebView.

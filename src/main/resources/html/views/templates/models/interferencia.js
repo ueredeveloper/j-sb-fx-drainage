@@ -1,6 +1,6 @@
 /**
  * Classes modelos de tabelas no banco de dados
- * @id 16
+ * @id 19
  * @descricao Tabela Interferência
  * @nome interferencia.js
  * @pasta models
@@ -9,11 +9,10 @@ class Interferencia {
     constructor() {
     }
 
-
     // Método para obter a interferência
-    getTableExample () {
+    getSample () {
 
-        let interferencia = {
+        return {
             "id": 2,
             "latitude": -15.98754321,
             "longitude": -47.123456789,
@@ -478,8 +477,7 @@ class Interferencia {
                 "id": 1,
                 "descricao": "Manual"
             }
-        }
-        return interferencia;
+        };
     }
     setLatitude (number){
     	this.interferencia.latitude = number;

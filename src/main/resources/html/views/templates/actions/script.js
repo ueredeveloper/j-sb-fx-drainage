@@ -20,6 +20,7 @@ class Actions {
                     <label style="margin: 10px;">Botões de ação</label>
                         <button id="btn-update-geo-table" style="margin:5px;">update interferencia</button>
                         <button id="btn-update-limits-table" style="margin:5px;">update limites autorizados</button>
+                        <button id="btn-update-all">Editar Tudo com o objeto Documento</button>
                </div>
             </div>
             `;
@@ -31,16 +32,24 @@ class Actions {
     	// Atualiza tabela com informações do ponto (latitude, longitude, bacia e subbacia
         document.getElementById('btn-update-geo-table').onclick = function () {
 
-            let interferencia = new Interferencia().getTableExample()
+            let interferencia = new Interferencia().getSample()
        
             geographicTable.updateTableInfo(interferencia);
         };
         // Atualiza os limites outorgáveis
         document.getElementById('btn-update-limits-table').onclick = function () {
 
-            let interferencia = new Interferencia().getTableExample()
+            let interferencia = new Interferencia().getSample()
        
             limitsTable.updateAuthorizedLimits(interferencia);
+        };
+
+        // Atualiza os limites outorgáveis
+        document.getElementById('btn-update-all').onclick = function () {
+
+            let documento = new Documento().getSample()
+       
+            new Utils().updateHtmlDocument(documento)
         };
 
     }

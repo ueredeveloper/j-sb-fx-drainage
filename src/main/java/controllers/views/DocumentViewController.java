@@ -35,6 +35,7 @@ import services.InterferenciaService;
 import services.TemplateService;
 import services.UsuarioService;
 import utilities.HTMLFileLoader;
+import utilities.JsonConverter;
 import utilities.URLUtility;
 import utilities.WebViewContentLoader;
 
@@ -170,7 +171,8 @@ public class DocumentViewController implements Initializable {
 		cbInterferencies.setOnAction(e -> {
 
 			Interferencia selectedInterference = cbInterferencies.getSelectionModel().getSelectedItem();
-
+			// Atualiza documento seleciona com a interferência que será utilizada na
+			// criação do ato (Parecer, Despacho etc)
 			if (selectedInterference != null) {
 				this.selectedDocument.getEndereco().getInterferencias().clear();
 				this.selectedDocument.getEndereco().getInterferencias().add(selectedInterference);
@@ -181,6 +183,8 @@ public class DocumentViewController implements Initializable {
 		cbUsers.setOnAction(e -> {
 			Usuario user = cbUsers.getSelectionModel().getSelectedItem();
 
+			// Atualiza documento com o usuário que será utilizado na criação do ato
+			// (Parecer, Despacho etc)
 			if (user != null) {
 				this.selectedDocument.getUsuarios().clear();
 				this.selectedDocument.getUsuarios().add(user);
@@ -195,15 +199,20 @@ public class DocumentViewController implements Initializable {
 				subtypeOfGrant = selectedInterference.getSubtipoOutorga().getDescricao();
 			}
 
+			// Busca os templates que atendem aos requisitos tipo de documento e tipo e
+			// subtipo de outorga.
 			templates = listTemplatesByParams(typeOfDocument, typeOfGrant, subtypeOfGrant);
 
 			if (!templates.isEmpty() && templates != null) {
 				descricaoList = templates.stream()
-						// Seleciona por descrição, mas remove os arquivos das pastas compartilhadas (models, utils, actions)
-						 .filter(template -> !"utils".equals(template.getPasta()))
-						 .filter(template -> !"models".equals(template.getPasta()))
-						 .filter(template -> !"actions".equals(template.getPasta()))
-						.map(Template::getDescricao ) // Extract the 'descricao' attribute
+						// Seleciona por descrição, mas remove os arquivos das pastas compartilhadas
+						// (models, utils, actions)
+						.filter(template -> !"utils".equals(template.getPasta()))
+						.filter(template -> !"models".equals(template.getPasta()))
+						.filter(template -> !"actions".equals(template.getPasta())).map(Template::getDescricao) // Extract
+																												// the
+																												// 'descricao'
+																												// attribute
 						.distinct() // Ensure only unique descriptions
 						.collect(Collectors.toList()); // Collect to a List
 
@@ -212,15 +221,14 @@ public class DocumentViewController implements Initializable {
 					obsListTemplates.addAll(descricaoList);
 					cbTemplates.setItems(obsListTemplates);
 				}
+				// Verifica documento com interferencia e usuário selecionado
+				// System.out.println(JsonConverter.convertObjectToJson(this.selectedDocument));
 			}
 
 		});
 
 		cbTemplates.setOnAction(e -> {
 			Interferencia selectedInterference = cbInterferencies.getSelectionModel().getSelectedItem();
-			// webViewContentLoader.updateTableInfo(object);
-
-			// htmlEditor.setHtmlText(webViewContentLoader.getHtml());
 
 			if (selectedInterference != null) {
 
@@ -231,34 +239,26 @@ public class DocumentViewController implements Initializable {
 
 				// Get the selected description from the ComboBox
 				String description = cbTemplates.getSelectionModel().getSelectedItem();
-				
-				System.out.println(description);
 
 				if (!descricaoList.isEmpty()) {
 
 					List<Template> filteredTemplates = templates.stream()
-						    .filter(t -> 
-						        t.getDescricao().equals(description)  // Filter by the selected description
-						        || "models".equals(t.getPasta())      // Include templates where 'pasta' is 'models'
-						        || "utils".equals(t.getPasta())       // Include templates where 'pasta' is 'utils'
-						        || "actions".equals(t.getPasta())     // Include templates where 'pasta' is 'actions'
-						    )
-						    .distinct() // Ensure unique templates
-						    .collect(Collectors.toList());
-
+							.filter(t -> t.getDescricao().equals(description) // Filter by the selected description
+									|| "models".equals(t.getPasta()) // Include templates where 'pasta' is 'models'
+									|| "utils".equals(t.getPasta()) // Include templates where 'pasta' is 'utils'
+									|| "actions".equals(t.getPasta()) // Include templates where 'pasta' is 'actions'
+					).distinct() // Ensure unique templates
+							.collect(Collectors.toList());
 
 					// Adiciona primeiro o index.html
 					filteredTemplates.forEach(t -> {
-						System.out.println(t.getNome());
 						if (t.getNome().equals("index.html")) {
-							
 							webContent.setWebContent(t.getConteudo());
 						}
 					});
-
+					
 					// Adiciona depois os outros arquivos
 					filteredTemplates.forEach(t -> {
-
 						String str = webContent.getWebContent();
 
 						if (!t.getNome().equals("index.html")) {
@@ -268,11 +268,14 @@ public class DocumentViewController implements Initializable {
 
 					});
 					
-					System.out.println(webContent.getWebContent());
-
 					// Atualiza o WebView com o conteúdo atualizado
 					webViewContentLoader.getWebEngine().loadContent(webContent.getWebContent());
 
+					//webViewContentLoader.updateHtmlDocument(this.selectedDocument);
+					String strJson = JsonConverter.convertObjectToJson(this.selectedDocument);
+					//invokeJS("utils.updateHtmlDocument(" + strJson + ");");
+					
+					webViewContentLoader.updateHtmlDocument(this.selectedDocument);
 					// Opcional: atualiza o HTMLEditor também
 					htmlEditor.setHtmlText(webViewContentLoader.getHtml());
 
@@ -284,7 +287,7 @@ public class DocumentViewController implements Initializable {
 
 	}
 
-	public Set<Template> listTemplatesByParams(String typeOfDocument, String typeOfGrand, String subtypeOfGrant) {
+	public Set<Template> listTemplatesByParams(String typeOfDocument, String typeOfGrant, String subtypeOfGrant) {
 
 		Set<Template> objects = null;
 
@@ -294,7 +297,7 @@ public class DocumentViewController implements Initializable {
 
 			TemplateService service = new TemplateService(urlService);
 
-			objects = service.listTemplatesByParams(typeOfDocument, typeOfGrand, subtypeOfGrant);
+			objects = service.listTemplatesByParams(typeOfDocument, typeOfGrant, subtypeOfGrant);
 
 		} catch (Exception e) {
 			e.printStackTrace();

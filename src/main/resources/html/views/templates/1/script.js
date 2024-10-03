@@ -513,46 +513,6 @@ function App() {
 		"cpfCnpj": 12345678000100
 	}
 
-
-	/**
-	 * Cria máscara para CPF e CPNJ
-	 * Tag anterior: <us_cpfcnpj_tag></us_cpfcnpj_tag> 
-	 * @param {*} value 
-	 * @returns 
-	 */
-	function formatCpfCnpj(value) {
-		value = value.toString();
-
-		// Verifica se é CPF (11 dígitos) ou CNPJ (14 dígitos)
-		if (value.length === 11) {
-			// Formatar CPF: 123.456.789-12
-			return value.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
-		} else if (value.length === 14) {
-			// Formatar CNPJ: 12.345.678/0001-00
-			return value.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, '$1.$2.$3/$4-$5');
-		} else {
-			// Se não for CPF ou CNPJ válido, retorna o valor sem formatação
-			return value;
-		}
-	}
-
-	/**
-	 * Cria uma string com o tipo de poço
-	 * Tag anterior: <inter_tipo_poco_tag></inter_tipo_poco_tag>.
-	 */
-	function typeOfWellToString() {
-		return interferencia
-	}
-
-	/**
-	 * Cria string com endereço
-	 * Tag anterior: <end_log_tag></end_log_tag> 
-	 */
-
-	function addressToString(endereco) {
-		return endereco.logradouro;
-	}
-
 	let finalidades = []
 
 
@@ -578,7 +538,7 @@ function App() {
 
 
 
-	finalidades = interferencia.getTableExample().finalidades;
+	finalidades = interferencia.getSample().finalidades;
 
 	const appDiv = document.getElementById("app");
 
@@ -586,15 +546,15 @@ function App() {
 		<div>
 			<div style="text-align: center;">&nbsp;</div>
 
-			<p style="margin-left: 400px;">Emite outorga prévia para reservar o direito de uso de água subterrânea a ${usuario.nome}, para fins de ${createPurpouseString(finalidades)} .
+			<p style="margin-left: 400px;">Emite outorga prévia para reservar o direito de uso de água subterrânea a <b><span class="us-nome"></span></b>, para fins de ${createPurpouseString(finalidades)} .
 
 			</p><p>&nbsp;</p>
 		
 
 			<div align="justify">
-			<p>O SUPERINTENDENTE DE RECURSOS HÍDRICOS DA AGÊNCIA REGULADORA DE ÁGUAS, ENERGIA E SANEAMENTO BÁSICO DO DISTRITO FEDERAL – ADASA, no uso de suas atribuições regimentais e com base na competência que lhe foi delegada pela Diretoria Colegiada, nos termos da Resolução nº 02, de 25 de janeiro de 2019, c/c Portaria nº 49, de 02 de maio de 2019 e com base no art. 12 da Lei nº 2.725, de 13 de junho de 2001, e inciso VII do art. 23 da Lei nº 4.285, de 26 de dezembro de 2008, tendo em vista o que consta do Processo SEI N.º <b>${documento.processo.anexo.numero}</b>, resolve:</p>
+			<p>O SUPERINTENDENTE DE RECURSOS HÍDRICOS DA AGÊNCIA REGULADORA DE ÁGUAS, ENERGIA E SANEAMENTO BÁSICO DO DISTRITO FEDERAL – ADASA, no uso de suas atribuições regimentais e com base na competência que lhe foi delegada pela Diretoria Colegiada, nos termos da Resolução nº 02, de 25 de janeiro de 2019, c/c Portaria nº 49, de 02 de maio de 2019 e com base no art. 12 da Lei nº 2.725, de 13 de junho de 2001, e inciso VII do art. 23 da Lei nº 4.285, de 26 de dezembro de 2008, tendo em vista o que consta do Processo SEI N.º <b><span id="proc-anexo"></span></b>, resolve:</p>
 
-			<p>Art. 1º Emitir outorga prévia para reservar o direito de uso de água subterrânea a <b>${usuario.nome}</b>, <b>CPF/CNPJ n.º ${formatCpfCnpj(usuario.cpfCnpj)}</b>, mediante a perfuração de 01 (um) poço <inter_tipo_poco_tag></inter_tipo_poco_tag>, para fins de ${createPurpouseString(finalidades)}, localizado no endereço: ${addressToString(documento.endereco)} - Distrito Federal, tendo a seguinte característica:</p>
+			<p>Art. 1º Emitir outorga prévia para reservar o direito de uso de água subterrânea a <b><span class="us-nome"></span></b>, CPF/CNPJ n.º <b><span class="us-cpf-cnpj"></span></b>, mediante a perfuração de 01 (um) poço <span id="inter-tipo-poço"></span>, para fins de <span id="inter-descricao-finalidades"></span>, localizado no endereço: <span class="end-logradouro"></span> - Distrito Federal, tendo a seguinte característica:</p>
 			</div>
 
 			<p>&nbsp;</p>
@@ -622,11 +582,10 @@ function App() {
 }
 var geographicTable, limitsTable, interferencia;
 
-
 document.addEventListener('DOMContentLoaded', function () {
 
 	interferencia = new Interferencia();
-
+	
 	App();
 
 	geographicTable = new GeographicTable();
