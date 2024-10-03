@@ -186,7 +186,7 @@ public class TemplateController implements Initializable {
 
 			// clearAllComponents();
 
-			TemplateService service = new TemplateService(localUrl);
+			/*TemplateService service = new TemplateService(localUrl);
 
 			String keyword = tfSearch.getText();
 
@@ -195,7 +195,7 @@ public class TemplateController implements Initializable {
 			// Create a list of Document objects
 			obsList.clear();
 			obsList.addAll(objects);
-			tableView.setItems(obsList);
+			tableView.setItems(obsList);*/
 
 		} catch (Exception e) {
 			e.printStackTrace();

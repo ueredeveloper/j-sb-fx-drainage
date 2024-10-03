@@ -1,9 +1,9 @@
 /**
  * Ações de Teste
- * @id 8
+ * @id 15
  * @descricao Ações de Teste
  * @pasta actions
- * @nome actions.js
+ * @nome script.js
  */
 class Actions {
     constructor(geoTab) {
