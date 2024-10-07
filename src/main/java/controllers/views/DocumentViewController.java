@@ -30,6 +30,7 @@ import models.Documento;
 import models.Interferencia;
 import models.Template;
 import models.Usuario;
+import netscape.javascript.JSException;
 import netscape.javascript.JSObject;
 import services.InterferenciaService;
 import services.TemplateService;
@@ -58,7 +59,7 @@ public class DocumentViewController implements Initializable {
 	private Button btnSelectAndCopy;
 
 	@FXML
-	private WebView webView;
+	private WebView webViewChart, webViewContent;
 
 	@FXML
 	private AnchorPane apContainer;
@@ -92,17 +93,23 @@ public class DocumentViewController implements Initializable {
 
 	Set<Template> templates = new HashSet<>();
 	List<String> descricaoList = new ArrayList<String>();
+	
+	WebEngine webEngineContent;// = webViewContent.getEngine();
+	JSObject jsObj = null;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
 		// Html Editor
 		webViewContentLoader = new WebViewContentLoader();
-		webViewContentLoader.loadWebViewContent(finalHtml -> {
+	
+
+		String initialHtml5Content = "<h2>Hello World</h2>";
+		webViewContentLoader.loadWebViewContent(initialHtml5Content, finalHtml -> {
 			// Set the retrieved HTML content in the HTMLEditor
 			htmlEditor.setHtmlText(finalHtml);
 		});
-
+		
 		// Copiar o modelo de ato para colar no SEI.
 		iconCopyDocument.setOnMouseClicked(event -> {
 			Clipboard clipboard = Clipboard.getSystemClipboard();
@@ -130,21 +137,21 @@ public class DocumentViewController implements Initializable {
 
 		htmlDiagramContent = htmlDiagramContent.replace("${json}", json);
 
-		WebEngine webEngine;
+		WebEngine webEngineChart;
 
-		webEngine = webView.getEngine();
+		webEngineChart = webViewChart.getEngine();
 
-		webEngine.load(getClass().getResource("/html/views/e-chart-tree/index.html").toExternalForm());
+		webEngineChart.load(getClass().getResource("/html/views/e-chart-tree/index.html").toExternalForm());
 
-		webEngine.getLoadWorker().stateProperty().addListener((obs, oldState, newState) -> {
+		webEngineChart.getLoadWorker().stateProperty().addListener((obs, oldState, newState) -> {
 
 			if (newState == Worker.State.SUCCEEDED) {
 
-				JSObject jsObject = (JSObject) webEngine.executeScript("window");
+				JSObject jsObject = (JSObject) webEngineChart.executeScript("window");
 
 				String sJson = json.replace("\"", "'");
 
-				JSObject updatedData = (JSObject) webEngine.executeScript("(" + sJson + ")");
+				JSObject updatedData = (JSObject) webEngineChart.executeScript("(" + sJson + ")");
 
 				jsObject.call("updateSeriesData", updatedData);
 			}
@@ -156,6 +163,8 @@ public class DocumentViewController implements Initializable {
 				"Número: " + this.selectedDocument.getNumero() + " | Sei: " + this.selectedDocument.getNumeroSei());
 		tfAddress.setText(this.selectedDocument.getEnderecoLogradouro());
 
+		// Captura logradouro da tabela endereço para buscar interferência por
+		// logradouro
 		String logradouro = this.selectedDocument.getEnderecoLogradouro();
 
 		Set<Interferencia> interferencies = listInterferenciesByLogradouro(logradouro);
@@ -171,6 +180,7 @@ public class DocumentViewController implements Initializable {
 		cbInterferencies.setOnAction(e -> {
 
 			Interferencia selectedInterference = cbInterferencies.getSelectionModel().getSelectedItem();
+
 			// Atualiza documento seleciona com a interferência que será utilizada na
 			// criação do ato (Parecer, Despacho etc)
 			if (selectedInterference != null) {
@@ -226,6 +236,9 @@ public class DocumentViewController implements Initializable {
 			}
 
 		});
+		
+
+		webEngineContent = webViewContent.getEngine();
 
 		cbTemplates.setOnAction(e -> {
 			Interferencia selectedInterference = cbInterferencies.getSelectionModel().getSelectedItem();
@@ -256,7 +269,7 @@ public class DocumentViewController implements Initializable {
 							webContent.setWebContent(t.getConteudo());
 						}
 					});
-					
+
 					// Adiciona depois os outros arquivos
 					filteredTemplates.forEach(t -> {
 						String str = webContent.getWebContent();
@@ -267,25 +280,78 @@ public class DocumentViewController implements Initializable {
 						webContent.setWebContent(str);
 
 					});
-					
-					// Atualiza o WebView com o conteúdo atualizado
-					webViewContentLoader.getWebEngine().loadContent(webContent.getWebContent());
 
-					//webViewContentLoader.updateHtmlDocument(this.selectedDocument);
-					String strJson = JsonConverter.convertObjectToJson(this.selectedDocument);
-					//invokeJS("utils.updateHtmlDocument(" + strJson + ");");
+					String newHtml5Content = webContent.getWebContent();
+
+					webViewContentLoader.updateHtmlContent(newHtml5Content, finalHtml -> {
+						// Set the retrieved HTML content in the HTMLEditor
+						htmlEditor.setHtmlText(finalHtml);
+					});
+
+					webViewContentLoader.executeJavaScriptUpdate(this.selectedDocument);
 					
-					webViewContentLoader.updateHtmlDocument(this.selectedDocument);
-					// Opcional: atualiza o HTMLEditor também
-					htmlEditor.setHtmlText(webViewContentLoader.getHtml());
+					webViewContentLoader.loadWebViewContent(initialHtml5Content, finalHtml -> {
+						// Set the retrieved HTML content in the HTMLEditor
+						webContent.setWebContent(finalHtml);
+					});
+					
+					webViewContentLoader.updateHtmlContent(webContent.getWebContent(), finalHtml -> {
+						// Set the retrieved HTML content in the HTMLEditor
+						htmlEditor.setHtmlText(finalHtml);
+					});
+					
+					String strJson = JsonConverter.convertObjectToJson(this.selectedDocument);
+					contentLoaded = true;
+					invokeJS("utils.updateHtmlDocument(" + strJson + ");");
+					
+					
 
 				}
-
 			}
 
 		});
+		
+		
+		
+		
 
 	}
+	private boolean contentLoaded = false;
+	private void invokeJS(final String script) {
+		
+		jsObj = (JSObject) webEngineContent.executeScript("window");
+		
+		if (contentLoaded) {
+			try {
+				jsObj.eval(script);
+			} catch (JSException e) {
+				System.err.println("Erro ao executar script JavaScript: " + e.getMessage());
+			}
+		} else {
+			// Aguarda até que o conteúdo esteja completamente carregado
+			webEngineContent.getLoadWorker().stateProperty().addListener((observableValue, oldState, newState) -> {
+				if (newState == Worker.State.SUCCEEDED) {
+					jsObj.eval(script);
+				}
+			});
+		}
+	}
+	
+	// Execute JavaScript to update part of the document
+		public void executeJavaScriptUpdate(Documento documento) {
+
+			webEngineContent.getLoadWorker().stateProperty().addListener((observableValue, oldState, newState) -> {
+				if (newState == Worker.State.SUCCEEDED) {
+
+					System.out.println("console suceeded and loaded false");
+					String strJson = JsonConverter.convertObjectToJson(documento);
+					contentLoaded = true;
+					invokeJS("utils.updateHtmlDocument(" + strJson + ");");
+				}
+			});
+
+		}
+
 
 	public Set<Template> listTemplatesByParams(String typeOfDocument, String typeOfGrant, String subtypeOfGrant) {
 

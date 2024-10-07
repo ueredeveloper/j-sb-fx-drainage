@@ -6,65 +6,69 @@ import javafx.concurrent.Worker;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import models.Documento;
-import models.Interferencia;
 import netscape.javascript.JSException;
 import netscape.javascript.JSObject;
 
-/**
- * Classe responsável por carregar conteúdo HTML em um WebView, permitindo
- * comunicação bidirecional entre JavaScript e Java.
- * 
- * Carrega um arquivo HTML e permite inserir informações dinâmicas usando
- * JavaScript.
- * 
- * @author fabricio.barrozo
- */
 public class WebViewContentLoader {
+	
+	
 
-	// Objeto JavaScript para comunicação com o WebView
+	// JavaScript object for communication with the WebView
 	private JSObject jsObj;
-	private boolean ready = false;
 
-	// WebView e WebEngine usados para carregar e interagir com o conteúdo web
+	// WebView and WebEngine used to load and interact with web content
 	private WebView webView = new WebView();
-	private WebEngine webEngine = webView.getEngine();
+	private final WebEngine webEngine = webView.getEngine();
 
-	/**
-	 * Carrega o conteúdo HTML no WebView e utiliza um callback para retornar o
-	 * conteúdo HTML.
-	 * 
-	 * @param callback
-	 *            Consumer para processar o conteúdo HTML quando carregado.
-	 */
-	public void loadWebViewContent(Consumer<String> callback) {
-		// Carrega o arquivo HTML especificado
-		//webEngine.load(getClass().getResource("/html/views/templates/1/index.html").toExternalForm());
-		webEngine.loadContent("");
+	// Flag to avoid adding multiple listeners unnecessarily
+	private boolean contentLoaded = false;
+	
+	
+	
 
-		// Listener para verificar quando o conteúdo HTML foi carregado
+	// Load initial HTML content
+	public void loadWebViewContent(String htmlContent, Consumer<String> callback) {
+		contentLoaded = false; // Reset flag to allow further content updates
+		webEngine.loadContent(htmlContent);
+
+		// Set up a one-time listener for when the content is fully loaded
 		webEngine.getLoadWorker().stateProperty().addListener((observableValue, oldState, newState) -> {
-			if (newState == Worker.State.SUCCEEDED) {
-				ready = true;
+			if (newState == Worker.State.SUCCEEDED && !contentLoaded) {
+				contentLoaded = true; // Prevent listener duplication
 				jsObj = (JSObject) webEngine.executeScript("window");
 
-				// Permite que o JavaScript tenha acesso a métodos Java
+				// Allow JavaScript to access Java methods
 				jsObj.setMember("app", WebViewContentLoader.this);
 
-				// Executa script JavaScript para obter o conteúdo HTML e passa para o callback
+				// Execute JavaScript script to get the HTML content and pass it to the callback
 				String finalHtml = (String) webEngine.executeScript("document.body.innerHTML;");
 				callback.accept(finalHtml);
 			}
 		});
 	}
 
-	/**
-	 * Invoca código JavaScript no WebView, esperando que o conteúdo esteja pronto.
-	 * 
-	 * @param script
-	 *            String com o código JavaScript a ser executado.
-	 */
+	// Update the entire HTML content
+	public void updateHtmlContent(String newHtmlContent, Consumer<String> callback) {
+		loadWebViewContent(newHtmlContent, callback);
+	}
+
+	// Execute JavaScript to update part of the document
+	public void executeJavaScriptUpdate(Documento documento) {
+
+		webEngine.getLoadWorker().stateProperty().addListener((observableValue, oldState, newState) -> {
+			if (newState == Worker.State.SUCCEEDED) {
+
+				System.out.println("console suceeded and loaded false");
+				String strJson = JsonConverter.convertObjectToJson(documento);
+				contentLoaded = true;
+				invokeJS("utils.updateHtmlDocument(" + strJson + ");");
+			}
+		});
+
+	}
+
 	private void invokeJS(final String script) {
-		if (ready) {
+		if (contentLoaded) {
 			try {
 				jsObj.eval(script);
 			} catch (JSException e) {
@@ -80,74 +84,26 @@ public class WebViewContentLoader {
 		}
 	}
 
-	/**
-	 * Atualiza informações na tabela dentro do HTML, passando dados de um objeto
-	 * Interferencia.
-	 * 
-	 * @param interferencia
-	 *            Objeto com as informações a serem inseridas no HTML.
-	 */
-	public void updateTableInfo(Interferencia interferencia) {
-		// Converte o objeto Interferencia para JSON e o envia para o JavaScript
-		String strJson = JsonConverter.convertObjectToJson(interferencia);
-		invokeJS("geographicTable.updateTableInfo(" + strJson + ");" 
-				+ "limitsTable.updateAuthorizedLimits(" + strJson + ");");
+	public WebEngine getWebEngine() {
+		return webEngine;
 	}
 	
-	public void updateHtmlDocument (Documento documento) {
-		
-		webEngine.setOnError(event -> {
-		    System.out.println("Erro no JavaScript: " + event.getMessage());
-		});
-		
-		String strJson = JsonConverter.convertObjectToJson(documento);
-		invokeJS("let utils = new Utils();"
-				+ "utils.updateHtmlDocument(" + strJson + ");"
-				);
-	}
-
-
-	/**
-	 * Retorna o conteúdo HTML atual do WebView.
-	 * 
-	 * @return String com o conteúdo HTML.
-	 */
-	public String getHtml() {
-		return (String) webEngine.executeScript("document.body.innerHTML;");
-	}
-
-	public JSObject getJsObj() {
-		return jsObj;
-	}
-
-	public void setJsObj(JSObject jsObj) {
-		this.jsObj = jsObj;
-	}
-
-	public boolean isReady() {
-		return ready;
-	}
-
-	public void setReady(boolean ready) {
-		this.ready = ready;
-	}
+	
 
 	public WebView getWebView() {
 		return webView;
 	}
 
-	public void setWebView(WebView webView) {
-		this.webView = webView;
-	}
+	public void getHtmlContent(Consumer<String> callback) {
 
-	public WebEngine getWebEngine() {
-		return webEngine;
-	}
+		webEngine.getLoadWorker().stateProperty().addListener((observableValue, oldState, newState) -> {
 
-	public void setWebEngine(WebEngine webEngine) {
-		this.webEngine = webEngine;
+			if (newState == Worker.State.SUCCEEDED) {
+				contentLoaded = true;
+				String finalHtml = (String) webEngine.executeScript("document.body.innerHTML;");
+				callback.accept(finalHtml);
+			}
+		});
+
 	}
-	
-	
-	
 }

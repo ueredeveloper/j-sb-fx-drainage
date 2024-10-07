@@ -8,7 +8,7 @@ public class Usuario {
 
 	private Long id;
 	private String nome;
-	private Integer cpfCnpj;
+	private Long cpfCnpj;
 
 	private Set<Documento> documentos = new HashSet<>();
 
@@ -27,14 +27,8 @@ public class Usuario {
 		this.nome = nome;
 	}
 
-	public Usuario(Long id, String nome, Integer cpfCnpj, Set<Documento> documentos) {
-		super();
-		this.id = id;
-		this.nome = nome;
-		this.cpfCnpj = cpfCnpj;
-		this.documentos = documentos;
-	}
 	
+
 	public Long getId() {
 		return id;
 	}
@@ -51,11 +45,11 @@ public class Usuario {
 		this.nome = nome;
 	}
 
-	public Integer getCpfCnpj() {
+	public Long getCpfCnpj() {
 		return cpfCnpj;
 	}
 
-	public void setCpfCnpj(Integer cpfCnpj) {
+	public void setCpfCnpj(Long cpfCnpj) {
 		this.cpfCnpj = cpfCnpj;
 	}
 

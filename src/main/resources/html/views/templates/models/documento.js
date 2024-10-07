@@ -13,8 +13,8 @@ class Documento {
 
 	getSample (){
 		return {
-			"id":1,
-			"numero":"123456/58",
+			"id":13,
+			"numero":"987654/2015",
 			"processo":{
 			   "id":1,
 			   "numero":"123.456",
@@ -82,12 +82,12 @@ class Documento {
 						   "consumo":110.0,
 						   "total":1100.0,
 						   "tipoFinalidade":{
-							  "id":1
+							  "id":2
 						   }
 						},
 						{
 						   "id":2,
-						   "finalidade":"Comercial",
+						   "finalidade":"Uso Comercial",
 						   "subfinalidade":"Lavar Veículos",
 						   "quantidade":100.0,
 						   "consumo":110.0,
@@ -104,7 +104,7 @@ class Documento {
 						   "consumo":30.0,
 						   "total":9000.0,
 						   "tipoFinalidade":{
-							  "id":1
+							  "id":2
 						   }
 						}
 					 ],
@@ -356,8 +356,8 @@ class Documento {
 			"usuarios":[
 			   {
 				  "id":1,
-				  "nome":"Usuário Exemplo 1",
-				  "cpfcnpj": 12345678998,
+				  "nome":"Ávarez de Azevedo",
+				  "cpfCnpj": 45678912356,
 				  "documentos":[
 					 
 				  ]
