@@ -580,11 +580,13 @@ function App() {
 			<div id="chief-signature"></div>
 		</div>`;
 }
-var geographicTable, limitsTable, interferencia;
+var geographicTable, limitsTable, interferencia, utils;
 
 document.addEventListener('DOMContentLoaded', function () {
 
 	interferencia = new Interferencia();
+	
+	utils = new Utils();
 	
 	App();
 
@@ -592,6 +594,6 @@ document.addEventListener('DOMContentLoaded', function () {
 	limitsTable = new LimitsTable()
 	new GrantRequirements();
 	new ChiefSignature();
-	new Actions();
+	//new Actions();
 
 });

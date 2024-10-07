@@ -10,13 +10,18 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 
 import models.Interferencia;
+import models.InterferenciaTypeAdapter;
 import models.Subterranea;
 
 public class InterferenciaService {
@@ -37,7 +42,7 @@ public class InterferenciaService {
 
 			// Convert Documento object to JSON
 			String jsonInputString = convertObjectToJson(obj);
-			
+
 			// Write JSON to request body
 			try (OutputStream os = connection.getOutputStream();
 					OutputStreamWriter osw = new OutputStreamWriter(os, "UTF-8")) {
@@ -49,7 +54,7 @@ public class InterferenciaService {
 
 			String responseBody;
 			if (responseCode == HttpURLConnection.HTTP_CREATED) {
-				
+
 				try (BufferedReader br = new BufferedReader(
 						new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
 					StringBuilder response = new StringBuilder();
@@ -105,7 +110,7 @@ public class InterferenciaService {
 					while ((responseLine = br.readLine()) != null) {
 						response.append(responseLine);
 					}
-					
+
 					System.out.println("edited res to string " + response.toString());
 					responseBody = response.toString();
 				}
@@ -121,7 +126,6 @@ public class InterferenciaService {
 			return null; // Return null if an error occurs
 		}
 	}
-
 	public Set<Interferencia> fetchByKeyword(String keyword) {
 
 		try {
@@ -153,7 +157,7 @@ public class InterferenciaService {
 	}
 
 	public ServiceResponse<?> deleteById(Long id, Long tipoInterferenciaId) {
-		
+
 		if (tipoInterferenciaId == 2) {
 			System.out.println(tipoInterferenciaId);
 		}
@@ -192,9 +196,49 @@ public class InterferenciaService {
 		}
 
 		reader.close();
-		
-		return new Gson().fromJson(response.toString(), new TypeToken<Set<Interferencia>>() {
-		}.getType());
+
+		String result = response.toString();
+		Set<Interferencia> convertedList = new HashSet<>();
+
+		if (result == null) {
+			return convertedList; // Return an empty list if no results
+		}
+
+		String json = result.toString(); // Your JSON string
+
+		// Parse the string as a JsonArray
+		JsonArray jsonArray = JsonParser.parseString(json).getAsJsonArray();
+
+		Gson gson = new GsonBuilder().registerTypeAdapter(Interferencia.class, new InterferenciaTypeAdapter()).create();
+
+		if (jsonArray != null) {
+			Set<Interferencia> interferencias = gson.fromJson(jsonArray, new TypeToken<Set<Interferencia>>() {
+			}.getType());
+
+			// Optionally, print or work with the interferencias set
+			for (Interferencia interferencia : interferencias) {
+				if (interferencia instanceof Subterranea) {
+					Subterranea subterranea = (Subterranea) interferencia;
+					// Access Subterranea-specific fields
+					System.out.println("Subterranea attributes:");
+					System.out.println("Caesb: " + subterranea.getCaesb());
+					System.out.println("Nivel Estatico: " + subterranea.getNivelEstatico());
+					// Additional fields...
+				} else {
+					// Handle regular Interferencia
+					System.out.println("Regular Interferencia");
+				}
+			}
+
+			return interferencias;
+		}
+
+		return null;
+
+		// System.out.println("response " + response.toString());
+		// return new Gson().fromJson(response.toString(), new
+		// TypeToken<Set<Interferencia>>() {
+		// }.getType());
 	}
 
 	private void handleErrorResponse(HttpURLConnection connection) throws IOException {

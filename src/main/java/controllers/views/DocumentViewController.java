@@ -1,6 +1,5 @@
 package controllers.views;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -9,14 +8,12 @@ import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import com.google.gson.Gson;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -24,18 +21,14 @@ import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.web.HTMLEditor;
-import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import models.Documento;
 import models.Interferencia;
 import models.Template;
 import models.Usuario;
-import netscape.javascript.JSObject;
 import services.InterferenciaService;
 import services.TemplateService;
 import services.UsuarioService;
-import utilities.HTMLFileLoader;
-import utilities.JsonConverter;
 import utilities.URLUtility;
 import utilities.WebViewContentLoader;
 
@@ -49,16 +42,16 @@ public class DocumentViewController implements Initializable {
 
 	private Documento selectedDocument;
 
-	// Constructor that takes the selected document as a parameter
 	public DocumentViewController(Documento selectedDocument) {
 		this.selectedDocument = selectedDocument;
+		instance = this; // Setting the static instance
 	}
 
 	@FXML
 	private Button btnSelectAndCopy;
 
 	@FXML
-	private WebView webView;
+	private WebView webViewChart, webViewDocument;
 
 	@FXML
 	private AnchorPane apContainer;
@@ -96,61 +89,19 @@ public class DocumentViewController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
-		// Html Editor
-		webViewContentLoader = new WebViewContentLoader();
-		webViewContentLoader.loadWebViewContent(finalHtml -> {
-			// Set the retrieved HTML content in the HTMLEditor
-			htmlEditor.setHtmlText(finalHtml);
-		});
+		WebViewChart webViewChartInstance = new WebViewChart(webViewChart, selectedDocument);
+
+		// Initialize WebViewDocument with the WebView component
+		WebViewDocument webViewDocumentInstance = new WebViewDocument(webViewDocument);
 
 		// Copiar o modelo de ato para colar no SEI.
 		iconCopyDocument.setOnMouseClicked(event -> {
 			Clipboard clipboard = Clipboard.getSystemClipboard();
 			ClipboardContent content = new ClipboardContent();
-			content.putHtml(htmlEditor.getHtmlText());
+			content.putHtml(webViewDocumentInstance.getHtmlContent());
 			clipboard.setContent(content);
+			
 		});
-
-		// Retira o link com a stilização light ou dark, assim fica a estilização do
-		// componente pai (MainController)
-		apContainer.getStylesheets().clear();
-
-		// Webview Chart - Diagrama
-		String json = new Gson().toJson(selectedDocument);
-
-		// Load HTML content from a resource file.
-		String gojsDiagramPath = "/html/views/e-chart-tree/index.html";
-		String htmlDiagramContent = null;
-
-		try {
-			htmlDiagramContent = HTMLFileLoader.loadHTMLResourceToString(gojsDiagramPath);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		htmlDiagramContent = htmlDiagramContent.replace("${json}", json);
-
-		WebEngine webEngine;
-
-		webEngine = webView.getEngine();
-
-		webEngine.load(getClass().getResource("/html/views/e-chart-tree/index.html").toExternalForm());
-
-		webEngine.getLoadWorker().stateProperty().addListener((obs, oldState, newState) -> {
-
-			if (newState == Worker.State.SUCCEEDED) {
-
-				JSObject jsObject = (JSObject) webEngine.executeScript("window");
-
-				String sJson = json.replace("\"", "'");
-
-				JSObject updatedData = (JSObject) webEngine.executeScript("(" + sJson + ")");
-
-				jsObject.call("updateSeriesData", updatedData);
-			}
-		});
-
-		// Componentes
 
 		tfDocument.setText(
 				"Número: " + this.selectedDocument.getNumero() + " | Sei: " + this.selectedDocument.getNumeroSei());
@@ -221,14 +172,15 @@ public class DocumentViewController implements Initializable {
 					obsListTemplates.addAll(descricaoList);
 					cbTemplates.setItems(obsListTemplates);
 				}
-				// Verifica documento com interferencia e usuário selecionado
-				// System.out.println(JsonConverter.convertObjectToJson(this.selectedDocument));
+
 			}
 
 		});
 
 		cbTemplates.setOnAction(e -> {
 			Interferencia selectedInterference = cbInterferencies.getSelectionModel().getSelectedItem();
+
+			System.out.println("cbTemplates, selectedInteference !=null " + selectedInterference != null);
 
 			if (selectedInterference != null) {
 
@@ -239,6 +191,8 @@ public class DocumentViewController implements Initializable {
 
 				// Get the selected description from the ComboBox
 				String description = cbTemplates.getSelectionModel().getSelectedItem();
+
+				System.out.println("descriptionList != null " + !descricaoList.isEmpty());
 
 				if (!descricaoList.isEmpty()) {
 
@@ -256,7 +210,7 @@ public class DocumentViewController implements Initializable {
 							webContent.setWebContent(t.getConteudo());
 						}
 					});
-					
+
 					// Adiciona depois os outros arquivos
 					filteredTemplates.forEach(t -> {
 						String str = webContent.getWebContent();
@@ -267,17 +221,11 @@ public class DocumentViewController implements Initializable {
 						webContent.setWebContent(str);
 
 					});
-					
-					// Atualiza o WebView com o conteúdo atualizado
-					webViewContentLoader.getWebEngine().loadContent(webContent.getWebContent());
 
-					//webViewContentLoader.updateHtmlDocument(this.selectedDocument);
-					String strJson = JsonConverter.convertObjectToJson(this.selectedDocument);
-					//invokeJS("utils.updateHtmlDocument(" + strJson + ");");
-					
-					webViewContentLoader.updateHtmlDocument(this.selectedDocument);
-					// Opcional: atualiza o HTMLEditor também
-					htmlEditor.setHtmlText(webViewContentLoader.getHtml());
+					// Atualiza o WebView com o conteúdo atualizado
+					webViewDocumentInstance.loadContent(webContent.getWebContent());
+
+					webViewDocumentInstance.changeContent(this.selectedDocument);
 
 				}
 

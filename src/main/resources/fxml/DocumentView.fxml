@@ -82,10 +82,19 @@
                                     <ScrollPane fitToWidth="true" hbarPolicy="NEVER" layoutY="100.0" prefHeight="500.0" vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="100.0">
                                         <content>
                                             <AnchorPane prefHeight="500.0" prefWidth="900.0">
-                                                <HTMLEditor fx:id="htmlEditor" layoutY="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                                                <WebView fx:id="webViewDocument" layoutY="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
                                             </AnchorPane>
                                         </content>
                                     </ScrollPane>
+                                </AnchorPane>
+                            </content>
+                        </Tab>
+                        <Tab text="Editor">
+                            <content>
+                                <AnchorPane prefHeight="180.0" prefWidth="200.0" styleClass="secondary-content" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <children>
+                                        <HTMLEditor fx:id="htmlEditor" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                    </children>
                                 </AnchorPane>
                             </content>
                         </Tab>
@@ -93,7 +102,7 @@
                             <content>
                                 <AnchorPane prefHeight="180.0" prefWidth="200.0" styleClass="secondary-content" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <children>
-                                        <WebView fx:id="webView" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                        <WebView fx:id="webViewChart" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                     </children>
                                 </AnchorPane>
                             </content>

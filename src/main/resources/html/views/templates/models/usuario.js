@@ -26,6 +26,7 @@ class Usuario {
      * @returns 
     */
     formatCpfCnpj(value) {
+    	
         value = value.toString();
 
         // Verifica se é CPF (11 dígitos) ou CNPJ (14 dígitos)

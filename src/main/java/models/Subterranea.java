@@ -10,24 +10,27 @@ public class Subterranea extends Interferencia {
 
 	private String nivelDinamico; // em metros
 
+	private String profundidade; // em metros
+
+	private Integer vazaoOutorgavel; //
+
+	private Integer vazaoSistema; //
+
+	private Integer vazaoAutorizada; //
+
+	private Integer vazaoTeste; //
+
+	private TipoPoco tipoPoco;
+
 	public Subterranea() {
 		super();
 	}
-
 
 	public Subterranea(Double latitude, Double longitude) {
 		super(latitude, longitude);
 		// TODO Auto-generated constructor stub
 	}
 
-	public Subterranea(Long id, Double latitude, Double longitude, Endereco endereco,
-			TipoInterferencia tipoInterferencia, TipoOutorga tipoOutorga, SubtipoOutorga subtipoOutorga,
-			SituacaoProcesso situacaoProcesso, TipoAto tipoAto, Set<Finalidade> finalidades, Set<Demanda> demandas) {
-		super(id, latitude, longitude, endereco, tipoInterferencia, tipoOutorga, subtipoOutorga, situacaoProcesso, tipoAto,
-				finalidades, demandas);
-		// TODO Auto-generated constructor stub
-	}
-	
 	public Subterranea(Double latitude, Double longitude, Endereco endereco, TipoInterferencia tipoInterferencia,
 			TipoOutorga tipoOutorga, SubtipoOutorga subtipoOutorga, SituacaoProcesso situacaoProcesso, TipoAto tipoAto,
 			Set<Finalidade> finalidades, Set<Demanda> demandas) {
@@ -36,6 +39,13 @@ public class Subterranea extends Interferencia {
 		// TODO Auto-generated constructor stub
 	}
 
+	public Subterranea(Long id, Double latitude, Double longitude, Endereco endereco,
+			TipoInterferencia tipoInterferencia, TipoOutorga tipoOutorga, SubtipoOutorga subtipoOutorga,
+			SituacaoProcesso situacaoProcesso, TipoAto tipoAto, Set<Finalidade> finalidades, Set<Demanda> demandas) {
+		super(id, latitude, longitude, endereco, tipoInterferencia, tipoOutorga, subtipoOutorga, situacaoProcesso,
+				tipoAto, finalidades, demandas);
+		// TODO Auto-generated constructor stub
+	}
 
 	public Boolean getCaesb() {
 		return caesb;
@@ -61,11 +71,57 @@ public class Subterranea extends Interferencia {
 		this.nivelDinamico = nivelDinamico;
 	}
 
+	public String getProfundidade() {
+		return profundidade;
+	}
+
+	public void setProfundidade(String profundidade) {
+		this.profundidade = profundidade;
+	}
+
+	public Integer getVazaoOutorgavel() {
+		return vazaoOutorgavel;
+	}
+
+	public void setVazaoOutorgavel(Integer vazaoOutorgavel) {
+		this.vazaoOutorgavel = vazaoOutorgavel;
+	}
+
+	public Integer getVazaoSistema() {
+		return vazaoSistema;
+	}
+
+	public void setVazaoSistema(Integer vazaoSistema) {
+		this.vazaoSistema = vazaoSistema;
+	}
+
+	public Integer getVazaoAutorizada() {
+		return vazaoAutorizada;
+	}
+
+	public void setVazaoAutorizada(Integer vazaoAutorizada) {
+		this.vazaoAutorizada = vazaoAutorizada;
+	}
+
+	public Integer getVazaoTeste() {
+		return vazaoTeste;
+	}
+
+	public void setVazaoTeste(Integer vazaoTeste) {
+		this.vazaoTeste = vazaoTeste;
+	}
+
+	public TipoPoco getTipoPoco() {
+		return tipoPoco;
+	}
+
+	public void setTipoPoco(TipoPoco tipoPoco) {
+		this.tipoPoco = tipoPoco;
+	}
+
 	@Override
 	public String toString() {
-		return "Subterranea [getLatitude()=" + getLatitude() + ", getLongitude()=" + getLongitude() + ", getEndereco()="
-				+ getEndereco() + ", getTipoInterferencia()=" + getTipoInterferencia() + ", toString()="
-				+ super.toString() + ", getClass()=" + getClass() + ", hashCode()=" + hashCode() + "]";
+		return "Subterranea: " + getLatitude() + ", " + getLongitude();
 	}
 
 }

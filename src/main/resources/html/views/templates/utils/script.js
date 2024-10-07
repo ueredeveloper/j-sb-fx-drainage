@@ -36,7 +36,7 @@ class Utils {
 
     	// Converte o resultado para array e atualiza
     	Array.from(cpfcnpjs).forEach(element => {
-    		element.innerHTML = new Usuario().formatCpfCnpj(usuario.cpfcnpj);
+    		element.innerHTML = new Usuario().formatCpfCnpj(usuario.cpfCnpj);
     	});
 
     }
@@ -59,8 +59,6 @@ class Utils {
      */
     updateHtmlDocument(documento) {
     	
-    	console.log("update document")
-
     	let usuario = documento.usuarios[0];
     	this.updateUserData(usuario);
 
@@ -71,11 +69,6 @@ class Utils {
     	geographicTable.updateTableInfo(interferencia);
     	limitsTable.updateAuthorizedLimits(interferencia);
     }
-    
-    print (){console.log("print utils")}
-    
-    
-    
     
 }
 
