@@ -20,7 +20,7 @@
     <children>
         <BorderPane prefHeight="597.0" prefWidth="922.0" styleClass="secondary-content" stylesheets="@css/root-light.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <center>
-                <TabPane maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" BorderPane.alignment="CENTER">
+                <TabPane fx:id="tabPane" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" BorderPane.alignment="CENTER">
                     <tabs>
                         <Tab text="Documento">
                             <content>
@@ -89,9 +89,9 @@
                                 </AnchorPane>
                             </content>
                         </Tab>
-                        <Tab text="Editor">
+                        <Tab text="Editor" fx:id="editorTab">
                             <content>
-                                <AnchorPane prefHeight="180.0" prefWidth="200.0" styleClass="secondary-content" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <AnchorPane fx:id="apHtmlEditor" prefHeight="180.0" prefWidth="200.0" styleClass="secondary-content" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <children>
                                         <HTMLEditor fx:id="htmlEditor" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                     </children>

@@ -1,8 +1,8 @@
 /**
- * @id 21
- * @descricao Tabela Usuario
+ * @id 22
  * @nome usuario.js
  * @pasta models
+ * @descricao Tabelas Modelos
  */
 class Usuario {
 
@@ -12,7 +12,8 @@ class Usuario {
 
     getSample() {
         return {
-            nome: "Carlos Drummond de Andrade"
+            nome: "Carlos Drummond de Andrade", 
+            cpfCnpj: 12345678955
         }
     }
 

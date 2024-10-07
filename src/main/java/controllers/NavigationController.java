@@ -59,7 +59,6 @@ public class NavigationController implements Initializable {
 	@FXML
 	private void toggleMode(MouseEvent event) {
 
-		System.out.println("ICON");
 		Node source = (Node) event.getSource();
 		Scene scene = source.getScene();
 

@@ -1,11 +1,10 @@
 
 /**
- * Tabela de Limites Outorgados
  * Tag anterior:<tabela_limites_outorgados_tag></tabela_limites_outorgados_tag>
  * @id 5
- * @descricao Despacho de Outorga Prévia
- * @pasta 1
  * @nome limits-table.js
+ * @pasta 1
+ * @descricao Despacho de Outorga Prévia
  */
 class LimitsTable {
     constructor() {
@@ -167,7 +166,6 @@ class LimitsTable {
             // Para utilizar as funções da classe demanda
             let demanda = new Demanda();
             
-            console.log(interferencia.vazaoAutorizada)
             // Atualização
             document.getElementById(`q-litros-hora-${month}`).innerText = new Utils().formatNumber(interferencia.vazaoAutorizada);
             document.getElementById(`q-m3-hora-${month}`).innerText = new Utils().maskDoubleToFloat(demanda.convertFlowToM3(interferencia.vazaoAutorizada));

@@ -8,15 +8,20 @@ import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.swing.text.html.HTML;
+
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.AnchorPane;
@@ -54,7 +59,7 @@ public class DocumentViewController implements Initializable {
 	private WebView webViewChart, webViewDocument;
 
 	@FXML
-	private AnchorPane apContainer;
+	private AnchorPane apContainer, apHtmlEditor;
 
 	@FXML
 	private JFXTextField tfDocument;
@@ -77,6 +82,12 @@ public class DocumentViewController implements Initializable {
 	@FXML
 	private FontAwesomeIconView iconCopyDocument;
 
+	@FXML
+	private TabPane tabPane;
+
+	@FXML
+	private Tab editorTab;
+
 	ObservableList<Interferencia> obsListInterferencies = FXCollections.observableArrayList();
 	ObservableList<Usuario> obsListUsers = FXCollections.observableArrayList();
 	ObservableList<String> obsListTemplates = FXCollections.observableArrayList();
@@ -91,17 +102,37 @@ public class DocumentViewController implements Initializable {
 
 		WebViewChart webViewChartInstance = new WebViewChart(webViewChart, selectedDocument);
 
-		// Initialize WebViewDocument with the WebView component
-		WebViewDocument webViewDocumentInstance = new WebViewDocument(webViewDocument);
-
-		// Copiar o modelo de ato para colar no SEI.
 		iconCopyDocument.setOnMouseClicked(event -> {
-			Clipboard clipboard = Clipboard.getSystemClipboard();
-			ClipboardContent content = new ClipboardContent();
-			content.putHtml(webViewDocumentInstance.getHtmlContent());
-			clipboard.setContent(content);
-			
+
+			// Initialize WebViewDocument with the WebView component
+			WebViewDocument webViewDocumentInstance = new WebViewDocument(webViewDocument, htmlEditor);
+
+			webViewDocumentInstance.getHtmlContent(htmlContent -> {
+				if (htmlContent != null) {
+					Clipboard clipboard = Clipboard.getSystemClipboard();
+					ClipboardContent content = new ClipboardContent();
+					content.putHtml(htmlContent); // Copy the retrieved HTML content to the clipboard
+					
+					System.out.println(htmlContent);
+					clipboard.setContent(content);
+				} else {
+					System.err.println("Copy HTML. Failed to retrieve HTML content.");
+				}
+			});
 		});
+
+		// Add a listener to the TabPane to detect when the "Editor" tab is selected
+		/*tabPane.getSelectionModel().selectedItemProperty().addListener((obs, oldTab, newTab) -> {
+			if (newTab == editorTab) {
+				WebViewDocument webViewDocumentInstance = new WebViewDocument(webViewDocument);
+				String htmlContent = webViewDocumentInstance.getHtmlContentForHtmlEditor(this.selectedDocument);
+				
+				htmlEditor.setHtmlText(htmlContent);
+			
+
+
+			}
+		});*/
 
 		tfDocument.setText(
 				"Número: " + this.selectedDocument.getNumero() + " | Sei: " + this.selectedDocument.getNumeroSei());
@@ -133,6 +164,8 @@ public class DocumentViewController implements Initializable {
 
 		cbUsers.setOnAction(e -> {
 			Usuario user = cbUsers.getSelectionModel().getSelectedItem();
+			
+			System.out.println(user.getNome());
 
 			// Atualiza documento com o usuário que será utilizado na criação do ato
 			// (Parecer, Despacho etc)
@@ -221,6 +254,9 @@ public class DocumentViewController implements Initializable {
 						webContent.setWebContent(str);
 
 					});
+					
+					// Initialize WebViewDocument with the WebView component
+					WebViewDocument webViewDocumentInstance = new WebViewDocument(webViewDocument, htmlEditor);
 
 					// Atualiza o WebView com o conteúdo atualizado
 					webViewDocumentInstance.loadContent(webContent.getWebContent());

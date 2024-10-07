@@ -446,7 +446,6 @@ public class DocumentController implements Initializable {
 
 		Processo object = cbProcess.selectionModelProperty().get().isEmpty() ? null : cbProcess.getItems().get(0);
 
-		// System.out.println(cbProcess.getItems().get(0).getProcNumero());
 		loader.setController(new AddProcessController(this, object, localUrl, ttClose));
 
 		try {
@@ -520,7 +519,6 @@ public class DocumentController implements Initializable {
 
 		Usuario object = cbUser.selectionModelProperty().get().isEmpty() ? null : cbUser.getItems().get(0);
 
-		// System.out.println(cbProcess.getItems().get(0).getProcNumero());
 		loader.setController(new AddUserController(this, object, localUrl, ttClose));
 
 		try {
@@ -566,7 +564,6 @@ public class DocumentController implements Initializable {
 
 		Endereco object = cbAddress.selectionModelProperty().get().isEmpty() ? null : cbAddress.getItems().get(0);
 
-		// System.out.println(cbProcess.getItems().get(0).getProcNumero());
 		loader.setController(new AddAddressController(this, object, localUrl, ttClose));
 
 		try {
@@ -640,7 +637,6 @@ public class DocumentController implements Initializable {
 
 		Anexo object = cbAttachment.selectionModelProperty().get().isEmpty() ? null : cbAttachment.getItems().get(0);
 
-		// System.out.println(cbProcess.getItems().get(0).getProcNumero());
 		loader.setController(new AddAttachmentController(this, object, localUrl, ttClose));
 
 		try {

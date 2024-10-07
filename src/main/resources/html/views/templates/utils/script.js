@@ -1,9 +1,8 @@
 /**
- * Funções compartilhadas
- * @id 22
- * @descricao Funções Compartilhadas
- * @pasta utils
+ * @id 23
  * @nome script.js
+ * @pasta utils
+ * @descricao Funções compartilhadas
  */
 
 class Utils {
@@ -17,7 +16,6 @@ class Utils {
 
     // Função para formatar o número com ponto separador de milhar
     formatNumber(value) {
-    	console.log(value)
     	return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     }
     /**
@@ -53,6 +51,18 @@ class Utils {
     	});
 
     }
+    
+    
+    updatePurpouses (finalidades) {
+    	let items = document.getElementsByClassName('inter-finalidades');
+
+    	Array.from(items).forEach(element => {
+    		let strFinalidades = new Finalidade().createPurpouseString(finalidades)
+    		element.innerHTML = strFinalidades
+    	});
+
+    }
+
     /**
      * Atualiza tudo utilizando um exemplo da tabela documento com endereço, interferências e usuário
      * @param {*} documento 
@@ -60,15 +70,56 @@ class Utils {
     updateHtmlDocument(documento) {
     	
     	let usuario = documento.usuarios[0];
+    	
+    	console.log(usuario.nome)
     	this.updateUserData(usuario);
-
+    	
     	let endereco = documento.endereco;
     	this.udpateAddress(endereco);
 
     	let interferencia = documento.endereco.interferencias[0];
-    	geographicTable.updateTableInfo(interferencia);
-    	limitsTable.updateAuthorizedLimits(interferencia);
+    	
+    	let finalidades = interferencia.finalidades;
+    	this.updatePurpouses (finalidades);
+    	
+    	
+    	new GeographicTable().updateTableInfo(interferencia);
+    	new LimitsTable().updateAuthorizedLimits(interferencia);
+    	
+    	
+    	//this.createButtonForUpdate(documento)
     }
     
+    createButtonForUpdate(documento) {
+        let button = document.createElement('button');
+        button.innerText = 'Update Document';
+        
+        // Append the button to the body or any specific container
+        document.body.appendChild(button);
+
+        // Set up the click event
+        button.onclick = () => {
+        	console.log('button clicked!')
+            this.updateHtmlDocument(documento);
+        };
+
+        // Automatically click the button (if needed)
+        button.click();
+    }
+    
+    extractTagsOnly() {
+    	// Get the rendered HTML content
+    	const renderedHtml = document.documentElement.outerHTML;
+
+    	// Use DOMPurify to clean the HTML
+    	const cleanHtmlContent = DOMPurify.sanitize(renderedHtml, {
+    	    ALLOWED_ATTR: ['id', 'class', 'src', 'href', 'alt', 'style'],  // Only allow specific attributes
+    	    ALLOWED_TAGS: DOMPurify.defaults.ALLOWED_TAGS // Keep the default allowed tags
+    	});
+    	
+    	return cleanHtmlContent;
+    }
+    
+   
 }
 

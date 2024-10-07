@@ -1,9 +1,9 @@
 
 /**
- * @id 20
- * @descricao Tabela Tipo Poço
+ * @id 21
  * @nome tipo-poco.js
  * @pasta models
+ * @descricao Tabelas Modelos
  */
 class TipoPoco {
 

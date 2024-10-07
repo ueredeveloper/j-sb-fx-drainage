@@ -133,8 +133,6 @@ public class TemplateController implements Initializable {
 
 			ServiceResponse<?> response = service.save(newObject);
 
-			System.out.println(response.getResponseCode());
-
 			if (response.getResponseCode() == 201) {
 
 				// Informa salvamento com sucesso

@@ -1,9 +1,8 @@
 /**
- * Classes modelos de tabelas no banco de dados
- * @id 19
- * @descricao Tabela Interferência
+ * @id 20
  * @nome interferencia.js
  * @pasta models
+ * @descricao Tabelas Modelos
  */
 class Interferencia {
     constructor() {

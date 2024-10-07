@@ -28,10 +28,6 @@ import netscape.javascript.JSObject;
  */
 public class MapController implements Initializable {
 	
-	
-	
-	
-
 	@FXML
 	private AnchorPane apMap;
 
@@ -116,7 +112,6 @@ public class MapController implements Initializable {
 					// doc.setMember("appShapeEndereco", GoogleMap.this);
 				}
 
-				// System.out.println(" initComunicantion funcionando");
 			}
 		});
 

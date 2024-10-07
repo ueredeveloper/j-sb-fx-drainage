@@ -17,9 +17,10 @@ public class ReadAndCreateTemplate {
 
 			String id = extractTag(fileContent, "@id");
 			String name = extractTag(fileContent, "@name");
-			String description = extractTag(fileContent, "@descricao");
-			
+		
 			String folder = extractTag(fileContent, "@pasta");
+			
+			String description = extractTag(fileContent, "@descricao");
 
 			Template template = new Template();
 
@@ -29,8 +30,8 @@ public class ReadAndCreateTemplate {
 				template.setId(Long.parseLong(id));
 			}
 			template.setNome(name);
-			template.setDescricao(description);
 			template.setPasta(folder);
+			template.setDescricao(description);
 			template.setConteudo(fileContent);
 
 			return template;

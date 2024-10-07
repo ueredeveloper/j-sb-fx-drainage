@@ -1,9 +1,8 @@
 /**
-
  * @id 18
- * @descricao Tabela Endereco
  * @nome endereco.js
  * @pasta models
+ * @descricao Tabelas Modelos
  */
 class Endereco {
     constructor() {

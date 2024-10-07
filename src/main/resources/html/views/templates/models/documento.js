@@ -1,9 +1,8 @@
 /**
-
  * @id 17
- * @descricao Tabela Documento
  * @nome documento.js
  * @pasta models
+ * @descricao Tabelas Modelos
  */
 class Documento {
 	
@@ -82,7 +81,7 @@ class Documento {
 						   "consumo":110.0,
 						   "total":1100.0,
 						   "tipoFinalidade":{
-							  "id":1
+							  "id":2
 						   }
 						},
 						{
@@ -104,7 +103,7 @@ class Documento {
 						   "consumo":30.0,
 						   "total":9000.0,
 						   "tipoFinalidade":{
-							  "id":1
+							  "id":2
 						   }
 						}
 					 ],
@@ -357,7 +356,7 @@ class Documento {
 			   {
 				  "id":1,
 				  "nome":"Usuário Exemplo 1",
-				  "cpfcnpj": 12345678998,
+				  "cpfCnpj": 12345678900,
 				  "documentos":[
 					 
 				  ]
