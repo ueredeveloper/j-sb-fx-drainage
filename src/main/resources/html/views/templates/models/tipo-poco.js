@@ -7,13 +7,9 @@
  */
 class TipoPoco {
 
-    constructor() {
+    constructor() {}
 
-    }
-
-    getSample() {
-
-    }
+    getSample() {}
     /**
      * Cria uma string com o tipo de poço
      * Tag anterior: <inter_tipo_poco_tag></inter_tipo_poco_tag>.

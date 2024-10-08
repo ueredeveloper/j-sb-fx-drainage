@@ -48,13 +48,17 @@ function App() {
 		</div>`;
 }
 var documento;
+var utils, geographicTable, limitsTable, user, demand;
 
 document.addEventListener('DOMContentLoaded', function () {
 
 	App();
 	
-	new GeographicTable();
-	new LimitsTable()
+	utils = new Utils();
+	user = new Usuario();
+	geographicTable = new GeographicTable();
+	limitsTable = new LimitsTable();
+	demand = new Demanda();
 	new GrantRequirements();
 	new ChiefSignature();
 	new Actions();

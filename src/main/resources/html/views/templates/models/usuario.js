@@ -6,9 +6,7 @@
  */
 class Usuario {
 
-    constructor() {
-
-    }
+    constructor() {}
 
     getSample() {
         return {

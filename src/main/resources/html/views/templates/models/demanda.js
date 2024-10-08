@@ -6,14 +6,9 @@
  */
 class Demanda {
 
-    constructor() {
+    constructor() {}
 
-    }
-
-    getSample() {
-
-    }
-
+    getSample() {}
 
     // Converter litros por hora (L/h) para metros cúbicos por hora (M³/h)
     convertFlowToM3(value) {

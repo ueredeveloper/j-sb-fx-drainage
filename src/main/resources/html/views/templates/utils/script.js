@@ -27,14 +27,14 @@ class Utils {
 
     	// Converte o resultado para array e atualiza
     	Array.from(names).forEach(element => {
-    		element.innerHTML = new Usuario().getNome(usuario);
+    		element.innerHTML = user.getNome(usuario);
     	});
 
     	let cpfcnpjs = document.getElementsByClassName("us-cpf-cnpj");
 
     	// Converte o resultado para array e atualiza
     	Array.from(cpfcnpjs).forEach(element => {
-    		element.innerHTML = new Usuario().formatCpfCnpj(usuario.cpfCnpj);
+    		element.innerHTML = user.formatCpfCnpj(usuario.cpfCnpj);
     	});
 
     }
@@ -71,7 +71,6 @@ class Utils {
     	
     	let usuario = documento.usuarios[0];
     	
-    	console.log(usuario.nome)
     	this.updateUserData(usuario);
     	
     	let endereco = documento.endereco;
@@ -83,41 +82,20 @@ class Utils {
     	this.updatePurpouses (finalidades);
     	
     	
-    	new GeographicTable().updateTableInfo(interferencia);
-    	new LimitsTable().updateAuthorizedLimits(interferencia);
+    	geographicTable.updateTableInfo(interferencia);
+    	limitsTable.updateAuthorizedLimits(interferencia);
     	
     	
     	//this.createButtonForUpdate(documento)
     }
     
-    createButtonForUpdate(documento) {
-        let button = document.createElement('button');
-        button.innerText = 'Update Document';
-        
-        // Append the button to the body or any specific container
-        document.body.appendChild(button);
-
-        // Set up the click event
-        button.onclick = () => {
-        	console.log('button clicked!')
-            this.updateHtmlDocument(documento);
-        };
-
-        // Automatically click the button (if needed)
-        button.click();
-    }
     
-    extractTagsOnly() {
+    
+    extractBody () {
     	// Get the rendered HTML content
-    	const renderedHtml = document.documentElement.outerHTML;
+    	const renderedHtml = window.document.body.innerHTML;
 
-    	// Use DOMPurify to clean the HTML
-    	const cleanHtmlContent = DOMPurify.sanitize(renderedHtml, {
-    	    ALLOWED_ATTR: ['id', 'class', 'src', 'href', 'alt', 'style'],  // Only allow specific attributes
-    	    ALLOWED_TAGS: DOMPurify.defaults.ALLOWED_TAGS // Keep the default allowed tags
-    	});
-    	
-    	return cleanHtmlContent;
+    	return renderedHtml;
     }
     
    

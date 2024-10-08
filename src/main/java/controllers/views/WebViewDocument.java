@@ -1,6 +1,8 @@
 package controllers.views;
 
 import java.util.function.Consumer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javafx.application.Platform;
 import javafx.concurrent.Worker;
@@ -48,69 +50,42 @@ public class WebViewDocument {
 	}
 
 	public void changeContent(Documento selectedDocument) {
-	    // Register error handler for JavaScript errors
-	    webEngine.setOnError(event -> {
-	        System.err.println("JavaScript error: " + event.getMessage());
-	    });
+		// Register error handler for JavaScript errors
+		webEngine.setOnError(event -> {
+			System.err.println("JavaScript error: " + event.getMessage());
+		});
 
-	    // Convert the Documento object to JSON
-	    String strJson = JsonConverter.convertObjectToJson(selectedDocument);
+		// Convert the Documento object to JSON
+		String strJson = JsonConverter.convertObjectToJson(selectedDocument);
 
-	    // Ensure the page is loaded before executing JS and updating HTML
-	    webEngine.getLoadWorker().stateProperty().addListener((obs, oldState, newState) -> {
-	        if (newState == Worker.State.SUCCEEDED) {
-	            try {
-	                // Call JavaScript to update the document with the JSON content
-	                invokeJS("new Utils().updateHtmlDocument(" + strJson + ");");
+		// Ensure the page is loaded before executing JS and updating HTML
+		webEngine.getLoadWorker().stateProperty().addListener((obs, oldState, newState) -> {
+			if (newState == Worker.State.SUCCEEDED) {
+				try {
+					// Call JavaScript to update the document with the JSON content
+					invokeJS("utils.updateHtmlDocument(" + strJson + ");");
 
-	                // Fetch the updated HTML content after JS execution
-	                fetchAndUpdateHtmlEditor();
+					htmlEditor.setHtmlText(clearHtmlContent());
 
-	                System.out.println("HTML content updated successfully.");
-	            } catch (JSException e) {
-	                System.err.println("Error updating HTML content: " + e.getMessage());
-	            }
-	        } else if (newState == Worker.State.FAILED) {
-	            System.err.println("Failed to load the web content.");
-	        }
-	    });
-	}
-
-	// Fetch and update the HTML editor with the latest HTML content
-	private void fetchAndUpdateHtmlEditor() {
-	    Platform.runLater(() -> {
-	        try {
-	            // Get the window object
-	            window = (JSObject) webEngine.executeScript("window");
-
-	            // Execute JS to fetch the outer HTML of the document body
-	            Object htmlContent = window.eval("document.body");
-
-	            // Update the HTML editor if the content is valid
-	            if (htmlContent instanceof String) {
-	                htmlEditor.setHtmlText((String) htmlContent);
-	            } else {
-	                System.err.println("HTML content is null or not a String.");
-	            }
-	        } catch (JSException e) {
-	            System.err.println("Error while retrieving HTML content: " + e.getMessage());
-	        }
-	    });
+					System.out.println("HTML content updated successfully.");
+				} catch (JSException e) {
+					System.err.println("Error updating HTML content: " + e.getMessage());
+				}
+			} else if (newState == Worker.State.FAILED) {
+				System.err.println("Failed to load the web content.");
+			}
+		});
 	}
 
 	public void getHtmlContent(Consumer<String> callback) {
 
 		Platform.runLater(() -> {
 			try {
-				// Get the 'window' object
-				window = (JSObject) webEngine.executeScript("window");
-
-				// Execute JavaScript to get the outer HTML of the document
-				Object htmlContent = window.eval("document.documentElement.outerHTML");
+				String cleanHtml = clearHtmlContent();
 
 				// Attempt to cast the result to String
-				if (htmlContent != null && htmlContent instanceof String) {
-					callback.accept((String) htmlContent); // Pass the HTML content as a String to the callback
+				if (cleanHtml != null && cleanHtml instanceof String) {
+					callback.accept((String) cleanHtml); // Pass the HTML content as a String to the callback
 				} else {
 					// If not a String, handle the null case or a fallback option
 					System.err.println("HTML content is null or not a String.");
@@ -123,34 +98,22 @@ public class WebViewDocument {
 		});
 	}
 
-	public String getHtmlContentForHtmlEditor(Documento selectedDocument) {
+	/**
+	 * É preciso remover os scripts do arquivo html para enviar para o html editor.
+	 */
+	public String clearHtmlContent() {
+		String regex = "<script[\\s\\S]*?</script>";
 
-		try {
-			// Get the 'window' object
-			window = (JSObject) webEngine.executeScript("window");
+		window = (JSObject) webEngine.executeScript("window");
 
-			// Execute JavaScript to get the outer HTML of the document
-			Object htmlContent = window.eval("document.body.textContent");
+		String htmlContent = window.eval("document.documentElement.outerHTML").toString();
 
-			String strJson = JsonConverter.convertObjectToJson(selectedDocument);
+		Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+		Matcher matcher = pattern.matcher(htmlContent);
 
-			String runScript = "<script>documento = " + strJson + ";"
-					+ "new Utils().createButtonForUpdate(documento);</script>";
+		String cleanHtml = matcher.replaceAll("");
 
-			// Attempt to cast the result to String
-			if (htmlContent != null && htmlContent instanceof String) {
-				// Concatena a string que aciona os scripts
-				return (String) htmlContent;
-			} else {
-				// If not a String, handle the null case or a fallback option
-				System.err.println("HTML content is null or not a String.");
-				return null;
-			}
-		} catch (JSException e) {
-			System.err.println("Error while retrieving HTML content: " + e.getMessage());
-			return null; // Pass null in case of error
-		}
-
+		return cleanHtml;
 	}
 
 	/**

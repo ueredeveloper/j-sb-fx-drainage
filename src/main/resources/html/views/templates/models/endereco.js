@@ -5,8 +5,7 @@
  * @descricao Tabelas Modelos
  */
 class Endereco {
-    constructor() {
-    }
+    constructor() {}
 
     // Método para obter a interferência
     getSample () {

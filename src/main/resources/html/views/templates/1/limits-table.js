@@ -161,16 +161,13 @@ class LimitsTable {
 
         months.forEach((month, index) => {
 
-            // Para utilizar as funções da classe demanda
-            let demanda = new Demanda();
-            
             // Atualização
-            document.getElementById(`q-litros-hora-${month}`).innerText = new Utils().formatNumber(interferencia.vazaoAutorizada);
-            document.getElementById(`q-m3-hora-${month}`).innerText = new Utils().maskDoubleToFloat(demanda.convertFlowToM3(interferencia.vazaoAutorizada));
+            document.getElementById(`q-litros-hora-${month}`).innerText = utils.formatNumber(interferencia.vazaoAutorizada);
+            document.getElementById(`q-m3-hora-${month}`).innerText = utils.maskDoubleToFloat(demand.convertFlowToM3(interferencia.vazaoAutorizada));
             document.getElementById(`t-horas-dia-${month}`).innerText = authorizedDemands[index]?.tempo || 'N/A'; // Adiciona verificação de índice
-            document.getElementById(`q-m3-dia-${month}`).innerText = new Utils().maskDoubleToFloat(demanda.calculateM3Day(interferencia.vazaoAutorizada, authorizedDemands[index].tempo));
+            document.getElementById(`q-m3-dia-${month}`).innerText = utils.maskDoubleToFloat(demand.calculateM3Day(interferencia.vazaoAutorizada, authorizedDemands[index].tempo));
             document.getElementById(`p-dias-mes-${month}`).innerText = authorizedDemands[index].periodo
-            document.getElementById(`q-m3-mes-${month}`).innerText = new Utils().maskDoubleToFloat(demanda.calculateM3Month(interferencia.vazaoAutorizada, authorizedDemands[index].tempo, authorizedDemands[index].periodo));
+            document.getElementById(`q-m3-mes-${month}`).innerText = utils.maskDoubleToFloat(demand.calculateM3Month(interferencia.vazaoAutorizada, authorizedDemands[index].tempo, authorizedDemands[index].periodo));
         });
 
     }

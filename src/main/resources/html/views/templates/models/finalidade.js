@@ -6,13 +6,9 @@
  */
 class Finalidade {
 
-    constructor() {
+    constructor() {}
 
-    }
-
-    getSample() {
-    	return []
-    }
+    getSample() {return []}
     
 	/**
 	 * Converte uma array de finalidades em um string
@@ -27,8 +23,6 @@ class Finalidade {
 
 		// Substituir a última vírgula por 'e'
 		let result = arrayToString.replace(/,(?=[^,]*$)/, ' e ');
-
-		console.log(result)
 
 		// Adicionar espaço após todas as vírgulas
 		result = result.replace(/,/g, ', ');

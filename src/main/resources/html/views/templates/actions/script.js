@@ -33,14 +33,14 @@ class Actions {
 
             let interferencia = new Interferencia().getSample()
        
-            new GeographicTable().updateTableInfo(interferencia);
+            geographicTable.updateTableInfo(interferencia);
         };
         // Atualiza os limites outorgáveis
         document.getElementById('btn-update-limits-table').onclick = function () {
 
             let interferencia = new Interferencia().getSample()
        
-            new LimitsTable().updateAuthorizedLimits(interferencia);
+            limitsTable.updateAuthorizedLimits(interferencia);
         };
 
         // Atualiza os limites outorgáveis
@@ -50,7 +50,7 @@ class Actions {
             	documento = new Documento().getSample()
             }
        
-            new Utils().updateHtmlDocument(documento)
+            utils.updateHtmlDocument(documento)
         };
 
     }

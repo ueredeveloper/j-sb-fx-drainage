@@ -8,13 +8,10 @@ import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.swing.text.html.HTML;
-
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -39,7 +36,6 @@ import utilities.WebViewContentLoader;
 
 public class DocumentViewController implements Initializable {
 
-	
 	private static DocumentViewController instance;
 
 	public static DocumentViewController getInstance() {
@@ -113,27 +109,13 @@ public class DocumentViewController implements Initializable {
 					Clipboard clipboard = Clipboard.getSystemClipboard();
 					ClipboardContent content = new ClipboardContent();
 					content.putHtml(htmlContent); // Copy the retrieved HTML content to the clipboard
-					
-					System.out.println(htmlContent);
 					clipboard.setContent(content);
+
 				} else {
 					System.err.println("Copy HTML. Failed to retrieve HTML content.");
 				}
 			});
 		});
-
-		// Add a listener to the TabPane to detect when the "Editor" tab is selected
-		/*tabPane.getSelectionModel().selectedItemProperty().addListener((obs, oldTab, newTab) -> {
-			if (newTab == editorTab) {
-				WebViewDocument webViewDocumentInstance = new WebViewDocument(webViewDocument);
-				String htmlContent = webViewDocumentInstance.getHtmlContentForHtmlEditor(this.selectedDocument);
-				
-				htmlEditor.setHtmlText(htmlContent);
-			
-
-
-			}
-		});*/
 
 		tfDocument.setText(
 				"Número: " + this.selectedDocument.getNumero() + " | Sei: " + this.selectedDocument.getNumeroSei());
@@ -165,8 +147,6 @@ public class DocumentViewController implements Initializable {
 
 		cbUsers.setOnAction(e -> {
 			Usuario user = cbUsers.getSelectionModel().getSelectedItem();
-			
-			System.out.println(user.getNome());
 
 			// Atualiza documento com o usuário que será utilizado na criação do ato
 			// (Parecer, Despacho etc)
@@ -255,7 +235,7 @@ public class DocumentViewController implements Initializable {
 						webContent.setWebContent(str);
 
 					});
-					
+
 					// Initialize WebViewDocument with the WebView component
 					WebViewDocument webViewDocumentInstance = new WebViewDocument(webViewDocument, htmlEditor);
 

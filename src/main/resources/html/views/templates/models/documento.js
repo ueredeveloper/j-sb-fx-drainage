@@ -6,9 +6,7 @@
  */
 class Documento {
 	
-	constructor () {
-		
-	}
+	constructor () {}
 
 	getSample (){
 		return {
