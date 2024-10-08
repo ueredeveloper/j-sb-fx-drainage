@@ -1,8 +1,14 @@
 /**
  * @id 19
+<<<<<<< HEAD
  * @descricao Tabela Finalidade
  * @nome finalidade.js
  * @pasta models
+=======
+ * @nome finalidade.js
+ * @pasta models
+ * @descricao Tabelas Modelos
+>>>>>>> feat/web-view-and-html-editor
  */
 class Finalidade {
 

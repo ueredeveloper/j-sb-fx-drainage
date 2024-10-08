@@ -1,9 +1,8 @@
 /**
- * Obrigações da outorga.
  * @id 3
- * @descricao Despacho de Outorga Prévia
- * @pasta 1
  * @nome grant-requirements.js
+ * @pasta 1
+ * @descricao Despacho de Outorga Prévia
  */
 class GrantRequirements {
     constructor() {

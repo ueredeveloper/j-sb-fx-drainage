@@ -17,7 +17,12 @@ public class ReadAndUpdateTemplate {
             // Lê o conteúdo do arquivo
             String fileContent = new String(Files.readAllBytes(Paths.get(filePath)));
 
-           
+            // Atualizar ou adicionar @id
+            fileContent = updateTag(fileContent, "@id", String.valueOf(id));
+            
+            // Se precisar limpar os ids nos arquivos para salvar novos ids para cada arquivo
+            //fileContent = updateTag(fileContent, "@id", "");
+            
             // Atualizar ou adicionar @nome
             fileContent = updateTag(fileContent, "@nome", name);
 
@@ -27,8 +32,7 @@ public class ReadAndUpdateTemplate {
             // Atualizar ou adicionar @descricao
             fileContent = updateTag(fileContent, "@descricao", description);
             
-            // Atualizar ou adicionar @id
-            fileContent = updateTag(fileContent, "@id", String.valueOf(id));
+          
 
 
             // Escreve o conteúdo atualizado de volta no arquivo

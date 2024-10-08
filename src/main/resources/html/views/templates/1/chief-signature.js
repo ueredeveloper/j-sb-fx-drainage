@@ -1,8 +1,8 @@
 /**
- * @pasta 1
  * @id 1
- * @descricao Despacho de Outorga Prévia
  * @nome chief-signature.js
+ * @pasta 1
+ * @descricao Despacho de Outorga Prévia
  */
 class ChiefSignature {
 

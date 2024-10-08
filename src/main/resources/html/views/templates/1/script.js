@@ -1,10 +1,9 @@
-/**
- * Main
- * @id 6
- * @descricao Despacho de Outorga Prévia
- * @pasta 1
- * @nome script.js
 
+/**
+ * @id 6
+ * @nome script.js
+ * @pasta 1
+ * @descricao Despacho de Outorga Prévia
  */
 
 function App() {
@@ -12,7 +11,7 @@ function App() {
 	const appDiv = document.getElementById("app");
 
 	appDiv.innerHTML = `
-		<div>
+		<div id="container">
 			<div style="text-align: center;">&nbsp;</div>
 
 			<p style="margin-left: 400px;">Emite outorga prévia para reservar o direito de uso de água subterrânea a <b><span class="us-nome"></span></b>, para fins de <span class="inter-finalidades"></span>.
@@ -49,20 +48,29 @@ function App() {
 			<div id="chief-signature"></div>
 		</div>`;
 }
+<<<<<<< HEAD
 var geographicTable, limitsTable, interferencia, utils, usuario;
+=======
+var documento;
+>>>>>>> feat/web-view-and-html-editor
 
 document.addEventListener('DOMContentLoaded', function () {
 
 	App();
 	
+<<<<<<< HEAD
 	utils = new Utils();
 	usuario = new Usuario();
 	interferencia = new Interferencia();
 
 	geographicTable = new GeographicTable();
 	limitsTable = new LimitsTable()
+=======
+	new GeographicTable();
+	new LimitsTable()
+>>>>>>> feat/web-view-and-html-editor
 	new GrantRequirements();
 	new ChiefSignature();
 	new Actions();
-
+	
 });

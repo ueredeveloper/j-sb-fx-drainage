@@ -1,9 +1,8 @@
 /**
-
  * @id 17
- * @descricao Tabela Documento
  * @nome documento.js
  * @pasta models
+ * @descricao Tabelas Modelos
  */
 class Documento {
 	
@@ -356,8 +355,13 @@ class Documento {
 			"usuarios":[
 			   {
 				  "id":1,
+<<<<<<< HEAD
 				  "nome":"Ávarez de Azevedo",
 				  "cpfCnpj": 45678912356,
+=======
+				  "nome":"Usuário Exemplo 1",
+				  "cpfCnpj": 12345678900,
+>>>>>>> feat/web-view-and-html-editor
 				  "documentos":[
 					 
 				  ]

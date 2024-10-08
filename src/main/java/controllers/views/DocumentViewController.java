@@ -1,6 +1,5 @@
 package controllers.views;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -9,34 +8,37 @@ import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import com.google.gson.Gson;
+import javax.swing.text.html.HTML;
+
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.web.HTMLEditor;
-import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import models.Documento;
 import models.Interferencia;
 import models.Template;
 import models.Usuario;
+<<<<<<< HEAD
 import netscape.javascript.JSException;
 import netscape.javascript.JSObject;
+=======
+>>>>>>> feat/web-view-and-html-editor
 import services.InterferenciaService;
 import services.TemplateService;
 import services.UsuarioService;
-import utilities.HTMLFileLoader;
-import utilities.JsonConverter;
 import utilities.URLUtility;
 import utilities.WebViewContentLoader;
 
@@ -50,19 +52,23 @@ public class DocumentViewController implements Initializable {
 
 	private Documento selectedDocument;
 
-	// Constructor that takes the selected document as a parameter
 	public DocumentViewController(Documento selectedDocument) {
 		this.selectedDocument = selectedDocument;
+		instance = this; // Setting the static instance
 	}
 
 	@FXML
 	private Button btnSelectAndCopy;
 
 	@FXML
+<<<<<<< HEAD
 	private WebView webViewChart, webViewContent;
+=======
+	private WebView webViewChart, webViewDocument;
+>>>>>>> feat/web-view-and-html-editor
 
 	@FXML
-	private AnchorPane apContainer;
+	private AnchorPane apContainer, apHtmlEditor;
 
 	@FXML
 	private JFXTextField tfDocument;
@@ -85,6 +91,12 @@ public class DocumentViewController implements Initializable {
 	@FXML
 	private FontAwesomeIconView iconCopyDocument;
 
+	@FXML
+	private TabPane tabPane;
+
+	@FXML
+	private Tab editorTab;
+
 	ObservableList<Interferencia> obsListInterferencies = FXCollections.observableArrayList();
 	ObservableList<Usuario> obsListUsers = FXCollections.observableArrayList();
 	ObservableList<String> obsListTemplates = FXCollections.observableArrayList();
@@ -100,6 +112,7 @@ public class DocumentViewController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
+<<<<<<< HEAD
 		// Html Editor
 		webViewContentLoader = new WebViewContentLoader();
 	
@@ -111,20 +124,40 @@ public class DocumentViewController implements Initializable {
 		});
 		
 		// Copiar o modelo de ato para colar no SEI.
+=======
+		WebViewChart webViewChartInstance = new WebViewChart(webViewChart, selectedDocument);
+
+>>>>>>> feat/web-view-and-html-editor
 		iconCopyDocument.setOnMouseClicked(event -> {
-			Clipboard clipboard = Clipboard.getSystemClipboard();
-			ClipboardContent content = new ClipboardContent();
-			content.putHtml(htmlEditor.getHtmlText());
-			clipboard.setContent(content);
+
+			// Initialize WebViewDocument with the WebView component
+			WebViewDocument webViewDocumentInstance = new WebViewDocument(webViewDocument, htmlEditor);
+
+			webViewDocumentInstance.getHtmlContent(htmlContent -> {
+				if (htmlContent != null) {
+					Clipboard clipboard = Clipboard.getSystemClipboard();
+					ClipboardContent content = new ClipboardContent();
+					content.putHtml(htmlContent); // Copy the retrieved HTML content to the clipboard
+					
+					System.out.println(htmlContent);
+					clipboard.setContent(content);
+				} else {
+					System.err.println("Copy HTML. Failed to retrieve HTML content.");
+				}
+			});
 		});
 
-		// Retira o link com a stilização light ou dark, assim fica a estilização do
-		// componente pai (MainController)
-		apContainer.getStylesheets().clear();
+		// Add a listener to the TabPane to detect when the "Editor" tab is selected
+		/*tabPane.getSelectionModel().selectedItemProperty().addListener((obs, oldTab, newTab) -> {
+			if (newTab == editorTab) {
+				WebViewDocument webViewDocumentInstance = new WebViewDocument(webViewDocument);
+				String htmlContent = webViewDocumentInstance.getHtmlContentForHtmlEditor(this.selectedDocument);
+				
+				htmlEditor.setHtmlText(htmlContent);
+			
 
-		// Webview Chart - Diagrama
-		String json = new Gson().toJson(selectedDocument);
 
+<<<<<<< HEAD
 		// Load HTML content from a resource file.
 		String gojsDiagramPath = "/html/views/e-chart-tree/index.html";
 		String htmlDiagramContent = null;
@@ -154,10 +187,10 @@ public class DocumentViewController implements Initializable {
 				JSObject updatedData = (JSObject) webEngineChart.executeScript("(" + sJson + ")");
 
 				jsObject.call("updateSeriesData", updatedData);
+=======
+>>>>>>> feat/web-view-and-html-editor
 			}
-		});
-
-		// Componentes
+		});*/
 
 		tfDocument.setText(
 				"Número: " + this.selectedDocument.getNumero() + " | Sei: " + this.selectedDocument.getNumeroSei());
@@ -192,6 +225,8 @@ public class DocumentViewController implements Initializable {
 
 		cbUsers.setOnAction(e -> {
 			Usuario user = cbUsers.getSelectionModel().getSelectedItem();
+			
+			System.out.println(user.getNome());
 
 			// Atualiza documento com o usuário que será utilizado na criação do ato
 			// (Parecer, Despacho etc)
@@ -231,8 +266,7 @@ public class DocumentViewController implements Initializable {
 					obsListTemplates.addAll(descricaoList);
 					cbTemplates.setItems(obsListTemplates);
 				}
-				// Verifica documento com interferencia e usuário selecionado
-				// System.out.println(JsonConverter.convertObjectToJson(this.selectedDocument));
+
 			}
 
 		});
@@ -243,6 +277,8 @@ public class DocumentViewController implements Initializable {
 		cbTemplates.setOnAction(e -> {
 			Interferencia selectedInterference = cbInterferencies.getSelectionModel().getSelectedItem();
 
+			System.out.println("cbTemplates, selectedInteference !=null " + selectedInterference != null);
+
 			if (selectedInterference != null) {
 
 				this.selectedDocument.getEndereco().getInterferencias().clear();
@@ -252,6 +288,8 @@ public class DocumentViewController implements Initializable {
 
 				// Get the selected description from the ComboBox
 				String description = cbTemplates.getSelectionModel().getSelectedItem();
+
+				System.out.println("descriptionList != null " + !descricaoList.isEmpty());
 
 				if (!descricaoList.isEmpty()) {
 
@@ -280,6 +318,7 @@ public class DocumentViewController implements Initializable {
 						webContent.setWebContent(str);
 
 					});
+<<<<<<< HEAD
 
 					String newHtml5Content = webContent.getWebContent();
 
@@ -305,6 +344,16 @@ public class DocumentViewController implements Initializable {
 					invokeJS("utils.updateHtmlDocument(" + strJson + ");");
 					
 					
+=======
+					
+					// Initialize WebViewDocument with the WebView component
+					WebViewDocument webViewDocumentInstance = new WebViewDocument(webViewDocument, htmlEditor);
+
+					// Atualiza o WebView com o conteúdo atualizado
+					webViewDocumentInstance.loadContent(webContent.getWebContent());
+
+					webViewDocumentInstance.changeContent(this.selectedDocument);
+>>>>>>> feat/web-view-and-html-editor
 
 				}
 			}

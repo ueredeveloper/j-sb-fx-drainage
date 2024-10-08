@@ -1,7 +1,6 @@
  /**
- * Main
  * @id 14
- * @descricao Despacho de Outorga de Direito de Uso
- * @pasta 5
  * @nome script.js
+ * @pasta 5
+ * @descricao Registro de Direito de Uso
  */

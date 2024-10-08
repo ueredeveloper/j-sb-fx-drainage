@@ -70,6 +70,7 @@ public class AddressComboBoxController {
 							obsList.addAll(dbObjects);
 						} else {
 							obsList.clear();
+							if (newValue.length() == 2 || newValue.length() == 4)
 							fetchAndUpdate(newValue);
 						}
 					}

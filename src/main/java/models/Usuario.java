@@ -27,6 +27,16 @@ public class Usuario {
 		this.nome = nome;
 	}
 
+<<<<<<< HEAD
+=======
+	public Usuario(Long id, String nome, Long cpfCnpj, Set<Documento> documentos) {
+		super();
+		this.id = id;
+		this.nome = nome;
+		this.cpfCnpj = cpfCnpj;
+		this.documentos = documentos;
+	}
+>>>>>>> feat/web-view-and-html-editor
 	
 
 	public Long getId() {

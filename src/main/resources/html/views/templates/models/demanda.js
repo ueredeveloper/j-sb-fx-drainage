@@ -1,9 +1,8 @@
 /**
-
  * @id 16
- * @descricao Tabela Demanda
  * @nome demanda.js
  * @pasta models
+ * @descricao Tabelas Modelos
  */
 class Demanda {
 

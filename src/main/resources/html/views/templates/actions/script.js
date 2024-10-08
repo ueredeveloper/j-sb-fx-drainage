@@ -1,9 +1,8 @@
 /**
- * Ações de Teste
  * @id 15
- * @descricao Ações de Teste
  * @pasta actions
  * @nome script.js
+ * @descricao Ações de Teste dos Botões
  */
 class Actions {
     constructor(geoTab) {
@@ -34,20 +33,22 @@ class Actions {
 
             let interferencia = new Interferencia().getSample()
        
-            geographicTable.updateTableInfo(interferencia);
+            new GeographicTable().updateTableInfo(interferencia);
         };
         // Atualiza os limites outorgáveis
         document.getElementById('btn-update-limits-table').onclick = function () {
 
             let interferencia = new Interferencia().getSample()
        
-            limitsTable.updateAuthorizedLimits(interferencia);
+            new LimitsTable().updateAuthorizedLimits(interferencia);
         };
 
         // Atualiza os limites outorgáveis
         document.getElementById('btn-update-all').onclick = function () {
 
-            let documento = new Documento().getSample()
+            if (!documento){
+            	documento = new Documento().getSample()
+            }
        
             new Utils().updateHtmlDocument(documento)
         };

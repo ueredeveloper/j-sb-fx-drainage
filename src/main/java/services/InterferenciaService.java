@@ -21,6 +21,7 @@ import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 
 import models.Interferencia;
+import models.InterferenciaTypeAdapter;
 import models.Subterranea;
 import utilities.InterferenciaTypeAdapter;
 
@@ -126,7 +127,6 @@ public class InterferenciaService {
 			return null; // Return null if an error occurs
 		}
 	}
-
 	public Set<Interferencia> fetchByKeyword(String keyword) {
 
 		try {
