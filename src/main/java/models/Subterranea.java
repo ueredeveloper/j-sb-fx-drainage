@@ -73,58 +73,6 @@ public class Subterranea extends Interferencia {
 
 	public String getProfundidade() {
 		return profundidade;
-<<<<<<< HEAD
-	}
-
-	public void setProfundidade(String profundidade) {
-		this.profundidade = profundidade;
-	}
-
-	public Integer getVazaoOutorgavel() {
-		return vazaoOutorgavel;
-	}
-
-	public void setVazaoOutorgavel(Integer vazaoOutorgavel) {
-		this.vazaoOutorgavel = vazaoOutorgavel;
-	}
-
-	public Integer getVazaoSistema() {
-		return vazaoSistema;
-	}
-
-	public void setVazaoSistema(Integer vazaoSistema) {
-		this.vazaoSistema = vazaoSistema;
-	}
-
-	public Integer getVazaoAutorizada() {
-		return vazaoAutorizada;
-	}
-
-	public void setVazaoAutorizada(Integer vazaoAutorizada) {
-		this.vazaoAutorizada = vazaoAutorizada;
-	}
-
-	public Integer getVazaoTeste() {
-		return vazaoTeste;
-	}
-
-	public void setVazaoTeste(Integer vazaoTeste) {
-		this.vazaoTeste = vazaoTeste;
-	}
-
-	public TipoPoco getTipoPoco() {
-		return tipoPoco;
-	}
-
-	public void setTipoPoco(TipoPoco tipoPoco) {
-		this.tipoPoco = tipoPoco;
-	}
-
-	@Override
-	public String toString() {
-		return "Subterranea: " + getLatitude() + ", " + getLongitude();
-=======
->>>>>>> feat/web-view-and-html-editor
 	}
 
 	public void setProfundidade(String profundidade) {

@@ -31,11 +31,6 @@ import models.Documento;
 import models.Interferencia;
 import models.Template;
 import models.Usuario;
-<<<<<<< HEAD
-import netscape.javascript.JSException;
-import netscape.javascript.JSObject;
-=======
->>>>>>> feat/web-view-and-html-editor
 import services.InterferenciaService;
 import services.TemplateService;
 import services.UsuarioService;
@@ -61,11 +56,7 @@ public class DocumentViewController implements Initializable {
 	private Button btnSelectAndCopy;
 
 	@FXML
-<<<<<<< HEAD
-	private WebView webViewChart, webViewContent;
-=======
 	private WebView webViewChart, webViewDocument;
->>>>>>> feat/web-view-and-html-editor
 
 	@FXML
 	private AnchorPane apContainer, apHtmlEditor;
@@ -105,29 +96,12 @@ public class DocumentViewController implements Initializable {
 
 	Set<Template> templates = new HashSet<>();
 	List<String> descricaoList = new ArrayList<String>();
-	
-	WebEngine webEngineContent;// = webViewContent.getEngine();
-	JSObject jsObj = null;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
-<<<<<<< HEAD
-		// Html Editor
-		webViewContentLoader = new WebViewContentLoader();
-	
-
-		String initialHtml5Content = "<h2>Hello World</h2>";
-		webViewContentLoader.loadWebViewContent(initialHtml5Content, finalHtml -> {
-			// Set the retrieved HTML content in the HTMLEditor
-			htmlEditor.setHtmlText(finalHtml);
-		});
-		
-		// Copiar o modelo de ato para colar no SEI.
-=======
 		WebViewChart webViewChartInstance = new WebViewChart(webViewChart, selectedDocument);
 
->>>>>>> feat/web-view-and-html-editor
 		iconCopyDocument.setOnMouseClicked(event -> {
 
 			// Initialize WebViewDocument with the WebView component
@@ -157,38 +131,6 @@ public class DocumentViewController implements Initializable {
 			
 
 
-<<<<<<< HEAD
-		// Load HTML content from a resource file.
-		String gojsDiagramPath = "/html/views/e-chart-tree/index.html";
-		String htmlDiagramContent = null;
-
-		try {
-			htmlDiagramContent = HTMLFileLoader.loadHTMLResourceToString(gojsDiagramPath);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		htmlDiagramContent = htmlDiagramContent.replace("${json}", json);
-
-		WebEngine webEngineChart;
-
-		webEngineChart = webViewChart.getEngine();
-
-		webEngineChart.load(getClass().getResource("/html/views/e-chart-tree/index.html").toExternalForm());
-
-		webEngineChart.getLoadWorker().stateProperty().addListener((obs, oldState, newState) -> {
-
-			if (newState == Worker.State.SUCCEEDED) {
-
-				JSObject jsObject = (JSObject) webEngineChart.executeScript("window");
-
-				String sJson = json.replace("\"", "'");
-
-				JSObject updatedData = (JSObject) webEngineChart.executeScript("(" + sJson + ")");
-
-				jsObject.call("updateSeriesData", updatedData);
-=======
->>>>>>> feat/web-view-and-html-editor
 			}
 		});*/
 
@@ -196,8 +138,6 @@ public class DocumentViewController implements Initializable {
 				"Número: " + this.selectedDocument.getNumero() + " | Sei: " + this.selectedDocument.getNumeroSei());
 		tfAddress.setText(this.selectedDocument.getEnderecoLogradouro());
 
-		// Captura logradouro da tabela endereço para buscar interferência por
-		// logradouro
 		String logradouro = this.selectedDocument.getEnderecoLogradouro();
 
 		Set<Interferencia> interferencies = listInterferenciesByLogradouro(logradouro);
@@ -213,7 +153,6 @@ public class DocumentViewController implements Initializable {
 		cbInterferencies.setOnAction(e -> {
 
 			Interferencia selectedInterference = cbInterferencies.getSelectionModel().getSelectedItem();
-
 			// Atualiza documento seleciona com a interferência que será utilizada na
 			// criação do ato (Parecer, Despacho etc)
 			if (selectedInterference != null) {
@@ -270,9 +209,6 @@ public class DocumentViewController implements Initializable {
 			}
 
 		});
-		
-
-		webEngineContent = webViewContent.getEngine();
 
 		cbTemplates.setOnAction(e -> {
 			Interferencia selectedInterference = cbInterferencies.getSelectionModel().getSelectedItem();
@@ -318,33 +254,6 @@ public class DocumentViewController implements Initializable {
 						webContent.setWebContent(str);
 
 					});
-<<<<<<< HEAD
-
-					String newHtml5Content = webContent.getWebContent();
-
-					webViewContentLoader.updateHtmlContent(newHtml5Content, finalHtml -> {
-						// Set the retrieved HTML content in the HTMLEditor
-						htmlEditor.setHtmlText(finalHtml);
-					});
-
-					webViewContentLoader.executeJavaScriptUpdate(this.selectedDocument);
-					
-					webViewContentLoader.loadWebViewContent(initialHtml5Content, finalHtml -> {
-						// Set the retrieved HTML content in the HTMLEditor
-						webContent.setWebContent(finalHtml);
-					});
-					
-					webViewContentLoader.updateHtmlContent(webContent.getWebContent(), finalHtml -> {
-						// Set the retrieved HTML content in the HTMLEditor
-						htmlEditor.setHtmlText(finalHtml);
-					});
-					
-					String strJson = JsonConverter.convertObjectToJson(this.selectedDocument);
-					contentLoaded = true;
-					invokeJS("utils.updateHtmlDocument(" + strJson + ");");
-					
-					
-=======
 					
 					// Initialize WebViewDocument with the WebView component
 					WebViewDocument webViewDocumentInstance = new WebViewDocument(webViewDocument, htmlEditor);
@@ -353,54 +262,14 @@ public class DocumentViewController implements Initializable {
 					webViewDocumentInstance.loadContent(webContent.getWebContent());
 
 					webViewDocumentInstance.changeContent(this.selectedDocument);
->>>>>>> feat/web-view-and-html-editor
 
 				}
+
 			}
 
 		});
-		
-		
-		
-		
 
 	}
-	private boolean contentLoaded = false;
-	private void invokeJS(final String script) {
-		
-		jsObj = (JSObject) webEngineContent.executeScript("window");
-		
-		if (contentLoaded) {
-			try {
-				jsObj.eval(script);
-			} catch (JSException e) {
-				System.err.println("Erro ao executar script JavaScript: " + e.getMessage());
-			}
-		} else {
-			// Aguarda até que o conteúdo esteja completamente carregado
-			webEngineContent.getLoadWorker().stateProperty().addListener((observableValue, oldState, newState) -> {
-				if (newState == Worker.State.SUCCEEDED) {
-					jsObj.eval(script);
-				}
-			});
-		}
-	}
-	
-	// Execute JavaScript to update part of the document
-		public void executeJavaScriptUpdate(Documento documento) {
-
-			webEngineContent.getLoadWorker().stateProperty().addListener((observableValue, oldState, newState) -> {
-				if (newState == Worker.State.SUCCEEDED) {
-
-					System.out.println("console suceeded and loaded false");
-					String strJson = JsonConverter.convertObjectToJson(documento);
-					contentLoaded = true;
-					invokeJS("utils.updateHtmlDocument(" + strJson + ");");
-				}
-			});
-
-		}
-
 
 	public Set<Template> listTemplatesByParams(String typeOfDocument, String typeOfGrant, String subtypeOfGrant) {
 

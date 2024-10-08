@@ -23,7 +23,6 @@ import com.google.gson.reflect.TypeToken;
 import models.Interferencia;
 import models.InterferenciaTypeAdapter;
 import models.Subterranea;
-import utilities.InterferenciaTypeAdapter;
 
 public class InterferenciaService {
 

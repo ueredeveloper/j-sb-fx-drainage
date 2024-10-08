@@ -7,24 +7,16 @@
 
 class Utils {
 
-    constructor() {
-		this.usuario = new Usuario();
-	}
+    constructor() {}
     
  // Muda o ponto do valor double para vígula do float. Ex: 20.00 para 20,00
     maskDoubleToFloat(value) {
-    	console.log('mascara, double para float: ', value)
     	return parseFloat(value).toFixed(2).toString().replace('.', ',');
     }
 
     // Função para formatar o número com ponto separador de milhar
     formatNumber(value) {
-<<<<<<< HEAD
-    	console.log(value, 'convert to string ')
-    	return value?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-=======
     	return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
->>>>>>> feat/web-view-and-html-editor
     }
     /**
      * Atualiza os dados do usuário
@@ -35,18 +27,14 @@ class Utils {
 
     	// Converte o resultado para array e atualiza
     	Array.from(names).forEach(element => {
-    		element.innerHTML = this.usuario.getNome(usuario);
+    		element.innerHTML = new Usuario().getNome(usuario);
     	});
 
     	let cpfcnpjs = document.getElementsByClassName("us-cpf-cnpj");
 
     	// Converte o resultado para array e atualiza
     	Array.from(cpfcnpjs).forEach(element => {
-<<<<<<< HEAD
-    		element.innerHTML = this.usuario.formatCpfCnpj(usuario.cpfCnpj);
-=======
     		element.innerHTML = new Usuario().formatCpfCnpj(usuario.cpfCnpj);
->>>>>>> feat/web-view-and-html-editor
     	});
 
     }
@@ -63,21 +51,6 @@ class Utils {
     	});
 
     }
-<<<<<<< HEAD
-
-	updatePurpouseString (finalidades){
-
-		let str = new Finalidade().createPurpouseString(finalidades); 
-
-		console.log(str)
-
-		let items = document.getElementsByClassName('inter-finalidades');
-
-    	Array.from(items).forEach(element => {
-    		element.innerHTML = str
-    	});
-	}
-=======
     
     
     updatePurpouses (finalidades) {
@@ -90,7 +63,6 @@ class Utils {
 
     }
 
->>>>>>> feat/web-view-and-html-editor
     /**
      * Atualiza tudo utilizando um exemplo da tabela documento com endereço, interferências e usuário
      * @param {*} documento 
@@ -99,19 +71,6 @@ class Utils {
     	
     	let usuario = documento.usuarios[0];
     	
-<<<<<<< HEAD
-    	this.updateUserData(usuario);
-
-    	/*let endereco = documento.endereco;
-    	this.udpateAddress(endereco);
-
-    	let interferencia = documento.endereco.interferencias[0];
-
-		this.updatePurpouseString(interferencia.finalidades);
-
-    	geographicTable.updateTableInfo(interferencia);
-    	limitsTable.updateAuthorizedLimits(interferencia);*/
-=======
     	console.log(usuario.nome)
     	this.updateUserData(usuario);
     	
@@ -129,7 +88,6 @@ class Utils {
     	
     	
     	//this.createButtonForUpdate(documento)
->>>>>>> feat/web-view-and-html-editor
     }
     
     createButtonForUpdate(documento) {

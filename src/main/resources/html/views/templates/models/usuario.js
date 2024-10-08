@@ -6,16 +6,14 @@
  */
 class Usuario {
 
-    constructor() {}
+    constructor() {
+
+    }
 
     getSample() {
         return {
             nome: "Carlos Drummond de Andrade", 
-<<<<<<< HEAD
-            cpfCnpj: 12345678999
-=======
             cpfCnpj: 12345678955
->>>>>>> feat/web-view-and-html-editor
         }
     }
 
@@ -30,10 +28,6 @@ class Usuario {
     */
     formatCpfCnpj(value) {
     	
-<<<<<<< HEAD
-    	console.log('adicionar alerta de cpf ou cnpj nulo: ', value)
-=======
->>>>>>> feat/web-view-and-html-editor
         value = value.toString();
 
         // Verifica se é CPF (11 dígitos) ou CNPJ (14 dígitos)

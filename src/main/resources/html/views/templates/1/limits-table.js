@@ -1,6 +1,4 @@
-
 /**
- * Tag anterior:<tabela_limites_outorgados_tag></tabela_limites_outorgados_tag>
  * @id 5
  * @nome limits-table.js
  * @pasta 1
@@ -165,15 +163,10 @@ class LimitsTable {
 
             // Para utilizar as funções da classe demanda
             let demanda = new Demanda();
-<<<<<<< HEAD
-            let vazaoAutorizada = interferencia.vazaoAutorizada;
-         
-=======
             
->>>>>>> feat/web-view-and-html-editor
             // Atualização
-            document.getElementById(`q-litros-hora-${month}`).innerText = new Utils().formatNumber(vazaoAutorizada);
-            document.getElementById(`q-m3-hora-${month}`).innerText = new Utils().maskDoubleToFloat(demanda.convertFlowToM3(vazaoAutorizada));
+            document.getElementById(`q-litros-hora-${month}`).innerText = new Utils().formatNumber(interferencia.vazaoAutorizada);
+            document.getElementById(`q-m3-hora-${month}`).innerText = new Utils().maskDoubleToFloat(demanda.convertFlowToM3(interferencia.vazaoAutorizada));
             document.getElementById(`t-horas-dia-${month}`).innerText = authorizedDemands[index]?.tempo || 'N/A'; // Adiciona verificação de índice
             document.getElementById(`q-m3-dia-${month}`).innerText = new Utils().maskDoubleToFloat(demanda.calculateM3Day(interferencia.vazaoAutorizada, authorizedDemands[index].tempo));
             document.getElementById(`p-dias-mes-${month}`).innerText = authorizedDemands[index].periodo

@@ -1,4 +1,3 @@
-
 /**
  * @id 6
  * @nome script.js
@@ -48,27 +47,14 @@ function App() {
 			<div id="chief-signature"></div>
 		</div>`;
 }
-<<<<<<< HEAD
-var geographicTable, limitsTable, interferencia, utils, usuario;
-=======
 var documento;
->>>>>>> feat/web-view-and-html-editor
 
 document.addEventListener('DOMContentLoaded', function () {
 
 	App();
 	
-<<<<<<< HEAD
-	utils = new Utils();
-	usuario = new Usuario();
-	interferencia = new Interferencia();
-
-	geographicTable = new GeographicTable();
-	limitsTable = new LimitsTable()
-=======
 	new GeographicTable();
 	new LimitsTable()
->>>>>>> feat/web-view-and-html-editor
 	new GrantRequirements();
 	new ChiefSignature();
 	new Actions();

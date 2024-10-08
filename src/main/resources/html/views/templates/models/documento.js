@@ -12,8 +12,8 @@ class Documento {
 
 	getSample (){
 		return {
-			"id":13,
-			"numero":"987654/2015",
+			"id":1,
+			"numero":"123456/58",
 			"processo":{
 			   "id":1,
 			   "numero":"123.456",
@@ -86,7 +86,7 @@ class Documento {
 						},
 						{
 						   "id":2,
-						   "finalidade":"Uso Comercial",
+						   "finalidade":"Comercial",
 						   "subfinalidade":"Lavar Veículos",
 						   "quantidade":100.0,
 						   "consumo":110.0,
@@ -355,13 +355,8 @@ class Documento {
 			"usuarios":[
 			   {
 				  "id":1,
-<<<<<<< HEAD
-				  "nome":"Ávarez de Azevedo",
-				  "cpfCnpj": 45678912356,
-=======
 				  "nome":"Usuário Exemplo 1",
 				  "cpfCnpj": 12345678900,
->>>>>>> feat/web-view-and-html-editor
 				  "documentos":[
 					 
 				  ]
