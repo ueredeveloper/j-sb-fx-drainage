@@ -1,10 +1,10 @@
 /**
- * @id 22
- * @nome usuario.js
- * @pasta models
+ * @id
+ * @arquivo usuario-model.js
+ * @diretorio models
  * @descricao Tabelas Modelos
  */
-class Usuario {
+class UsuarioModel {
 
     constructor() {}
 

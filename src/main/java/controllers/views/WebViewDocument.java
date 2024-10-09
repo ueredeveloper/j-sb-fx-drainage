@@ -50,32 +50,37 @@ public class WebViewDocument {
 	}
 
 	public void changeContent(Documento selectedDocument) {
-		// Register error handler for JavaScript errors
-		webEngine.setOnError(event -> {
-			System.err.println("JavaScript error: " + event.getMessage());
-		});
+	    // Register error handler for JavaScript errors
+	    webEngine.setOnError(event -> {
+	        System.err.println("JavaScript error: " + event.getMessage());
+	    });
 
-		// Convert the Documento object to JSON
-		String strJson = JsonConverter.convertObjectToJson(selectedDocument);
+	    // Convert the Documento object to JSON
+	    String strJson = JsonConverter.convertObjectToJson(selectedDocument);
 
-		// Ensure the page is loaded before executing JS and updating HTML
-		webEngine.getLoadWorker().stateProperty().addListener((obs, oldState, newState) -> {
-			if (newState == Worker.State.SUCCEEDED) {
-				try {
-					// Call JavaScript to update the document with the JSON content
-					invokeJS("utils.updateHtmlDocument(" + strJson + ");");
+	    // Ensure the page is loaded before executing JS and updating HTML
+	    webEngine.getLoadWorker().stateProperty().addListener((obs, oldState, newState) -> {
+	        if (newState == Worker.State.SUCCEEDED) {
+	            try {
+	                // Call JavaScript to update the document with the JSON content
+	                invokeJS("utils.updateHtmlDocument(" + strJson + ");");
 
-					htmlEditor.setHtmlText(clearHtmlContent());
+	                // Limpa o html de scripts
+	                String cleanHtml = clearHtmlContent();
 
-					System.out.println("HTML content updated successfully.");
-				} catch (JSException e) {
-					System.err.println("Error updating HTML content: " + e.getMessage());
-				}
-			} else if (newState == Worker.State.FAILED) {
-				System.err.println("Failed to load the web content.");
-			}
-		});
+	                // Leitura do html limpol no editor html
+	                htmlEditor.setHtmlText(cleanHtml);
+
+	                System.out.println("HTML content updated and reloaded successfully.");
+	            } catch (JSException e) {
+	                System.err.println("Error updating HTML content: " + e.getMessage());
+	            }
+	        } else if (newState == Worker.State.FAILED) {
+	            System.err.println("Failed to load the web content.");
+	        }
+	    });
 	}
+
 
 	public void getHtmlContent(Consumer<String> callback) {
 
@@ -123,21 +128,31 @@ public class WebViewDocument {
 	 *            String with the JavaScript code to be executed.
 	 */
 	private void invokeJS(final String script) {
-		if (window != null) {
-			try {
-				window.eval(script);
-			} catch (JSException e) {
-				System.err.println("Erro ao executar script JavaScript: " + e.getMessage());
-			}
-		} else {
-			// Wait until the content is completely loaded
-			webEngine.getLoadWorker().stateProperty().addListener((observableValue, oldState, newState) -> {
-				if (newState == Worker.State.SUCCEEDED) {
-					window = (JSObject) webEngine.executeScript("window");
-					window.eval(script);
-				}
-			});
-		}
+		
+		// Check if `utils` exists in the JavaScript environment
+        Boolean utilsExists = (Boolean) window.eval("typeof utils !== 'undefined';");
+        if (utilsExists) {
+        	if (window != null) {
+    			try {
+    				window.eval(script);
+    			} catch (JSException e) {
+    				System.err.println("Erro ao executar script JavaScript: " + e.getMessage());
+    			}
+    		} else {
+    			// Wait until the content is completely loaded
+    			webEngine.getLoadWorker().stateProperty().addListener((observableValue, oldState, newState) -> {
+    				if (newState == Worker.State.SUCCEEDED) {
+    					window = (JSObject) webEngine.executeScript("window");
+    					window.eval(script);
+    				}
+    			});
+    		}
+        } else {
+            System.err.println("JavaScript 'utils' is not defined in the current HTML context.");
+        }
+        
+        
+		
 	}
 
 	class HtmlString {

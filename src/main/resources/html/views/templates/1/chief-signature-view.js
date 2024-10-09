@@ -1,10 +1,10 @@
 /**
- * @id 1
- * @nome chief-signature.js
- * @pasta 1
+ * @id
+ * @arquivo chief-signature-view.js
+ * @diretorio 1
  * @descricao Despacho de Outorga Prévia
  */
-class ChiefSignature {
+class ChiefSignatureView {
 
     constructor() {
         this.div = document.getElementById('chief-signature');

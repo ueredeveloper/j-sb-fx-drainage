@@ -1,10 +1,10 @@
 /**
  * @id 5
- * @nome limits-table.js
- * @pasta 1
+ * @arquivo limits-table-view.js
+ * @diretorio 1
  * @descricao Despacho de Outorga Prévia
  */
-class LimitsTable {
+class LimitsTableView {
     constructor() {
         this.div = document.getElementById('authorized-limits-table');
         this.render();
@@ -16,7 +16,8 @@ class LimitsTable {
             <table border="1" cellspacing="0" style="margin-left:auto;margin-right:auto;width:90%">
                 <tbody>
                     <tr>
-                        <td colspan="2" style="text-align:center;"><span style="background-color:rgb(255, 255, 255);">Limites outorgados</span></td>
+                        <td colspan="2" style="text-align:center;">
+                        <span style="background-color:rgb(255, 255, 255);">Limites outorgados</span></td>
                         <td style="text-align:center;">Jan</td>
                         <td style="text-align:center;">Fev</td>
                         <td style="text-align:center;">Mar</td>
@@ -131,7 +132,8 @@ class LimitsTable {
                 <tbody>
                     <tr border="0">
                         <td border="0">
-                        <div border="0" style="font-size:12px"><em>Q. max:Vazão máxima em litros por hora e em metros cúbicos por hora;&nbsp;<br>
+                        <div border="0" style="font-size:12px">
+                        <em>Q. max:Vazão máxima em litros por hora e em metros cúbicos por hora;&nbsp;<br>
                         T. max:Tempo máximo de captação em horas por dia;&nbsp;&nbsp;<br>
                         V. max. dia:Volume máximo em metros cúbicos por dia;&nbsp;<br>
                         P:Dias de captação por mês; e&nbsp;&nbsp;<br>
@@ -163,11 +165,11 @@ class LimitsTable {
 
             // Atualização
             document.getElementById(`q-litros-hora-${month}`).innerText = utils.formatNumber(interferencia.vazaoAutorizada);
-            document.getElementById(`q-m3-hora-${month}`).innerText = utils.maskDoubleToFloat(demand.convertFlowToM3(interferencia.vazaoAutorizada));
+            document.getElementById(`q-m3-hora-${month}`).innerText = utils.maskDoubleToFloat(demand.convertLitersToCubicMeters(interferencia.vazaoAutorizada));
             document.getElementById(`t-horas-dia-${month}`).innerText = authorizedDemands[index]?.tempo || 'N/A'; // Adiciona verificação de índice
-            document.getElementById(`q-m3-dia-${month}`).innerText = utils.maskDoubleToFloat(demand.calculateM3Day(interferencia.vazaoAutorizada, authorizedDemands[index].tempo));
+            document.getElementById(`q-m3-dia-${month}`).innerText = utils.maskDoubleToFloat(demand.calculateCubicMetersPerDay(interferencia.vazaoAutorizada, authorizedDemands[index].tempo));
             document.getElementById(`p-dias-mes-${month}`).innerText = authorizedDemands[index].periodo
-            document.getElementById(`q-m3-mes-${month}`).innerText = utils.maskDoubleToFloat(demand.calculateM3Month(interferencia.vazaoAutorizada, authorizedDemands[index].tempo, authorizedDemands[index].periodo));
+            document.getElementById(`q-m3-mes-${month}`).innerText = utils.maskDoubleToFloat(demand.calculateCubicMetersPerMonth(interferencia.vazaoAutorizada, authorizedDemands[index].tempo, authorizedDemands[index].periodo));
         });
 
     }

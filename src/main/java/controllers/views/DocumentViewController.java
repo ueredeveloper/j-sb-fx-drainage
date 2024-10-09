@@ -166,18 +166,20 @@ public class DocumentViewController implements Initializable {
 
 			// Busca os templates que atendem aos requisitos tipo de documento e tipo e
 			// subtipo de outorga.
+			
+			// @Reparo Adicionar lista que guarda os templates já buscados para não precisoar buscar de novo.
 			templates = listTemplatesByParams(typeOfDocument, typeOfGrant, subtypeOfGrant);
 
 			if (!templates.isEmpty() && templates != null) {
 				descricaoList = templates.stream()
 						// Seleciona por descrição, mas remove os arquivos das pastas compartilhadas
 						// (models, utils, actions)
-						.filter(template -> !"utils".equals(template.getPasta()))
-						.filter(template -> !"models".equals(template.getPasta()))
-						.filter(template -> !"actions".equals(template.getPasta())).map(Template::getDescricao) // Extract
-																												// the
-																												// 'descricao'
-																												// attribute
+						.filter(template -> !"utils".equals(template.getDiretorio()))
+						.filter(template -> !"models".equals(template.getDiretorio()))
+						.filter(template -> !"actions".equals(template.getDiretorio())).map(Template::getDescricao) // Extract
+						// the
+						// 'descricao'
+						// attribute
 						.distinct() // Ensure only unique descriptions
 						.collect(Collectors.toList()); // Collect to a List
 
@@ -212,15 +214,16 @@ public class DocumentViewController implements Initializable {
 
 					List<Template> filteredTemplates = templates.stream()
 							.filter(t -> t.getDescricao().equals(description) // Filter by the selected description
-									|| "models".equals(t.getPasta()) // Include templates where 'pasta' is 'models'
-									|| "utils".equals(t.getPasta()) // Include templates where 'pasta' is 'utils'
-									|| "actions".equals(t.getPasta()) // Include templates where 'pasta' is 'actions'
+									|| "models".equals(t.getDiretorio()) // Include templates where 'pasta' is 'models'
+									|| "utils".equals(t.getDiretorio()) // Include templates where 'pasta' is 'utils'
+									|| "actions".equals(t.getDiretorio()) // Include templates where 'pasta' is
+																			// 'actions'
 					).distinct() // Ensure unique templates
 							.collect(Collectors.toList());
 
 					// Adiciona primeiro o index.html
 					filteredTemplates.forEach(t -> {
-						if (t.getNome().equals("index.html")) {
+						if (t.getArquivo().equals("index.html")) {
 							webContent.setWebContent(t.getConteudo());
 						}
 					});
@@ -229,7 +232,7 @@ public class DocumentViewController implements Initializable {
 					filteredTemplates.forEach(t -> {
 						String str = webContent.getWebContent();
 
-						if (!t.getNome().equals("index.html")) {
+						if (!t.getArquivo().equals("index.html")) {
 							str += "<script>" + t.getConteudo() + "</script>";
 						}
 						webContent.setWebContent(str);

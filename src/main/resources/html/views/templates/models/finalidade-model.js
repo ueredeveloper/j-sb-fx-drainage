@@ -1,10 +1,10 @@
 /**
- * @id 19
- * @nome finalidade.js
- * @pasta models
+ * @id
+ * @arquivo finalidade-model.js
+ * @diretorio models
  * @descricao Tabelas Modelos
  */
-class Finalidade {
+class FinalidadeModel {
 
     constructor() {}
 
@@ -16,19 +16,13 @@ class Finalidade {
 	 * @param {*} finalidades 
 	 * @returns 
 	 */
-	createPurpouseString(finalidades) {
-
+    getPurpouseString(finalidades) {
 		// Filtra as finalidades autorizadas, transforma em string com a apenas o atributo finalidade e converte tudo em minúsculo
 		let arrayToString = finalidades.filter(f => f.tipoFinalidade.id === 2).map(f => f.finalidade).toString().toLowerCase();
-
 		// Substituir a última vírgula por 'e'
 		let result = arrayToString.replace(/,(?=[^,]*$)/, ' e ');
-
 		// Adicionar espaço após todas as vírgulas
 		result = result.replace(/,/g, ', ');
-
-		console.log(result)
-
 		return result;
 	}
 

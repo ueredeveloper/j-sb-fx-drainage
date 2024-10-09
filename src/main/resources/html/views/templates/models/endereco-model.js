@@ -1,10 +1,10 @@
 /**
- * @id 18
- * @nome endereco.js
- * @pasta models
+ * @id
+ * @arquivo endereco-model.js
+ * @diretorio models
  * @descricao Tabelas Modelos
  */
-class Endereco {
+class EnderecoModel {
     constructor() {}
 
     // Método para obter a interferência

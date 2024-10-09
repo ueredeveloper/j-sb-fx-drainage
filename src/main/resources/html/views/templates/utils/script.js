@@ -1,7 +1,7 @@
 /**
- * @id 23
- * @nome script.js
- * @pasta utils
+ * @id
+ * @arquivo script.js
+ * @diretorio utils
  * @descricao Funções compartilhadas
  */
 
@@ -46,7 +46,7 @@ class Utils {
     	let items = document.getElementsByClassName('end-logradouro');
 
     	Array.from(items).forEach(element => {
-    		let logradouro = new Endereco().getLogradouro(endereco)
+    		let logradouro = new EnderecoModel().getLogradouro(endereco)
     		element.innerHTML = logradouro
     	});
 
@@ -57,7 +57,7 @@ class Utils {
     	let items = document.getElementsByClassName('inter-finalidades');
 
     	Array.from(items).forEach(element => {
-    		let strFinalidades = new Finalidade().createPurpouseString(finalidades)
+    		let strFinalidades = new FinalidadeModel().getPurpouseString(finalidades)
     		element.innerHTML = strFinalidades
     	});
 

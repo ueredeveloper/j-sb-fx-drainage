@@ -43,8 +43,8 @@ public class TemplatePersistenceFiles {
 									// Cria um template com os metadados @conteudo etc
 									Template template = ReadAndCreateTemplate.readAndCreateTemplate(filePath);
 									// Seta o nome e pasta
-									template.setNome(fileName);
-									template.setPasta(folderName);
+									template.setArquivo(fileName);
+									template.setDiretorio(folderName);
 									
 
 									try {

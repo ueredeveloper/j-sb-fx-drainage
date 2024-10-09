@@ -1,6 +1,6 @@
  /**
- * @id 12
- * @nome script.js
- * @pasta 4
+ * @id
+ * @arquivo script.js
+ * @diretorio 4
  * @descricao Parecer de Outorga de Direito de Uso
  */

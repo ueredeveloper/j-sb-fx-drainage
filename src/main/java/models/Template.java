@@ -4,8 +4,8 @@ public class Template {
 
 	private Long id;
 	private String descricao;
-	private String pasta;
-	private String nome;
+	private String diretorio;
+	private String arquivo;
 	private String conteudo;
 
 	public Template() {
@@ -44,20 +44,20 @@ public class Template {
 		this.descricao = descricao;
 	}
 
-	public String getPasta() {
-		return pasta;
+	public String getDiretorio() {
+		return diretorio;
 	}
 
-	public void setPasta(String pasta) {
-		this.pasta = pasta;
+	public void setDiretorio(String diretorio) {
+		this.diretorio = diretorio;
 	}
 
-	public String getNome() {
-		return nome;
+	public String getArquivo() {
+		return arquivo;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setArquivo(String arquivo) {
+		this.arquivo = arquivo;
 	}
 
 	public String getConteudo() {
@@ -70,7 +70,7 @@ public class Template {
 
 	@Override
 	public String toString() {
-		return "Template [descricao=" + descricao + ", pasta=" + pasta + ", nome=" + nome + ", conteudo=" + conteudo
+		return "Template [descricao=" + descricao + ", diretorio=" + diretorio + ", arquivo=" + arquivo + ", conteudo=" + conteudo
 				+ "]";
 	}
 

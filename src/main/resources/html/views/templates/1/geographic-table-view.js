@@ -1,10 +1,10 @@
 /**
- * @id 2
- * @nome geographic-table.js
- * @pasta 1
+ * @id
+ * @arquivo geographic-table-view.js
+ * @diretorio 1
  * @descricao Despacho de Outorga Prévia
  */
-class GeographicTable {
+class GeographicTableView {
     constructor() {
         this.div = document.getElementById('geographic-table');
     	// Dynamically assign the updateTableInfo method to the div element
@@ -28,11 +28,11 @@ class GeographicTable {
                             <td style="width: 123px; height: 16px; text-align: center;">Longitude</td>
                         </tr>
                         <tr>
-                            <td style="width: 104px; height: 21px; text-align: center;" id="well-name"></td>
-                            <td style="width: 135px; height: 21px; text-align: center;" id="hydrographic-basin"></td>
-                            <td style="width: 173px; height: 21px; text-align: center;" id="hydrographic-unit"></td>
-                            <td style="width: 125px; height: 21px; text-align: center;"><strong><span id="latitude"></span></strong></td>
-                            <td style="width: 123px; height: 21px; text-align: center;"><strong><span id="longitude"></span></strong></td>
+                            <td style="width: 104px; height: 21px; text-align: center;" id="inter-nome"></td>
+                            <td style="width: 135px; height: 21px; text-align: center;" id="inter-bh"></td>
+                            <td style="width: 173px; height: 21px; text-align: center;" id="inter-uh"></td>
+                            <td style="width: 125px; height: 21px; text-align: center;"><strong><span id="inter-latitude"></span></strong></td>
+                            <td style="width: 123px; height: 21px; text-align: center;"><strong><span id="inter-longitude"></span></strong></td>
                         </tr>
                     </tbody>
                 </table>
@@ -44,11 +44,11 @@ class GeographicTable {
 
     updateTableInfo (interferencia){
         
-      document.getElementById('well-name').textContent = interferencia.nome || 'Desconhecido';
-      document.getElementById('hydrographic-basin').textContent = interferencia.baciaHidrografica?.descricao || 'Desconhecido';
-	  document.getElementById('hydrographic-unit').textContent = interferencia.unidadeHidrografica?.descricao || 'Desconhecido';
-	  document.getElementById('latitude').textContent = interferencia.latitude?.toFixed(6) || 'Desconhecido';
-	  document.getElementById('longitude').textContent = interferencia.longitude?.toFixed(6) || 'Desconhecido';
+      document.getElementById('inter-nome').textContent = interferencia.nome || 'Desconhecido';
+      document.getElementById('inter-bh').textContent = interferencia.baciaHidrografica?.descricao || 'Desconhecido';
+	  document.getElementById('inter-uh').textContent = interferencia.unidadeHidrografica?.descricao || 'Desconhecido';
+	  document.getElementById('inter-latitude').textContent = interferencia.latitude?.toFixed(6) || 'Desconhecido';
+	  document.getElementById('inter-longitude').textContent = interferencia.longitude?.toFixed(6) || 'Desconhecido';
     }
    
 }

@@ -9,8 +9,8 @@ public class ReadAndUpdateTemplate {
 
     public static void updateTemplate(String filePath, Template template) {
         Long id = template.getId();
-        String name = template.getNome();
-        String folder = template.getPasta();
+        String name = template.getArquivo();
+        String folder = template.getDiretorio();
         String description = template.getDescricao();
 
         try {
@@ -23,11 +23,11 @@ public class ReadAndUpdateTemplate {
             // Se precisar limpar os ids nos arquivos para salvar novos ids para cada arquivo
             //fileContent = updateTag(fileContent, "@id", "");
             
-            // Atualizar ou adicionar @nome
-            fileContent = updateTag(fileContent, "@nome", name);
+            // Atualizar ou adicionar @arquivo
+            fileContent = updateTag(fileContent, "@arquivo", name);
 
-            // Atualizar ou adicionar @pasta
-            fileContent = updateTag(fileContent, "@pasta", folder);
+            // Atualizar ou adicionar @diretorio
+            fileContent = updateTag(fileContent, "@diretorio", folder);
 
             // Atualizar ou adicionar @descricao
             fileContent = updateTag(fileContent, "@descricao", description);

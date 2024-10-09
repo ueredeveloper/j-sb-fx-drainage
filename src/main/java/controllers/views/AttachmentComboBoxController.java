@@ -100,7 +100,11 @@ public class AttachmentComboBoxController implements Initializable {
 	private void fetchAndUpdate(String keyword) {
 		try {
 			AnexoService service = new AnexoService(localUrl);
-			Set<Anexo> fetchedObjects = new HashSet<>(service.fecthByKeyword(keyword));
+			Set<Anexo> fetchedObjects = new HashSet<>();
+			
+			if (keyword.length() ==2 || keyword.length() == 4 || keyword.length() == 6 || keyword.length() == 8) {
+				fetchedObjects.addAll(service.fecthByKeyword(keyword));
+			}
 
 			if (!fetchedObjects.isEmpty()) {
 				dbObjects.addAll(fetchedObjects);

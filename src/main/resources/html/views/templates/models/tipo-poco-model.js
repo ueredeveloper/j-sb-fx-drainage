@@ -1,8 +1,8 @@
 
 /**
- * @id 21
- * @nome tipo-poco.js
- * @pasta models
+ * @id
+ * @arquivo tipo-poco-model.js
+ * @diretorio models
  * @descricao Tabelas Modelos
  */
 class TipoPoco {

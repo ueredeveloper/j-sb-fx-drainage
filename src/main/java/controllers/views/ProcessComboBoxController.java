@@ -107,7 +107,11 @@ public class ProcessComboBoxController {
 	private void fetchAndUpdate(String keyword) {
 		try {
 			ProcessoService service = new ProcessoService(localUrl);
-			Set<Processo> fetchedObjects = new HashSet<>(service.fetchByKeyword(keyword));
+			Set<Processo> fetchedObjects = new HashSet<>();
+			
+			if (keyword.length() ==2 || keyword.length() == 4 || keyword.length() == 6 || keyword.length() == 8) {
+				fetchedObjects.addAll(service.fetchByKeyword(keyword));
+			}
 
 			if (!fetchedObjects.isEmpty()) {
 				dbObjects.addAll(fetchedObjects);

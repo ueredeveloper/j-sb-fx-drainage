@@ -104,7 +104,11 @@ public class UserComboBoxController {
 	private void fetchAndUpdate(String keyword) {
 		try {
 			UsuarioService service = new UsuarioService(localUrl);
-			Set<Usuario> fetchedObjects = new HashSet<>(service.listByUserName(keyword));
+			Set<Usuario> fetchedObjects = new HashSet<>();
+			
+			if (keyword.length() ==2 || keyword.length() == 4 || keyword.length() == 6 || keyword.length() == 8) {
+				fetchedObjects.addAll(service.listByUserName(keyword));
+			}
 
 			if (!fetchedObjects.isEmpty()) {
 				dbObjects.addAll(fetchedObjects);
