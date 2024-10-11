@@ -1,9 +1,8 @@
 /**
- * @arquivo script.js
- * @id 
+ * @descricao 
  * @diretorio 2
- * @descricao Parecer de Outorga Prévia
- */
+ * @arquivo script.js
+ * @id 13
 function App() {
 
 	const appDiv = document.getElementById("app");

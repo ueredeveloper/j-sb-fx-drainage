@@ -1,9 +1,8 @@
 /**
- * @arquivo well-info-view.js
- * @id 
+ * @descricao 
  * @diretorio shared
- * @descricao Visualizações compartilhadas pelos templates
- */
+ * @arquivo well-info-view.js
+ * @id 32
 
 class WellInfoView {
 

@@ -1,9 +1,8 @@
 /**
- * @arquivo demanda-model.js
- * @id 
+ * @descricao 
  * @diretorio models
- * @descricao Tabelas Modelos
- */
+ * @arquivo demanda-model.js
+ * @id 23
 class DemandaModel {
 
     constructor() { }

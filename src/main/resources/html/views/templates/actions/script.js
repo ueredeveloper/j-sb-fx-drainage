@@ -1,9 +1,8 @@
 /**
- * @arquivo script.js
- * @id 
+ * @descricao 
  * @diretorio actions
- * @descricao Ações de Teste dos Botões
- */
+ * @arquivo script.js
+ * @id 22
 class ActionsView {
     constructor(geoTab) {
         this.div = document.getElementById('actions');

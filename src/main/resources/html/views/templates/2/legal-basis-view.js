@@ -1,9 +1,8 @@
 /**
- * @arquivo legal-basis-view.js
- * @id 
+ * @descricao 
  * @diretorio 2
- * @descricao Parecer de Outorga Prévia
- */
+ * @arquivo legal-basis-view.js
+ * @id 9
 
 class LegalBasisView {
 	

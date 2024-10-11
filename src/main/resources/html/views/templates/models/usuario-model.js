@@ -1,9 +1,8 @@
 /**
- * @arquivo usuario-model.js
- * @id 
+ * @descricao 
  * @diretorio models
- * @descricao Tabelas Modelos
- */
+ * @arquivo usuario-model.js
+ * @id 29
 class UsuarioModel {
 
     constructor() {}

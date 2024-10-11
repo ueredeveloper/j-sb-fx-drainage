@@ -1,9 +1,8 @@
 /**
- * @arquivo interferencia-model.js
- * @id 
+ * @descricao 
  * @diretorio models
- * @descricao Tabelas Modelos
- */
+ * @arquivo interferencia-model.js
+ * @id 27
 class InterferenciaModel {
     constructor() {
     }

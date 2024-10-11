@@ -1,9 +1,8 @@
 /**
- * @arquivo script.js
- * @id 
+ * @descricao 
  * @diretorio 1
- * @descricao Despacho de Outorga Prévia
- */
+ * @arquivo script.js
+ * @id 4
 
 function App() {
 

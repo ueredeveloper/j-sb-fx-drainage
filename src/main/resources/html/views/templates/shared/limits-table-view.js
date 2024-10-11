@@ -1,9 +1,8 @@
 /**
- * @arquivo limits-table-view.js
- * @id 
+ * @descricao 
  * @diretorio shared
- * @descricao Despacho de Outorga Prévia
- */
+ * @arquivo limits-table-view.js
+ * @id 31
 class LimitsTableView {
     constructor() {
         this.div = document.getElementById('authorized-limits-table');

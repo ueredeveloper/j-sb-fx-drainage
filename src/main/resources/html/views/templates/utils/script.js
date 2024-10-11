@@ -1,9 +1,8 @@
 /**
- * @arquivo script.js
- * @id 
+ * @descricao 
  * @diretorio utils
- * @descricao Funções compartilhadas
- */
+ * @arquivo script.js
+ * @id 33
 
 class Utils {
 

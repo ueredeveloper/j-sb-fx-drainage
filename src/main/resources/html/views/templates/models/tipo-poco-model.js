@@ -1,10 +1,8 @@
-
 /**
- * @arquivo tipo-poco-model.js
- * @id 
+ * @descricao 
  * @diretorio models
- * @descricao Tabelas Modelos
- */
+ * @arquivo tipo-poco-model.js
+ * @id 28
 class TipoPoco {
 
     constructor() {}

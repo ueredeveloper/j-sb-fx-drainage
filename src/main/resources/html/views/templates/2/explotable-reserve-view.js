@@ -1,9 +1,8 @@
 /**
- * @arquivo explotable-reserve-view.js
- * @id 
+ * @descricao 
  * @diretorio 2
- * @descricao Parecer de Outorga Prévia
- */
+ * @arquivo explotable-reserve-view.js
+ * @id 7
 class ExploitableReserveView {
     constructor() { this.render(); }
     render() {

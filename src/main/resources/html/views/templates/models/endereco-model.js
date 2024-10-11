@@ -1,9 +1,8 @@
 /**
- * @arquivo endereco-model.js
- * @id 
+ * @descricao 
  * @diretorio models
- * @descricao Tabelas Modelos
- */
+ * @arquivo endereco-model.js
+ * @id 25
 class EnderecoModel {
     constructor() {}
 

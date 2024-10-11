@@ -1,9 +1,8 @@
 /**
- * @arquivo concluson-view.js
- * @id 
+ * @descricao 
  * @diretorio 2
- * @descricao Parecer de Outorga Prévia
- */
+ * @arquivo concluson-view.js
+ * @id 6
 class ConclusionView {
     constructor() {
         this.render();

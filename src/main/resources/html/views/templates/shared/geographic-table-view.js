@@ -1,9 +1,8 @@
 /**
- * @arquivo geographic-table-view.js
- * @id 
+ * @descricao 
  * @diretorio shared
- * @descricao Despacho de Outorga Prévia
- */
+ * @arquivo geographic-table-view.js
+ * @id 30
 class GeographicTableView {
     constructor() {
         this.div = document.getElementById('geographic-table');

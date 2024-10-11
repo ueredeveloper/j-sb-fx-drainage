@@ -1,6 +1,5 @@
  /**
- * @arquivo script.js
- * @id 
+ * @descricao 
  * @diretorio 3
- * @descricao Despacho de Outorga de Direito de Uso
- */
+ * @arquivo script.js
+ * @id 17
