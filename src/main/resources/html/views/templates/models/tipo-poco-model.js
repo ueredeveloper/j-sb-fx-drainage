@@ -1,7 +1,7 @@
 
 /**
- * @id
  * @arquivo tipo-poco-model.js
+ * @id 
  * @diretorio models
  * @descricao Tabelas Modelos
  */

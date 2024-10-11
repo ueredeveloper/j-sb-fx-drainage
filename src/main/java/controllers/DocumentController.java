@@ -54,6 +54,7 @@ import models.Documento;
 import models.DocumentoTipo;
 import models.Endereco;
 import models.Processo;
+import models.Template;
 import models.Usuario;
 import services.DocumentService;
 import services.DocumentoTipoService;
@@ -691,7 +692,7 @@ public class DocumentController implements Initializable {
 	 * @return O documento selecionado.
 	 */
 
-	public Documento getselectedDocumentument() {
+	public Documento getSelectedDocument() {
 		Documento documento = tvDocs.getSelectionModel().getSelectedItem();
 		return documento;
 	}
@@ -699,12 +700,15 @@ public class DocumentController implements Initializable {
 	/**
 	 * Exibe a visualização do documento selecionado em uma nova janela.
 	 */
+	
+	Set<Template> templates = new HashSet<>();
+	
 	public void showDocumentView() {
 		try {
-			Documento selectedDocumentument = tvDocs.getSelectionModel().getSelectedItem();
+			Documento selectedDocument = tvDocs.getSelectionModel().getSelectedItem();
 
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/DocumentView.fxml"));
-			DocumentViewController docViewController = new DocumentViewController(selectedDocumentument);
+			DocumentViewController docViewController = new DocumentViewController(selectedDocument, templates);
 			loader.setController(docViewController);
 
 			Parent root = loader.load();

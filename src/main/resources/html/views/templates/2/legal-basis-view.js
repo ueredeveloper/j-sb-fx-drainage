@@ -1,6 +1,6 @@
 /**
- * @id
- * @arquivo legal.basis-view.js
+ * @arquivo legal-basis-view.js
+ * @id 
  * @diretorio 2
  * @descricao Parecer de Outorga Prévia
  */

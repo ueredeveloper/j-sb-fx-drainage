@@ -1,6 +1,6 @@
 /**
- * @id
  * @arquivo chief-signature-view.js
+ * @id 
  * @diretorio 1
  * @descricao Despacho de Outorga Prévia
  */

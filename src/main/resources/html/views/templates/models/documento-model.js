@@ -1,6 +1,6 @@
 /**
- * @id
  * @arquivo documento-model.js
+ * @id 
  * @diretorio models
  * @descricao Tabelas Modelos
  */
@@ -37,16 +37,25 @@ class DocumentoModel {
 				"interferencias": [
 					{
 						"id": 1,
+
+						"nome": null,// "Poço 1",
+
 						"subsistema": "R3/Q3",
+	
 						"vazaoSistema": 9000,
-						"nivelEstatico": "120",
-						"nivelDinamico": "110",
 						"vazaoTeste": 8000,
 						"vazaoAutorizada": 7500,
+
 						"profundidade": "100", 
+						"nivelEstatico": "120",
+						"nivelDinamico": "110",
+
+						"baciaHidrografica": null,// {"id": 1, "nome": "Bacia do Maranhão"},
+						"unidadeHidrografica": null,//{"id": 1, "nome": "UH 1"},
 
 						"latitude": -15.123456,
 						"longitude": -47.123456,
+
 						"endereco": {
 							"id": 4,
 							"logradouro": "Exemplo Demandas com Endereço 1",
@@ -113,6 +122,28 @@ class DocumentoModel {
 								"total": 9000.0,
 								"tipoFinalidade": {
 									"id": 2
+								}
+							},
+							{
+								"id": 4,
+								"finalidade": "Criação de Animais",
+								"subfinalidade": "Aves",
+								"quantidade": 300.0,
+								"consumo": 30.0,
+								"total": 9000.0,
+								"tipoFinalidade": {
+									"id": 1
+								}
+							},
+							{
+								"id": 5,
+								"finalidade": "Uso Industrial",
+								"subfinalidade": "Aves",
+								"quantidade": 400.0,
+								"consumo": 200.0,
+								"total": 80000.0,
+								"tipoFinalidade": {
+									"id": 1
 								}
 							}
 						],

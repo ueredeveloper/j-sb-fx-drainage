@@ -159,3 +159,9 @@
 ## 26 de Setembro de 2024
 - [] - Adicionar nome do ponto
 	Adicione nome do ponto, por exemplo, Ponto 1, Ponto 2.
+	
+## 11 de Outubro de 2024
+- [] - Seleção de Interferência e Finalidades
+	Quando seleciona uma interferência e ela não  tem nenhuma finalidade requerida, o espaço de preencher as finalidades está ficando vazio. Adicionar
+	possibilidade de inserir finalidade ao selecionar uma interferência sem finalidade requerida ou autorizada.
+	

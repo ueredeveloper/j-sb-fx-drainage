@@ -1,6 +1,6 @@
 /**
- * @id
  * @arquivo script.js
+ * @id 
  * @diretorio actions
  * @descricao Ações de Teste dos Botões
  */
@@ -29,53 +29,62 @@ class ActionsView {
             `;
         this.div.innerHTML = index;
     }
-    
-    renderActions () {
-    	
-    	// Atualiza tabela com informações do ponto (latitude, longitude, bacia e subbacia
+
+    renderActions() {
+
+        // Atualiza tabela com informações do ponto (latitude, longitude, bacia e subbacia
         document.getElementById('btn-update-geo-table').onclick = function () {
 
-            let interferencia = new InterferenciaModel().getSample()
-       
-            geographicTable.updateTableInfo(interferencia);
+            let interferencia = new DocumentoModel().getSample().endereco.interferencias[0];
+
+            geographicTableView.updateTableInfo(interferencia);
         };
         // Atualiza os limites outorgáveis
         document.getElementById('btn-update-limits-table').onclick = function () {
 
-            let interferencia = new InterferenciaModel().getSample()
-       
-            limitsTable.updateAuthorizedLimits(interferencia);
+            let interferencia = new DocumentoModel().getSample().endereco.interferencias[0];
+
+            limitsTableView.updateAuthorizedLimits(interferencia);
         };
 
         // Atualiza os limites outorgáveis
         document.getElementById('btn-update-all').onclick = function () {
 
-            if (!documento){
-            	documento = new DocumentoModel().getSample()
+            if (!documento) {
+                documento = new DocumentoModel().getSample()
             }
-       
+
             utils.updateHtmlDocument(documento)
         };
-        
-      
-        
+
+
+
         // Atualiza os objetivo do parecer, adicionando nome, endereço e finalidades
         document.getElementById('btn-update-objective-view').onclick = function () {
 
-            if (!documento){
-            	documento = new DocumentoModel().getSample();
-            	
-            	
+            if (!documento) {
+                documento = new DocumentoModel().getSample();
             }
-       
-        	let usuario = documento.usuarios[0];
-        	let endereco = documento.endereco;
-        	let interferencia = documento.endereco.interferencias[0];
-        	let finalidades = interferencia.finalidades;
-        	
-        	objectiveView.updateInfo(usuario, endereco, finalidades);
-        	analysisView.updateInfo(interferencia);
-        	wellInfoView.updateInfo(interferencia);
+
+            let usuario = documento.usuarios[0];
+            let endereco = documento.endereco;
+            let interferencia = documento.endereco.interferencias[0];
+            let finalidades = interferencia.finalidades;
+
+            objectiveView.updateInfo(usuario, endereco, finalidades);
+            analysisView.updateInfo(interferencia);
+            wellInfoView.updateInfo(interferencia);
+
+            // Finalidades requeridas
+            new PurpouseTableView(documento, 1, 'tbl-finalidades-requeridas');
+            // Finalidades autorizadas
+            new PurpouseTableView(documento, 2, 'tbl-finalidades-autorizadas');
+
+            exploitableReserveView.updateInfo(documento);
+
+            geographicTableView.updateTableInfo(interferencia);
+            limitsTableView.updateAuthorizedLimits(interferencia);
+
         };
 
     }

@@ -1,4 +1,3 @@
-
 * {
 
 	-fx-primary-color: #68c4c3;
@@ -256,4 +255,10 @@
 
 .tf-demands {
     -fx-padding: 5px; /* Top/Bottom 0px, Left/Right 20px padding */
+}
+
+/* Largura do scrool no template */
+/* Style for vertical scrollbar thumb */
+.scroll-pane .scroll-bar:vertical {
+    -fx-pref-width: 15px;   
 }

@@ -1,6 +1,6 @@
 /**
- * @id
  * @arquivo objective-view.js
+ * @id 
  * @diretorio 2
  * @descricao Parecer de Outorga Prévia
  */
@@ -30,24 +30,24 @@ class ObjectiveView {
     	let names = document.getElementsByClassName('us-nome');
     	// Converte o resultado para array e atualiza
     	Array.from(names).forEach(element => {
-    		element.innerHTML = userModel.getNome(usuario);
+    		element.innerHTML = new UsuarioModel().getNome(usuario);
     	});
     	let cpfcnpjs = document.getElementsByClassName('us-cpf-cnpj');
     	// Converte o resultado para array e atualiza
     	Array.from(cpfcnpjs).forEach(element => {
-    		element.innerHTML = userModel.formatCpfCnpj(usuario.cpfCnpj);
+    		element.innerHTML = new UsuarioModel().formatCpfCnpj(usuario.cpfCnpj);
     	});
     	
     	let addresses = document.getElementsByClassName('end-logradouro');
     	// Converte o resultado para array e atualiza
     	Array.from(addresses).forEach(element => {
-    		element.innerHTML = addressModel.getLogradouro(endereco);
+    		element.innerHTML = new EnderecoModel().getLogradouro(endereco);
     	});
     	
     	let purpouses = document.getElementsByClassName('inter-finalidades');
     	// Converte o resultado para array e atualiza
     	Array.from(purpouses).forEach(element => {
-    		element.innerHTML = purpouseModel.getPurpouseString(finalidades);
+    		element.innerHTML = new FinalidadeModel().getPurpouseString(finalidades);
     	});
     	
     	

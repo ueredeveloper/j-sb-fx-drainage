@@ -137,6 +137,7 @@ public class TemplateService {
 
 	public Set<Template> listTemplatesByParams(String typeOfDocument, String typeOfGrand, String subtypeOfGrant) throws UnsupportedEncodingException {
 		
+		System.out.println("search  template if not has");
 		String url = localUrl + "/template/list-templates-by-params?"
 				+ "tipoDocumento="
 				+ URLEncoder.encode(typeOfDocument, "UTF-8")

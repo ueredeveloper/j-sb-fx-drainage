@@ -1,4 +1,10 @@
-class RequestedPurpouseView {
+/**
+ * @arquivo purpouse-view.js
+ * @id 
+ * @diretorio 2
+ * @descricao Parecer de Outorga Prévia
+ */
+class PurpouseView {
     constructor() {
         this.render();
     }
@@ -6,7 +12,7 @@ class RequestedPurpouseView {
     render() {
         let html = `
         
-        <p>4. As finalidades de uso e respectivas demandas solicitadas estão dispostos na tabela abaixo, organizadas 
+        <p>5. As finalidades de uso e respectivas demandas solicitadas estão dispostos na tabela abaixo, organizadas 
         por tipo de processo:</p>
 
         <p>&nbsp;</p>
@@ -14,12 +20,12 @@ class RequestedPurpouseView {
         <p><br></p>
         <p>Tabela 01: Finalidades e demandas requeridas.</p>
         
-        <div id="tbl-finaldades-requeridas"></div>
+        <div id="tbl-finalidades-requeridas" style="display:flex; justify-content: center;"></div>
 
         <p>&nbsp;</p>
 
         <p><br></p>
-        <p>5. As finalidades foram analisadas considerando as disposições da Resolução/Adasa nº 350/2006, 
+        <p>6. As finalidades foram analisadas considerando as disposições da Resolução/Adasa nº 350/2006, 
         Resolução/Adasa nº 36/2018, Resolução/Adasa nº 16/2018 e da disponibilidade hídrica de água subterrânea na 
         reserva explotável do domínio poroso/fraturado conforme disposições a seguir:</p>
 
@@ -88,6 +94,13 @@ class RequestedPurpouseView {
 
             <p style="margin-left:30.0pt;">&nbsp;</p>
         </div>
+
+        <p>7. As demandas solicitadas e devidamente justificadas para cada finalidade de uso foram analisadas considerando a disponibilidade hídrica da reserva explotável dos subsistemas subterrâneos. As demandas que apresentaram ausência de justificativas para as estimativas de uso, foram ajustadas às recomendações da Resolução nº 18/2020:</p>
+
+			<p>&nbsp;</p>
+
+			<p><br></p><p>Tabela 02: Finalidades e demandas ajustadas, conforme a Resolução nº 18/2020.</p>
+			<div id="tbl-finalidades-autorizadas" style="display:flex; justify-content: center;"></div>
 
         `
 

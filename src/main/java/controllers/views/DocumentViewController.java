@@ -2,7 +2,6 @@ package controllers.views;
 
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Set;
@@ -43,9 +42,11 @@ public class DocumentViewController implements Initializable {
 	}
 
 	private Documento selectedDocument;
+	private Set<Template> templates;
 
-	public DocumentViewController(Documento selectedDocument) {
+	public DocumentViewController(Documento selectedDocument, Set<Template> templates) {
 		this.selectedDocument = selectedDocument;
+		this.templates = templates;
 		instance = this; // Setting the static instance
 	}
 
@@ -91,7 +92,6 @@ public class DocumentViewController implements Initializable {
 
 	WebViewContentLoader webViewContentLoader;
 
-	Set<Template> templates = new HashSet<>();
 	List<String> descricaoList = new ArrayList<String>();
 
 	@Override
@@ -166,17 +166,26 @@ public class DocumentViewController implements Initializable {
 
 			// Busca os templates que atendem aos requisitos tipo de documento e tipo e
 			// subtipo de outorga.
-			
-			// @Reparo Adicionar lista que guarda os templates já buscados para não precisoar buscar de novo.
-			templates = listTemplatesByParams(typeOfDocument, typeOfGrant, subtypeOfGrant);
+
+			// @Reparo Adicionar lista que guarda os templates já buscados para não
+			// precisoar buscar de novo.
+
+			Boolean ifHasTemplate = hasDescricaoContainingAllParams(templates, typeOfDocument, typeOfGrant,
+					subtypeOfGrant);
+			System.out.println(typeOfDocument + " " + typeOfGrant + " " + subtypeOfGrant + " " + ifHasTemplate);
+
+			if (!ifHasTemplate) {
+				templates.addAll(listTemplatesByParams(typeOfDocument, typeOfGrant, subtypeOfGrant));
+			}
 
 			if (!templates.isEmpty() && templates != null) {
+
 				descricaoList = templates.stream()
 						// Seleciona por descrição, mas remove os arquivos das pastas compartilhadas
 						// (models, utils, actions)
 						.filter(template -> !"utils".equals(template.getDiretorio()))
 						.filter(template -> !"models".equals(template.getDiretorio()))
-						.filter(template -> !"actions".equals(template.getDiretorio())).map(Template::getDescricao) // Extract
+						.filter(template -> !"shared".equals(template.getDiretorio())).map(Template::getDescricao) // Extract
 						// the
 						// 'descricao'
 						// attribute
@@ -196,8 +205,6 @@ public class DocumentViewController implements Initializable {
 		cbTemplates.setOnAction(e -> {
 			Interferencia selectedInterference = cbInterferencies.getSelectionModel().getSelectedItem();
 
-			System.out.println("cbTemplates, selectedInteference !=null " + selectedInterference != null);
-
 			if (selectedInterference != null) {
 
 				this.selectedDocument.getEndereco().getInterferencias().clear();
@@ -208,15 +215,13 @@ public class DocumentViewController implements Initializable {
 				// Get the selected description from the ComboBox
 				String description = cbTemplates.getSelectionModel().getSelectedItem();
 
-				System.out.println("descriptionList != null " + !descricaoList.isEmpty());
-
 				if (!descricaoList.isEmpty()) {
 
 					List<Template> filteredTemplates = templates.stream()
 							.filter(t -> t.getDescricao().equals(description) // Filter by the selected description
 									|| "models".equals(t.getDiretorio()) // Include templates where 'pasta' is 'models'
 									|| "utils".equals(t.getDiretorio()) // Include templates where 'pasta' is 'utils'
-									|| "actions".equals(t.getDiretorio()) // Include templates where 'pasta' is
+									|| "shared".equals(t.getDiretorio()) // Include templates where 'pasta' is
 																			// 'actions'
 					).distinct() // Ensure unique templates
 							.collect(Collectors.toList());
@@ -271,6 +276,22 @@ public class DocumentViewController implements Initializable {
 			e.printStackTrace();
 		}
 		return objects;
+	}
+
+	public boolean hasDescricaoContainingAllParams(Set<Template> templates, String... params) {
+		return templates.stream().anyMatch(template -> {
+			String descricao = template.getDescricao();
+			if (descricao != null) {
+				// Check if descricao contains all params
+				for (String param : params) {
+					if (!descricao.contains(param)) {
+						return false; // If any param is not found, return false
+					}
+				}
+				return true; // All params are found, return true
+			}
+			return false;
+		});
 	}
 
 	public Set<Usuario> listUsersByDocumentId(Long id) {

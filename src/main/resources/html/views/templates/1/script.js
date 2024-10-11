@@ -1,6 +1,6 @@
 /**
- * @id
  * @arquivo script.js
+ * @id 
  * @diretorio 1
  * @descricao Despacho de Outorga Prévia
  */
@@ -62,17 +62,14 @@ function App() {
 		</div>`;
 }
 var documento;
-var utils, geographicTable, limitsTable, user, demand;
+var utils;
 
 document.addEventListener('DOMContentLoaded', function () {
 
 	App();
 	
 	utils = new Utils();
-	user = new UsuarioModel();
-	geographicTable = new GeographicTableView();
-	limitsTable = new LimitsTableView();
-	demand = new DemandaModel();
+	new LimitsTableView();
 	new GrantRequirementsView();
 	new ChiefSignatureView();
 	new ActionsView();
