@@ -1,8 +1,15 @@
 /**
- * @descricao 
+ * @descricao Parecer de Outorga Prévia
  * @diretorio 2
  * @arquivo objective-view.js
  * @id 10
+ * 
+ * 
+ * 
+ *
+ */
+
+ 
 class ObjectiveView {
 	
     constructor() {

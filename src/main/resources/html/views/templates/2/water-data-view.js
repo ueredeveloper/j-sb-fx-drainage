@@ -1,8 +1,15 @@
 /**
- * @descricao 
+ * @descricao Parecer de Outorga Prévia
  * @diretorio 2
  * @arquivo water-data-view.js
  * @id 14
+ * 
+ * 
+ * 
+ *
+ */
+
+ 
 class WaterDataView {
     constructor() {
         this.render();

@@ -1,8 +1,15 @@
 /**
- * @descricao 
+ * @descricao Parecer de Outorga Prévia
  * @diretorio 2
  * @arquivo water-demand-view.js
  * @id 15
+ * 
+ * 
+ * 
+ *
+ */
+
+ 
 class WaterDemandView {
     constructor() {
       this.render();

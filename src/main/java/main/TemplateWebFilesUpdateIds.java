@@ -6,11 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import models.Template;
-import utilities.ReadAndUpdateTemplate;
 import utilities.ResourceFileLister;
 
 /*
@@ -45,18 +41,16 @@ public class TemplateWebFilesUpdateIds {
 
 						if (filePath != null) {
 							try {
-								
+
 								String fileContent = new String(Files.readAllBytes(Paths.get(filePath)));
 
 								// Fazer update apenas do id, limpando para futura persistência no banco.
 								fileContent = updateTag(fileContent, "@id", "");
-								
-					            // Escreve o conteúdo atualizado de volta no arquivo
-					            Files.write(Paths.get(filePath), fileContent.getBytes());
 
-					            System.out.println("Arquivo atualizado com sucesso!");
-								
-								
+								// Escreve o conteúdo atualizado de volta no arquivo
+								Files.write(Paths.get(filePath), fileContent.getBytes());
+
+								System.out.println("Arquivo atualizado com sucesso!");
 
 							} catch (Exception e) {
 								e.printStackTrace();
@@ -72,17 +66,17 @@ public class TemplateWebFilesUpdateIds {
 		}
 
 	}
-	
-	 // Função auxiliar para atualizar ou adicionar uma tag no conteúdo
-    private static String updateTag(String content, String tag, String value) {
-        // Verifica se a tag já existe no conteúdo
-        if (content.contains(tag)) {
-            // Substitui o valor existente da tag
-            return content.replaceFirst(tag + "\\s+.*", tag + " " + value);
-        } else {
-            // Se a tag não existir, adiciona ela após o início do comentário JSDoc
-            return content.replaceFirst("/\\*\\*", "/**" + System.lineSeparator() + " * " + tag + " " + value);
-        }
-    }
+
+	// Função auxiliar para atualizar ou adicionar uma tag no conteúdo
+	private static String updateTag(String content, String tag, String value) {
+		// Verifica se a tag já existe no conteúdo
+		if (content.contains(tag)) {
+			// Substitui o valor existente da tag
+			return content.replaceFirst(tag + "\\s+.*", tag + " " + value);
+		} else {
+			// Se a tag não existir, adiciona ela após o início do comentário JSDoc
+			return content.replaceFirst("/\\*\\*", "/**" + System.lineSeparator() + " * " + tag + " " + value);
+		}
+	}
 
 }

@@ -1,15 +1,20 @@
 /**
- * @descricao 
+ * @descricao Parecer de Outorga Prévia
  * @diretorio 2
  * @arquivo legal-basis-view.js
  * @id 9
+ * 
+ * 
+ * 
+ *
+ */
 
+ 
 class LegalBasisView {
 	
     constructor() {
     	this.render();
     }
-
     render() {
         let html = `
         <h2>II. DO FUNDAMENTO LEGAL</h2>

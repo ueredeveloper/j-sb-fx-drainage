@@ -1,13 +1,20 @@
 /**
- * @descricao 
  * @diretorio models
+ * @descricao Modelos de Tabelas
+ * @direitorio models
  * @arquivo demanda-model.js
  * @id 23
+ * 
+ * 
+ * 
+ *
+ */
+ 
 class DemandaModel {
 
-    constructor() { }
+    constructor() {}
 
-    getSample() { }
+    getSample() {}
 
     /**
     * Converte a vazão de litros por hora (L/h) para metros cúbicos por hora (m³/h).

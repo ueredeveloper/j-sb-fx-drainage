@@ -64,8 +64,8 @@ public class TemplatePersistenceFiles {
 
 												Template responseObject = (Template) responseBody;
 												
-												ReadAndUpdateTemplate.updateTemplate(filePath, responseObject);
-
+													ReadAndUpdateTemplate.updateTemplate(filePath, responseObject);
+												
 											} else {
 												System.out.println("Erro ao salvar!");
 											}

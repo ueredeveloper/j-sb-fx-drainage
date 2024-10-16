@@ -19,9 +19,12 @@ public class DocumentoTipoService {
 
 	public DocumentoTipoService(String localUrl) {
 		this.localUrl = localUrl;
+		System.out.println("url " + this.localUrl);
 	}
 
 	public List<DocumentoTipo> fetchDocumentTypes() {
+		
+		System.out.println(localUrl + "/document-type");
 		try {
 			URL apiUrl = new URL(localUrl + "/document-type");
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();

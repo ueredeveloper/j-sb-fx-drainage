@@ -1,8 +1,15 @@
 /**
- * @descricao 
  * @diretorio models
+ * @descricao Modelos de Tabelas
+ * @direitorio models
  * @arquivo usuario-model.js
  * @id 29
+ * 
+ * 
+ * 
+ *
+ */
+
 class UsuarioModel {
 
     constructor() {}
@@ -13,7 +20,6 @@ class UsuarioModel {
             cpfCnpj: 12345678955
         }
     }
-
     getNome (usuario){
          return usuario?.nome;
     }

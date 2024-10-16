@@ -172,10 +172,16 @@ public class DocumentViewController implements Initializable {
 
 			Boolean ifHasTemplate = hasDescricaoContainingAllParams(templates, typeOfDocument, typeOfGrant,
 					subtypeOfGrant);
-			System.out.println(typeOfDocument + " " + typeOfGrant + " " + subtypeOfGrant + " " + ifHasTemplate);
-
+		
 			if (!ifHasTemplate) {
-				templates.addAll(listTemplatesByParams(typeOfDocument, typeOfGrant, subtypeOfGrant));
+				Set<Template> list = listTemplatesByParams(typeOfDocument, typeOfGrant, subtypeOfGrant);
+				
+				System.out.println(list!=null);
+				if (list!=null) {
+					
+					templates.addAll(list);
+				}
+				
 			}
 
 			if (!templates.isEmpty() && templates != null) {

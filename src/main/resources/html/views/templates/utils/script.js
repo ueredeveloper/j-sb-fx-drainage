@@ -1,18 +1,24 @@
 /**
- * @descricao 
+ * @descricao Funções compartilhadas
  * @diretorio utils
  * @arquivo script.js
  * @id 33
+ * 
+ * 
+ * 
+ *
+ */
 
-class Utils {
+    
+ class Utils {
 
     constructor() {}
     
- // Muda o ponto do valor double para vígula do float. Ex: 20.00 para 20,00
+    // Muda o ponto do valor double para vígula do float. Ex: 20.00 para 20,00
     maskDoubleToFloat(value) {
     	return parseFloat(value).toFixed(2).toString().replace('.', ',');
     }
-
+	
     // Função para formatar o número com ponto separador de milhar
     formatNumber(value) {
     	return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");

@@ -1,11 +1,17 @@
 /**
- * @descricao 
  * @diretorio models
+ * @descricao Modelos de Tabelas
+ * @direitorio models
  * @arquivo interferencia-model.js
  * @id 27
+ * 
+ * 
+ * 
+ *
+ */
+ 
 class InterferenciaModel {
-    constructor() {
-    }
+    constructor() {}
 
     // Método para obter a interferência
     getSample () {

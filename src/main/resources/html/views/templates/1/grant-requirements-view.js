@@ -1,8 +1,14 @@
 /**
- * @descricao 
+ * @descricao Despacho de Outorga Prévia
  * @diretorio 1
  * @arquivo grant-requirements-view.js
  * @id 2
+ * 
+ * 
+ * 
+ *
+ */
+ 
 class GrantRequirementsView {
     constructor() {
         this.div = document.getElementById('grant-requirements');

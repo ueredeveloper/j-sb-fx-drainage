@@ -1,8 +1,15 @@
 /**
- * @descricao 
+ * @descricao Parecer de Outorga Prévia
  * @diretorio 2
  * @arquivo purpouse-view.js
  * @id 12
+ * 
+ * 
+ * 
+ *
+ */
+
+ 
 class PurpouseView {
     constructor() {
         this.render();

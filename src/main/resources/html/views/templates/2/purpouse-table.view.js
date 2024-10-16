@@ -1,8 +1,15 @@
 /**
- * @descricao 
+ * @descricao Parecer de Outorga Prévia
  * @diretorio 2
  * @arquivo purpouse-table.view.js
  * @id 11
+ * 
+ * 
+ * 
+ *
+ */
+ 
+ 
 class PurpouseTableView {
   constructor(documento, tipoFinalidade, cssId) {
     this.documento = documento;

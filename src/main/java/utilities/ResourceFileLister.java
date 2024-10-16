@@ -32,6 +32,8 @@ public class ResourceFileLister {
 
 	            for (Path path : filesAndDirs) {
 	                if (Files.isDirectory(path)) {
+	                	
+	                	System.out.println(path);
 	                    // Cria um mapa para a pasta atual
 	                    Map<String, List<String>> folderMap = new HashMap<>();
 	                    
