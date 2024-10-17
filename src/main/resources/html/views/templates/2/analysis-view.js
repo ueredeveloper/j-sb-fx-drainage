@@ -1,7 +1,6 @@
 /**
- * @descricao 
  * @diretorio 2
- * @arquivo analysis-view.js
+ * @descricao 
  * @id 5
 
 class AnalysisView {

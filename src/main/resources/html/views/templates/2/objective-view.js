@@ -1,7 +1,6 @@
 /**
- * @descricao 
  * @diretorio 2
- * @arquivo objective-view.js
+ * @descricao 
  * @id 10
 class ObjectiveView {
 	

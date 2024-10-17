@@ -1,7 +1,6 @@
 /**
- * @descricao 
  * @diretorio models
- * @arquivo finalidade-model.js
+ * @descricao 
  * @id 26
 class FinalidadeModel {
 

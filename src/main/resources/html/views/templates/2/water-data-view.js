@@ -1,7 +1,6 @@
 /**
- * @descricao 
  * @diretorio 2
- * @arquivo water-data-view.js
+ * @descricao 
  * @id 14
 class WaterDataView {
     constructor() {

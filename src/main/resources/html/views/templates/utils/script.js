@@ -1,7 +1,6 @@
 /**
- * @descricao 
  * @diretorio utils
- * @arquivo script.js
+ * @descricao 
  * @id 33
 
 class Utils {

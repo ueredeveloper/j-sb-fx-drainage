@@ -1,7 +1,6 @@
 /**
- * @descricao 
  * @diretorio models
- * @arquivo documento-model.js
+ * @descricao 
  * @id 24
 class DocumentoModel {
 

@@ -1,7 +1,6 @@
 /**
- * @descricao 
  * @diretorio models
- * @arquivo tipo-poco-model.js
+ * @descricao 
  * @id 28
 class TipoPoco {
 

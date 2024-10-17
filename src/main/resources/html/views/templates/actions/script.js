@@ -1,7 +1,6 @@
 /**
- * @descricao 
  * @diretorio actions
- * @arquivo script.js
+ * @descricao 
  * @id 22
 class ActionsView {
     constructor(geoTab) {

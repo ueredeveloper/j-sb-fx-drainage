@@ -1,7 +1,6 @@
 /**
- * @descricao 
  * @diretorio 1
- * @arquivo grant-requirements-view.js
+ * @descricao 
  * @id 2
 class GrantRequirementsView {
     constructor() {

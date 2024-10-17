@@ -1,7 +1,6 @@
 /**
- * @descricao 
  * @diretorio 2
- * @arquivo explotable-reserve-view.js
+ * @descricao 
  * @id 7
 class ExploitableReserveView {
     constructor() { this.render(); }

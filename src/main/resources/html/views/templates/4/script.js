@@ -1,5 +1,4 @@
  /**
- * @descricao 
  * @diretorio 4
- * @arquivo script.js
+ * @descricao 
  * @id 19

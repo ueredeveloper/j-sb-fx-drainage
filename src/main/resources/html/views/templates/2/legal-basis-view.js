@@ -1,7 +1,6 @@
 /**
- * @descricao 
  * @diretorio 2
- * @arquivo legal-basis-view.js
+ * @descricao 
  * @id 9
 
 class LegalBasisView {

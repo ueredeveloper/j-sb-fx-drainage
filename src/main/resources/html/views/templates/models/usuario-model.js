@@ -1,7 +1,6 @@
 /**
- * @descricao 
  * @diretorio models
- * @arquivo usuario-model.js
+ * @descricao 
  * @id 29
 class UsuarioModel {
 

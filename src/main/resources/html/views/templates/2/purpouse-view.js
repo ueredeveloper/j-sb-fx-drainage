@@ -1,7 +1,6 @@
 /**
- * @descricao 
  * @diretorio 2
- * @arquivo purpouse-view.js
+ * @descricao 
  * @id 12
 class PurpouseView {
     constructor() {

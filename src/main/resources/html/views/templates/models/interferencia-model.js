@@ -1,7 +1,6 @@
 /**
- * @descricao 
  * @diretorio models
- * @arquivo interferencia-model.js
+ * @descricao 
  * @id 27
 class InterferenciaModel {
     constructor() {

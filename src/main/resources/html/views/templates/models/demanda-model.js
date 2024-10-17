@@ -1,7 +1,6 @@
 /**
- * @descricao 
  * @diretorio models
- * @arquivo demanda-model.js
+ * @descricao 
  * @id 23
 class DemandaModel {
 

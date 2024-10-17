@@ -1,7 +1,6 @@
 /**
- * @descricao 
  * @diretorio shared
- * @arquivo well-info-view.js
+ * @descricao 
  * @id 32
 
 class WellInfoView {

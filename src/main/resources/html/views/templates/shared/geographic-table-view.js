@@ -1,7 +1,6 @@
 /**
- * @descricao 
  * @diretorio shared
- * @arquivo geographic-table-view.js
+ * @descricao 
  * @id 30
 class GeographicTableView {
     constructor() {

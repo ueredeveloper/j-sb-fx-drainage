@@ -1,7 +1,6 @@
 /**
- * @descricao 
  * @diretorio 1
- * @arquivo chief-signature-view.js
+ * @descricao 
  * @id 1
 class ChiefSignatureView {
 

@@ -1,7 +1,6 @@
 /**
- * @descricao 
  * @diretorio 2
- * @arquivo concluson-view.js
+ * @descricao 
  * @id 6
 class ConclusionView {
     constructor() {

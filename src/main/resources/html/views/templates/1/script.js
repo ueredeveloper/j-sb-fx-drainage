@@ -1,7 +1,6 @@
 /**
- * @descricao 
  * @diretorio 1
- * @arquivo script.js
+ * @descricao 
  * @id 4
 
 function App() {

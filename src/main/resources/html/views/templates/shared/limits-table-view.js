@@ -1,7 +1,6 @@
 /**
- * @descricao 
  * @diretorio shared
- * @arquivo limits-table-view.js
+ * @descricao 
  * @id 31
 class LimitsTableView {
     constructor() {

@@ -1,7 +1,6 @@
 /**
- * @descricao 
  * @diretorio 2
- * @arquivo purpouse-table.view.js
+ * @descricao 
  * @id 11
 class PurpouseTableView {
   constructor(documento, tipoFinalidade, cssId) {
