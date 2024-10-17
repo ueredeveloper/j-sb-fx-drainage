@@ -1,6 +1,8 @@
 package utilities;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
@@ -18,10 +20,14 @@ public class ResourceFileLister {
 	// Method to list files in a directory from the filesystem
 	public static List<Map<String, List<String>>> listFilesFromFilesystem(String resourceDir) throws IOException, URISyntaxException {
 		URL resource = ResourceFileLister.class.getResource(resourceDir);
-
+		
+		System.out.println("Resource File Lister , resource  res dir "  + resourceDir + " resource " +  resource);
+		
 		if (resource != null) {
 			// Convert URL to Path
 			Path dirPath = Paths.get(resource.toURI());
+			
+			System.out.println("dir path " + dirPath);
 			
 			 // Lista para armazenar pastas e seus arquivos
 	        List<Map<String, List<String>>> folderStructure = new ArrayList<>();
@@ -33,7 +39,7 @@ public class ResourceFileLister {
 	            for (Path path : filesAndDirs) {
 	                if (Files.isDirectory(path)) {
 	                	
-	                	System.out.println(path);
+	                	System.out.println("path of paths " + path);
 	                    // Cria um mapa para a pasta atual
 	                    Map<String, List<String>> folderMap = new HashMap<>();
 	                    
@@ -62,5 +68,27 @@ public class ResourceFileLister {
 		}
 		return null;
 	}
+	
+	// Helper method to read a file using getResourceAsStream
+    public static String readFileFromClasspath(String resourceDir, String folderName, String fileName) throws IOException {
+        String fullPath = resourceDir + folderName + "/" + fileName;
+        InputStream inputStream = ResourceFileLister.class.getResourceAsStream(fullPath);
+        if (inputStream == null) {
+            throw new IOException("Resource not found: " + fullPath);
+        }
+
+        return readFromInputStream(inputStream);
+    }
+
+    // Helper method to read from InputStream
+    private static String readFromInputStream(InputStream inputStream) throws IOException {
+        ByteArrayOutputStream result = new ByteArrayOutputStream();
+        byte[] buffer = new byte[1024];
+        int length;
+        while ((length = inputStream.read(buffer)) != -1) {
+            result.write(buffer, 0, length);
+        }
+        return result.toString("UTF-8");
+    }
 
 }

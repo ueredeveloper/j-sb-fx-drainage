@@ -30,6 +30,7 @@ import models.Usuario;
 import services.InterferenciaService;
 import services.TemplateService;
 import services.UsuarioService;
+import utilities.TemplatesFolder;
 import utilities.URLUtility;
 import utilities.WebViewContentLoader;
 
@@ -167,21 +168,21 @@ public class DocumentViewController implements Initializable {
 			// Busca os templates que atendem aos requisitos tipo de documento e tipo e
 			// subtipo de outorga.
 
-			// @Reparo Adicionar lista que guarda os templates já buscados para não
-			// precisoar buscar de novo.
-
 			Boolean ifHasTemplate = hasDescricaoContainingAllParams(templates, typeOfDocument, typeOfGrant,
 					subtypeOfGrant);
-		
+
+			TemplatesFolder.create();
+
+			// Leitura dos templates na pasta resources.
 			if (!ifHasTemplate) {
-				Set<Template> list = listTemplatesByParams(typeOfDocument, typeOfGrant, subtypeOfGrant);
-				
-				System.out.println(list!=null);
-				if (list!=null) {
-					
-					templates.addAll(list);
+				Set<Template> setOfTemplates;
+				setOfTemplates = TemplatesFolder.read();
+
+				if (setOfTemplates != null) {
+
+					templates.addAll(setOfTemplates);
 				}
-				
+
 			}
 
 			if (!templates.isEmpty() && templates != null) {

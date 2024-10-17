@@ -97,7 +97,7 @@ public class TemplateService {
 			// Convert object to JSON
 			String jsonInputString = JsonConverter.convertObjectToJson(object);
 
-			System.out.println(jsonInputString);
+			//System.out.println(jsonInputString);
 
 			// Write JSON to request body
 			try (OutputStream os = connection.getOutputStream();
