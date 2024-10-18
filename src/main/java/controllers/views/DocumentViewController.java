@@ -1,5 +1,6 @@
 package controllers.views;
 
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +31,7 @@ import models.Usuario;
 import services.InterferenciaService;
 import services.TemplateService;
 import services.UsuarioService;
-import utilities.TemplatesFolder;
+import utilities.ReadAndCreateSetOfTemplates;
 import utilities.URLUtility;
 import utilities.WebViewContentLoader;
 
@@ -171,12 +172,17 @@ public class DocumentViewController implements Initializable {
 			Boolean ifHasTemplate = hasDescricaoContainingAllParams(templates, typeOfDocument, typeOfGrant,
 					subtypeOfGrant);
 
-			TemplatesFolder.create();
+			// TemplatesFolder.create();
 
 			// Leitura dos templates na pasta resources.
 			if (!ifHasTemplate) {
-				Set<Template> setOfTemplates;
-				setOfTemplates = TemplatesFolder.read();
+				Set<Template> setOfTemplates = null;
+				try {
+					setOfTemplates = ReadAndCreateSetOfTemplates.getSetOfTemplates();
+				} catch (URISyntaxException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 
 				if (setOfTemplates != null) {
 
