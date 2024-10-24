@@ -1,8 +1,9 @@
 /**
+ * @nome Interferencia
  * @diretorio models
  * @descricao Modelos de Tabelas
  * @arquivo interferencia-model.js
- * @id 
+ * @id 27
  * 
  * 
  * 

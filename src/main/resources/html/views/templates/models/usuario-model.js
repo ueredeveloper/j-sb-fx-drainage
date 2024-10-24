@@ -1,9 +1,10 @@
 /**
+ * @nome Usuario
  * @diretorio models
  * @descricao Modelos de Tabelas
-
+ * @direitorio models
  * @arquivo usuario-model.js
- * @id 
+ * @id 29
  * 
  * 
  * 

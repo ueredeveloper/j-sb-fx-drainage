@@ -26,7 +26,7 @@ class ExploitableReserveView {
         document.getElementById('reserva-explotavel').innerHTML = html;
     }
 
-    updateInfo(documento){
+    update(documento){
 
         let subsistema = documento.endereco?.interferencias[0]?.subsistema || "Não encontrado";
         document.getElementById('subsistema').innerHTML = subsistema

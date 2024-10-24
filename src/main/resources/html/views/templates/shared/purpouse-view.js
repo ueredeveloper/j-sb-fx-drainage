@@ -1,15 +1,15 @@
 /**
-
  * @descricao Parecer de Outorga Prévia
  * @diretorio 2
  * @arquivo purpouse-view.js
- * @id 
+ * @id 12
  * 
  * 
  * 
  *
  */
 
+ 
 class PurpouseView {
     constructor() {
         this.render();
@@ -110,6 +110,6 @@ class PurpouseView {
 
         `
 
-        document.getElementById('req-pur-view').innerHTML = html;
+        document.getElementById('purpouse-view').innerHTML = html;
     }
 }

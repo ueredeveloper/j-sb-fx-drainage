@@ -1,8 +1,8 @@
 /**
  * @descricao Parecer de Outorga Prévia
  * @diretorio 2
- * @arquivo objective-view.js
- * @id 
+ * @arquivo object-view.js
+ * @id 10
  * 
  * 
  * 
@@ -10,7 +10,7 @@
  */
 
  
-class ObjectiveView {
+class ObjectView {
 	
     constructor() {
     	this.render();
@@ -28,10 +28,10 @@ class ObjectiveView {
     	 - Distrito Federal, para fins de <span class="inter-finalidades"></span>.</p>
     `;
     	
-    	document.getElementById("objetivo").innerHTML = html;
+    	document.getElementById("object-view").innerHTML = html;
     }
     
-    updateInfo (usuario, endereco, finalidades){
+    update (usuario, endereco, finalidades){
     	
     	let names = document.getElementsByClassName('us-nome');
     	// Converte o resultado para array e atualiza

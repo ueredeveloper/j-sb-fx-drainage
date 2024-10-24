@@ -35,8 +35,8 @@ public class TemplatePersistenceFiles {
 						//if (fileName.equals("geographic-table.js")) {
 							
 							// Pasta resources, diretório dentro desta pasta, pasta específica e arquivo que será persistido
-							String filePath = "src/main/resources" + resourceDir + folderName + "/" + fileName;
-							
+							//String filePath = "src/main/resources" + resourceDir + folderName + "/" + fileName;
+							String filePath = resourceDir + folderName + "/" + fileName;
 
 							if (filePath != null) {
 								try {

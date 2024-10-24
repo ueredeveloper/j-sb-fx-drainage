@@ -7,53 +7,56 @@ import models.Template;
 
 public class ReadAndUpdateTemplate {
 
-    public static void updateTemplate(String filePath, Template template) {
-        Long id = template.getId();
-        String name = template.getArquivo();
-        String folder = template.getDiretorio();
-        String description = template.getDescricao();
+	public static void updateTemplate(String filePath, Template template) {
+		
+		System.out.println(filePath);
+		
+		
+		Long id = template.getId();
+		String name = template.getNome();
+		String fileName = template.getArquivo();
+		String folderName = template.getDiretorio();
+		String description = template.getDescricao();
 
-        try {
-            // Lê o conteúdo do arquivo
-            String fileContent = new String(Files.readAllBytes(Paths.get(filePath)));
+		try {
+			// Lê o conteúdo do arquivo
+			String fileContent = new String(Files.readAllBytes(Paths.get("src/main/resources"+ filePath)));
 
-            // Atualizar ou adicionar @id. Também adiciona uma linha de comentário a mais preenchendo com um asterisco
-            fileContent = updateTag(fileContent, "@id", String.valueOf(id) + "\n * ");
-            
-            // Se precisar limpar os ids nos arquivos para salvar novos ids para cada arquivo
-            //fileContent = updateTag(fileContent, "@id", "");
-            
-            // Atualizar ou adicionar @arquivo
-            fileContent = updateTag(fileContent, "@arquivo", name);
+			// Atualizar ou adicionar @id. Também adiciona uma linha de comentário a mais
+			// preenchendo com um asterisco
+			fileContent = updateTag(fileContent, "@id", String.valueOf(id) + "\n * ");
 
-            // Atualizar ou adicionar @diretorio
-            fileContent = updateTag(fileContent, "@diretorio", folder);
+			// Atualizar ou adicionar @nome
+			fileContent = updateTag(fileContent, "@nome", name);
 
-            // Atualizar ou adicionar @descricao
-            fileContent = updateTag(fileContent, "@descricao", description);
-            
-          
+			// Atualizar ou adicionar @arquivo
+			fileContent = updateTag(fileContent, "@arquivo", fileName);
 
+			// Atualizar ou adicionar @diretorio
+			fileContent = updateTag(fileContent, "@diretorio", folderName);
 
-            // Escreve o conteúdo atualizado de volta no arquivo
-            Files.write(Paths.get(filePath), fileContent.getBytes());
+			// Atualizar ou adicionar @descricao
+			fileContent = updateTag(fileContent, "@descricao", description);
 
-            System.out.println("Arquivo atualizado com sucesso!");
+			// Escreve o conteúdo atualizado de volta no arquivo
+			Files.write(Paths.get("src/main/resources"+ filePath), fileContent.getBytes());
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+			System.out.println("Arquivo atualizado com sucesso!");
 
-    // Função auxiliar para atualizar ou adicionar uma tag no conteúdo
-    private static String updateTag(String content, String tag, String value) {
-        // Verifica se a tag já existe no conteúdo
-        if (content.contains(tag)) {
-            // Substitui o valor existente da tag
-            return content.replaceFirst(tag + "\\s+.*", tag + " " + value);
-        } else {
-            // Se a tag não existir, adiciona ela após o início do comentário JSDoc
-            return content.replaceFirst("/\\*\\*", "/**" + System.lineSeparator() + " * " + tag + " " + value);
-        }
-    }
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	// Função auxiliar para atualizar ou adicionar uma tag no conteúdo
+	private static String updateTag(String content, String tag, String value) {
+		// Verifica se a tag já existe no conteúdo
+		if (content.contains(tag)) {
+			// Substitui o valor existente da tag
+			return content.replaceFirst(tag + "\\s+.*", tag + " " + value);
+		} else {
+			// Se a tag não existir, adiciona ela após o início do comentário JSDoc
+			return content.replaceFirst("/\\*\\*", "/**" + System.lineSeparator() + " * " + tag + " " + value);
+		}
+	}
 }

@@ -1,8 +1,9 @@
 /**
- * @descricao Despacho de Outorga Prévia
+ * @nome Despacho de Outorga Prévia
+ * @descricao Obrigações do Outorgado
  * @diretorio 1
  * @arquivo grant-requirements-view.js
- * @id 
+ * @id 2
  * 
  * 
  * 

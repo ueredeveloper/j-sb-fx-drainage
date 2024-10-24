@@ -1,5 +1,6 @@
 package utilities;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
@@ -40,6 +41,7 @@ public class ReadAndCreateSetOfTemplates {
 							// será persistido
 							//String fullPath = "src/main/resources" + resourceDir + folderName + "/" + fileName;
 							String fullPath = resourceDir + folderName + "/" + fileName;
+							//String fullPath = folderName + "/" + fileName;
 						   // String fullPath = ReadAndCreateSetOfTemplates.class.getResource(resourceDir + folderName + "/" + fileName).toExternalForm();
 						    System.out.println("ReadAndCreateSetOfTemplates: full path " + fullPath);
 
@@ -66,5 +68,7 @@ public class ReadAndCreateSetOfTemplates {
 		return templates;
 
 	}
+	
+	
 
 }

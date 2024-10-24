@@ -1,8 +1,9 @@
 /**
- * @descricao Visualizações Compartilhadas
+ * @nome Tabela de Dados Geográficos
+ * @descricao Dados geográficos como coordenada, bacia e subbacia
  * @diretorio shared
  * @arquivo geographic-table-view.js
- * @id 
+ * @id 30
  * 
  * 
  * 
@@ -11,7 +12,7 @@
 
 class GeographicTableView {
     constructor() {
-        this.div = document.getElementById('geographic-table');
+        this.div = document.getElementById('geographic-table-view');
         this.render();
     }
 
@@ -51,31 +52,31 @@ class GeographicTableView {
         let ns = document.getElementsByClassName('inter-nome');
 
     	Array.from(ns).forEach(element => {
-    		element.textContent = interferencia?.nome || 'Desconhecido';
+    		element.textContent = interferencia?.nome || 'XXX';
     	});
 
         let bhs = document.getElementsByClassName('inter-bh');
 
     	Array.from(bhs).forEach(element => {
-    		element.textContent = interferencia.baciaHidrografica?.nome || 'Desconhecido';
+    		element.textContent = interferencia.baciaHidrografica?.nome || 'XXX';
     	});
 
         let uhs = document.getElementsByClassName('inter-uh');
 
     	Array.from(uhs).forEach(element => {
-    		element.textContent =  interferencia.unidadeHidrografica?.nome || 'Desconhecido';
+    		element.textContent =  interferencia.unidadeHidrografica?.nome || 'XXX';
     	});
 
         let lats = document.getElementsByClassName('inter-latitude');
 
     	Array.from(lats).forEach(element => {
-    		element.textContent = interferencia.latitude?.toFixed(6) || 'Desconhecido';
+    		element.textContent = interferencia.latitude?.toFixed(6) || 'XXX';
     	});
 
         let lngs = document.getElementsByClassName('inter-longitude');
 
     	Array.from(lngs).forEach(element => {
-    		element.textContent = interferencia.longitude?.toFixed(6) || 'Desconhecido';
+    		element.textContent = interferencia.longitude?.toFixed(6) || 'XXX';
     	});
      
     }

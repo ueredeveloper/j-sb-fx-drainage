@@ -1,8 +1,9 @@
 /**
- * @descricao Parecer de Outorga Prévia
+ * @nome Parecer de Outorga Prévia
+ * @descricao Demanda a ser outorgada
  * @diretorio 2
  * @arquivo water-demand-view.js
- * @id 
+ * @id 15
  * 
  * 
  * 

@@ -1,16 +1,15 @@
 /**
- * @descricao Parecer de Outorga Prévia
+ * @nome Parecer de Outorga Prévia
+ * @descricao Base legal
  * @diretorio 2
  * @arquivo legal-basis-view.js
- * @id 
+ * @id 9
  * 
  * 
  * 
  *
  */
 
- 
->>>>>>> a7cfd37d81a56b88035884d504a3026636228d81
 class LegalBasisView {
 	
     constructor() {
@@ -27,6 +26,6 @@ class LegalBasisView {
         </p>
         `;
 
-        document.getElementById('base-legal').innerHTML = html;
+        document.getElementById('legal-basis-view').innerHTML = html;
     }
 }
