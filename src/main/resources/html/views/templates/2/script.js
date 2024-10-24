@@ -1,7 +1,15 @@
 /**
+ * @descricao Parecer de Outorga Prévia
  * @diretorio 2
- * @descricao 
- * @id 13
+ * @arquivo script.js
+ * @id 
+ * 
+ * 
+ * 
+ *
+ */
+
+ 
 function App() {
 
 	const appDiv = document.getElementById("app");

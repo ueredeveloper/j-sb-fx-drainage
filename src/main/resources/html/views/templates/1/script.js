@@ -1,12 +1,18 @@
 /**
+ * @descricao Despacho de Outorga Prévia
  * @diretorio 1
- * @descricao 
- * @id 4
+ * @arquivo script.js
+ * @id 
+ * 
+ * 
+ * 
+ *
+ */
+
 
 function App() {
 
 	const appDiv = document.getElementById("app");
-
 	appDiv.innerHTML = `
 		<div id="container">
 			<div style="text-align: center;">&nbsp;</div>

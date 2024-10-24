@@ -1,8 +1,14 @@
 /**
+ * @descricao Parecer de Outorga Prévia
  * @diretorio 2
- * @descricao 
- * @id 5
-
+ * @arquivo analysis-view.js
+ * @id 
+ * 
+ * 
+ * 
+ *
+ */
+ 
 class AnalysisView {
     constructor() {
         this.render();

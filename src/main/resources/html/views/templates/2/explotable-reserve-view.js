@@ -1,7 +1,14 @@
 /**
+ * @descricao Parecer de Outorga Prévia
  * @diretorio 2
- * @descricao 
- * @id 7
+ * @arquivo explotable-reserve-view.js
+ * @id 
+ * 
+ * 
+ * 
+ *
+ */
+ 
 class ExploitableReserveView {
     constructor() { this.render(); }
     render() {
@@ -14,7 +21,7 @@ class ExploitableReserveView {
         <p>Figura 04: Reserva explotável e balanço hídrico do subsistema <span id="subsistema"></span>.</p>
         </div>
         
-         `
+         `;
 
         document.getElementById('reserva-explotavel').innerHTML = html;
     }

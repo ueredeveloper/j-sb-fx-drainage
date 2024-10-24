@@ -1,11 +1,18 @@
 /**
+ * @descricao Ações de Botões de Teste
  * @diretorio actions
- * @descricao 
- * @id 22
+ * @arquivo script.js
+ * @id 
+ * 
+ * 
+ * 
+ *
+ */
+ 
 class ActionsView {
-    constructor(geoTab) {
+	
+	constructor (){
         this.div = document.getElementById('actions');
-        this.geoTab = geoTab;
         this.render();
         this.renderActions();
     }
@@ -35,14 +42,14 @@ class ActionsView {
 
             let interferencia = new DocumentoModel().getSample().endereco.interferencias[0];
 
-            geographicTableView.updateTableInfo(interferencia);
+            new GeographicTableView().updateTableInfo(interferencia);
         };
         // Atualiza os limites outorgáveis
         document.getElementById('btn-update-limits-table').onclick = function () {
 
             let interferencia = new DocumentoModel().getSample().endereco.interferencias[0];
 
-            limitsTableView.updateAuthorizedLimits(interferencia);
+            new LimitsTableView().updateAuthorizedLimits(interferencia);
         };
 
         // Atualiza os limites outorgáveis
@@ -69,19 +76,19 @@ class ActionsView {
             let interferencia = documento.endereco.interferencias[0];
             let finalidades = interferencia.finalidades;
 
-            objectiveView.updateInfo(usuario, endereco, finalidades);
-            analysisView.updateInfo(interferencia);
-            wellInfoView.updateInfo(interferencia);
+            new ObjectiveView().updateInfo(usuario, endereco, finalidades);
+            new AnalysisView().updateInfo(interferencia);
+            new WellInfoView().updateInfo(interferencia);
 
             // Finalidades requeridas
             new PurpouseTableView(documento, 1, 'tbl-finalidades-requeridas');
             // Finalidades autorizadas
             new PurpouseTableView(documento, 2, 'tbl-finalidades-autorizadas');
 
-            exploitableReserveView.updateInfo(documento);
+            new ExploitableReserveView().updateInfo(documento);
 
-            geographicTableView.updateTableInfo(interferencia);
-            limitsTableView.updateAuthorizedLimits(interferencia);
+            new GeographicTableView().updateTableInfo(interferencia);
+            new LimitsTableView().updateAuthorizedLimits(interferencia);
 
         };
 

@@ -1,7 +1,15 @@
-/**
+/*
+ * @descricao Despacho de Outorga Prévia
  * @diretorio 1
- * @descricao 
- * @id 1
+ * @arquivo chief-signature-view.js
+ * @id 
+ * 
+ * 
+ * 
+ *
+ */
+
+
 class ChiefSignatureView {
 
     constructor() {

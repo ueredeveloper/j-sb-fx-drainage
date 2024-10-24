@@ -1,13 +1,18 @@
 /**
+ * @descricao Visualizações Compartilhadas
  * @diretorio shared
- * @descricao 
- * @id 32
+ * @arquivo well-info-view.js
+ * @id 
+ * 
+ * 
+ * 
+ *
+ */
 
-class WellInfoView {
 
-    constructor() {
-        this.render();
-    }
+ class WellInfoView {
+
+    constructor() {this.render();}
 
     render() {
         let html = `

@@ -1,4 +1,11 @@
  /**
+ * @descricao Registro de Uso
  * @diretorio 5
- * @descricao 
- * @id 21
+ * @arquivo script.js
+ * @id 
+ * 
+ * 
+ * 
+ *
+ */
+ 

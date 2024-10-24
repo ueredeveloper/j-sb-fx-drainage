@@ -1,7 +1,14 @@
 /**
  * @diretorio models
- * @descricao 
- * @id 24
+ * @descricao Modelos de Tabelas
+ * @arquivo documento-model.js
+ * @id 
+ * 
+ * 
+ * 
+ *
+ */
+ 
 class DocumentoModel {
 
 	constructor() { }

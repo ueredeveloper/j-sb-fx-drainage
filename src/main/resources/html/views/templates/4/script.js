@@ -1,4 +1,10 @@
  /**
+ * @descricao Parecer de Outorga De Direito de Uso
  * @diretorio 4
- * @descricao 
- * @id 19
+ * @arquivo script.js
+ * @id 
+ * 
+ * 
+ * 
+ *
+ */

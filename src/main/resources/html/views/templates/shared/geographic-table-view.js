@@ -1,12 +1,20 @@
 /**
+ * @descricao Visualizações Compartilhadas
  * @diretorio shared
- * @descricao 
- * @id 30
+ * @arquivo geographic-table-view.js
+ * @id 
+ * 
+ * 
+ * 
+ *
+ */
+
 class GeographicTableView {
     constructor() {
         this.div = document.getElementById('geographic-table');
         this.render();
     }
+
 
     render() {
         let html = `

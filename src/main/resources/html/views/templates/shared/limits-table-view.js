@@ -1,13 +1,19 @@
 /**
+ * @descricao Visualizações Compartilhadas
  * @diretorio shared
- * @descricao 
- * @id 31
+ * @arquivo limits-table-view.js
+ * @id 
+ * 
+ * 
+ * 
+ *
+ */
+ 
 class LimitsTableView {
     constructor() {
         this.div = document.getElementById('authorized-limits-table');
         this.render();
     }
-
     render() {
         let index = `
         <div style="overflow:auto;margin-left:auto;margin-right:auto;">

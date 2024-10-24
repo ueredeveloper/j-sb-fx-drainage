@@ -1,7 +1,14 @@
 /**
  * @diretorio models
- * @descricao 
- * @id 26
+ * @descricao Modelos de Tabelas
+ * @arquivo finalidade-model.js
+ * @id 
+ * 
+ * 
+ * 
+ *
+ */
+ 
 class FinalidadeModel {
 
     constructor() {}
