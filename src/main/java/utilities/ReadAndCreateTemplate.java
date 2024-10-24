@@ -6,6 +6,8 @@ import java.io.InputStream;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.annotation.Resource;
+
 import models.Template;
 
 public class ReadAndCreateTemplate {
@@ -18,18 +20,27 @@ public class ReadAndCreateTemplate {
 
 		try {
 
-			InputStream inputStream = ReadAndCreateSetOfTemplates.class.getResourceAsStream(fullPath);
+			InputStream inputStream = ReadAndCreateTemplate.class.getResourceAsStream(fullPath);
+			
+			String fileContent = "";
 
 			if (inputStream == null) {
-				throw new IOException("Resource not found: " + fullPath);
+					
+				fileContent= new ReadAndCreateTemplate().loadJSFileContent(fullPath);
+				
+				throw new IOException("Resource not found: fullPath " + fullPath + " inputStrem: " + inputStream);
+				
+			
+			
 			}
-			String fileContent = readFromInputStream(inputStream);
+			fileContent = readFromInputStream(inputStream);
 
 			// String fileContent = new String(Files.readAllBytes(Paths.get(filePath)));
 
 			String id = extractTag(fileContent, "@id");
-			String name = extractTag(fileContent, "@arquivo");
-			String folder = extractTag(fileContent, "@diretorio");
+			String name = extractTag(fileContent, "@nome");
+			String fileName = extractTag(fileContent, "@arquivo");
+			String folderName = extractTag(fileContent, "@diretorio");
 			String description = extractTag(fileContent, "@descricao");
 			Template template = new Template();
 
@@ -38,8 +49,10 @@ public class ReadAndCreateTemplate {
 			if (!id.equals("*") && !id.equals("@") && !id.equals("") && !id.contains(" ")) {
 				template.setId(Long.parseLong(id));
 			}
-			template.setArquivo(name);
-			template.setDiretorio(folder);
+			
+			template.setNome(name);
+			template.setArquivo(fileName);
+			template.setDiretorio(folderName);
 			template.setDescricao(description);
 			// Adiciona todo arquivo ao atributo conteudo do objeto template
 			template.setConteudo(fileContent);
@@ -76,5 +89,19 @@ public class ReadAndCreateTemplate {
 		}
 		return result.toString("UTF-8"); // Specify the encoding
 	}
+	
+	 public String loadJSFileContent(String fullPath) throws IOException {
+	        // Use the ClassLoader to load the file from the resources folder
+	        ClassLoader classLoader = getClass().getClassLoader();
+	        InputStream inputStream = classLoader.getResourceAsStream(fullPath);
+	        
+	        System.out.println(inputStream);
+	        
+	        if (inputStream == null) {
+	            throw new IllegalArgumentException("File not found: "  + fullPath);
+	        }
+	        
+	        return readFromInputStream(inputStream);
+	    }
 
 }

@@ -1,9 +1,19 @@
 /**
+ * @nome Documento
  * @diretorio models
  * @descricao Modelos de Tabelas
- * @direitorio models
  * @arquivo documento-model.js
- * @id 24
+ * @id 26
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
  * 
  * 
  * 
@@ -72,10 +82,10 @@ class DocumentoModel {
 
 							]
 						},
-						"tipoPoco": {
+						/*"tipoPoco": {
 							"id": 1,
 							"descricao": "Manual"
-						},
+						},*/
 						"tipoInterferencia": {
 							"id": 2,
 							"descricao": "Subterrânea"

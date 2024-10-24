@@ -1,8 +1,19 @@
 /**
- * @descricao Visualizações Compartilhadas
+ * @nome Informações do Poço
+ * @descricao Informações como nível estático, nível dinâmico e coordenada
  * @diretorio shared
  * @arquivo well-info-view.js
- * @id 32
+ * @id 40
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
  * 
  * 
  * 
@@ -33,33 +44,34 @@
             <li>Vazão autorizada (L/h): <span class="inter-vazao-autorizada" class="highlight"></span></li>
         </ul>`;
 
-        document.getElementById('dados-poco').innerHTML = html;
+        document.getElementById('well-info-view').innerHTML = html;
 
 
     }
-    updateInfo(interferencia) {
+    
+    update(interferencia) {
         // Latitude
         let lats = document.getElementsByClassName('inter-latitude');
         Array.from(lats).forEach(element => {
-            element.textContent = interferencia.latitude?.toFixed(6) || 'Desconhecido';
+            element.textContent = interferencia.latitude?.toFixed(6) || 'XXX';
         });
 
         // Longitude
         let lngs = document.getElementsByClassName('inter-longitude');
         Array.from(lngs).forEach(element => {
-            element.textContent = interferencia.longitude?.toFixed(6) || 'Desconhecido';
+            element.textContent = interferencia.longitude?.toFixed(6) || 'XXX';
         });
 
         // Tipo de Poço
         let tiposPoço = document.getElementsByClassName('inter-tipo-poco');
         Array.from(tiposPoço).forEach(element => {
-            element.textContent = interferencia?.tipoPoco?.descricao || 'Desconhecido';
+            element.textContent = interferencia?.tipoPoco?.descricao || 'XXX';
         });
 
         // Profundidade do Poço
         let profundidades = document.getElementsByClassName('inter-profundidade');
         Array.from(profundidades).forEach(element => {
-            element.textContent = interferencia?.profundidade || 'Desconhecido';
+            element.textContent = interferencia?.profundidade || 'XXX';
         });
 
         // Nível Estático e Dinâmico
@@ -71,7 +83,7 @@
         niveis.forEach(nivel => {
             let elements = document.getElementsByClassName(nivel.className);
             Array.from(elements).forEach(element => {
-                element.textContent = nivel.value || 'Desconhecido';
+                element.textContent = nivel.value || 'XXX';
             });
         });
 
@@ -85,7 +97,7 @@
         vazoes.forEach(vazao => {
             let elements = document.getElementsByClassName(vazao.className);
             Array.from(elements).forEach(element => {
-                element.textContent = vazao.value || 'Desconhecido';
+                element.textContent = vazao.value || 'XXX';
             });
         });
 

@@ -1,8 +1,19 @@
 /**
- * @descricao Despacho de Outorga Prévia
- * @diretorio 1
+ * @nome Assinatura do Superintendente
+ * @descricao Assinatura compartilhada pelos atos
+ * @diretorio shared
  * @arquivo chief-signature-view.js
- * @id 1
+ * @id 32
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
  * 
  * 
  * 
@@ -13,7 +24,7 @@
 class ChiefSignatureView {
 
     constructor() {
-        this.div = document.getElementById('chief-signature');
+        this.div = document.getElementById('chief-signature-view');
         this.render();
     }
 

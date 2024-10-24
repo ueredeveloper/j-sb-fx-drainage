@@ -3,6 +3,7 @@ package models;
 public class Template {
 
 	private Long id;
+	private String nome;
 	private String descricao;
 	private String diretorio;
 	private String arquivo;
@@ -17,15 +18,15 @@ public class Template {
 		this.id = id;
 	}
 
-	public Template(Long id, String descricao) {
+	public Template(Long id, String nome) {
 		super();
 		this.id = id;
-		this.descricao = descricao;
+		this.nome = nome;
 	}
 
-	public Template(String descricao) {
+	public Template(String nome) {
 		super();
-		this.descricao = descricao;
+		this.nome = nome;
 	}
 
 	public Long getId() {
@@ -34,6 +35,14 @@ public class Template {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 
 	public String getDescricao() {
@@ -70,8 +79,7 @@ public class Template {
 
 	@Override
 	public String toString() {
-		return "Template [descricao=" + descricao + ", diretorio=" + diretorio + ", arquivo=" + arquivo + ", conteudo=" + conteudo
-				+ "]";
+		return nome;
 	}
 
 }

@@ -1,8 +1,19 @@
 /**
- * @descricao Parecer de Outorga Prévia
- * @diretorio 2
- * @arquivo purpouse-view.js
- * @id 12
+ * @nome Dados Legais e Finalidade
+ * @descricao Limites legais por finalidade de uso
+ * @diretorio shared
+ * @arquivo purpouse-legal-basis-view.js
+ * @id 36
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
  * 
  * 
  * 
@@ -10,34 +21,21 @@
  */
 
  
-class PurpouseView {
+class PurpouseLegalBasisView {
     constructor() {
         this.render();
     }
 
     render() {
         let html = `
-        
-        <p>5. As finalidades de uso e respectivas demandas solicitadas estão dispostos na tabela abaixo, organizadas 
-        por tipo de processo:</p>
-
-        <p>&nbsp;</p>
-
-        <p><br></p>
-        <p>Tabela 01: Finalidades e demandas requeridas.</p>
-        
-        <div id="tbl-finalidades-requeridas" style="display:flex; justify-content: center;"></div>
-
-        <p>&nbsp;</p>
-
-        <p><br></p>
-        <p>6. As finalidades foram analisadas considerando as disposições da Resolução/Adasa nº 350/2006, 
+        <p>
+        7. As finalidades foram analisadas considerando as disposições da Resolução/Adasa nº 350/2006, 
         Resolução/Adasa nº 36/2018, Resolução/Adasa nº 16/2018 e da disponibilidade hídrica de água subterrânea na 
-        reserva explotável do domínio poroso/fraturado conforme disposições a seguir:</p>
-
-        <p>&nbsp;</p>
+        reserva explotável do domínio poroso/fraturado conforme disposições a seguir:
+        </p>
 
         <p><br></p>
+
         <p>Resolução/ADASA nº 350/2006</p>
 
         <p style="margin-left:30.0pt;">Art. 9º . Necessitam de prévio registro os seguintes usos de água subterrânea, 
@@ -101,15 +99,8 @@ class PurpouseView {
             <p style="margin-left:30.0pt;">&nbsp;</p>
         </div>
 
-        <p>7. As demandas solicitadas e devidamente justificadas para cada finalidade de uso foram analisadas considerando a disponibilidade hídrica da reserva explotável dos subsistemas subterrâneos. As demandas que apresentaram ausência de justificativas para as estimativas de uso, foram ajustadas às recomendações da Resolução nº 18/2020:</p>
+        `;
 
-			<p>&nbsp;</p>
-
-			<p><br></p><p>Tabela 02: Finalidades e demandas ajustadas, conforme a Resolução nº 18/2020.</p>
-			<div id="tbl-finalidades-autorizadas" style="display:flex; justify-content: center;"></div>
-
-        `
-
-        document.getElementById('req-pur-view').innerHTML = html;
+        document.getElementById('purpouse-legal-basis-view').innerHTML = html;
     }
 }

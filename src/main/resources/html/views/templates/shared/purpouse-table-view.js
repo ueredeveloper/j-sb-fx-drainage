@@ -1,8 +1,19 @@
 /**
- * @descricao Parecer de Outorga Prévia
- * @diretorio 2
- * @arquivo purpouse-table.view.js
- * @id 11
+ * @nome Tabela de Finalidade e Vazões
+ * @descricao Tabela com vazões solicitadas ou outorgadas por finalidade
+ * @diretorio shared
+ * @arquivo purpouse-table-view.js
+ * @id 37
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
  * 
  * 
  * 
@@ -32,13 +43,13 @@ class PurpouseTableView {
           <table border="1" cellspacing="0" style="align: center">
             <tbody>
               <tr>
-                <td style="text-align: center;"><p>Processo</p></td>
-                <td style="text-align: center;"><p>Requerente</p></td>
-                <td style="text-align: center;"><p>Solicitação</p></td>
-                <td style="text-align: center;"><p>Finalidades</p></td>
-                <td style="text-align: center;"><p>Quantidade</p></td>
-                <td style="text-align: center;"><p>Demanda (L/dia)</p></td>
-                <td style="text-align: center;"><p>Demanda Total (L/dia)</p></td>
+                <td style="text-align: center;">Processo</td>
+                <td style="text-align: center;">Requerente</td>
+                <td style="text-align: center;">Solicitação</td>
+                <td style="text-align: center;">Finalidades</td>
+                <td style="text-align: center;">Quantidade</td>
+                <td style="text-align: center;">Demanda (L/dia)</td>
+                <td style="text-align: center;">Demanda Total (L/dia)</td>
               </tr>
               <tr style="text-align: center;">
                 <td style="text-align: center;">${anexo?.numero ?? 'N/A'}</td>
@@ -47,7 +58,7 @@ class PurpouseTableView {
                   ${tipoOutorga?.descricao ?? 'N/A'}
                   ${sutipoOutorga?.descricao ? ' - ' + sutipoOutorga.descricao : ''}
                 </td>
-                <td style="text-align: center;">${_finalidades.map(_fin => _fin.finalidade || 'Desconhecido').join('<br/><br/>')}</td>
+                <td style="text-align: center;">${_finalidades.map(_fin => _fin.finalidade || 'XXX').join('<br/><br/>')}</td>
                 <td style="text-align: center;">${_finalidades.map(_fin => _fin.quantidade || 'N/A').join('<br/><br/>')}</td>
                 <td style="text-align: center;">${_finalidades.map(_fin => _fin.total || 'N/A').join('<br/><br/>')}</td>
                 <td style="text-align: center;">${_finalidades.reduce((accumulator, currentValue) => accumulator + Number(currentValue.total || 0), 0)}</td>

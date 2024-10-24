@@ -1,9 +1,19 @@
 /**
+ * @nome Finalidade
  * @diretorio models
  * @descricao Modelos de Tabelas
- * @direitorio models
  * @arquivo finalidade-model.js
- * @id 26
+ * @id 28
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
  * 
  * 
  * 

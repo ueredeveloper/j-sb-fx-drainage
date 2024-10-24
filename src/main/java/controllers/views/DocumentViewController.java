@@ -99,7 +99,7 @@ public class DocumentViewController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
-		WebViewChart webViewChartInstance = new WebViewChart(webViewChart, selectedDocument);
+		new WebViewChart(webViewChart, selectedDocument);
 
 		iconCopyDocument.setOnMouseClicked(event -> {
 
@@ -169,7 +169,7 @@ public class DocumentViewController implements Initializable {
 			// Busca os templates que atendem aos requisitos tipo de documento e tipo e
 			// subtipo de outorga.
 
-			Boolean ifHasTemplate = hasDescricaoContainingAllParams(templates, typeOfDocument, typeOfGrant,
+			Boolean ifHasTemplate = hasNameContainingAllParams(templates, typeOfDocument, typeOfGrant,
 					subtypeOfGrant);
 
 			// TemplatesFolder.create();
@@ -198,7 +198,8 @@ public class DocumentViewController implements Initializable {
 						// (models, utils, actions)
 						.filter(template -> !"utils".equals(template.getDiretorio()))
 						.filter(template -> !"models".equals(template.getDiretorio()))
-						.filter(template -> !"shared".equals(template.getDiretorio())).map(Template::getDescricao) // Extract
+						.filter(template -> !"shared".equals(template.getDiretorio()))
+						.map(Template::getNome) // Extract
 						// the
 						// 'descricao'
 						// attribute
@@ -226,12 +227,12 @@ public class DocumentViewController implements Initializable {
 				WebContent webContent = new WebContent();
 
 				// Get the selected description from the ComboBox
-				String description = cbTemplates.getSelectionModel().getSelectedItem();
+				String search = cbTemplates.getSelectionModel().getSelectedItem();
 
 				if (!descricaoList.isEmpty()) {
 
 					List<Template> filteredTemplates = templates.stream()
-							.filter(t -> t.getDescricao().equals(description) // Filter by the selected description
+							.filter(t -> t.getNome().equals(search) // Filter by the selected description
 									|| "models".equals(t.getDiretorio()) // Include templates where 'pasta' is 'models'
 									|| "utils".equals(t.getDiretorio()) // Include templates where 'pasta' is 'utils'
 									|| "shared".equals(t.getDiretorio()) // Include templates where 'pasta' is
@@ -291,13 +292,14 @@ public class DocumentViewController implements Initializable {
 		return objects;
 	}
 
-	public boolean hasDescricaoContainingAllParams(Set<Template> templates, String... params) {
+	public boolean hasNameContainingAllParams(Set<Template> templates, String... params) {
+		
 		return templates.stream().anyMatch(template -> {
-			String descricao = template.getDescricao();
-			if (descricao != null) {
+			String name = template.getNome();
+			if (name != null) {
 				// Check if descricao contains all params
 				for (String param : params) {
-					if (!descricao.contains(param)) {
+					if (!name.contains(param)) {
 						return false; // If any param is not found, return false
 					}
 				}

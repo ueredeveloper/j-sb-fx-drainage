@@ -1,8 +1,19 @@
 /**
- * @descricao Parecer de Outorga Prévia
+ * @nome Parecer de Outorga Prévia
+ * @descricao Objeto
  * @diretorio 2
- * @arquivo objective-view.js
- * @id 10
+ * @arquivo object-view.js
+ * @id 8
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
  * 
  * 
  * 
@@ -10,7 +21,7 @@
  */
 
  
-class ObjectiveView {
+class ObjectView {
 	
     constructor() {
     	this.render();
@@ -21,17 +32,17 @@ class ObjectiveView {
     	<h2>I. DO OBJETO</h2>
     	<p>1. Em <span class="doc-data-recebimento highlight"></span>, foi protocolado requerimento relacionado a 
     	<span class="inter-tipo-outorga" class="highlight"></span> para reservar o direito de uso de água subterrânea, 
-    	por meio de 01 (um) poço <span class="inter-tipo-poco" class="highlight"></span> em nome de 
+    	por meio de 01 (um) poço <span class="int-type-of-well" class="highlight"></span> em nome de 
     	<span class="us-nome" class="highlight"></span>, 
     	CPF/CNPJ: <span class="us-cpf-cnpj" class="highlight"></span>, 
     	no endereço: <span class="end-logradouro" class="highlight"></span>, <span class="end-ra" class="highlight"></span>
-    	 - Distrito Federal, para fins de <span class="inter-finalidades"></span>.</p>
+    	 - Distrito Federal, para fins de <span class="int-purpouses"></span>.</p>
     `;
     	
-    	document.getElementById("objetivo").innerHTML = html;
+    	document.getElementById("object-view").innerHTML = html;
     }
     
-    updateInfo (usuario, endereco, finalidades){
+    update (usuario, endereco, finalidades){
     	
     	let names = document.getElementsByClassName('us-nome');
     	// Converte o resultado para array e atualiza
@@ -50,7 +61,7 @@ class ObjectiveView {
     		element.innerHTML = new EnderecoModel().getLogradouro(endereco);
     	});
     	
-    	let purpouses = document.getElementsByClassName('inter-finalidades');
+    	let purpouses = document.getElementsByClassName('int-purpouses');
     	// Converte o resultado para array e atualiza
     	Array.from(purpouses).forEach(element => {
     		element.innerHTML = new FinalidadeModel().getPurpouseString(finalidades);

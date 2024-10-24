@@ -41,6 +41,7 @@ public class ReadAndCreateSetOfTemplates {
 							// será persistido
 							//String fullPath = "src/main/resources" + resourceDir + folderName + "/" + fileName;
 							String fullPath = resourceDir + folderName + "/" + fileName;
+							//String fullPath = folderName + "/" + fileName;
 						   // String fullPath = ReadAndCreateSetOfTemplates.class.getResource(resourceDir + folderName + "/" + fileName).toExternalForm();
 						    System.out.println("ReadAndCreateSetOfTemplates: full path " + fullPath);
 

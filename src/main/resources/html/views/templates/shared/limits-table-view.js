@@ -1,8 +1,19 @@
 /**
- * @descricao Visualizações Compartilhadas
+ * @nome Tabela com Limites Lutorgados
+ * @descricao Limites de vazão como litros/dia e m³/dia, período e tempo de captação
  * @diretorio shared
  * @arquivo limits-table-view.js
- * @id 31
+ * @id 35
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
  * 
  * 
  * 
@@ -11,7 +22,7 @@
  
 class LimitsTableView {
     constructor() {
-        this.div = document.getElementById('authorized-limits-table');
+        this.div = document.getElementById('limits-table-view');
         this.render();
     }
     render() {

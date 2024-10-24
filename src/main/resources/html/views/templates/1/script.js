@@ -1,8 +1,19 @@
 /**
- * @descricao Despacho de Outorga Prévia
+ * @nome Despacho de Outorga Prévia
+ * @descricao Arquivo principal .js
  * @diretorio 1
  * @arquivo script.js
- * @id 4
+ * @id 3
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
  * 
  * 
  * 
@@ -15,15 +26,7 @@ function App() {
 	const appDiv = document.getElementById("app");
 	appDiv.innerHTML = `
 		<div id="container">
-			<div style="text-align: center;">&nbsp;</div>
-
-			<p style="margin-left: 400px;">Emite outorga prévia para reservar o direito de uso de água subterrânea a <b><span 
-			class="us-nome">
-			</span></b>, para fins de <span class="inter-finalidades"></span>.
-
-			</p><p>&nbsp;</p>
-		
-
+			
 			<div align="justify">
 			<p>O SUPERINTENDENTE DE RECURSOS HÍDRICOS DA AGÊNCIA REGULADORA DE ÁGUAS, ENERGIA E SANEAMENTO BÁSICO DO DISTRITO FEDERAL – 
 			ADASA, no uso de suas atribuições regimentais e com base na competência que lhe foi delegada pela Diretoria Colegiada, 
@@ -44,7 +47,7 @@ function App() {
 
 			<p>&nbsp;</p>
 
-			<div align="justify" id="geographic-table"></div>
+			<div align="justify" id="geographic-table-view"></div>
 
 			<p style="text-align: center;">&nbsp;</p>
 
@@ -56,13 +59,13 @@ function App() {
 
 			<p>&nbsp;</p>
 			
-			<div id="authorized-limits-table"></div>
+			<div id="limits-table-view"></div>
 
 			<p>&nbsp;</p>
 
 			<div id="grant-requirements"></div>
 			<span class="us-nome"></span></b>
-			<div id="chief-signature"></div>
+			<div id="chief-signature-view"></div>
 		</div>`;
 }
 var documento;
@@ -73,9 +76,12 @@ document.addEventListener('DOMContentLoaded', function () {
 	App();
 	
 	utils = new Utils();
+
 	new LimitsTableView();
 	new GrantRequirementsView();
 	new ChiefSignatureView();
+	new ActionsView();
+
 	new ActionsView();
 	
 });

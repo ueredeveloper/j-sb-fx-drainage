@@ -1,136 +1,173 @@
 /**
+ * @nome Utilizades
  * @descricao Funções compartilhadas
  * @diretorio utils
  * @arquivo script.js
- * @id 33
+ * @id 41
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
  * 
  * 
  * 
  *
  */
 
-    
- class Utils {
 
-    constructor() {}
-    
-    // Muda o ponto do valor double para vígula do float. Ex: 20.00 para 20,00
-    maskDoubleToFloat(value) {
-    	return parseFloat(value).toFixed(2).toString().replace('.', ',');
-    }
-	
-    // Função para formatar o número com ponto separador de milhar
-    formatNumber(value) {
-    	return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-    }
-    /**
+class Utils {
+
+	constructor() { }
+
+	// Muda o ponto do valor double para vígula do float. Ex: 20.00 para 20,00
+	maskDoubleToFloat(value) {
+		return parseFloat(value).toFixed(2).toString().replace('.', ',');
+	}
+
+	// Função para formatar o número com ponto separador de milhar
+	formatNumber(value) {
+		return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+	}
+	/**
 	 * Atualiza os dados do usuário
 	 * 
 	 * @param {*}
 	 *            usuario
 	 */
-    updateUserData(usuario) {
-    	let names = document.getElementsByClassName('us-nome');
+	updateUserData(usuario) {
 
-    	// Converte o resultado para array e atualiza
-    	Array.from(names).forEach(element => {
-    		element.innerHTML = new UsuarioModel().getNome(usuario);
-    	});
+		let names = document.getElementsByClassName('us-nome');
 
-    	let cpfcnpjs = document.getElementsByClassName("us-cpf-cnpj");
+		// Converte o resultado para array e atualiza
+		Array.from(names).forEach(element => {
+			element.innerHTML = new UsuarioModel().getNome(usuario);
+		});
 
-    	// Converte o resultado para array e atualiza
-    	Array.from(cpfcnpjs).forEach(element => {
-    		element.innerHTML = new UsuarioModel().formatCpfCnpj(usuario.cpfCnpj);
-    	});
+		let cpfcnpjs = document.getElementsByClassName("us-cpf-cnpj");
 
-    }
-    /**
+		// Converte o resultado para array e atualiza
+		Array.from(cpfcnpjs).forEach(element => {
+			element.innerHTML = new UsuarioModel().formatCpfCnpj(usuario.cpfCnpj);
+		});
+
+	}
+	/**
 	 * Atualiza o endereço do usuário
 	 * 
 	 * @param {*}
 	 *            endereco
 	 */
-    udpateAddress(endereco) {
-    	let items = document.getElementsByClassName('end-logradouro');
+	udpateAddress(endereco) {
+		let items = document.getElementsByClassName('end-logradouro');
 
-    	Array.from(items).forEach(element => {
-    		let logradouro = new EnderecoModel().getLogradouro(endereco)
-    		element.innerHTML = logradouro
-    	});
+		Array.from(items).forEach(element => {
+			let logradouro = new EnderecoModel().getLogradouro(endereco)
+			element.innerHTML = logradouro
+		});
 
-    }
-    
-    
-    updatePurpouses (finalidades) {
-    	let items = document.getElementsByClassName('inter-finalidades');
+	}
 
-    	Array.from(items).forEach(element => {
-    		let strFinalidades = new FinalidadeModel().getPurpouseString(finalidades)
-    		element.innerHTML = strFinalidades
-    	});
 
-    }
+	updatePurpouses(finalidades) {
+		let items = document.getElementsByClassName('inter-purpousess');
 
-    /**
+		Array.from(items).forEach(element => {
+			let strFinalidades = new FinalidadeModel().getPurpouseString(finalidades)
+			element.innerHTML = strFinalidades
+		});
+
+	}
+
+	/**
 	 * Atualiza tudo utilizando um exemplo da tabela documento com endereço,
 	 * interferências e usuário
 	 * 
 	 * @param {*}
 	 *            documento
 	 */
-    updateHtmlDocument(documento) {
- 
-    	let usuario = documento.usuarios[0];
-    	
-    	this.updateUserData(usuario);
-    	
-    	let endereco = documento.endereco;
-    	
-    	this.udpateAddress(endereco);
+	updateHtmlDocument(documento) {
 
-    	let interferencia = documento.endereco.interferencias[0];
-    	
-    	let finalidades = interferencia.finalidades;
-    	this.updatePurpouses(finalidades);
-    	
-    	// Atualiza despacho de outorga prévia
-    	new GeographicTableView().updateTableInfo(interferencia);
-    	new LimitsTableView().updateAuthorizedLimits(interferencia);
-    	
-    	// Classes do parecer de outorga prévia
-    	if (typeof ObjectiveView !== 'undefined') {
-    		
-    		// Objeto do parecer
-            new ObjectiveView().updateInfo(usuario, endereco, finalidades);
-            // Análise do parecer
-            new AnalysisView().updateInfo(interferencia);
-            // Tipo de poço no caso de outorga subterrânea
-            new WellInfoView().updateInfo(interferencia);
+		let usuario = documento.usuarios[0];
+		this.updateUserData(usuario);
 
-            // Finalidades requeridas
-            new PurpouseTableView(documento, 1, 'tbl-finalidades-requeridas');
-            // Finalidades autorizadas
-            new PurpouseTableView(documento, 2, 'tbl-finalidades-autorizadas');
+		let endereco = documento.endereco;
+		this.udpateAddress(endereco);
 
-            new ExploitableReserveView().updateInfo(documento);
-    	   
-    	} else {
-    	    console.error("classes do parecer de outorga prévia não definidos.");
-    	}
-    	
+		let interferencia = documento.endereco.interferencias[0];
+		let finalidades = interferencia.finalidades;
+		this.updatePurpouses(finalidades);
 
-    }
-    
-    
-    
-    extractBody () {
-    	// Get the rendered HTML content
-    	const renderedHtml = window.document.body.innerHTML;
+		// Verifica se a classe ObjectView está disponível
+		if (typeof ObjectView !== 'undefined') {
 
-    	return renderedHtml;
-    }
-    
-   
+			// Atualiza ObjectView
+			new ObjectView().update(usuario, endereco, finalidades);
+
+		} else {
+			console.error("SubjetiveView não definida.");
+		}
+
+		// Verifica e atualiza SubjetiveView se estiver disponível
+		if (typeof SubjetiveView !== 'undefined') {
+			new SubjetiveView().update(documento);
+		} else {
+			console.error("SubjetiveView não definida.");
+		}
+
+
+
+		// Verifica e atualiza AnalyseView se estiver disponível
+		if (typeof AnalyseView !== 'undefined') {
+			new AnalyseView().update(usuario, interferencia);
+		} else {
+			console.error("AnalyseView não definida.");
+		}
+
+		// Verifica e atualiza WellInfoView se estiver disponível
+		if (typeof WellInfoView !== 'undefined') {
+			new WellInfoView().update(interferencia);
+		} else {
+			console.error("WellInfoView não definida.");
+		}
+
+		// Verifica e inicializa PurpouseTableView
+		if (typeof PurpouseTableView !== 'undefined') {
+			new PurpouseTableView(documento, 1, 'tbl-request-purpouse-view');
+			new PurpouseTableView(documento, 2, 'tbl-authorized-purpouse-view');
+		} else {
+			console.error("PurpouseTableView não definida.");
+		}
+
+		// Verifica e atualiza ExploitableReserveView
+		if (typeof ExploitableReserveView !== 'undefined') {
+			new ExploitableReserveView().update(documento);
+		} else {
+			console.error("ExploitableReserveView não definida.");
+		}
+
+		// Atualiza despachos com as tabelas geográficas
+		if (typeof GeographicTableView !== 'undefined') {
+			new GeographicTableView().updateTableInfo(interferencia);
+		} else {
+			console.error("GeographicTableView não definida.");
+		}
+
+		// Atualiza limites autorizados
+		if (typeof LimitsTableView !== 'undefined') {
+			new LimitsTableView().updateAuthorizedLimits(interferencia);
+		} else {
+			console.error("LimitsTableView não definida.");
+		}
+
+
+	}
+
+
 }
 

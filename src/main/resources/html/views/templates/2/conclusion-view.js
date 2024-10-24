@@ -1,8 +1,19 @@
 /**
- * @descricao Parecer de Outorga Prévia
+ * @nome Parecer de Outorga Prévia
+ * @descricao Conclusão do Parecer
  * @diretorio 2
- * @arquivo concluson-view.js
- * @id 6
+ * @arquivo conclusion-view.js
+ * @id 5
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
  * 
  * 
  * 
@@ -23,10 +34,6 @@ class ConclusionView {
             ato de outorga prévia, com prazo de validade de 03(três) anos, contados da publicação do extrato no Diário Oficial 
             do Distrito Federal.
             </p>
-            <div style="display: flex; flex-direction: column;justify-content: center; align-items:center;">
-                <p><strong>JULIANA SANTOS VIANNA</strong></p>
-                <p><strong>Reguladora de Serviços Públicos</strong></p>
-            </div>
         </div>`;
 
         document.getElementById('conclusion').innerHTML = html;
