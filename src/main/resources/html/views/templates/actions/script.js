@@ -47,14 +47,14 @@ class ActionsView {
 
             let interferencia = new DocumentoModel().getSample().endereco.interferencias[0];
 
-            new GeographicTableView().updateTableInfo(interferencia);
+            new GeographicTableView().update(interferencia);
         };
         // Atualiza os limites outorgáveis
         document.getElementById('btn-update-limits-table').onclick = function () {
 
             let interferencia = new DocumentoModel().getSample().endereco.interferencias[0];
 
-            new LimitsTableView().updateAuthorizedLimits(interferencia);
+            new LimitsTableView().updateAuthorizedLimits(documento);
         };
 
         // Atualiza os limites outorgáveis
@@ -81,9 +81,9 @@ class ActionsView {
             let interferencia = documento.endereco.interferencias[0];
             let finalidades = interferencia.finalidades;
 
-            new ObjectView().update(usuario, endereco, finalidades);
-            new AnalyseView().update(interferencia);
-            new WellInfoView().update(interferencia);
+            new ObjectView().update(documento);
+            new AnalyseView().update(documento);
+            new WellInfoView().update(documento);
 
             // Finalidades requeridas
             new PurpouseTableView(documento, 1, 'tbl-finalidades-requeridas');
@@ -92,8 +92,8 @@ class ActionsView {
 
             new ExploitableReserveView().update(documento);
 
-            new GeographicTableView().updateTableInfo(interferencia);
-            new LimitsTableView().updateAuthorizedLimits(interferencia);
+            new GeographicTableView().update(documento);
+            new LimitsTableView().updateAuthorizedLimits(documento);
 
         };
 
@@ -113,7 +113,7 @@ class ActionsView {
             let interferencia = documento.endereco.interferencias[0];
             let finalidades = interferencia.finalidades;
 
-            new ObjectView().update(usuario, endereco, finalidades);
+            new ObjectView().update(documento);
             new WellInfoView().update(interferencia);
             // Finalidades requeridas
             new PurpouseTableView(documento, 1, 'tbl-request-purpouse-view');
@@ -122,7 +122,7 @@ class ActionsView {
              new PurpouseTableView(documento, 2, 'tbl-authorized-purpouse-view');
 
              new ExploitableReserveView().update(documento);
-             new LimitsTableView().updateAuthorizedLimits(interferencia);
+             new LimitsTableView().updateAuthorizedLimits(documento);
 
         };
 

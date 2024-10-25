@@ -50,15 +50,23 @@ class LegalBasisView {
 
 
         document.getElementById('inter-tipo-poco').innerHTML = tipoPoco?.descricao?.toLowerCase() || 'XXX';
-        let items = document.getElementsByClassName('inter-purpouses');
+        let items = document.getElementsByClassName('inter-finalidades');
 
         Array.from(items).forEach(element => {
             let innerHTML = new FinalidadeModel().getPurpouseString(finalidades);
             element.innerHTML = innerHTML
         });
 
-        document.getElementById('us-nome').innerHTML = usuario.nome;
-        document.getElementById('us-cpfcnpj').innerHTML = new UsuarioModel().formatCpfCnpj(usuario.cpfCnpj);
+        let _items = document.getElementsByClassName('us-nome');
+    	// Converte o resultado para array e atualiza
+    	Array.from(_items).forEach(element => {
+    		element.innerHTML = new UsuarioModel().getNome(usuario);
+    	});
+    	let __items = document.getElementsByClassName('us-cpf-cnpj');
+    	// Converte o resultado para array e atualiza
+    	Array.from(__items).forEach(element => {
+    		element.innerHTML = new UsuarioModel().formatCpfCnpj(usuario.cpfCnpj);
+    	});
 
 
     }

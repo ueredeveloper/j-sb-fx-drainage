@@ -155,7 +155,9 @@ class LimitsTableView {
         this.div.innerHTML = index;
 
     }
-    updateAuthorizedLimits(interferencia) {
+    update(documento) {
+
+        let interferencia = documento.endereco.interferencias[0];
         // Atualizar vazão (l/h)
         const months = [
             "jan", "fev", "mar", "abr", "mai", "jun",

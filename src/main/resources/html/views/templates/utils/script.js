@@ -30,7 +30,7 @@
 	 * @param {*}
 	 *            usuario
 	 */
-	updateUserData(usuario) {
+	update(usuario) {
 
 		let names = document.getElementsByClassName('us-nome');
 
@@ -65,7 +65,7 @@
 
 
 	updatePurpouses(finalidades) {
-		let items = document.getElementsByClassName('inter-purpousess');
+		let items = document.getElementsByClassName('inter-finalidades');
 
 		Array.from(items).forEach(element => {
 			let strFinalidades = new FinalidadeModel().getPurpouseString(finalidades)
@@ -83,22 +83,20 @@
 	 */
 	updateHtmlDocument(documento) {
 
-		let usuario = documento.usuarios[0];
-		this.updateUserData(usuario);
+		/*let usuario = documento.usuarios[0];
+		this.update(usuario);
 
 		let endereco = documento.endereco;
 		this.udpateAddress(endereco);
 
 		let interferencia = documento.endereco.interferencias[0];
 		let finalidades = interferencia.finalidades;
-		this.updatePurpouses(finalidades);
+		this.updatePurpouses(finalidades);*/
 
 		// Verifica se a classe ObjectView está disponível
 		if (typeof ObjectView !== 'undefined') {
-
 			// Atualiza ObjectView
-			new ObjectView().update(usuario, endereco, finalidades);
-
+			new ObjectView().update(documento);
 		} else {
 			console.error("SubjectView não definida.");
 		}
@@ -114,13 +112,14 @@
 
 		// Verifica e atualiza AnalyseView se estiver disponível
 		if (typeof AnalyseView !== 'undefined') {
-			new AnalyseView().update(usuario, interferencia);
+			new AnalyseView().update(documento);
 		} else {
 			console.error("AnalyseView não definida.");
 		}
 
 		// Verifica e atualiza WellInfoView se estiver disponível
 		if (typeof WellInfoView !== 'undefined') {
+			let interferencia = documento.endereco.interferencias[0];
 			new WellInfoView().update(interferencia);
 		} else {
 			console.error("WellInfoView não definida.");
@@ -143,14 +142,14 @@
 
 		// Atualiza despachos com as tabelas geográficas
 		if (typeof GeographicTableView !== 'undefined') {
-			new GeographicTableView().updateTableInfo(interferencia);
+			new GeographicTableView().update(documento);
 		} else {
 			console.error("GeographicTableView não definida.");
 		}
 
 		// Atualiza limites autorizados
 		if (typeof LimitsTableView !== 'undefined') {
-			new LimitsTableView().updateAuthorizedLimits(interferencia);
+			new LimitsTableView().update(documento);
 		} else {
 			console.error("LimitsTableView não definida.");
 		}

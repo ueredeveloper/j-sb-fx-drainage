@@ -39,7 +39,7 @@ class ObjectView {
 					1. Em <span class="highlight"></span>, foi protocolado requerimento de outorga de direito 
 					de uso de água subterrânea, por meio de 01 (um) poço <span id="inter-tipo-poco"></span> em nome de 
 					<span class="us-nome"></span>, 
-					CPF/CNPJ: <span class="us-cpfcnpj"></span>, 
+					CPF/CNPJ: <span class="us-cpf-cnpj"></span>, 
 					no endereço: <span id="doc-endereco"></span> - Distrito Federal, 
 					para fins de <span class="inter-finalidades"></span>.
 					</p>
@@ -54,37 +54,41 @@ class ObjectView {
 		this.div.innerHTML = innerHTML;
 
 	}
-	update (usuario, endereco, finalidades){
+	update(documento) {
 
 		let _items = document.getElementsByClassName('inter-finalidades');
 
-    	Array.from(_items).forEach(element => {
-    		let innerHTML = new FinalidadeModel().getPurpouseString(finalidades);
-    		element.innerHTML = innerHTML
-    	});
+		let finalidades = documento.endereco.interferencias[0].finalidades;
+		let usuario = documento.usuarios[0];
+		let endereco = documento.endereco;
 
-        let __items = document.getElementById('us-nome');
+		Array.from(_items).forEach(element => {
+			let innerHTML = new FinalidadeModel().getPurpouseString(finalidades);
+			element.innerHTML = innerHTML
+		});
+
+		let __items = document.getElementsByClassName('us-nome');
 
 		Array.from(__items).forEach(element => {
-    		let innerHTML = usuario.nome;
-    		element.innerHTML = innerHTML;
-    	});
-		
-		let ___items = document.getElementById('us-cpfcnpj')
+			let innerHTML = usuario.nome;
+			element.innerHTML = innerHTML;
+		});
+
+		let ___items = document.getElementsByClassName('us-cpf-cnpj')
 
 		Array.from(___items).forEach(element => {
-    		let innerHTML = new UsuarioModel().formatCpfCnpj(usuario.cpfCnpj)
-    		element.innerHTML = innerHTML;
-    	});
+			let innerHTML = new UsuarioModel().formatCpfCnpj(usuario.cpfCnpj)
+			element.innerHTML = innerHTML;
+		});
 
 		let tipoPoco = endereco.interferencias[0].tipoPoco;
 
-		let ____items = document.getElementById('inter-tipo-poco');
-	
+		let ____items = document.getElementsByClassName('inter-tipo-poco');
+
 		Array.from(____items).forEach(element => {
-    		let innerHTML = tipoPoco?.descricao?.toLowerCase() || 'XXX';
-    		element.innerHTML = innerHTML;
-    	});
+			let innerHTML = tipoPoco?.descricao?.toLowerCase() || 'XXX';
+			element.innerHTML = innerHTML;
+		});
 
 	}
 }

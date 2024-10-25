@@ -148,29 +148,45 @@ class AnalyseView {
         this.div.innerHTML = innerHTML;
 
         new PurpouseLegalBasisView();
-        new PurpouseView();
+        //new PurpouseView();
         new WellInfoView();
 		new GeographicTableView();
 		new LimitsTableView();
 
     }
-    update (usuario, interferencia){
+    update (documento){
 
-        let tipoPoco = interferencia?.tipoPoco;
-        
-        let finalidades = interferencia.finalidades;
+		let interferencia = documento.endereco.interferencias[0];
+        let finalidades = documento.endereco.interferencias[0].finalidades;
+		let usuario = documento.usuarios[0];
 
-        document.getElementById('inter-tipo-poco').innerHTML = tipoPoco?.descricao?.toLowerCase() || 'XXX';
+	
        
-		let items = document.getElementsByClassName('inter-finalidades');
+		let _items = document.getElementsByClassName('inter-finalidades');
 
-        Array.from(items).forEach(element => {
+        Array.from(_items).forEach(element => {
             let innerHTML = new FinalidadeModel().getPurpouseString(finalidades);
             element.innerHTML = innerHTML
         });
 
-        document.getElementById('us-nome').innerHTML = usuario.nome;
-        document.getElementById('us-cpfcnpj').innerHTML = new UsuarioModel().formatCpfCnpj(usuario.cpfCnpj);
+		let __items = document.getElementsByClassName('us-nome');
+    	// Converte o resultado para array e atualiza
+    	Array.from(__items).forEach(element => {
+    		element.innerHTML = new UsuarioModel().getNome(usuario);
+    	});
+    	let ___items = document.getElementsByClassName('us-cpf-cnpj');
+    	// Converte o resultado para array e atualiza
+    	Array.from(___items).forEach(element => {
+    		element.innerHTML = new UsuarioModel().formatCpfCnpj(usuario.cpfCnpj);
+    	});
+
+		let ____items = document.getElementsByClassName('int-tipo-poco');
+
+		Array.from(____items).forEach(element => {
+			let innerHTML = documento.endereco.interferencias[0]?.tipoPoco?.descricao || 'XXX';
+			element.innerHTML = innerHTML;
+		});
+
 
 
     }

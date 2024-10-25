@@ -31,31 +31,35 @@ class ObjectView {
     	document.getElementById("object-view").innerHTML = html;
     }
     
-    update (usuario, endereco, finalidades){
-    	
-    	let names = document.getElementsByClassName('us-nome');
+    update (documento){
+
+		let usuario = documento.usuarios[0];
+		let endereco = documento.endereco;
+		let interferencia = documento.endereco.interferencias[0];
+		let finalidades = interferencia.finalidades;
+
+    	let _items = document.getElementsByClassName('us-nome');
     	// Converte o resultado para array e atualiza
-    	Array.from(names).forEach(element => {
+    	Array.from(_items).forEach(element => {
     		element.innerHTML = new UsuarioModel().getNome(usuario);
     	});
-    	let cpfcnpjs = document.getElementsByClassName('us-cpf-cnpj');
+    	let __items = document.getElementsByClassName('us-cpf-cnpj');
     	// Converte o resultado para array e atualiza
-    	Array.from(cpfcnpjs).forEach(element => {
+    	Array.from(__items).forEach(element => {
     		element.innerHTML = new UsuarioModel().formatCpfCnpj(usuario.cpfCnpj);
     	});
     	
-    	let addresses = document.getElementsByClassName('end-logradouro');
+    	let ___items = document.getElementsByClassName('end-logradouro');
     	// Converte o resultado para array e atualiza
-    	Array.from(addresses).forEach(element => {
+    	Array.from(___items).forEach(element => {
     		element.innerHTML = new EnderecoModel().getLogradouro(endereco);
     	});
     	
-    	let purpouses = document.getElementsByClassName('inter-finalidades');
+    	let ____items = document.getElementsByClassName('inter-finalidades');
     	// Converte o resultado para array e atualiza
-    	Array.from(purpouses).forEach(element => {
+    	Array.from(____items).forEach(element => {
     		element.innerHTML = new FinalidadeModel().getPurpouseString(finalidades);
     	});
-    	
     	
     
     }

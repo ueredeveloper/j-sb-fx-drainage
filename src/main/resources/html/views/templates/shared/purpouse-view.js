@@ -16,7 +16,7 @@ class PurpouseView {
     }
 
     render() {
-        let html = `
+        let innerHTML = `
         
         <p>5. As finalidades de uso e respectivas demandas solicitadas estão dispostos na tabela abaixo, organizadas 
         por tipo de processo:</p>
@@ -110,6 +110,6 @@ class PurpouseView {
 
         `
 
-        document.getElementById('purpouse-view').innerHTML = html;
+        document.getElementById('purpouse-view').innerHTML = innerHTML;
     }
 }

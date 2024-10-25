@@ -47,7 +47,9 @@ class GeographicTableView {
 
     }
 
-    updateTableInfo (interferencia){
+    update (documento){
+
+        let interferencia = documento.endereco.interferencias[0];
 
         let ns = document.getElementsByClassName('inter-nome');
 

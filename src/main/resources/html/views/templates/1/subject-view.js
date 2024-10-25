@@ -12,7 +12,7 @@
 
 class SubjectView {
 	constructor() {
-		this.div = document.getElementById('subjective-view');
+		this.div = document.getElementById('subject-view');
 		this.render();
 	}
 
@@ -21,7 +21,7 @@ class SubjectView {
 	render() {
 		let innerHTML = `
 			<div style="float:right;width:40rem">
-				<p>Emite outorga prévia para reservar o direito de uso de água subterrânea a <b><span	class="us-name"></span>
+				<p>Emite outorga prévia para reservar o direito de uso de água subterrânea a <b><span class="us-name"></span>
 				</b>, para fins de <span class="int-finalidades"></span>.
 			</div>
 		`;

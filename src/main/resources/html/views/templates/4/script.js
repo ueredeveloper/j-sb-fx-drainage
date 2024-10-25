@@ -19,7 +19,7 @@ function App() {
 				<div id="legal-basis-view"></div>
 				<div id="analyse-view"></div>
 				<div id="conclusion-view"></div>
-				<div id="chief-signature-view"></div>
+				<div id="signature-view"></div>
 				
 			</div>
 			`;
