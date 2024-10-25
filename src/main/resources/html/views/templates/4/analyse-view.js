@@ -1,22 +1,13 @@
 /**
-* Análise do parecer
 * @nome Parecer de Outorga De Direito de Uso
 * @descricao Análise do parecer
 * @diretorio 4
 * @arquivo analyse-view.js
-* @id 15
+* @id 17
  * 
  * 
  * 
  * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
-* 
 * 
 * 
 */
@@ -27,7 +18,7 @@ class AnalyseView {
         this.render();
     }
 
-    //classes: inter-subsystem inter-bh inter-uh
+    //classes: inter-subsistema inter-bh inter-uh
 
     render() {
         let innerHTML = `
@@ -37,7 +28,7 @@ class AnalyseView {
 			<p>4. Outorga anterior: Despacho nºou Regularização</p>
 			<p></p>
             <p><br></p>
-			<p>5. O ponto de captação analisado está localizado no subsistema <span class="inter-subsystem"></span>, 
+			<p>5. O ponto de captação analisado está localizado no subsistema <span class="inter-subsistema"></span>, 
             Unidade Hidrográfica <span class="inter-uh"></span>, Bacia Hidrográfica do <span class="inter-bh"></span>.
             </p>
 			</div><div>
@@ -114,7 +105,7 @@ class AnalyseView {
 			<p style="margin-left:30.0pt;">&nbsp;</p>
 
 			<p><br></p>
-			<p>11. Considerando que o ponto de captação está localizado no subsistema <span class="inter-subsystem"></span>, o limite a ser outorgado é de 80% da vazão média do subsistema, pois o empreendimento está localizado em área rural. A demanda solicitada pelo usuário, ajustada segundo os valores de referência da Resolução nº 18/2020 é de <listros_dia_abr_tag></listros_dia_abr_tag> L/dia, sendo estimado tempo de captação máximo de&nbsp; <litros_hora_abr_tag></litros_hora_abr_tag> h/dia. O ato de outorga seguirá as seguintes características:<o:p></o:p></p>
+			<p>11. Considerando que o ponto de captação está localizado no subsistema <span class="inter-subsistema"></span>, o limite a ser outorgado é de 80% da vazão média do subsistema, pois o empreendimento está localizado em área rural. A demanda solicitada pelo usuário, ajustada segundo os valores de referência da Resolução nº 18/2020 é de <listros_dia_abr_tag></listros_dia_abr_tag> L/dia, sendo estimado tempo de captação máximo de&nbsp; <litros_hora_abr_tag></litros_hora_abr_tag> h/dia. O ato de outorga seguirá as seguintes características:<o:p></o:p></p>
 
 			<p>&nbsp;</p>
 
@@ -145,7 +136,7 @@ class AnalyseView {
 			</div>
 
 		`
-        this.div.innerHTML = innerHTML;
+		if (this.div !== null) this.div.innerHTML = innerHTML;
 
         new PurpouseLegalBasisView();
         //new PurpouseView();
@@ -156,11 +147,8 @@ class AnalyseView {
     }
     update (documento){
 
-		let interferencia = documento.endereco.interferencias[0];
         let finalidades = documento.endereco.interferencias[0].finalidades;
 		let usuario = documento.usuarios[0];
-
-	
        
 		let _items = document.getElementsByClassName('inter-finalidades');
 
@@ -186,8 +174,6 @@ class AnalyseView {
 			let innerHTML = documento.endereco.interferencias[0]?.tipoPoco?.descricao || 'XXX';
 			element.innerHTML = innerHTML;
 		});
-
-
 
     }
 }

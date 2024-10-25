@@ -1,9 +1,18 @@
 /**
- * @descricao Despacho de Outorga Prévia
- * @diretorio 1
- * @arquivo chief-signature-view.js
- * @id 1
+ * @nome Assinatura da chefia
+ * @id 30
  * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * @arquivo chief-signature-view.js
+ * @diretorio shared
+ * @descricao Assinatura da chefia
  * 
  * 
  *
@@ -19,13 +28,13 @@ class ChiefSignatureView {
 
     render() {
 
-        let index = `
+        let innerHTML = `
             <div>
                 <p style="text-align: center;"><strong>GUSTAVO ANTONIO CARNEIRO</strong></p>
                 <p style="text-align: center;">Superintendente de Recursos Hídricos</p>
             </div>
             `;
-            this.div.innerHTML = index;
+     	if (this.div !== null) this.div.innerHTML = innerHTML;
     }
 
 }

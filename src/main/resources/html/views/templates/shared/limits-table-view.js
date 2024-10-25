@@ -3,11 +3,14 @@
  * @descricao Limites de vazão como litros/dia e m³/dia, período e tempo de captação
  * @diretorio shared
  * @arquivo limits-table-view.js
- * @id 31
+ * @id 33
  * 
  * 
  * 
- *
+ * 
+ * 
+ * 
+ * 
  */
  
 class LimitsTableView {
@@ -16,7 +19,8 @@ class LimitsTableView {
         this.render();
     }
     render() {
-        let index = `
+    	
+        let innerHTML = `
         <div style="overflow:auto;margin-left:auto;margin-right:auto;">
             <table border="1" cellspacing="0" style="margin-left:auto;margin-right:auto;width:90%">
                 <tbody>
@@ -151,8 +155,8 @@ class LimitsTableView {
                 </tbody>
             </table>
         </div>   
-        `
-        this.div.innerHTML = index;
+        `;
+        if (this.div !== null) this.div.innerHTML = innerHTML;
 
     }
     update(documento) {
@@ -171,12 +175,12 @@ class LimitsTableView {
         months.forEach((month, index) => {
 
             // Atualização
-            document.getElementById(`q-litros-hora-${month}`).innerText = utils.formatNumber(interferencia.vazaoAutorizada);
-            document.getElementById(`q-m3-hora-${month}`).innerText = utils.maskDoubleToFloat(new DemandaModel().convertLitersToCubicMeters(interferencia.vazaoAutorizada));
+            document.getElementById(`q-litros-hora-${month}`).innerText = new DemandaModel().formatNumber(interferencia.vazaoAutorizada);
+            document.getElementById(`q-m3-hora-${month}`).innerText = new DemandaModel().maskDoubleToFloat(new DemandaModel().convertLitersToCubicMeters(interferencia.vazaoAutorizada));
             document.getElementById(`t-horas-dia-${month}`).innerText = authorizedDemands[index]?.tempo || 'N/A'; // Adiciona verificação de índice
-            document.getElementById(`q-m3-dia-${month}`).innerText = utils.maskDoubleToFloat(new DemandaModel().calculateCubicMetersPerDay(interferencia.vazaoAutorizada, authorizedDemands[index].tempo));
+            document.getElementById(`q-m3-dia-${month}`).innerText = new DemandaModel().maskDoubleToFloat(new DemandaModel().calculateCubicMetersPerDay(interferencia.vazaoAutorizada, authorizedDemands[index].tempo));
             document.getElementById(`p-dias-mes-${month}`).innerText = authorizedDemands[index].periodo
-            document.getElementById(`q-m3-mes-${month}`).innerText = utils.maskDoubleToFloat(new DemandaModel().calculateCubicMetersPerMonth(interferencia.vazaoAutorizada, authorizedDemands[index].tempo, authorizedDemands[index].periodo));
+            document.getElementById(`q-m3-mes-${month}`).innerText = new DemandaModel().maskDoubleToFloat(new DemandaModel().calculateCubicMetersPerMonth(interferencia.vazaoAutorizada, authorizedDemands[index].tempo, authorizedDemands[index].periodo));
         });
 
     }

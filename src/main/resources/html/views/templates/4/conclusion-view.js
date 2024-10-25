@@ -1,24 +1,13 @@
 /**
-* Análise do parecer
 * @nome Parecer de Outorga De Direito de Uso
 * @descricao Conclusão do parecer
 * @diretorio 4
 * @arquivo conclusion-view.js
-* @id 16
+* @id 18
  * 
  * 
  * 
  * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
-* 
-* 
-* 
 */
 
 class ConclusionView {
@@ -38,9 +27,7 @@ class ConclusionView {
 			</p>
 
 		`;
-        this.div.innerHTML = innerHTML;
-
-       
+        if (this.div !== null) this.div.innerHTML = innerHTML;
 
     }
     

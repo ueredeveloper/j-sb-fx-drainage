@@ -3,18 +3,7 @@
  * @nome Assinatura do Técnico
  * @diretorio shared
  * @arquivo signature-view.js
- * @id 39
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
+ * @id 36
  * 
  * 
  *
@@ -30,13 +19,13 @@ class SignatureView {
 
     render() {
 
-        let index = `
+        let innerHTML = `
             <div>
                 <p style="text-align: center;"><strong>SAULO GREGORY LUZZI</strong></p>
                 <p style="text-align: center;">Cordenador de Outorgas - COUT/SRH</p>
             </div>
             `;
-            this.div.innerHTML = index;
+        if (this.div !== null) this.div.innerHTML = innerHTML;
     }
 
 }

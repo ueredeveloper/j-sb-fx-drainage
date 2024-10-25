@@ -1,13 +1,17 @@
  /**
- * @descricao Parecer de Outorga De Direito de Uso
- * @diretorio 4
  * @arquivo script.js
- * @id 19
+ * @id 22
  * 
-* 
-* 
-*
-*/
+ * 
+ * 
+ * 
+ * @diretorio 4
+ * @descricao Arquivo principal .js
+ * @nome Parecer de Outorga De Direito de Uso
+ * 
+ * 
+ */
+
 function App() {
 
 	const appDiv = document.getElementById("app");

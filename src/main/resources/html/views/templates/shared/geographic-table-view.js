@@ -3,8 +3,7 @@
  * @descricao Dados geográficos como coordenada, bacia e subbacia
  * @diretorio shared
  * @arquivo geographic-table-view.js
- * @id 30
- * 
+ * @id 32
  * 
  * 
  *
@@ -18,7 +17,7 @@ class GeographicTableView {
 
 
     render() {
-        let html = `
+        let innerHTML = `
             <div align="justify" style="margin-left: auto; margin-right: auto; overflow: auto;">
                 <table border="1" cellspacing="0" style="margin-left: auto; margin-right: auto; ">
                     <tbody>
@@ -43,7 +42,7 @@ class GeographicTableView {
                 </table>
             </div>`;
 
-        this.div.innerHTML = html;
+        if (this.div !== null) this.div.innerHTML = innerHTML;
 
     }
 

@@ -7,6 +7,8 @@
  * 
  * 
  * 
+ * 
+ * 
  *
  */
  
@@ -49,5 +51,16 @@ class DemandaModel {
     calculateCubicMetersPerMonth(litrosHora, time, periodo) {
         return ((litrosHora / 1000) * time) * periodo;
     }
+    
+    
+    // Função para formatar o número com ponto separador de milhar
+	formatNumber(value) {
+		return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+	}
+	
+	// Muda o ponto do valor double para vígula do float. Ex: 20.00 para 20,00
+	maskDoubleToFloat(value) {
+		return parseFloat(value).toFixed(2).toString().replace('.', ',');
+	}
 
 }

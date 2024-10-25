@@ -1,20 +1,30 @@
 /**
- * @descricao Parecer de Outorga Prévia
- * @diretorio 2
- * @arquivo purpouse-table.view.js
- * @id 11
+ * @diretorio shared
+ * @descricao Tabela de Finalidades
+ * @nome Tabela de Finalidades
+ * @arquivo purpouse-table-view.js
+ * @id 35
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
  * 
  * 
  * 
  *
  */
- 
- 
+
+
 class PurpouseTableView {
   constructor(documento, tipoFinalidade, cssId) {
+
+    this.div = document.getElementById(cssId);
     this.documento = documento;
     this.tipoFinalidade = tipoFinalidade;
-    this.cssId = cssId;
+
     this.render();
   }
 
@@ -26,9 +36,9 @@ class PurpouseTableView {
     let sutipoOutorga = this.documento.endereco.interferencias[0].subtipoOutorga
     let finalidades = this.documento.endereco.interferencias[0].finalidades
 
-    let _finalidades = finalidades.filter(f=>  f.tipoFinalidade.id === this.tipoFinalidade);
+    let _finalidades = finalidades.filter(f => f.tipoFinalidade.id === this.tipoFinalidade);
 
-    let html = `
+    let innerHTML = `
           <table border="1" cellspacing="0" style="align: center">
             <tbody>
               <tr>
@@ -56,6 +66,6 @@ class PurpouseTableView {
           </table>
       `;
 
-    document.getElementById(this.cssId).innerHTML = html
+    if (this.div !== null) this.div.innerHTML = innerHTML;
   }
 }

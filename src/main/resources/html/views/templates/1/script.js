@@ -6,14 +6,11 @@
  * @id 4
  * 
  * 
- * 
  *
  */
 
 
 function App() {
-
-	// proc-anexo us-cpf-cnpj int-finalidades end-logradouro int-tipo-poco
 
 	const appDiv = document.getElementById("app");
 

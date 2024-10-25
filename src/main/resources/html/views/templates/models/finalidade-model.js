@@ -7,6 +7,7 @@
  * 
  * 
  * 
+ * 
  *
  */
  
@@ -31,5 +32,6 @@ class FinalidadeModel {
 		result = result.replace(/,/g, ', ');
 		return result;
 	}
+   
 
 }

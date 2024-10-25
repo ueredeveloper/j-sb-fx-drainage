@@ -1,35 +1,26 @@
 /**
+ * 
  * @nome Parecer de Outorga Prévia
  * @descricao Análise da outorga
  * @diretorio 2
  * @arquivo analyse-view.js
- * @id 4
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
+ * @id 6
  * 
  * 
  *
  */
- 
-class AnalyseView {
-    constructor() {
-        this.render();
-    }
 
-    render() {
-      let html = `
+class AnalyseView {
+	constructor() {
+		this.div = document.getElementById('analyse-view');
+		this.render();
+	}
+
+	render() {
+		let innerHTML = `
         <h2>III. DA ANÁLISE</h2>
 			<p>3. Existe outorga anterior: </p>
-	    	<p>4. O ponto de captação analisado está localizado no subsistema <span class="inter-subsystem" class="highlight"></span>, 
+	    	<p>4. O ponto de captação analisado está localizado no subsistema <span class="inter-subsistema" class="highlight"></span>, 
 	    	Unidade Hidrográfica 
 	        <span class="inter-uh" class="highlight"></span>, 
 	        Bacia Hidrográfica do 
@@ -75,34 +66,35 @@ class AnalyseView {
 			<div id="water-data-view"></div>
 
 			<!-- Conclusão -->
-			<div id="conclusion"></div>
+			<div id="conclusion-view"></div>
 
 			<!-- Assinatura -->
-			<div id="signature"></div>
+			<div id="signature-view"></div>
 			
         `;
-      
-      document.getElementById('analyse-view').innerHTML = html;
 
-	  new WellInfoView();
-	  new PurpouseLegalBasisView();
-	  new ExploitableReserveView();
+		if (this.div !== null) this.div.innerHTML = innerHTML;
 
-	  new WaterDemandView();
-	  new WaterDataView();
+		new WellInfoView();
+		new PurpouseLegalBasisView();
+		new ExploitableReserveView();
 
-	  new ConclusionView();
+		new WaterDemandView();
+		new WaterDataView();
 
-    }
-    
-    update (documento){
-    	let subsistemas = document.getElementsByClassName('inter-subsystem');
-		
-    	// Converte o resultado para array e atualiza
-    	Array.from(subsistemas).forEach(element => {
+		new ConclusionView();
+
+	}
+
+	update(documento) {
+
+		let items = document.getElementsByClassName('inter-subsistema');
+
+		// Converte o resultado para array e atualiza
+		Array.from(items).forEach(element => {
 			let interferencia = documento.endereco.interferencias[0];
-    		element.innerHTML = new InterferenciaModel().getNomeSubsistema(interferencia) || 'XXX';
-    	});
-    }
-    
+			element.innerHTML = new InterferenciaModel().getNomeSubsistema(interferencia) || 'XXX';
+		});
+	}
+
 }

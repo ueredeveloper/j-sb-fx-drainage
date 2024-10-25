@@ -1,22 +1,24 @@
 /**
- * @descricao Parecer de Outorga Prévia
- * @diretorio 2
- * @arquivo concluson-view.js
- * @id 6
  * 
+ * @arquivo conclusion-view.js
+ * @diretorio 2
+ * @descricao Parecer de Outorga Prévia
+ * @nome Parecer de Outorga Prévia
+ * @id 7
  * 
  * 
  *
  */
 
- 
+
 class ConclusionView {
     constructor() {
+        this.div = document.getElementById('conclusion-view');
         this.render();
     }
 
     render() {
-        let html = `
+        let innerHTML = `
         <div>
             <p>11. A documentação solicitada foi atendida e sustenta a solicitação de outorga prévia de água subterrânea.</p>
             <p>12. Com base nas informações deste processo e análise do mesmo, recomendo o DEFERIMENTO do pedido e a emissão do 
@@ -28,7 +30,6 @@ class ConclusionView {
                 <p><strong>Reguladora de Serviços Públicos</strong></p>
             </div>
         </div>`;
-
-        document.getElementById('conclusion').innerHTML = html;
+        if (this.div !== null) this.div.innerHTML = innerHTML;
     }
 }

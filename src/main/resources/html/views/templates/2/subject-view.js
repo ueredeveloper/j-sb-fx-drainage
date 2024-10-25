@@ -1,11 +1,17 @@
 /**
+ * 
 * Assunto do parecer.
- * @nome Parecer de Outorga Prévia
+* @nome Parecer de Outorga Prévia
 * @descricao Assunto do Parecer
 * @diretorio 2
-* @arquivo subjective-view.js
-* @id 10
-* 
+* @arquivo subject-view.js
+* @id 12
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
 * 
 * 
 */
@@ -23,29 +29,29 @@ class SubjectView {
                 <span class="int-tipo-poco"></span> para fins de 
 				<span class="int-finalidades"></span>.
 				</p>
-		`
-		this.div.innerHTML = innerHTML;
+		`;
+		if (this.div !== null) this.div.innerHTML = innerHTML;
 
 	}
-	update(documento){
+	update(documento) {
 
 		let tipoPoco = documento.endereco.interferencias[0].tipoPoco;
 		let finalidades = documento.endereco.interferencias[0].finalidades;
 
 		let _items = document.getElementsByClassName('int-tipo-poco');
 
-    	Array.from(_items).forEach(element => {
-    		let innerHTML = tipoPoco?.descricao?.toLowerCase() || 'XXX';
-    		element.innerHTML = innerHTML;
-    	});
+		Array.from(_items).forEach(element => {
+			let innerHTML = tipoPoco?.descricao?.toLowerCase() || 'XXX';
+			element.innerHTML = innerHTML;
+		});
 
 
 		let __items = document.getElementsByClassName('int-finalidades');
 
-    	Array.from(__items).forEach(element => {
-    		let innerHTML = new FinalidadeModel().getPurpouseString(finalidades);
-    		element.innerHTML = innerHTML
-    	});
+		Array.from(__items).forEach(element => {
+			let innerHTML = new FinalidadeModel().getPurpouseString(finalidades);
+			element.innerHTML = innerHTML
+		});
 
 	}
 }

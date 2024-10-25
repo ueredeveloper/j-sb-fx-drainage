@@ -1,23 +1,13 @@
 /**
- * Objeto do parecer
 * @nome Parecer de Outorga De Direito de Uso
 * @descricao Objeto do parecer
 * @diretorio 4
 * @arquivo object-view.js
-* @id 19
+* @id 21
  * 
  * 
  * 
  * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
-* 
-* 
 * 
 */
 
@@ -50,8 +40,8 @@ class ObjectView {
 					um <span class="highlight" class="type-well"></span>. Dessa forma, o pedido de outorga será objeto de análise do presente parecer.
 					</p>
 				</div>
-		`
-		this.div.innerHTML = innerHTML;
+		`;
+		if (this.div !== null) this.div.innerHTML = innerHTML;
 
 	}
 	update(documento) {

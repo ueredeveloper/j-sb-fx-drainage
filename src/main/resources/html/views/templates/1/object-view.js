@@ -1,3 +1,45 @@
+/**
+ * @nome Despacho de Outorga Prévia
+ * @descricao Objeto do despacho
+ * @diretorio 1
+ * @arquivo object-view.js
+ * @id 3
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ *
+ */
+
 class ObjectView {
 	constructor() {
 		this.div = document.getElementById('object-view');

@@ -1,11 +1,13 @@
 /**
 * Assunto do parecer.
- * @nome Parecer de Outorga Prévia
-* @descricao Assunto do Parecer
-* @diretorio 2
-* @arquivo subjective-view.js
-* @id 10
-* 
+* @nome Despacho de Outorga Prévia
+* @descricao Assunto do Despacho
+* @diretorio 1
+* @arquivo subject-view.js
+* @id 5
+ * 
+ * 
+ * 
 * 
 * 
 */

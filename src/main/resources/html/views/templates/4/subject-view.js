@@ -1,22 +1,13 @@
 /**
-* Assunto do parecer.
 * @nome Parecer de Outorga De Direito de Uso
 * @descricao Assunto do parecer
 * @diretorio 4
 * @arquivo subject-view.js
-* @id 21
+* @id 23
  * 
  * 
  * 
  * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
-* 
 * 
 * 
 */
@@ -37,8 +28,7 @@ class SubjectView {
 				</p>
 		`;
 
-		this.div.innerHTML = innerHTML;
-
+		if (this.div !== null) this.div.innerHTML = innerHTML;
 	}
 	update(documento) {
 

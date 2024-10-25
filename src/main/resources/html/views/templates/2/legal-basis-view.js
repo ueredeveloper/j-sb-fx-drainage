@@ -1,4 +1,5 @@
 /**
+ * 
  * @nome Parecer de Outorga Prévia
  * @descricao Base legal
  * @diretorio 2
@@ -13,10 +14,11 @@
 class LegalBasisView {
 	
     constructor() {
+        this.div = document.getElementById('legal-basis-view');
     	this.render();
     }
     render() {
-        let html = `
+        let innerHTML = `
         <h2>II. DO FUNDAMENTO LEGAL</h2>
         <p>2. Este parecer tem amparo legal nos termos do art. 12 da Lei nº 2.725, de 13 de junho de 2001, do inciso II do art. 8 
         da Lei nº 4.285, de 26 de dezembro de 2008, da Resolução/Adasa nº 350, de 23 de junho de 2006 e suas alterações, 
@@ -25,7 +27,7 @@ class LegalBasisView {
         de 21 de maio de 2019.
         </p>
         `;
+        if (this.div !== null) this.div.innerHTML = innerHTML;
 
-        document.getElementById('legal-basis-view').innerHTML = html;
     }
 }

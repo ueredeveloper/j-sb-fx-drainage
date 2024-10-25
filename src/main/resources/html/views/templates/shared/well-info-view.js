@@ -3,20 +3,21 @@
  * @descricao Informações como nível estático, nível dinâmico e coordenada
  * @diretorio shared
  * @arquivo well-info-view.js
- * @id 32
+ * @id 37
  * 
  * 
- * 
- *
  */
 
 
- class WellInfoView {
+class WellInfoView {
 
-    constructor() {this.render();}
+    constructor() {
+        this.div = document.getElementById('well-info-view');
+        this.render();
+    }
 
     render() {
-        let html = `
+        let innerHtml = `
     	<h3>II. Dados do poço:</h3>
         <ul>
             <li>Coordenadas SIRGAS 2000: 
@@ -34,11 +35,10 @@
             <li>Vazão autorizada (L/h): <span class="inter-vazao-autorizada" class="highlight"></span></li>
         </ul>`;
 
-        document.getElementById('well-info-view').innerHTML = html;
-
+        if (this.div !== null) this.div.innerHTML = innerHtml;
 
     }
-    
+
     update(interferencia) {
         // Latitude
         let lats = document.getElementsByClassName('inter-latitude');

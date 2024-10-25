@@ -1,9 +1,10 @@
 /**
+ * 
  * @nome Parecer de Outorga Prévia
  * @descricao Dados de demanda de água e localização
  * @diretorio 2
  * @arquivo water-data-view.js
- * @id 14
+ * @id 13
  * 
  * 
  * 
@@ -11,14 +12,19 @@
  */
 
 class WaterDataView {
-    constructor() {
-        this.render();
-    }
+  constructor() {
+    this.div = document.getElementById('water-data-view');
+    this.render();
+  }
 
-    render() {
-        const html = `
+  render() {
+    const innerHTML = `
         <div>
-          <p>10. Considerando que o ponto de captação está localizado no subsistema R4, o limite a ser outorgado é de 80% da vazão média do subsistema, pois o empreendimento está localizado em área rural. A demanda solicitada pelo usuário, ajustada segundo os valores de referência da Resolução nº 18/2020, é de 920 L/dia, sendo estimado tempo de captação máximo de 1 h/dia. O ato de outorga seguirá as seguintes características:</p>
+          <p>10. Considerando que o ponto de captação está localizado no subsistema R4, o limite a ser outorgado é de 80% da 
+          vazão média do subsistema, pois o empreendimento está localizado em área rural. A demanda solicitada pelo usuário, 
+          ajustada segundo os valores de referência da Resolução nº 18/2020, é de 920 L/dia, sendo estimado tempo de captação 
+          máximo de 1 h/dia. O ato de outorga seguirá as seguintes características:
+          </p>
           <p>I -  Dados da captação:</p>
 
           <div id="geographic-table-view"></div>
@@ -28,7 +34,7 @@ class WaterDataView {
         </div>
         
       `;
-        document.getElementById('water-data-view').innerHTML = html;
+    if (this.div !== null) this.div.innerHTML = innerHTML;
 
-    }
+  }
 }

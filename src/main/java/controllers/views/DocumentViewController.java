@@ -252,8 +252,13 @@ public class DocumentViewController implements Initializable {
 						String str = webContent.getWebContent();
 
 						if (!t.getArquivo().equals("index.html")) {
+							
+							if (t.getConteudo().contains("class Utils")) {
+								System.out.println(t.getConteudo());
+							}
 							str += "<script>" + t.getConteudo() + "</script>";
 						}
+						
 						webContent.setWebContent(str);
 
 					});

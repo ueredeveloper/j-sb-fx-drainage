@@ -3,19 +3,20 @@
  * @descricao Limites legais por finalidade de uso
  * @diretorio shared
  * @arquivo purpouse-legal-basis-view.js
- * @id 36
+ * @id 34
  * 
- *
+ * 
  */
 
- 
+
 class PurpouseLegalBasisView {
     constructor() {
+        this.div = document.getElementById('purpouse-legal-basis-view');
         this.render();
     }
 
     render() {
-        let html = `
+        let innerHTML = `
         <p>
         7. As finalidades foram analisadas considerando as disposições da Resolução/Adasa nº 350/2006, 
         Resolução/Adasa nº 36/2018, Resolução/Adasa nº 16/2018 e da disponibilidade hídrica de água subterrânea na 
@@ -89,6 +90,7 @@ class PurpouseLegalBasisView {
 
         `;
 
-        document.getElementById('purpouse-legal-basis-view').innerHTML = html;
+
+        if (this.div !== null) this.div.innerHTML = innerHTML;
     }
 }

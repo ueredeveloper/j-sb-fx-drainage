@@ -1,8 +1,11 @@
 /**
- * @descricao Parecer de Outorga Prévia
- * @diretorio 2
+ * 
  * @arquivo object-view.js
+ * @diretorio 2
+ * @descricao Parecer de Outorga Prévia
+ * @nome Parecer de Outorga Prévia
  * @id 10
+ * 
  * 
  * 
  * 
@@ -13,11 +16,12 @@
 class ObjectView {
 	
     constructor() {
+		this.div = document.getElementById("object-view");
     	this.render();
     }
 
     render() {
-    	let html = `
+    	let innerHTML = `
     	<h2>I. DO OBJETO</h2>
     	<p>1. Em <span class="doc-data-recebimento highlight"></span>, foi protocolado requerimento relacionado a 
     	<span class="inter-tipo-outorga" class="highlight"></span> para reservar o direito de uso de água subterrânea, 
@@ -27,8 +31,8 @@ class ObjectView {
     	no endereço: <span class="end-logradouro" class="highlight"></span>, <span class="end-ra" class="highlight"></span>
     	 - Distrito Federal, para fins de <span class="inter-finalidades"></span>.</p>
     `;
+	if (this.div !== null) this.div.innerHTML = innerHTML;
     	
-    	document.getElementById("object-view").innerHTML = html;
     }
     
     update (documento){

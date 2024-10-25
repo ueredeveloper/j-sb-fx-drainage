@@ -1,24 +1,13 @@
 /**
-* Base legal do parecer
 * @nome Parecer de Outorga De Direito de Uso
 * @descricao Base legal do parecer
 * @diretorio 4
 * @arquivo legal-basis-view.js
-* @id 18
+* @id 20
  * 
  * 
  * 
  * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
-* 
-* 
-* 
 */
 
 class LegalBasisView {
