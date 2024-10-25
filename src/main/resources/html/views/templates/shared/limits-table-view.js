@@ -1,6 +1,7 @@
 /**
  * @nome Tabela com Limites Lutorgados
- * @descricao Limites de vazão como litros/dia e m³/dia, período e tempo de captação
+ * @descricao Limites de vazão como litros/dia e m³/dia, período e tempo de
+ *            captação
  * @diretorio shared
  * @arquivo limits-table-view.js
  * @id 33
@@ -169,7 +170,9 @@ class LimitsTableView {
         ];
         // Filtra as finalidades autorizadas e organiza por mês, do 1 ao 12.
         let authorizedDemands = interferencia.demandas
-            .filter(dem => dem.tipoFinalidade.id === 2)  // Filtra por tipoFinalidade com id igual a 2
+            .filter(dem => dem.tipoFinalidade.id === 2)  // Filtra por
+															// tipoFinalidade
+															// com id igual a 2
             .sort((a, b) => a.mes - b.mes);  // Ordena por mês (de 1 a 12)
 
         months.forEach((month, index) => {
@@ -177,7 +180,10 @@ class LimitsTableView {
             // Atualização
             document.getElementById(`q-litros-hora-${month}`).innerText = new DemandaModel().formatNumber(interferencia.vazaoAutorizada);
             document.getElementById(`q-m3-hora-${month}`).innerText = new DemandaModel().maskDoubleToFloat(new DemandaModel().convertLitersToCubicMeters(interferencia.vazaoAutorizada));
-            document.getElementById(`t-horas-dia-${month}`).innerText = authorizedDemands[index]?.tempo || 'N/A'; // Adiciona verificação de índice
+            document.getElementById(`t-horas-dia-${month}`).innerText = authorizedDemands[index]?.tempo || 'N/A'; // Adiciona
+																													// verificação
+																													// de
+																													// índice
             document.getElementById(`q-m3-dia-${month}`).innerText = new DemandaModel().maskDoubleToFloat(new DemandaModel().calculateCubicMetersPerDay(interferencia.vazaoAutorizada, authorizedDemands[index].tempo));
             document.getElementById(`p-dias-mes-${month}`).innerText = authorizedDemands[index].periodo
             document.getElementById(`q-m3-mes-${month}`).innerText = new DemandaModel().maskDoubleToFloat(new DemandaModel().calculateCubicMetersPerMonth(interferencia.vazaoAutorizada, authorizedDemands[index].tempo, authorizedDemands[index].periodo));
