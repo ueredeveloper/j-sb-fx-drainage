@@ -3,8 +3,7 @@
  * @descricao Ações de verificação dos métodos
  * @diretorio actions
  * @arquivo script.js
- * @id 22
- * 
+ * @id 26
  * 
  * 
  * 

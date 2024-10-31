@@ -4,7 +4,11 @@
  * @descricao Funções compartilhadas
  * @diretorio utils
  * @arquivo script.js
- * @id 38
+ * @id 42
+ * 
+ * 
+ * 
+ * 
  * 
  * 
  * 

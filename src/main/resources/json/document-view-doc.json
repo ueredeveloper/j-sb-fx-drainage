@@ -1,3 +1,7 @@
+update sql update subterranea set caesb = true, nivel_dinamico = '100', nivel_estatico = '120', profundidade = '180', vazao_autorizada = 1000, tipo_poco = 1 where id = 1
+
+
+
 [
 	{
 		"id": 1,

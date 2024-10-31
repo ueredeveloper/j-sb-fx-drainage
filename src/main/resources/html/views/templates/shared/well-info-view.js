@@ -3,7 +3,11 @@
  * @descricao Informações como nível estático, nível dinâmico e coordenada
  * @diretorio shared
  * @arquivo well-info-view.js
- * @id 37
+ * @id 41
+ * 
+ * 
+ * 
+ * 
  * 
  * 
  */

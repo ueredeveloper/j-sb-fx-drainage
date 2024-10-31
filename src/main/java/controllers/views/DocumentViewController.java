@@ -1,7 +1,10 @@
 package controllers.views;
 
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -240,28 +243,29 @@ public class DocumentViewController implements Initializable {
 					).distinct() // Ensure unique templates
 							.collect(Collectors.toList());
 
-					// Adiciona primeiro o index.html
-					filteredTemplates.forEach(t -> {
-						if (t.getArquivo().equals("index.html")) {
-							webContent.setWebContent(t.getConteudo());
-						}
-					});
-
 					// Adiciona depois os outros arquivos
 					filteredTemplates.forEach(t -> {
 						String str = webContent.getWebContent();
-
-						if (!t.getArquivo().equals("index.html")) {
+						
+						
 							
-							if (t.getConteudo().contains("class Utils")) {
-								System.out.println(t.getConteudo());
-							}
-							str += "<script>" + t.getConteudo() + "</script>";
-						}
+							str += "\n <script> \n" + t.getConteudo() + "</script> \n";
+						
 						
 						webContent.setWebContent(str);
 
 					});
+					
+					
+					
+					String writeContent = webContent.getWebContent().toString();
+
+					try {
+						Files.write(Paths.get("src/main/resources/"+ "test.html"), writeContent.getBytes() );
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 
 					// Initialize WebViewDocument with the WebView component
 					WebViewDocument webViewDocumentInstance = new WebViewDocument(webViewDocument, htmlEditor);

@@ -3,7 +3,11 @@
  * @nome Assinatura do Técnico
  * @diretorio shared
  * @arquivo signature-view.js
- * @id 36
+ * @id 40
+ * 
+ * 
+ * 
+ * 
  * 
  * 
  *

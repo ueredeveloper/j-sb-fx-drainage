@@ -1,18 +1,12 @@
 /**
  * @nome Assinatura da chefia
- * @id 30
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
  * @arquivo chief-signature-view.js
  * @diretorio shared
  * @descricao Assinatura da chefia
+ * @id 34
+ * 
+ * 
+ * 
  * 
  * 
  *
