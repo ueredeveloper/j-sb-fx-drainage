@@ -261,7 +261,7 @@ public class DocumentViewController implements Initializable {
 					String writeContent = webContent.getWebContent().toString();
 
 					try {
-						Files.write(Paths.get("src/main/resources/"+ "test.html"), writeContent.getBytes() );
+						Files.write(Paths.get("src/main/resources/"+ "template-string-created.html"), writeContent.getBytes() );
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();

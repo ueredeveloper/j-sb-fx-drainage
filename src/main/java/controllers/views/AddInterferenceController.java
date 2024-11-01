@@ -195,7 +195,12 @@ public class AddInterferenceController implements Initializable {
 
 				System.out.println(newValue.getEndereco());
 
-				cbAddress.getSelectionModel().select(newValue.getEndereco());
+				Endereco selecteInterferenceAddres = newValue.getEndereco();
+				// Se houver endereço relacionado com a interferência, preencher o combobox do endereço
+				if (selecteInterferenceAddres!=null) {
+					addressCbController.fillAndSelectComboBox(newValue.getEndereco());
+				}
+				
 
 				TipoInterferencia ti = newValue.getTipoInterferencia();
 				cbTypeOfInterference.getSelectionModel().select(ti);
@@ -318,9 +323,14 @@ public class AddInterferenceController implements Initializable {
 		Set<Finalidade> purpouses = null;
 		Set<Demanda> demands = null;
 
+		Subterranea subterraneanAttributes = null;
+
 		if (addSubterraneanDetailsController != null) {
 			purpouses = addSubterraneanDetailsController.getPurpouses();
 			demands = addSubterraneanDetailsController.getDemands();
+
+			subterraneanAttributes = addSubterraneanDetailsController.getSubterraneanAttributes();
+
 		}
 
 		// Verifica se o endereço está vazio.
@@ -368,6 +378,14 @@ public class AddInterferenceController implements Initializable {
 			Stage ownerStage = (Stage) source.getScene().getWindow();
 			String toastMsg = "Selecione o Tipo de Ato!";
 			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+
+			// É obrigatório o tipo de poço, então o objeto retornará nulo se não escolher
+		} else if (subterraneanAttributes == null) {
+			// Alerta (Toast) de sucesso na edi��o
+			Node source = (Node) event.getSource();
+			Stage ownerStage = (Stage) source.getScene().getWindow();
+			String toastMsg = "Selecione o Tipo de Poço!!!";
+			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
 		}
 
 		else {
@@ -381,6 +399,16 @@ public class AddInterferenceController implements Initializable {
 				Subterranea newInterference = new Subterranea(Double.parseDouble(latitude),
 						Double.parseDouble(longitude), address, typeOfInterference, typeOfGrant, subtypeOfGrant,
 						processSituation, typeOfAct, purpouses, demands);
+
+				// Atributos da interferência subterrânea
+				newInterference.setCaesb(subterraneanAttributes.getCaesb());
+				newInterference.setNivelEstatico(subterraneanAttributes.getNivelEstatico());
+				newInterference.setNivelDinamico(subterraneanAttributes.getNivelDinamico());
+				newInterference.setProfundidade(subterraneanAttributes.getProfundidade());
+				newInterference.setVazaoOutorgavel(subterraneanAttributes.getVazaoOutorgavel());
+				newInterference.setVazaoSistema(subterraneanAttributes.getVazaoSistema());
+				newInterference.setVazaoTeste(subterraneanAttributes.getVazaoTeste());
+				newInterference.setTipoPoco(subterraneanAttributes.getTipoPoco());
 
 				ServiceResponse<?> response = service.save(newInterference);
 

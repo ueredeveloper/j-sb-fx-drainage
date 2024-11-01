@@ -16,8 +16,6 @@ public class Subterranea extends Interferencia {
 
 	private Integer vazaoSistema; //
 
-	private Integer vazaoAutorizada; //
-
 	private Integer vazaoTeste; //
 
 	private TipoPoco tipoPoco;
@@ -46,6 +44,8 @@ public class Subterranea extends Interferencia {
 				tipoAto, finalidades, demandas);
 		// TODO Auto-generated constructor stub
 	}
+	
+	
 
 	public Boolean getCaesb() {
 		return caesb;
@@ -93,14 +93,6 @@ public class Subterranea extends Interferencia {
 
 	public void setVazaoSistema(Integer vazaoSistema) {
 		this.vazaoSistema = vazaoSistema;
-	}
-
-	public Integer getVazaoAutorizada() {
-		return vazaoAutorizada;
-	}
-
-	public void setVazaoAutorizada(Integer vazaoAutorizada) {
-		this.vazaoAutorizada = vazaoAutorizada;
 	}
 
 	public Integer getVazaoTeste() {

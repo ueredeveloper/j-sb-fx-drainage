@@ -10,6 +10,7 @@ import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
@@ -26,6 +27,7 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import models.Demanda;
 import models.Finalidade;
+import models.Subterranea;
 import models.TipoFinalidade;
 import models.TipoPoco;
 import services.FinalidadeService;
@@ -33,7 +35,6 @@ import services.ServiceResponse;
 import utilities.URLUtility;
 
 public class AddSubterraneanDetailsController implements Initializable {
-	
 
 	private String localUrl;
 
@@ -52,6 +53,9 @@ public class AddSubterraneanDetailsController implements Initializable {
 
 	@FXML
 	private JFXComboBox<TipoPoco> cbWellType;
+
+	@FXML
+	private JFXComboBox<String> cbConcessionaire;
 
 	@FXML
 	private JFXComboBox<?> cbSubsystem;
@@ -99,8 +103,12 @@ public class AddSubterraneanDetailsController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+
+		// Tipo de poço, se manual ou tubular
 		obsTypesOfWells = StaticData.INSTANCE.getTypesOfWells();
 		cbWellType.setItems(obsTypesOfWells);
+		// Se há Caesb ou não
+		cbConcessionaire.getItems().addAll("Sim", "Não");
 
 		// Adiciona cadastro de finalidade
 		addPurpouseRow(0, requestedPurposesGrid, tfTotalRequestedConsumption, btnRequestedTotalCalculate,
@@ -108,24 +116,130 @@ public class AddSubterraneanDetailsController implements Initializable {
 		addPurpouseRow(0, authorizedPurposesGrid, tfTotalAuthorizedConsumption, btnAuthorizedTotalCalculate,
 				new TipoFinalidade(2L), new Finalidade());
 
-		// Adiciona demandas vazias para finalidades requeridas
+		// Cria lista de demandas requeridas e autorizadas vazias.
 		for (int month = 1; month <= 12; month++) {
-
 			Demanda demand = new Demanda(month, new TipoFinalidade(1L));
-			addDemandColumn(gpRequestedDemands, month, demand);
-
 			demandsWrapper.getDemands().add(demand);
 		}
 
 		// Adiciona demandas vazias para finalidades autorizadas
 		for (int month = 1; month <= 12; month++) {
 			Demanda demand = new Demanda(month, new TipoFinalidade(2L));
-			addDemandColumn(gpAuthorizedDemands, month, demand);
-
 			demandsWrapper.getDemands().add(demand);
 		}
 
+		// Lista para filtrar as demandas por tipo, demandas requeridas, e ordenar por
+		// mês (jan,fev,...).
+		Stream<Demanda> requestedDemandasStream = demandsWrapper.getDemands().stream();
 
+		List<Demanda> requestedDemands = requestedDemandasStream.filter(d -> d.getTipoFinalidade().getId() == 1L)
+				.sorted(Comparator.comparing(d -> d.getMes())).collect(Collectors.toList());
+		;
+
+		// Preenchimento do GridPane com os textfields por linha, primeiro linha de
+		// vazão.
+		requestedDemands.forEach(demand -> {
+			addDemandFlowLine(gpRequestedDemands, demand.getMes(), demand);
+		});
+		// Preenchimento da linha de tempo de captação
+		requestedDemands.forEach(demand -> {
+			addDemandTimeLine(gpRequestedDemands, demand.getMes(), demand);
+		});
+
+		// Preenchimento da linha de período de captação
+		requestedDemands.forEach(demand -> {
+			addDemandPeriodLine(gpRequestedDemands, demand.getMes(), demand);
+		});
+
+		// Lista para filtrar as demandas por tipo de finalidade (demanda da finalidade
+		// autorizadas) e mês.
+		Stream<Demanda> authorizedDemandsStream = demandsWrapper.getDemands().stream();
+
+		List<Demanda> authorizedDemands = authorizedDemandsStream.filter(d -> d.getTipoFinalidade().getId() == 2L)
+				.sorted(Comparator.comparing(d -> d.getMes())).collect(Collectors.toList());
+
+		authorizedDemands.forEach(demand -> {
+			addDemandFlowLine(gpAuthorizedDemands, demand.getMes(), demand);
+		});
+
+		authorizedDemands.forEach(demand -> {
+			addDemandTimeLine(gpAuthorizedDemands, demand.getMes(), demand);
+		});
+
+		authorizedDemands.forEach(demand -> {
+			addDemandPeriodLine(gpAuthorizedDemands, demand.getMes(), demand);
+		});
+
+	}
+
+	public void addDemandFlowLine(GridPane gridPane, int month, Demanda demand) {
+
+		JFXTextField tfFlow = new JFXTextField();
+		tfFlow.getStyleClass().addAll("tf-demands");
+		// Limpa a célula para adicionar novo Textfield.
+		clearGridCell(gridPane, month, 1);
+		// Adiciona Textfields por célula
+		gridPane.add(tfFlow, month, 1);
+
+		if (demand.getId() != null) {
+			// Se não, é uma demanda buscada no banco e deve-se preencher os campos
+			tfFlow.setText(demand.getVazao().toString());
+
+		}
+
+		DemandWrapper demandWrapper = new DemandWrapper(demand);
+		// Listeners
+		tfFlow.textProperty().addListener((observable, oldValue, newValue) -> {
+			demandWrapper.getDemand().setVazao(Double.parseDouble(newValue));
+
+		});
+
+	}
+
+	public void addDemandTimeLine(GridPane gridPane, int month, Demanda demand) {
+		JFXTextField tfTime = new JFXTextField();
+		tfTime.getStyleClass().addAll("tf-demands");
+		// Limpa a célula para adicionar novo Textfield.
+		clearGridCell(gridPane, month, 2);
+		gridPane.add(tfTime, month, 2);
+
+		if (demand.getId() != null) {
+			// Se não, é uma demanda buscada no banco e deve-se preencher os campos
+			tfTime.setText(String.valueOf(demand.getTempo()));
+		}
+
+		DemandWrapper demandWrapper = new DemandWrapper(demand);
+
+		tfTime.textProperty().addListener((observable, oldValue, newValue) -> {
+			demandWrapper.getDemand().setTempo(Integer.valueOf(newValue));
+
+		});
+	}
+
+	public void addDemandPeriodLine(GridPane gridPane, int month, Demanda demand) {
+
+		JFXTextField tfPeriod = new JFXTextField();
+
+		tfPeriod.getStyleClass().addAll("tf-demands");
+
+		// Limpa a célula para adicionar novo Textfield.
+
+		clearGridCell(gridPane, month, 3);
+		gridPane.add(tfPeriod, month, 3);
+
+		if (demand.getId() != null) {
+			// Se não, é uma demanda buscada no banco e deve-se preencher os campos
+
+			tfPeriod.setText(String.valueOf(demand.getPeriodo()));
+		}
+
+		DemandWrapper demandWrapper = new DemandWrapper(demand);
+		// Listeners
+
+		tfPeriod.textProperty().addListener((observable, oldValue, newValue) -> {
+			demandWrapper.getDemand().setPeriodo(Integer.valueOf(newValue));
+
+		});
 	}
 
 	public void addDemandColumn(GridPane gridPane, int month, Demanda demand) {
@@ -158,38 +272,38 @@ public class AddSubterraneanDetailsController implements Initializable {
 		// Listeners
 		tfFlow.textProperty().addListener((observable, oldValue, newValue) -> {
 			demandWrapper.getDemand().setVazao(Double.parseDouble(newValue));
-		
+
 		});
 		tfTime.textProperty().addListener((observable, oldValue, newValue) -> {
 			demandWrapper.getDemand().setTempo(Integer.valueOf(newValue));
-		
+
 		});
 		tfPeriod.textProperty().addListener((observable, oldValue, newValue) -> {
 			demandWrapper.getDemand().setPeriodo(Integer.valueOf(newValue));
-		
+
 		});
 
 	}
 
-	// Verifica se há filhos na célula do GridPane, se houver limpa a célula onde está um TextField.
+	// Verifica se há filhos na célula do GridPane, se houver limpa a célula onde
+	// está um TextField.
 	private void clearGridCell(GridPane gridPane, int column, int row) {
-	    // Check if the cell has any children (avoid null pointer exception)
-	    boolean hasChildren = gridPane.getChildren().stream().anyMatch(node -> {
-	        Integer nodeColumn = GridPane.getColumnIndex(node);
-	        Integer nodeRow = GridPane.getRowIndex(node);
-	        return nodeColumn != null && nodeRow != null && nodeColumn == column && nodeRow == row;
-	    });
+		// Check if the cell has any children (avoid null pointer exception)
+		boolean hasChildren = gridPane.getChildren().stream().anyMatch(node -> {
+			Integer nodeColumn = GridPane.getColumnIndex(node);
+			Integer nodeRow = GridPane.getRowIndex(node);
+			return nodeColumn != null && nodeRow != null && nodeColumn == column && nodeRow == row;
+		});
 
-	    // Only attempt to remove nodes if children are present in the specified cell
-	    if (hasChildren) {
-	        gridPane.getChildren().removeIf(node -> {
-	            Integer nodeColumn = GridPane.getColumnIndex(node);
-	            Integer nodeRow = GridPane.getRowIndex(node);
-	            return nodeColumn != null && nodeRow != null && nodeColumn == column && nodeRow == row;
-	        });
-	    }
+		// Only attempt to remove nodes if children are present in the specified cell
+		if (hasChildren) {
+			gridPane.getChildren().removeIf(node -> {
+				Integer nodeColumn = GridPane.getColumnIndex(node);
+				Integer nodeRow = GridPane.getRowIndex(node);
+				return nodeColumn != null && nodeRow != null && nodeColumn == column && nodeRow == row;
+			});
+		}
 	}
-
 
 	/**
 	 * Adiciona linhas de finalidades, cada linha tem uma finalidade, subfinalidade,
@@ -505,7 +619,7 @@ public class AddSubterraneanDetailsController implements Initializable {
 				addPurpouseRow(reqIndex.getAndIncrement(), requestedPurposesGrid, tfTotalRequestedConsumption,
 						btnRequestedTotalCalculate, item.getTipoFinalidade(), item);
 			} else {
-		
+
 				addPurpouseRow(autIndex.getAndIncrement(), authorizedPurposesGrid, tfTotalAuthorizedConsumption,
 						btnAuthorizedTotalCalculate, item.getTipoFinalidade(), item);
 			}
@@ -524,8 +638,15 @@ public class AddSubterraneanDetailsController implements Initializable {
 					.collect(Collectors.toList());
 
 			demandsByRequestedTypePurpouse.forEach(demand -> {
-				//addDemandsCollumns(gpRequestedDemands, demand, demand.getTipoFinalidade());
-				addDemandColumn(gpRequestedDemands, demand.getMes(), demand);
+				addDemandFlowLine(gpRequestedDemands, demand.getMes(), demand);
+			});
+
+			demandsByRequestedTypePurpouse.forEach(demand -> {
+				addDemandTimeLine(gpRequestedDemands, demand.getMes(), demand);
+			});
+
+			demandsByRequestedTypePurpouse.forEach(demand -> {
+				addDemandPeriodLine(gpRequestedDemands, demand.getMes(), demand);
 			});
 
 			// Demanda por tipo de finalidade autorizada
@@ -534,16 +655,53 @@ public class AddSubterraneanDetailsController implements Initializable {
 					.collect(Collectors.toList());
 
 			demandsByAuthorizedTypePurpouse.forEach(demand -> {
-				//addDemandsCollumns(gpAuthorizedDemands, demand, demand.getTipoFinalidade());
-				addDemandColumn(gpAuthorizedDemands, demand.getMes(), demand);
+				addDemandFlowLine(gpAuthorizedDemands, demand.getMes(), demand);
 			});
 
+			demandsByAuthorizedTypePurpouse.forEach(demand -> {
+				addDemandTimeLine(gpAuthorizedDemands, demand.getMes(), demand);
+			});
+			demandsByAuthorizedTypePurpouse.forEach(demand -> {
+				addDemandPeriodLine(gpAuthorizedDemands, demand.getMes(), demand);
+			});
 		}
-
 	}
 
 	public Set<Demanda> getDemands() {
 		return demandsWrapper.getDemands();
+	}
+
+	public Subterranea getSubterraneanAttributes() {
+
+		Subterranea subterraneanAttributes = new Subterranea();
+
+		// Se não selecionado, selecione falso
+		subterraneanAttributes.setCaesb(cbConcessionaire.getSelectionModel().getSelectedItem() != null
+				? "Sim".equals(cbConcessionaire.getSelectionModel().getSelectedItem()) ? true : false
+				: false);
+
+		subterraneanAttributes.setNivelEstatico(tfStaticLevel.getText());
+		subterraneanAttributes.setNivelDinamico(tfDynamicLevel.getText());
+		subterraneanAttributes.setProfundidade(tfWaterDepth.getText());
+		subterraneanAttributes
+				.setVazaoOutorgavel(tfSystemGrant.getText().isEmpty() ? 0 : Integer.parseInt(tfSystemGrant.getText()));
+		subterraneanAttributes
+				.setVazaoSistema(tfSystemFlow.getText().isEmpty() ? 0 : Integer.parseInt(tfSystemFlow.getText()));
+
+		subterraneanAttributes
+				.setVazaoTeste(tfSystemTest.getText().isEmpty() ? 0 : Integer.parseInt(tfSystemTest.getText()));
+
+		// O tipo de poço é obrigatório, se não selecionar retorna vazio
+		if (cbWellType.getSelectionModel().getSelectedItem() == null) {
+
+			return null;
+		} else {
+			// Set the selected item if it exists
+			subterraneanAttributes.setTipoPoco(cbWellType.getSelectionModel().getSelectedItem());
+		}
+
+		return subterraneanAttributes;
+
 	}
 
 	// Modifica as finalidade dentro de uma expressão lambda.
