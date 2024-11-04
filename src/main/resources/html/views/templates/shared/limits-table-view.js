@@ -12,6 +12,7 @@
  * 
  * 
  * 
+ * 
  */
  
 class LimitsTableView {
@@ -178,15 +179,15 @@ class LimitsTableView {
         months.forEach((month, index) => {
 
             // Atualização
-            document.getElementById(`q-litros-hora-${month}`).innerText = new DemandaModel().formatNumber(interferencia.vazaoAutorizada);
-            document.getElementById(`q-m3-hora-${month}`).innerText = new DemandaModel().maskDoubleToFloat(new DemandaModel().convertLitersToCubicMeters(interferencia.vazaoAutorizada));
+            document.getElementById(`q-litros-hora-${month}`).innerText = new DemandaModel().formatNumber(interferencia.vazaoOutorgavel);
+            document.getElementById(`q-m3-hora-${month}`).innerText = new DemandaModel().maskDoubleToFloat(new DemandaModel().convertLitersToCubicMeters(interferencia.vazaoOutorgavel));
             document.getElementById(`t-horas-dia-${month}`).innerText = authorizedDemands[index]?.tempo || 'N/A'; // Adiciona
 																													// verificação
 																													// de
 																													// índice
-            document.getElementById(`q-m3-dia-${month}`).innerText = new DemandaModel().maskDoubleToFloat(new DemandaModel().calculateCubicMetersPerDay(interferencia.vazaoAutorizada, authorizedDemands[index].tempo));
+            document.getElementById(`q-m3-dia-${month}`).innerText = new DemandaModel().maskDoubleToFloat(new DemandaModel().calculateCubicMetersPerDay(interferencia.vazaoOutorgavel, authorizedDemands[index].tempo));
             document.getElementById(`p-dias-mes-${month}`).innerText = authorizedDemands[index].periodo
-            document.getElementById(`q-m3-mes-${month}`).innerText = new DemandaModel().maskDoubleToFloat(new DemandaModel().calculateCubicMetersPerMonth(interferencia.vazaoAutorizada, authorizedDemands[index].tempo, authorizedDemands[index].periodo));
+            document.getElementById(`q-m3-mes-${month}`).innerText = new DemandaModel().maskDoubleToFloat(new DemandaModel().calculateCubicMetersPerMonth(interferencia.vazaoOutorgavel, authorizedDemands[index].tempo, authorizedDemands[index].periodo));
         });
 
     }

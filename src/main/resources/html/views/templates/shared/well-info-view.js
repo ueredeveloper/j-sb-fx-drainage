@@ -10,6 +10,7 @@
  * 
  * 
  * 
+ * 
  */
 
 
@@ -85,7 +86,7 @@ class WellInfoView {
         let vazoes = [
             { className: 'inter-vazao-sistema', value: interferencia.vazaoSistema },
             { className: 'inter-vazao-teste', value: interferencia.vazaoTeste },
-            { className: 'inter-vazao-autorizada', value: interferencia.vazaoAutorizada }
+            { className: 'inter-vazao-autorizada', value: interferencia.vazaoOutorgavel }
         ];
 
         vazoes.forEach(vazao => {

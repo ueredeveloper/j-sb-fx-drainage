@@ -1,17 +1,10 @@
 /**
-* Assunto do parecer.
-* @nome Despacho de Outorga Prévia
+* @nome Despacho de Outorga De Direito de Uso
 * @descricao Assunto do Despacho
-* @diretorio 1
+* @diretorio 3
 * @arquivo subject-view.js
 * @id 5
  * 
- * 
- * 
- * 
- * 
- * 
-* 
 * 
 */
 
@@ -26,8 +19,10 @@ class SubjectView {
 	render() {
 		let innerHTML = `
 			<div style="float:right;width:40rem">
-				<p>Emite outorga prévia para reservar o direito de uso de água subterrânea a <b><span class="us-name"></span>
-				</b>, para fins de <span class="int-finalidades"></span>.
+				<p class="outorga-uso">
+				Emite outorga de direito de uso de água subterrânea a <span class="us-nome"></span>, 
+				para fins de <span class="int-finalidades"></span>.
+				</p>
 			</div>
 		`;
 		this.div.innerHTML = innerHTML;

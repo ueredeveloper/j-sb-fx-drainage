@@ -12,6 +12,7 @@
  * 
  * 
  * 
+ * 
 */
 
 class LegalBasisView {

@@ -1,0 +1,1547 @@
+
+ <script> 
+/**
+ * @nome Tabela com Limites Lutorgados
+ * @descricao Limites de vazão como litros/dia e m³/dia, período e tempo de
+ *            captação
+ * @diretorio shared
+ * @arquivo limits-table-view.js
+ * @id 37
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ */
+ 
+class LimitsTableView {
+    constructor() {
+        this.div = document.getElementById('limits-table-view');
+        this.render();
+    }
+    render() {
+    	
+        let innerHTML = `
+        <div style="overflow:auto;margin-left:auto;margin-right:auto;">
+            <table border="1" cellspacing="0" style="margin-left:auto;margin-right:auto;width:90%">
+                <tbody>
+                    <tr>
+                        <td colspan="2" style="text-align:center;">
+                        <span style="background-color:rgb(255, 255, 255);">Limites outorgados</span></td>
+                        <td style="text-align:center;">Jan</td>
+                        <td style="text-align:center;">Fev</td>
+                        <td style="text-align:center;">Mar</td>
+                        <td style="text-align:center;">Abr</td>
+                        <td style="text-align:center;">Mai</td>
+                        <td style="text-align:center;">Jun</td>
+                        <td style="text-align:center;">Jul</td>
+                        <td style="text-align:center;">Ago</td>
+                        <td style="text-align:center;">Set</td>
+                        <td style="text-align:center;">Out</td>
+                        <td style="text-align:center;">Nov</td>
+                        <td style="text-align:center;">Dez</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="2" style="text-align:center;">
+                        <p style="text-align:center;"> Q Max</p>
+                        </td>
+                        <td style="text-align:center;">(L/h)</td>
+                        <td style="text-align:center;"><span id="q-litros-hora-jan"></span></td>
+                        <td style="text-align:center;"><span id="q-litros-hora-fev"></span></td>
+                        <td style="text-align:center;"><span id="q-litros-hora-mar"></span></td>
+                        <td style="text-align:center;"><span id="q-litros-hora-abr"></span></td>
+                        <td style="text-align:center;"><span id="q-litros-hora-mai"></span></td>
+                        <td style="text-align:center;"><span id="q-litros-hora-jun"></span></td>
+                        <td style="text-align:center;"><span id="q-litros-hora-jul"></span></td>
+                        <td style="text-align:center;"><span id="q-litros-hora-ago"></span></td>
+                        <td style="text-align:center;"><span id="q-litros-hora-set"></span></td>
+                        <td style="text-align:center;"><span id="q-litros-hora-out"></span></td>
+                        <td style="text-align:center;"><span id="q-litros-hora-nov"></span></td>
+                        <td style="text-align:center;"><span id="q-litros-hora-dez"></span></td>
+
+                    </tr>
+                    <tr>
+                        <td style="text-align:center;">(m<sup>3</sup>/h)</td>
+                        <td style="text-align:center;"><span id="q-m3-hora-jan"></span></td>
+                        <td style="text-align:center;"><span id="q-m3-hora-fev"></span></td>
+                        <td style="text-align:center;"><span id="q-m3-hora-mar"></span></td>
+                        <td style="text-align:center;"><span id="q-m3-hora-abr"></span></td>
+                        <td style="text-align:center;"><span id="q-m3-hora-mai"></span></td>
+                        <td style="text-align:center;"><span id="q-m3-hora-jun"></span></td>
+                        <td style="text-align:center;"><span id="q-m3-hora-jul"></span></td>
+                        <td style="text-align:center;"><span id="q-m3-hora-ago"></span></td>
+                        <td style="text-align:center;"><span id="q-m3-hora-set"></span></td>
+                        <td style="text-align:center;"><span id="q-m3-hora-out"></span></td>
+                        <td style="text-align:center;"><span id="q-m3-hora-nov"></span></td>
+                        <td style="text-align:center;"><span id="q-m3-hora-dez"></span></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align:center;">T. max. (h/dia)</td>
+                        <td style="text-align:center;"><span id="t-horas-dia-jan"></span></td>
+                        <td style="text-align:center;"><span id="t-horas-dia-fev"></span></td>
+                        <td style="text-align:center;"><span id="t-horas-dia-mar"></span></td>
+                        <td style="text-align:center;"><span id="t-horas-dia-abr"></span></td>
+                        <td style="text-align:center;"><span id="t-horas-dia-mai"></span></td>
+                        <td style="text-align:center;"><span id="t-horas-dia-jun"></span></td>
+                        <td style="text-align:center;"><span id="t-horas-dia-jul"></span></td>
+                        <td style="text-align:center;"><span id="t-horas-dia-ago"></span></td>
+                        <td style="text-align:center;"><span id="t-horas-dia-set"></span></td>
+                        <td style="text-align:center;"><span id="t-horas-dia-out"></span></td>
+                        <td style="text-align:center;"><span id="t-horas-dia-nov"></span></td>
+                        <td style="text-align:center;"><span id="t-horas-dia-dez"></span></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align:center;">V. max. dia (m<sup>3</sup>/dia)</td>
+                        <td style="text-align:center;"><span id="q-m3-dia-jan"></span></td>
+                        <td style="text-align:center;"><span id="q-m3-dia-fev"></span></td>
+                        <td style="text-align:center;"><span id="q-m3-dia-mar"></span></td>
+                        <td style="text-align:center;"><span id="q-m3-dia-abr"></span></td>
+                        <td style="text-align:center;"><span id="q-m3-dia-mai"></span></td>
+                        <td style="text-align:center;"><span id="q-m3-dia-jun"></span></td>
+                        <td style="text-align:center;"><span id="q-m3-dia-jul"></span></td>
+                        <td style="text-align:center;"><span id="q-m3-dia-ago"></span></td>
+                        <td style="text-align:center;"><span id="q-m3-dia-set"></span></td>
+                        <td style="text-align:center;"><span id="q-m3-dia-out"></span></td>
+                        <td style="text-align:center;"><span id="q-m3-dia-nov"></span></td>
+                        <td style="text-align:center;"><span id="q-m3-dia-dez"></span></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align:center;">P. (dias/mês)</td>
+                        <td style="text-align:center;"><span id="p-dias-mes-jan"></span></td>
+                        <td style="text-align:center;"><span id="p-dias-mes-fev"></span></td>
+                        <td style="text-align:center;"><span id="p-dias-mes-mar"></span></td>
+                        <td style="text-align:center;"><span id="p-dias-mes-abr"></span></td>
+                        <td style="text-align:center;"><span id="p-dias-mes-mai"></span></td>
+                        <td style="text-align:center;"><span id="p-dias-mes-jun"></span></td>
+                        <td style="text-align:center;"><span id="p-dias-mes-jul"></span></td>
+                        <td style="text-align:center;"><span id="p-dias-mes-ago"></span></td>
+                        <td style="text-align:center;"><span id="p-dias-mes-set"></span></td>
+                        <td style="text-align:center;"><span id="p-dias-mes-out"></span></td>
+                        <td style="text-align:center;"><span id="p-dias-mes-nov"></span></td>
+                        <td style="text-align:center;"><span id="p-dias-mes-dez"></span></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align:center;">V. max. mês (m<sup>3</sup>/mês)</td>
+                        <td style="text-align:center;"><span id="q-m3-mes-jan"></span></td>
+                        <td style="text-align:center;"><span id="q-m3-mes-fev"></span></td>
+                        <td style="text-align:center;"><span id="q-m3-mes-mar"></span></td>
+                        <td style="text-align:center;"><span id="q-m3-mes-abr"></span></td>
+                        <td style="text-align:center;"><span id="q-m3-mes-mai"></span></td>
+                        <td style="text-align:center;"><span id="q-m3-mes-jun"></span></td>
+                        <td style="text-align:center;"><span id="q-m3-mes-jul"></span></td>
+                        <td style="text-align:center;"><span id="q-m3-mes-ago"></span></td>
+                        <td style="text-align:center;"><span id="q-m3-mes-set"></span></td>
+                        <td style="text-align:center;"><span id="q-m3-mes-out"></span></td>
+                        <td style="text-align:center;"><span id="q-m3-mes-nov"></span></td>
+                        <td style="text-align:center;"><span id="q-m3-mes-dez"></span></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <table border="0" style="margin-left:auto;margin-right:auto; width:90%">
+                <tbody>
+                    <tr border="0">
+                        <td border="0">
+                        <div border="0" style="font-size:12px">
+                        <em>Q. max:Vazão máxima em litros por hora e em metros cúbicos por hora;&nbsp;<br>
+                        T. max:Tempo máximo de captação em horas por dia;&nbsp;&nbsp;<br>
+                        V. max. dia:Volume máximo em metros cúbicos por dia;&nbsp;<br>
+                        P:Dias de captação por mês; e&nbsp;&nbsp;<br>
+                        V. max. mês:Volume máximo em metros cúbicos por mês.&nbsp;<br>
+                        * 1 m³ (um metro cúbico) corresponde a 1.000 L (mil litros)&nbsp;</em></div>
+                        </td>
+                    </tr>
+                </tbody>
+                <tbody>
+                </tbody>
+            </table>
+        </div>   
+        `;
+        if (this.div !== null) this.div.innerHTML = innerHTML;
+
+    }
+    update(documento) {
+
+        let interferencia = documento.endereco.interferencias[0];
+        // Atualizar vazão (l/h)
+        const months = [
+            "jan", "fev", "mar", "abr", "mai", "jun",
+            "jul", "ago", "set", "out", "nov", "dez"
+        ];
+        // Filtra as finalidades autorizadas e organiza por mês, do 1 ao 12.
+        let authorizedDemands = interferencia.demandas
+            .filter(dem => dem.tipoFinalidade.id === 2)  // Filtra por
+															// tipoFinalidade
+															// com id igual a 2
+            .sort((a, b) => a.mes - b.mes);  // Ordena por mês (de 1 a 12)
+
+        months.forEach((month, index) => {
+
+            // Atualização
+            document.getElementById(`q-litros-hora-${month}`).innerText = new DemandaModel().formatNumber(interferencia.vazaoOutorgavel);
+            document.getElementById(`q-m3-hora-${month}`).innerText = new DemandaModel().maskDoubleToFloat(new DemandaModel().convertLitersToCubicMeters(interferencia.vazaoOutorgavel));
+            document.getElementById(`t-horas-dia-${month}`).innerText = authorizedDemands[index]?.tempo || 'N/A'; // Adiciona
+																													// verificação
+																													// de
+																													// índice
+            document.getElementById(`q-m3-dia-${month}`).innerText = new DemandaModel().maskDoubleToFloat(new DemandaModel().calculateCubicMetersPerDay(interferencia.vazaoOutorgavel, authorizedDemands[index].tempo));
+            document.getElementById(`p-dias-mes-${month}`).innerText = authorizedDemands[index].periodo
+            document.getElementById(`q-m3-mes-${month}`).innerText = new DemandaModel().maskDoubleToFloat(new DemandaModel().calculateCubicMetersPerMonth(interferencia.vazaoOutorgavel, authorizedDemands[index].tempo, authorizedDemands[index].periodo));
+        });
+
+    }
+
+}</script> 
+
+ <script> 
+/**
+ * @nome Dados Legais e Finalidade
+ * @descricao Limites legais por finalidade de uso
+ * @diretorio shared
+ * @arquivo purpouse-legal-basis-view.js
+ * @id 38
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ */
+
+
+class PurpouseLegalBasisView {
+    constructor() {
+        this.div = document.getElementById('purpouse-legal-basis-view');
+        this.render();
+    }
+
+    render() {
+        let innerHTML = `
+        <p>
+        7. As finalidades foram analisadas considerando as disposições da Resolução/Adasa nº 350/2006, 
+        Resolução/Adasa nº 36/2018, Resolução/Adasa nº 16/2018 e da disponibilidade hídrica de água subterrânea na 
+        reserva explotável do domínio poroso/fraturado conforme disposições a seguir:
+        </p>
+
+        <p><br></p>
+
+        <p>Resolução/ADASA nº 350/2006</p>
+
+        <p style="margin-left:30.0pt;">Art. 9º . Necessitam de prévio registro os seguintes usos de água subterrânea, 
+        considerados como usos insignificantes:</p>
+
+        <p style="margin-left:30.0pt;">I – Poços manuais com vazão de uso da água menor ou igual a 5 m³ /dia 
+        (cinco metros cúbicos por dia); e,</p>
+
+        <p style="margin-left:30.0pt;">II – Poços incluídos em pesquisas, com caráter exclusivo de estudo, sondagem 
+        ou monitoramento.</p>
+
+        <p style="margin-left:30.0pt;">Art. 17. Fica vedado o uso de águas superficial e subterrânea com a finalidade 
+        de consumo humano, onde houver rede de abastecimento da concessionária.</p>
+
+        <p style="margin-left:30.0pt;">Art. 18. O uso para consumo humano, onde não houver rede de abastecimento da 
+        concessionária, constitui-se em solução provisória.</p>
+
+        <p style="margin-left:30.0pt;">Art. 19. Para poços tubulares, em áreas atendidas com a rede pública de 
+        abastecimento de água, a outorga prévia e a outorga de direitos de uso de água subterrânea somente poderão ser concedidas para os seguintes usos:</p>
+
+        <p style="margin-left:30.0pt;">I – Irrigação de áreas com superfície superior a 5.000 m² (cinco mil metros 
+        quadrados);</p>
+
+        <p style="margin-left:30.0pt;">II – Usos comerciais;</p>
+
+        <p style="margin-left:30.0pt;">III – Usos industriais.</p>
+
+        <p style="margin-left:30.0pt;">&nbsp;</p>
+
+        <p style="margin-left:6pt;">Resolução/ADASA nº 36/2018</p>
+
+        <blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;">
+            <div style="text-align: justify;">
+                <p style="margin-left:6pt;">Art. 3º Estabelecer que, a montante do reservatório do Descoberto, 
+                outorgas de direito de uso de recursos hídricos somente poderão ser emitidas para as finalidades 
+                de irrigação e piscicultura em áreas já utilizadas para essas atividades antes de 16 de setembro de 
+                2016.</p>
+            </div>
+        </blockquote>
+
+        <blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;">
+            <div style="text-align: justify;">
+                <p style="margin-left:6pt;">§1º É vedada a renovação ou alteração de outorgas de direito de uso de 
+                recursos hídricos, a montante do reservatório do Descoberto, com o objetivo de ampliação das 
+                atividades mencionadas no caput.</p>
+            </div>
+        </blockquote>
+
+        <div style="text-align: justify;">
+            <p style="margin-left:6pt;">Resolução/ADASA nº 16/2018</p>
+
+            <p style="margin-left:30.0pt;">Art. 6º. Nas áreas atendidas pela concessionária, poderão ser concedidas 
+            outorgas e/ou registros para captação de água subterrânea, com finalidade exclusiva de irrigação, e desde que as propriedades possuam no mínimo 400 m² (quatrocentos metros quadrados) de área permeável, para os poços manuais (cisternas), e 5000 m² (cinco mil metros quadrados) , para os poços tubulares.</p>
+
+            <p style="margin-left:30.0pt;">§1º. Para efeito de contagem de área permeável para as concessões de 
+            outorga em áreas atendidas pela concessionária de abastecimento público, poderão ser agrupadas áreas 
+            permeáveis contíguas, obrigando-se os usuários deste agrupamento a construírem rede de distribuição 
+            dissociada da rede de abastecimento da concessionária, que atenda a todas as propriedades, com a 
+            finalidade exclusiva de irrigação.</p>
+
+            <p style="margin-left:30.0pt;">&nbsp;</p>
+        </div>
+
+        `;
+
+
+        if (this.div !== null) this.div.innerHTML = innerHTML;
+    }
+}</script> 
+
+ <script> 
+/**
+ * @nome Tipo Poco
+ * @diretorio models
+ * @descricao Modelos de Tabelas
+ * @direitorio models
+ * @arquivo tipo-poco-model.js
+ * @id 32
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ *
+ */
+ 
+class TipoPoco {
+
+    constructor() {}
+
+    getSample() {}
+    /**
+     * Cria uma string com o tipo de poço
+     * Tag anterior: <inter_tipo_poco_tag></inter_tipo_poco_tag>.
+     */
+    typeOfWellToString() {
+        return interferencia?.tipoPoco?.descricao;
+    }
+
+}
+
+</script> 
+
+ <script> 
+/**
+ * @nome Demanda
+ * @diretorio models
+ * @descricao Modelos de Tabelas
+ * @arquivo demanda-model.js
+ * @id 27
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ *
+ */
+ 
+class DemandaModel {
+
+    constructor() {}
+
+    getSample() {}
+
+    /**
+    * Converte a vazão de litros por hora (L/h) para metros cúbicos por hora (m³/h).
+    * 
+    * @param {number} value - A vazão em litros por hora.
+    * @returns {number} - A vazão em metros cúbicos por hora.
+    */
+    convertLitersToCubicMeters(value) {
+        return value / 1000;
+    }
+    /**
+    * Calcula a vazão em metros cúbicos por dia.
+    * 
+    * @param {number} litrosHora - A vazão em litros por hora.
+    * @param {number} time - O número de horas por dia.
+    * @returns {number} - A vazão em metros cúbicos por dia.
+    */
+
+    calculateCubicMetersPerDay(litrosHora, time) {
+        // Converte a vazão de litros por hora para metros cúbicos por hora e multiplica pelas horas por dia
+        return (litrosHora / 1000) * time;
+    }
+
+    /**
+    * Calcula a vazão em metros cúbicos por mês.
+    * 
+    * @param {number} litrosHora - A vazão em litros por hora.
+    * @param {number} time - O número de horas por dia.
+    * @param {number} periodo - O número de dias no mês.
+    * @returns {number} - A vazão em metros cúbicos por mês.
+    */
+    calculateCubicMetersPerMonth(litrosHora, time, periodo) {
+        return ((litrosHora / 1000) * time) * periodo;
+    }
+    
+    
+    // Função para formatar o número com ponto separador de milhar
+	formatNumber(value) {
+		console.log(value)
+		return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+	}
+	
+	// Muda o ponto do valor double para vígula do float. Ex: 20.00 para 20,00
+	maskDoubleToFloat(value) {
+		return parseFloat(value).toFixed(2).toString().replace('.', ',');
+	}
+
+}</script> 
+
+ <script> 
+/**
+ * 
+ * @nome Utilizades
+ * @descricao Funções compartilhadas
+ * @diretorio utils
+ * @arquivo script.js
+ * @id 42
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ */
+
+ class Utils {
+
+	constructor() {}
+
+	/**
+	 * Atualiza tudo utilizando um exemplo da tabela documento com endereço,
+	 * interferências e usuário
+	 * 
+	 * @param {*}
+	 *            documento
+	 */
+	updateHtmlDocument(documento) {
+
+		// Verifica se a classe ObjectView está disponível
+		if (typeof ObjectView !== 'undefined') {
+			// Atualiza ObjectView
+			new ObjectView().update(documento);
+		} else {
+			console.error("SubjectView não definida.");
+		}
+
+		// Verifica e atualiza SubjectView se estiver disponível
+		if (typeof SubjectView !== 'undefined') {
+			new SubjectView().update(documento);
+		} else {
+			console.error("SubjectView não definida.");
+		}
+
+
+		// Verifica e atualiza AnalyseView se estiver disponível
+		if (typeof AnalyseView !== 'undefined') {
+			new AnalyseView().update(documento);
+		} else {
+			console.error("AnalyseView não definida.");
+		}
+
+		// Verifica e atualiza WellInfoView se estiver disponível
+		if (typeof WellInfoView !== 'undefined') {
+			let interferencia = documento.endereco.interferencias[0];
+			new WellInfoView().update(interferencia);
+		} else {
+			console.error("WellInfoView não definida.");
+		}
+
+		// Verifica e inicializa PurpouseTableView
+		if (typeof PurpouseTableView !== 'undefined') {
+			new PurpouseTableView(documento, 1, 'tbl-request-purpouse-view');
+			new PurpouseTableView(documento, 2, 'tbl-authorized-purpouse-view');
+		} else {
+			console.error("PurpouseTableView não definida.");
+		}
+
+		// Verifica e atualiza ExploitableReserveView
+		if (typeof ExploitableReserveView !== 'undefined') {
+			new ExploitableReserveView().update(documento);
+		} else {
+			console.error("ExploitableReserveView não definida.");
+		}
+
+		// Atualiza despachos com as tabelas geográficas
+		if (typeof GeographicTableView !== 'undefined') {
+			new GeographicTableView().update(documento);
+		} else {
+			console.error("GeographicTableView não definida.");
+		}
+
+		// Atualiza limites autorizados
+		if (typeof LimitsTableView !== 'undefined') {
+			new LimitsTableView().update(documento);
+		} else {
+			console.error("LimitsTableView não definida.");
+		}
+
+
+	}
+
+
+}
+
+</script> 
+
+ <script> 
+/**
+ * @nome Finalidade
+ * @diretorio models
+ * @descricao Modelos de Tabelas
+ * @arquivo finalidade-model.js
+ * @id 30
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ *
+ */
+ 
+class FinalidadeModel {
+
+    constructor() {}
+
+    getSample() {return []}
+    
+	/**
+	 * Converte uma array de finalidades em um string
+	 * Tag anterior: <finalidades_tag></finalidades_tag>
+	 * @param {*} finalidades 
+	 * @returns 
+	 */
+    getPurpouseString(finalidades) {
+		// Filtra as finalidades autorizadas, transforma em string com a apenas o atributo finalidade e converte tudo em minúsculo
+		let arrayToString = finalidades.filter(f => f.tipoFinalidade.id === 2).map(f => f.finalidade).toString().toLowerCase();
+		// Substituir a última vírgula por 'e'
+		let result = arrayToString.replace(/,(?=[^,]*$)/, ' e ');
+		// Adicionar espaço após todas as vírgulas
+		result = result.replace(/,/g, ', ');
+		return result;
+	}
+   
+
+}</script> 
+
+ <script> 
+/**
+ * @diretorio shared
+ * @descricao Tabela de Finalidades
+ * @nome Tabela de Finalidades
+ * @arquivo purpouse-table-view.js
+ * @id 39
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ *
+ */
+
+
+class PurpouseTableView {
+  constructor(documento, tipoFinalidade, cssId) {
+
+    this.div = document.getElementById(cssId);
+    this.documento = documento;
+    this.tipoFinalidade = tipoFinalidade;
+
+    this.render();
+  }
+
+  render() {
+
+    let anexo = this.documento.processo.anexo
+    let usuario = this.documento.usuarios[0]
+    let tipoOutorga = this.documento.endereco.interferencias[0].tipoOutorga
+    let sutipoOutorga = this.documento.endereco.interferencias[0].subtipoOutorga
+    let finalidades = this.documento.endereco.interferencias[0].finalidades
+
+    let _finalidades = finalidades.filter(f => f.tipoFinalidade.id === this.tipoFinalidade);
+
+    let innerHTML = `
+          <table border="1" cellspacing="0" style="align: center">
+            <tbody>
+              <tr>
+                <td style="text-align: center;"><p>Processo</p></td>
+                <td style="text-align: center;"><p>Requerente</p></td>
+                <td style="text-align: center;"><p>Solicitação</p></td>
+                <td style="text-align: center;"><p>Finalidades</p></td>
+                <td style="text-align: center;"><p>Quantidade</p></td>
+                <td style="text-align: center;"><p>Demanda (L/dia)</p></td>
+                <td style="text-align: center;"><p>Demanda Total (L/dia)</p></td>
+              </tr>
+              <tr style="text-align: center;">
+                <td style="text-align: center;">${anexo?.numero ?? 'N/A'}</td>
+                <td style="text-align: center;">${usuario?.nome ?? 'N/A'}</td>
+                <td>
+                  ${tipoOutorga?.descricao ?? 'N/A'}
+                  ${sutipoOutorga?.descricao ? ' - ' + sutipoOutorga.descricao : ''}
+                </td>
+                <td style="text-align: center;">${_finalidades.map(_fin => _fin.finalidade || 'Desconhecido').join('<br/><br/>')}</td>
+                <td style="text-align: center;">${_finalidades.map(_fin => _fin.quantidade || 'N/A').join('<br/><br/>')}</td>
+                <td style="text-align: center;">${_finalidades.map(_fin => _fin.total || 'N/A').join('<br/><br/>')}</td>
+                <td style="text-align: center;">${_finalidades.reduce((accumulator, currentValue) => accumulator + Number(currentValue.total || 0), 0)}</td>
+              </tr>
+            </tbody>
+          </table>
+      `;
+
+    if (this.div !== null) this.div.innerHTML = innerHTML;
+  }
+}</script> 
+
+ <script> 
+/**
+ * @nome Usuario
+ * @diretorio models
+ * @descricao Modelos de Tabelas
+ * @direitorio models
+ * @arquivo usuario-model.js
+ * @id 33
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ *
+ */
+
+class UsuarioModel {
+
+    constructor() {}
+
+    getSample() {
+        return {
+            nome: "Carlos Drummond de Andrade", 
+            cpfCnpj: 12345678955
+        }
+    }
+    getNome (usuario){
+         return usuario?.nome;
+    }
+
+    /**
+     * Cria máscara para CPF e CPNJ
+     * @param {*} value 
+     * @returns 
+    */
+    formatCpfCnpj(value) {
+    	
+        value = value.toString();
+
+        // Verifica se é CPF (11 dígitos) ou CNPJ (14 dígitos)
+        if (value.length === 11) {
+            // Formatar CPF: 123.456.789-12
+            return value.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+        } else if (value.length === 14) {
+            // Formatar CNPJ: 12.345.678/0001-00
+            return value.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, '$1.$2.$3/$4-$5');
+        } else {
+            // Se não for CPF ou CNPJ válido, retorna o valor sem formatação
+            return value;
+        }
+    }
+
+
+}</script> 
+
+ <script> 
+/**
+ * @nome Reserva explotável
+ * @descricao Vazão, número de poços e vazão outorgável e disponível
+ * @diretorio shared
+ * @arquivo exploitable-reserve-view.js
+ * @id 35
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ */
+ 
+class ExploitableReserveView {
+    constructor() { 
+	    this.div = document.getElementById('exploitable-reserve-view');
+	    this.render(); 
+    }
+    render() {
+        let innerHTML = `
+        <div>
+        <p>8. A reserva explotável e balanço hídrico do subsistema subterrâneo apresenta dados favoráveis, 
+        considerando a inclusão das demandas requeridas, conforme tabelas abaixo:
+        </p>
+
+        <p>Figura 04: Reserva explotável e balanço hídrico do subsistema <span class="inter-subsistema"></span>.</p>
+        </div>
+        
+         `;
+
+        if (this.div !== null ) this.div.innerHTML = innerHTML;
+    }
+
+    update(documento){
+
+        let subsistema = documento.endereco?.interferencias[0]?.subsistema || "Não encontrado";
+        
+        let items = document.getElementsByClassName('inter-subsistema');
+
+    	Array.from(items).forEach(element => {
+    		element.innerHTML =  documento.endereco?.interferencias[0]?.subsistema || "Não encontrado";
+    	});
+    	
+    }
+}</script> 
+
+ <script> 
+/**
+ * @nome Documento
+ * @diretorio models
+ * @descricao Modelos de Tabelas
+ * @arquivo documento-model.js
+ * @id 28
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ *
+ */
+ 
+class DocumentoModel {
+
+	constructor() { }
+
+	getSample() {
+		return {
+			"id": 1,
+			"numero": "123456/58",
+			"processo": {
+				"id": 1,
+				"numero": "123.456",
+				"anexo": {
+					"id": 3,
+					"numero": "Anexo 789",
+					"processos": [
+
+					]
+				}
+			},
+			"numeroSei": 123456789,
+			"tipoDocumento": {
+				"id": 2,
+				"descricao": "Despacho"
+			},
+			"endereco": {
+				"id": 4,
+				"logradouro": "Rua 10, Vicente Pires",
+				"documentos": [
+
+				],
+				"interferencias": [
+					{
+						"id": 1,
+
+						"nome": null,// "Poço 1",
+
+						"subsistema": "R3/Q3",
+	
+						"vazaoSistema": 9000,
+						"vazaoTeste": 8000,
+						"vazaoOutorgavel": 7500,
+
+						"profundidade": "100", 
+						"nivelEstatico": "120",
+						"nivelDinamico": "110",
+
+						"baciaHidrografica": null,// {"id": 1, "nome": "Bacia do Maranhão"},
+						"unidadeHidrografica": null,//{"id": 1, "nome": "UH 1"},
+
+						"latitude": -15.123456,
+						"longitude": -47.123456,
+
+						"endereco": {
+							"id": 4,
+							"logradouro": "Exemplo Demandas com Endereço 1",
+							"documentos": [
+
+							],
+							"interferencias": [
+
+							]
+						},
+						/*"tipoPoco": {
+							"id": 1,
+							"descricao": "Manual"
+						},*/
+						"tipoInterferencia": {
+							"id": 2,
+							"descricao": "Subterrânea"
+						},
+						"tipoOutorga": {
+							"id": 1,
+							"descricao": "Outorga"
+						},
+						"subtipoOutorga": {
+							"id": 6,
+							"descricao": ""
+						},
+						"situacaoProcesso": {
+							"id": 1,
+							"descricao": "Arquivado"
+						},
+						"tipoAto": {
+							"id": 1,
+							"descricao": "Despacho"
+						},
+						"finalidades": [
+							{
+								"id": 1,
+								"finalidade": "Abastecimento Humano",
+								"subfinalidade": "Rural",
+								"quantidade": 10.0,
+								"consumo": 110.0,
+								"total": 1100.0,
+								"tipoFinalidade": {
+									"id": 2
+								}
+							},
+							{
+								"id": 2,
+								"finalidade": "Uso Comercial",
+								"subfinalidade": "Lavar Veículos",
+								"quantidade": 100.0,
+								"consumo": 110.0,
+								"total": 11000.0,
+								"tipoFinalidade": {
+									"id": 2
+								}
+							},
+							{
+								"id": 3,
+								"finalidade": "Criação de Animais",
+								"subfinalidade": "Aves",
+								"quantidade": 300.0,
+								"consumo": 30.0,
+								"total": 9000.0,
+								"tipoFinalidade": {
+									"id": 2
+								}
+							},
+							{
+								"id": 4,
+								"finalidade": "Criação de Animais",
+								"subfinalidade": "Aves",
+								"quantidade": 300.0,
+								"consumo": 30.0,
+								"total": 9000.0,
+								"tipoFinalidade": {
+									"id": 1
+								}
+							},
+							{
+								"id": 5,
+								"finalidade": "Uso Industrial",
+								"subfinalidade": "Aves",
+								"quantidade": 400.0,
+								"consumo": 200.0,
+								"total": 80000.0,
+								"tipoFinalidade": {
+									"id": 1
+								}
+							}
+						],
+						"demandas": [
+							{
+								"id": 1,
+								"vazao": 22.0,
+								"tempo": 22,
+								"periodo": 22,
+								"mes": 1,
+								"tipoFinalidade": {
+									"id": 2
+								}
+							},
+							{
+								"id": 10,
+								"vazao": 2010.0,
+								"tempo": 11,
+								"periodo": 21,
+								"mes": 11,
+								"tipoFinalidade": {
+									"id": 1
+								}
+							},
+							{
+								"id": 11,
+								"vazao": 66.0,
+								"tempo": 66,
+								"periodo": 66,
+								"mes": 5,
+								"tipoFinalidade": {
+									"id": 2
+								}
+							},
+							{
+								"id": 12,
+								"vazao": 2003.0,
+								"tempo": 4,
+								"periodo": 28,
+								"mes": 4,
+								"tipoFinalidade": {
+									"id": 1
+								}
+							},
+							{
+								"id": 13,
+								"vazao": 2000.0,
+								"tempo": 1,
+								"periodo": 31,
+								"mes": 1,
+								"tipoFinalidade": {
+									"id": 1
+								}
+							},
+							{
+								"id": 14,
+								"vazao": 11.0,
+								"tempo": 1101,
+								"periodo": 111,
+								"mes": 10,
+								"tipoFinalidade": {
+									"id": 2
+								}
+							},
+							{
+								"id": 15,
+								"vazao": 88.0,
+								"tempo": 88,
+								"periodo": 88,
+								"mes": 7,
+								"tipoFinalidade": {
+									"id": 2
+								}
+							},
+							{
+								"id": 16,
+								"vazao": 1010.0,
+								"tempo": 10,
+								"periodo": 10,
+								"mes": 9,
+								"tipoFinalidade": {
+									"id": 2
+								}
+							},
+							{
+								"id": 17,
+								"vazao": 2011.0,
+								"tempo": 12,
+								"periodo": 20,
+								"mes": 12,
+								"tipoFinalidade": {
+									"id": 1
+								}
+							},
+							{
+								"id": 18,
+								"vazao": 44.0,
+								"tempo": 44,
+								"periodo": 44,
+								"mes": 3,
+								"tipoFinalidade": {
+									"id": 2
+								}
+							},
+							{
+								"id": 19,
+								"vazao": 77.0,
+								"tempo": 77,
+								"periodo": 77,
+								"mes": 6,
+								"tipoFinalidade": {
+									"id": 2
+								}
+							},
+							{
+								"id": 2,
+								"vazao": 2006.0,
+								"tempo": 7,
+								"periodo": 25,
+								"mes": 7,
+								"tipoFinalidade": {
+									"id": 1
+								}
+							},
+							{
+								"id": 20,
+								"vazao": 2002.0,
+								"tempo": 3,
+								"periodo": 29,
+								"mes": 3,
+								"tipoFinalidade": {
+									"id": 1
+								}
+							},
+							{
+								"id": 21,
+								"vazao": 13.0,
+								"tempo": 13,
+								"periodo": 13,
+								"mes": 12,
+								"tipoFinalidade": {
+									"id": 2
+								}
+							},
+							{
+								"id": 22,
+								"vazao": 55.0,
+								"tempo": 55,
+								"periodo": 55,
+								"mes": 4,
+								"tipoFinalidade": {
+									"id": 2
+								}
+							},
+							{
+								"id": 23,
+								"vazao": 2009.0,
+								"tempo": 10,
+								"periodo": 22,
+								"mes": 10,
+								"tipoFinalidade": {
+									"id": 1
+								}
+							},
+							{
+								"id": 24,
+								"vazao": 99.0,
+								"tempo": 99,
+								"periodo": 99,
+								"mes": 8,
+								"tipoFinalidade": {
+									"id": 2
+								}
+							},
+							{
+								"id": 3,
+								"vazao": 2001.0,
+								"tempo": 2,
+								"periodo": 30,
+								"mes": 2,
+								"tipoFinalidade": {
+									"id": 1
+								}
+							},
+							{
+								"id": 4,
+								"vazao": 33.0,
+								"tempo": 33,
+								"periodo": 33,
+								"mes": 2,
+								"tipoFinalidade": {
+									"id": 2
+								}
+							},
+							{
+								"id": 5,
+								"vazao": 2005.0,
+								"tempo": 6,
+								"periodo": 26,
+								"mes": 6,
+								"tipoFinalidade": {
+									"id": 1
+								}
+							},
+							{
+								"id": 6,
+								"vazao": 2008.0,
+								"tempo": 9,
+								"periodo": 23,
+								"mes": 9,
+								"tipoFinalidade": {
+									"id": 1
+								}
+							},
+							{
+								"id": 7,
+								"vazao": 2007.0,
+								"tempo": 8,
+								"periodo": 24,
+								"mes": 8,
+								"tipoFinalidade": {
+									"id": 1
+								}
+							},
+							{
+								"id": 8,
+								"vazao": 2004.0,
+								"tempo": 5,
+								"periodo": 27,
+								"mes": 5,
+								"tipoFinalidade": {
+									"id": 1
+								}
+							},
+							{
+								"id": 9,
+								"vazao": 12.0,
+								"tempo": 121,
+								"periodo": 12,
+								"mes": 11,
+								"tipoFinalidade": {
+									"id": 2
+								}
+							}
+						]
+					}
+				]
+			},
+			"usuarios": [
+				{
+					"id": 1,
+					"nome": "Carlos Drummond de Andrade",
+					"cpfCnpj": 12345678900,
+					"documentos": [
+
+					]
+				}
+			]
+		}
+	}
+}</script> 
+
+ <script> 
+/**
+ * @nome Tabela de Dados Geográficos
+ * @descricao Dados geográficos como coordenada, bacia e subbacia
+ * @diretorio shared
+ * @arquivo geographic-table-view.js
+ * @id 36
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ *
+ */
+
+class GeographicTableView {
+    constructor() {
+        this.div = document.getElementById('geographic-table-view');
+        this.render();
+    }
+
+
+    render() {
+        let innerHTML = `
+            <div align="justify" style="margin-left: auto; margin-right: auto; overflow: auto;">
+                <table border="1" cellspacing="0" style="margin-left: auto; margin-right: auto; ">
+                    <tbody>
+                        <tr>
+                            <td rowspan="2" style="width: 104px; height: 30px; text-align: center;">Ponto de Captação</td>
+                            <td rowspan="2" style="width: 135px; height: 30px; text-align: center;">Bacia Hidrográfica</td>
+                            <td rowspan="2" style="width: 173px; height: 30px; text-align: center;">Unidade Hidrográfica</td>
+                            <td colspan="2" style="width: 248px; height: 30px;">Ponto de Captação (SIRGAS 2000)</td>
+                        </tr>
+                        <tr>
+                            <td style="width: 125px; height: 16px; text-align: center;">Latitude</td>
+                            <td style="width: 123px; height: 16px; text-align: center;">Longitude</td>
+                        </tr>
+                        <tr>
+                            <td style="width: 104px; height: 21px; text-align: center;" class="inter-nome"></td>
+                            <td style="width: 135px; height: 21px; text-align: center;" class="inter-bh"></td>
+                            <td style="width: 173px; height: 21px; text-align: center;" class="inter-uh"></td>
+                            <td style="width: 125px; height: 21px; text-align: center;"><strong><span class="inter-latitude"></span></strong></td>
+                            <td style="width: 123px; height: 21px; text-align: center;"><strong><span class="inter-longitude"></span></strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>`;
+
+        if (this.div !== null) this.div.innerHTML = innerHTML;
+
+    }
+
+    update (documento){
+
+        let interferencia = documento.endereco.interferencias[0];
+
+        let ns = document.getElementsByClassName('inter-nome');
+
+    	Array.from(ns).forEach(element => {
+    		element.textContent = interferencia?.nome || 'XXX';
+    	});
+
+        let bhs = document.getElementsByClassName('inter-bh');
+
+    	Array.from(bhs).forEach(element => {
+    		element.textContent = interferencia.baciaHidrografica?.nome || 'XXX';
+    	});
+
+        let uhs = document.getElementsByClassName('inter-uh');
+
+    	Array.from(uhs).forEach(element => {
+    		element.textContent =  interferencia.unidadeHidrografica?.nome || 'XXX';
+    	});
+
+        let lats = document.getElementsByClassName('inter-latitude');
+
+    	Array.from(lats).forEach(element => {
+    		element.textContent = interferencia.latitude?.toFixed(6) || 'XXX';
+    	});
+
+        let lngs = document.getElementsByClassName('inter-longitude');
+
+    	Array.from(lngs).forEach(element => {
+    		element.textContent = interferencia.longitude?.toFixed(6) || 'XXX';
+    	});
+     
+    }
+   
+}</script> 
+
+ <script> 
+/**
+ * @nome Assinatura da chefia
+ * @arquivo chief-signature-view.js
+ * @diretorio shared
+ * @descricao Assinatura da chefia
+ * @id 34
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ *
+ */
+
+
+class ChiefSignatureView {
+
+    constructor() {
+        this.div = document.getElementById('chief-signature-view');
+        this.render();
+    }
+
+    render() {
+
+        let innerHTML = `
+            <div>
+                <p style="text-align: center;"><strong>GUSTAVO ANTONIO CARNEIRO</strong></p>
+                <p style="text-align: center;">Superintendente de Recursos Hídricos</p>
+            </div>
+            `;
+     	if (this.div !== null) this.div.innerHTML = innerHTML;
+    }
+
+}</script> 
+
+ <script> 
+<!DOCTYPE html>
+<html>
+
+<!-- 
+ * Main
+ * @nome Registro de Uso
+ * @descricao Arquivo principal .html
+ * @diretorio 5
+ * @id 24
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ */
+ -->
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="script.js" defer></script>
+    <script src="limits-table.js"></script>
+    <script src="geographic-table.js"></script>
+    <script src="grant-requirements.js"></script>
+    <script src="chief-signature.js"></script>
+    <!-- pastas compartilhadas pelos templates -->
+    <script src="../models/interferencia.js"></script>
+     <script src="../actions/actions.js"></script>
+   
+   
+  </head>
+  <body>
+    <div id="app" style="    margin-left: 10px;margin-right: 10px;"></div>
+    <div id="actions"></div>
+  </body>
+</html></script> 
+
+ <script> 
+/**
+ * @nome Informações do Poço
+ * @descricao Informações como nível estático, nível dinâmico e coordenada
+ * @diretorio shared
+ * @arquivo well-info-view.js
+ * @id 41
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ */
+
+
+class WellInfoView {
+
+    constructor() {
+        this.div = document.getElementById('well-info-view');
+        this.render();
+    }
+
+    render() {
+        let innerHtml = `
+    	<h3>II. Dados do poço:</h3>
+        <ul>
+            <li>Coordenadas SIRGAS 2000: 
+            <span class="inter-latitude" class="highlight"></span>, 
+            <span class="inter-longitude" class="highlight"></span>
+            </li>
+            <li>Tipo de Poço: <span class="inter-tipo-poco" class="highlight"></span></li>
+            <!-- Cálculos do poço em metros -->
+            <li>Profundidade: <span class="inter-profundidade" class="highlight"></span></li>
+            <li>Nível Estático N.E: <span class="inter-nivel-estatico" class="highlight"></span></li>
+            <li>Nível Dinâmico N.D: <span class="inter-nivel-dinamico" class="highlight"></span></li>
+            <!-- Vazões --> 
+            <li>Vazão média do Subsistema (L/h): <span class="inter-vazao-sistema" class="highlight"></span></li>
+            <li>Vazão teste (L/h): <span class="inter-vazao-teste" class="highlight"></span></li>
+            <li>Vazão autorizada (L/h): <span class="inter-vazao-autorizada" class="highlight"></span></li>
+        </ul>`;
+
+        if (this.div !== null) this.div.innerHTML = innerHtml;
+
+    }
+
+    update(interferencia) {
+        // Latitude
+        let lats = document.getElementsByClassName('inter-latitude');
+        Array.from(lats).forEach(element => {
+            element.textContent = interferencia.latitude?.toFixed(6) || 'XXX';
+        });
+
+        // Longitude
+        let lngs = document.getElementsByClassName('inter-longitude');
+        Array.from(lngs).forEach(element => {
+            element.textContent = interferencia.longitude?.toFixed(6) || 'XXX';
+        });
+
+        // Tipo de Poço
+        let tiposPoço = document.getElementsByClassName('inter-tipo-poco');
+        Array.from(tiposPoço).forEach(element => {
+            element.textContent = interferencia?.tipoPoco?.descricao || 'XXX';
+        });
+
+        // Profundidade do Poço
+        let profundidades = document.getElementsByClassName('inter-profundidade');
+        Array.from(profundidades).forEach(element => {
+            element.textContent = interferencia?.profundidade || 'XXX';
+        });
+
+        // Nível Estático e Dinâmico
+        let niveis = [
+            { className: 'inter-nivel-estatico', value: interferencia.nivelEstatico },
+            { className: 'inter-nivel-dinamico', value: interferencia.nivelDinamico }
+        ];
+
+        niveis.forEach(nivel => {
+            let elements = document.getElementsByClassName(nivel.className);
+            Array.from(elements).forEach(element => {
+                element.textContent = nivel.value || 'XXX';
+            });
+        });
+
+        // Vazões
+        let vazoes = [
+            { className: 'inter-vazao-sistema', value: interferencia.vazaoSistema },
+            { className: 'inter-vazao-teste', value: interferencia.vazaoTeste },
+            { className: 'inter-vazao-autorizada', value: interferencia.vazaoOutorgavel }
+        ];
+
+        vazoes.forEach(vazao => {
+            let elements = document.getElementsByClassName(vazao.className);
+            Array.from(elements).forEach(element => {
+                element.textContent = vazao.value || 'XXX';
+            });
+        });
+
+
+    }
+
+}</script> 
+
+ <script> 
+/**
+ * @nome Interferencia
+ * @diretorio models
+ * @descricao Modelos de Tabelas
+ * @arquivo interferencia-model.js
+ * @id 31
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ *
+ */
+ 
+class InterferenciaModel {
+    constructor() {}
+
+    // Método para obter a interferência
+    getSample () {
+        return {"caesb":true,"subsistema": "R", "nivelEstatico":"123","nivelDinamico":"123","profundidade":"","vazaoOutorgavel":8500,"vazaoSistema":9000,"vazaoTeste":9500,"tipoPoco":{"id":1},"id":1,"latitude":-15.654654,"longitude":-47.123456,"endereco":{"id":4,"logradouro":"Exemplo Demandas com Endereço 1","documentos":[],"interferencias":[]},"tipoInterferencia":{"id":2,"descricao":"Subterrânea"},"tipoOutorga":{"id":1,"descricao":"Outorga"},"subtipoOutorga":{"id":6,"descricao":""},"situacaoProcesso":{"id":1,"descricao":"Arquivado"},"tipoAto":{"id":1,"descricao":"Despacho"},"finalidades":[{"id":1,"finalidade":"Comercial","subfinalidade":"Lavar Veículos","quantidade":100.0,"consumo":110.0,"total":11000.0,"tipoFinalidade":{"id":2}},{"id":2,"finalidade":"Criação de Animais","subfinalidade":"Aves","quantidade":300.0,"consumo":30.0,"total":9000.0,"tipoFinalidade":{"id":1}},{"id":3,"finalidade":"Abastecimento Humano","subfinalidade":"Rural","quantidade":10.0,"consumo":110.0,"total":1100.0,"tipoFinalidade":{"id":1}}],"demandas":[{"id":1,"vazao":44.0,"tempo":44,"periodo":44,"mes":3,"tipoFinalidade":{"id":2}},{"id":10,"vazao":2001.0,"tempo":2,"periodo":30,"mes":2,"tipoFinalidade":{"id":1}},{"id":11,"vazao":22.0,"tempo":22,"periodo":22,"mes":1,"tipoFinalidade":{"id":2}},{"id":12,"vazao":55.0,"tempo":55,"periodo":55,"mes":4,"tipoFinalidade":{"id":2}},{"id":13,"vazao":2003.0,"tempo":4,"periodo":28,"mes":4,"tipoFinalidade":{"id":1}},{"id":14,"vazao":11.0,"tempo":1101,"periodo":111,"mes":10,"tipoFinalidade":{"id":2}},{"id":15,"vazao":12.0,"tempo":121,"periodo":12,"mes":11,"tipoFinalidade":{"id":2}},{"id":16,"vazao":2008.0,"tempo":9,"periodo":23,"mes":9,"tipoFinalidade":{"id":1}},{"id":17,"vazao":88.0,"tempo":88,"periodo":88,"mes":7,"tipoFinalidade":{"id":2}},{"id":18,"vazao":77.0,"tempo":77,"periodo":77,"mes":6,"tipoFinalidade":{"id":2}},{"id":19,"vazao":2009.0,"tempo":10,"periodo":22,"mes":10,"tipoFinalidade":{"id":1}},{"id":2,"vazao":33.0,"tempo":33,"periodo":33,"mes":2,"tipoFinalidade":{"id":2}},{"id":20,"vazao":2011.0,"tempo":12,"periodo":20,"mes":12,"tipoFinalidade":{"id":1}},{"id":21,"vazao":2006.0,"tempo":7,"periodo":25,"mes":7,"tipoFinalidade":{"id":1}},{"id":22,"vazao":2005.0,"tempo":6,"periodo":26,"mes":6,"tipoFinalidade":{"id":1}},{"id":23,"vazao":2004.0,"tempo":5,"periodo":27,"mes":5,"tipoFinalidade":{"id":1}},{"id":24,"vazao":2007.0,"tempo":8,"periodo":24,"mes":8,"tipoFinalidade":{"id":1}},{"id":3,"vazao":1010.0,"tempo":10,"periodo":10,"mes":9,"tipoFinalidade":{"id":2}},{"id":4,"vazao":2002.0,"tempo":3,"periodo":29,"mes":3,"tipoFinalidade":{"id":1}},{"id":5,"vazao":99.0,"tempo":99,"periodo":99,"mes":8,"tipoFinalidade":{"id":2}},{"id":6,"vazao":13.0,"tempo":13,"periodo":13,"mes":12,"tipoFinalidade":{"id":2}},{"id":7,"vazao":2000.0,"tempo":1,"periodo":31,"mes":1,"tipoFinalidade":{"id":1}},{"id":8,"vazao":66.0,"tempo":66,"periodo":66,"mes":5,"tipoFinalidade":{"id":2}},{"id":9,"vazao":2010.0,"tempo":11,"periodo":21,"mes":11,"tipoFinalidade":{"id":1}}]}
+    }
+    setLatitude (number){
+    	this.interferencia.latitude = number;
+    }
+    getNomeSubsistema (interferencia){
+    	return interferencia.subsistema;
+    }
+}</script> 
+
+ <script> 
+ /**
+ * @nome Registro de Uso
+ * @descricao Arquivo principal .js
+ * @diretorio 5
+ * @arquivo script.js
+ * @id 25
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ *
+ */
+ 
+</script> 
+
+ <script> 
+/**
+ * @nome Endereco
+ * @diretorio models
+ * @descricao Modelos de Tabelas
+ * @arquivo endereco-model.js
+ * @id 29
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ *
+ */
+class EnderecoModel {
+    constructor() {}
+
+    // Método para obter a interferência
+    getSample () {
+        return {
+            id: 1,
+            logradouro: "Rua Borges, 3, Lote 0"
+        }
+    }
+    getLogradouro (endereco){
+       let logradouro =  endereco?.logradouro;
+
+       return logradouro;
+    }
+
+}</script> 
+
+ <script> 
+/**
+ * @descricao Assinatura compartilhada
+ * @nome Assinatura do Técnico
+ * @diretorio shared
+ * @arquivo signature-view.js
+ * @id 40
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ *
+ */
+
+
+class SignatureView {
+
+    constructor() {
+        this.div = document.getElementById('signature-view');
+        this.render();
+    }
+
+    render() {
+
+        let innerHTML = `
+            <div>
+                <p style="text-align: center;"><strong>SAULO GREGORY LUZZI</strong></p>
+                <p style="text-align: center;">Cordenador de Outorgas - COUT/SRH</p>
+            </div>
+            `;
+        if (this.div !== null) this.div.innerHTML = innerHTML;
+    }
+
+}</script> 

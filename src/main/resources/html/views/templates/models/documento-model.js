@@ -10,6 +10,7 @@
  * 
  * 
  * 
+ * 
  *
  */
  
@@ -53,7 +54,7 @@ class DocumentoModel {
 	
 						"vazaoSistema": 9000,
 						"vazaoTeste": 8000,
-						"vazaoAutorizada": 7500,
+						"vazaoOutorgavel": 7500,
 
 						"profundidade": "100", 
 						"nivelEstatico": "120",
