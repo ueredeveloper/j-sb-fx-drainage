@@ -164,14 +164,18 @@ public class AddProcessController implements Initializable {
 		});
 
 		btnSave.setOnAction(event -> {
-
 			saveProcess(event);
 		});
-
 		btnNew.setOnAction(event -> {
-
 			clearAllComponents();
 		});
+		btnDelete.setOnAction(event -> {
+			deleteProcess(event);
+		});
+		
+		/*btnEdit.setOnAction(event -> {
+			deleteProcess(event);
+		});*/
 
 	}
 
@@ -239,6 +243,39 @@ public class AddProcessController implements Initializable {
 
 		} catch (Exception e) {
 			// adicionar Toast de erro
+			e.printStackTrace();
+		}
+
+	}
+
+	public void deleteProcess(ActionEvent event) {
+
+		Processo selectedObject = tableView.getSelectionModel().getSelectedItem();
+
+		try {
+			ProcessoService service = new ProcessoService(urlService);
+
+			ServiceResponse<?> serviceResponse = service.deleteById(selectedObject.getId());
+
+			if (serviceResponse.getResponseCode() == 200) {
+
+				// Informa sucesso em deletar
+				Node source = (Node) event.getSource();
+				Stage ownerStage = (Stage) source.getScene().getWindow();
+				String toastMsg = "Objeto deletado com sucesso!";
+				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.SUCCESS);
+
+				// retira objecto da tabela de documentos tvDocs
+				tableView.getItems().remove(selectedObject);
+
+			} else {
+				// Informa erro em deletar
+				Node source = (Node) event.getSource();
+				Stage ownerStage = (Stage) source.getScene().getWindow();
+				String toastMsg = "Erro ao deletar objeto!";
+				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+			}
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
