@@ -10,6 +10,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Set;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -19,15 +20,15 @@ import models.Anexo;
 public class AnexoService {
 	
 
-	private String localUrl;
+	private String urlService;
 
-	public AnexoService(String localUrl) {
-		this.localUrl = localUrl;
+	public AnexoService(String urlService) {
+		this.urlService = urlService;
 	}
 
 	public ServiceResponse<?> save(Anexo anexo) {
 		try {
-			URL apiUrl = new URL(localUrl + "/attachment/create");
+			URL apiUrl = new URL(urlService + "/attachment/create");
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
 			connection.setRequestMethod("POST");
 			connection.setRequestProperty("Content-Type", "application/json");
@@ -71,11 +72,11 @@ public class AnexoService {
 		}
 	}
 
-	public List<Anexo> fecthByKeyword(String keyword) {
+	public Set<Anexo> fecthByKeyword(String keyword) {
 
 		try {
 			URL apiUrl = new URL(
-					localUrl + "/attachment/list-by-keyword?keyword=" + URLEncoder.encode(keyword, "UTF-8"));
+					urlService + "/attachment/list-by-keyword?keyword=" + URLEncoder.encode(keyword, "UTF-8"));
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
 			connection.setRequestMethod("GET");
 
@@ -101,7 +102,7 @@ public class AnexoService {
 		return null;
 	}
 
-	private List<Anexo> handleSuccessResponse(HttpURLConnection connection) throws IOException {
+	private Set<Anexo> handleSuccessResponse(HttpURLConnection connection) throws IOException {
 		BufferedReader reader = new BufferedReader(
 				new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8));
 		StringBuilder response = new StringBuilder();
@@ -114,7 +115,7 @@ public class AnexoService {
 
 		reader.close();
 
-		return new Gson().fromJson(response.toString(), new TypeToken<List<Anexo>>() {
+		return new Gson().fromJson(response.toString(), new TypeToken<Set<Anexo>>() {
 		}.getType());
 	}
 

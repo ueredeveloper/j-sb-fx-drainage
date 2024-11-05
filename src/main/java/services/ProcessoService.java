@@ -3,15 +3,19 @@ package services;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Set;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import models.Anexo;
 import models.Processo;
 
 public class ProcessoService {
@@ -21,8 +25,57 @@ public class ProcessoService {
 	public ProcessoService(String localUrl) {
 		this.localUrl = localUrl;
 	}
+	
+	public ServiceResponse<?> save(Processo object) {
+		try {
+			URL apiUrl = new URL(localUrl + "/process/create");
+			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
+			connection.setRequestMethod("POST");
+			connection.setRequestProperty("Content-Type", "application/json");
+			connection.setDoOutput(true);
 
-	public List<Processo> fetchByKeyword(String keyword) {
+			// Convert Documento object to JSON
+			String jsonInputString = convertObjectToJson(object);
+			
+			System.out.println(jsonInputString);
+
+			// Write JSON to request body
+			try (OutputStream os = connection.getOutputStream();
+					OutputStreamWriter osw = new OutputStreamWriter(os, "UTF-8")) {
+				osw.write(jsonInputString);
+				osw.flush();
+			}
+
+			int responseCode = connection.getResponseCode();
+
+			String responseBody;
+			if (responseCode == HttpURLConnection.HTTP_CREATED) {
+				// System.out.println("service created");
+				try (BufferedReader br = new BufferedReader(
+						new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
+					StringBuilder response = new StringBuilder();
+					String responseLine;
+					while ((responseLine = br.readLine()) != null) {
+						response.append(responseLine);
+					}
+					responseBody = response.toString();
+				}
+			} else {
+				handleErrorResponse(connection);
+				responseBody = readErrorStream(connection);
+			}
+
+			connection.disconnect();
+			return new ServiceResponse<>(responseCode, responseBody);
+		} catch (Exception e) {
+			e.printStackTrace();
+			// showAlert("Error saving document", AlertType.ERROR);
+			return null; // Return null if an error occurs
+		}
+	}
+
+
+	public Set<Processo> fetchByKeyword(String keyword) {
 
 		try {
 			URL apiUrl = new URL(localUrl + "/process/list-by-keyword?keyword=" + URLEncoder.encode(keyword, "UTF-8"));
@@ -51,7 +104,7 @@ public class ProcessoService {
 		return null;
 	}
 
-	private List<Processo> handleSuccessResponse(HttpURLConnection connection) throws IOException {
+	private Set<Processo> handleSuccessResponse(HttpURLConnection connection) throws IOException {
 		BufferedReader reader = new BufferedReader(
 				new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8));
 		StringBuilder response = new StringBuilder();
@@ -64,7 +117,7 @@ public class ProcessoService {
 
 		reader.close();
 
-		return new Gson().fromJson(response.toString(), new TypeToken<List<Processo>>() {
+		return new Gson().fromJson(response.toString(), new TypeToken<Set<Processo>>() {
 		}.getType());
 	}
 
@@ -83,6 +136,11 @@ public class ProcessoService {
 			}
 			return response.toString();
 		}
+	}
+
+	private String convertObjectToJson(Object object) {
+		Gson gson = new Gson();
+		return gson.toJson(object);
 	}
 
 }

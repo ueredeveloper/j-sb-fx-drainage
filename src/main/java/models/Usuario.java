@@ -4,7 +4,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Usuario {
-	
 
 	private Long id;
 	private String nome;
@@ -34,7 +33,12 @@ public class Usuario {
 		this.cpfCnpj = cpfCnpj;
 		this.documentos = documentos;
 	}
-	
+
+	@Override
+	public String toString() {
+		return nome;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -66,10 +70,4 @@ public class Usuario {
 	public void setDocumentos(Set<Documento> documentos) {
 		this.documentos = documentos;
 	}
-
-	@Override
-	public String toString() {
-		return nome;
-	}
-
 }

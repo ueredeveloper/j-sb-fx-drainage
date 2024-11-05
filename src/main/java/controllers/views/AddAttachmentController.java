@@ -3,6 +3,7 @@ package controllers.views;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
@@ -19,13 +20,12 @@ import javafx.scene.control.TableView;
 import models.Anexo;
 import models.Processo;
 import models.Usuario;
+import services.AnexoService;
 import services.ProcessoService;
 import utilities.URLUtility;
 
 public class AddAttachmentController implements Initializable {
 	
-	
-
 	
 	@FXML
 	private JFXButton btnClose;
@@ -100,14 +100,29 @@ public class AddAttachmentController implements Initializable {
 	}
 
 	// Método para buscar processos e preencher o ComboBox
-	public List<Processo> fetchProcesses(String keyword) {
+	public Set<Processo> fetchProcessesByKeyword(String keyword) {
 
 		try {
 			ProcessoService service = new ProcessoService(urlService);
 
-			List<Processo> list = service.fetchByKeyword(keyword);
+			Set<Processo> objects = service.fetchByKeyword(keyword);
 
-			return list;
+			return objects;
+
+		} catch (Exception e) {
+
+		}
+		return null;
+	}
+	
+	public Set<Anexo> fethcAttachmentsByKeyword(String keyword) {
+
+		try {
+			AnexoService service = new AnexoService(urlService);
+
+			Set<Anexo> objects = service.fecthByKeyword(keyword);
+
+			return objects;
 
 		} catch (Exception e) {
 

@@ -71,11 +71,11 @@
       </GridPane>
       <AnchorPane layoutX="14.0" layoutY="181.0" prefHeight="293.0" prefWidth="699.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="320.0">
          <children>
-            <TableView layoutX="14.0" layoutY="79.0" prefHeight="200.0" prefWidth="689.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="15.0">
+            <TableView fx:id="tableView" layoutX="14.0" layoutY="79.0" prefHeight="200.0" prefWidth="689.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="15.0">
               <columns>
-                <TableColumn fx:id="tcProcess" prefWidth="126.0" text="Processo" />
-                <TableColumn fx:id="tcUser" prefWidth="407.0" text="Usuário" />
-                  <TableColumn fx:id="tcAttachment" prefWidth="130.0" text="Processo Anexo" />
+                <TableColumn fx:id="tcProcess" prefWidth="200.0" text="Processo" />
+                <TableColumn fx:id="tcUser" prefWidth="460.0" text="Usuário" />
+                  <TableColumn fx:id="tcAttachment" prefWidth="200.0" text="Processo Anexo" />
               </columns>
             </TableView>
          </children>

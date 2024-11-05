@@ -3,6 +3,7 @@ package controllers.views;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
@@ -102,14 +103,14 @@ public class AddUserController implements Initializable {
 	}
 
 	// Método para buscar processos e preencher o ComboBox
-	public List<Processo> fetchProcesses(String keyword) {
+	public Set<Processo> fetchProcesses(String keyword) {
 
 		try {
 			ProcessoService service = new ProcessoService(urlService);
 
-			List<Processo> list = service.fetchByKeyword(keyword);
+			Set<Processo> objects = service.fetchByKeyword(keyword);
 
-			return list;
+			return objects;
 
 		} catch (Exception e) {
 

@@ -129,14 +129,14 @@ public class ProcessComboBoxController {
 	}
 
 	// Método para buscar processos e preencher o ComboBox
-	public List<Processo> fetchProcesses(String keyword) {
+	public Set<Processo> fetchProcesses(String keyword) {
 
 		try {
 			ProcessoService service = new ProcessoService(localUrl);
 
-			List<Processo> list = service.fetchByKeyword(keyword);
+			Set<Processo> objects = service.fetchByKeyword(keyword);
 
-			return list;
+			return objects;
 
 		} catch (Exception e) {
 
@@ -154,8 +154,6 @@ public class ProcessComboBoxController {
 	public void fillAndSelectComboBoxProcess (Processo process) {
 		ObservableList<Processo> newObs = FXCollections.observableArrayList();
 		cbProcess.setItems(newObs);
-
-		
 
 		newObs.add(0, process);
 

@@ -5,6 +5,7 @@ public class Processo {
 	private Long id;
 	private String numero;
 	private Anexo anexo;
+	private Usuario usuario;
 
 	public Processo() {
 		super();
@@ -44,6 +45,14 @@ public class Processo {
 
 	public void setAnexo(Anexo anexo) {
 		this.anexo = anexo;
+	}
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 
 	// Override toString() method to display numero in ComboBox
