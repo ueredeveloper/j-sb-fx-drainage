@@ -1,8 +1,12 @@
 package controllers.views;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.jfoenix.controls.JFXComboBox;
 
@@ -10,106 +14,109 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import models.Anexo;
 import models.Processo;
 import services.ProcessoService;
 
 public class ProcessComboBoxController {
-	
 
-	
 	String localUrl;
 
-	private JFXComboBox<Processo> cbProcess;
+	private JFXComboBox<Processo> comboBox;
 	ObservableList<Processo> obsList = FXCollections.observableArrayList();
+
 	// Objetos buscados no banco de dados. Estes objectos não podem repetir.
 	private Set<Processo> dbObjects = new HashSet<>();
 
-	public ProcessComboBoxController(String localUrl, JFXComboBox<Processo> cbProcess) {
+	public ProcessComboBoxController(String localUrl, JFXComboBox<Processo> comboBox) {
 		this.localUrl = localUrl;
-		this.cbProcess = cbProcess;
-		
+		this.comboBox = comboBox;
+
 		init();
 	}
 
 	// Método para inicializar o ComboBox
-	public void init () {
+	public void init() {
 
-		cbProcess.setItems(obsList);
-		cbProcess.setEditable(true);
+		comboBox.setItems(obsList);
+		comboBox.setEditable(true);
 
-		utilities.FxUtilComboBoxSearchable.autoCompleteComboBoxPlus(cbProcess, (typedText,
+		utilities.FxUtilComboBoxSearchable.autoCompleteComboBoxPlus(comboBox, (typedText,
 				itemToCompare) -> itemToCompare.getNumero().toLowerCase().contains(typedText.toLowerCase()));
 
-		utilities.FxUtilComboBoxSearchable.getComboBoxValue(cbProcess);
+		utilities.FxUtilComboBoxSearchable.getComboBoxValue(comboBox);
 
-		// Preeche com valores do servido atualizando ao digitar
-		cbProcess.getEditor().textProperty().addListener(new ChangeListener<String>() {
-			
+		comboBox.valueProperty().addListener(new ChangeListener<Object>() {
 			private String lastSearch = "";
-			
-			
-			@Override
-			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-				
-				if (newValue != null && !newValue.isEmpty() && newValue != "") {
-					
-					
-					
-					// Verifica se a nova busca é uma continuação da busca anterior, tanto
-					// adicionando como removendo caracteres
-					if (lastSearch.contains(newValue) || newValue.contains(lastSearch)) {
-						
-						obsList.clear();
-						
-						boolean containsSearchTerm = dbObjects.stream().anyMatch(
-								object -> object.getNumero().toLowerCase().contains(newValue.toLowerCase()));
-						
-						if (containsSearchTerm) {
-							
-							obsList.clear();
-							obsList.addAll(dbObjects);
-						} else {
-							obsList.clear();
-							
-							fetchAndUpdate(newValue);
-						}
-					} 
 
-					lastSearch = newValue;
-					
-					// Ordena a lista colocando o newValue no início e assim podendo buscar (obsList.get(0) no método getSelectedObject.
-		            obsList.sort((object1, object2) -> {
-		                if (object1.getNumero().equalsIgnoreCase(newValue)) {
-		                    return -1; // Coloca endereco1 (com logradouro igual ao newValue) no início
-		                } else if (object2.getNumero().equalsIgnoreCase(newValue)) {
-		                    return 1;  // Coloca endereco2 no início, se for o newValue
-		                }
-		                return 0;
-		            });
-		            
+			@Override
+			public void changed(ObservableValue<?> observable, Object oldValue, Object newValue) {
+				
+				// Remover os items repetidos na lista
+				List<Processo> filteredList = filterAndMaintainLastNullId(obsList);
+
+				obsList.clear();
+				obsList.addAll(filteredList);
+				
+				// Check if the newValue is a Processo or a String
+				if (newValue instanceof Processo) {
+					Processo processo = (Processo) newValue;
+
+					if (processo.getNumero() != null && !processo.getNumero().isEmpty()) {
+						// Check if the new search term is a continuation of the previous one
+						if (lastSearch.contains(processo.getNumero()) || processo.getNumero().contains(lastSearch)) {
+							obsList.clear();
+
+							boolean containsSearchTerm = dbObjects.stream().anyMatch(object -> object.getNumero()
+									.toLowerCase().contains(processo.getNumero().toLowerCase()));
+
+							if (containsSearchTerm) {
+								obsList.clear();
+								obsList.addAll(dbObjects);
+							} else {
+								obsList.clear();
+								fetchAndUpdate(processo.getNumero());
+							}
+						}
+
+						lastSearch = processo.getNumero();
+
+						// Sort the list to put the selected value at the top
+						obsList.sort((object1, object2) -> {
+							if (object1.getNumero().equalsIgnoreCase(processo.getNumero())) {
+								return -1;
+							} else if (object2.getNumero().equalsIgnoreCase(processo.getNumero())) {
+								return 1;
+							}
+							return 0;
+						});
+					}
+				} else if (newValue instanceof String) {
+					// Handle the case where newValue is a String (when the user is typing)
+					String searchText = (String) newValue;
+					fetchAndUpdate(searchText);
 				}
-				
-				
 			}
 		});
-		
-		
-		//System.out.println(cbProcess.getItems().get(0).getNumero());
+
+		// System.out.println(comboBox.getItems().get(0).getNumero());
 	}
-	/* Ao selecionar algo na table view `DocumentController`, este ítem é adicionado aqui para que não seja preciso 
-	buscá-lo no banco de dados e assim não ficando lento a seleção. 
-	*/
-	public void addItemToDbObjects (Processo object) {
+
+	/*
+	 * Ao selecionar algo na table view `DocumentController`, este ítem é adicionado
+	 * aqui para que não seja preciso buscá-lo no banco de dados e assim não ficando
+	 * lento a seleção.
+	 */
+	public void addItemToDbObjects(Processo object) {
 		dbObjects.add(object);
 	}
-	
 
 	private void fetchAndUpdate(String keyword) {
 		try {
 			ProcessoService service = new ProcessoService(localUrl);
 			Set<Processo> fetchedObjects = new HashSet<>();
-			
-			if (keyword.length() ==2 || keyword.length() == 4 || keyword.length() == 6 || keyword.length() == 8) {
+
+			if (keyword.length() == 2 || keyword.length() == 4 || keyword.length() == 6 || keyword.length() == 8) {
 				fetchedObjects.addAll(service.fetchByKeyword(keyword));
 			}
 
@@ -145,23 +152,45 @@ public class ProcessComboBoxController {
 	}
 
 	public Processo getSelectedObject() {
-		// Verifica se nulo, se não nulo preenche objeto e retorna.
-		Processo object = cbProcess.selectionModelProperty().get().isEmpty() ? null
-				: new Processo(obsList.get(0).getId(), obsList.get(0).getNumero());
+
+		Processo object = comboBox.selectionModelProperty().get().isEmpty() ? null : comboBox.getItems().get(0);
 		return object;
 	}
+
+	public void fillAndSelectComboBoxProcess(Processo process) {
+		// Create a new ObservableList and add the process
+		ObservableList<Processo> newObs = FXCollections.observableArrayList(process);
+
+		// Set the new list as the ComboBox items
+		comboBox.setItems(newObs);
+
+		// Select the first item (index 0)
+		comboBox.getSelectionModel().select(0);
+	}
 	
-	public void fillAndSelectComboBoxProcess (Processo process) {
-		ObservableList<Processo> newObs = FXCollections.observableArrayList();
-		cbProcess.setItems(newObs);
+	public List<Processo> filterAndMaintainLastNullId(ObservableList<Processo> items) {
 
-		newObs.add(0, process);
+		// Convert ObservableList to Set to remove duplicates
+		Set<Processo> uniqueItems = new HashSet<>(items);
 
-		// Atualizando o ComboBox para refletir a mudança
-		// cbProcess.setItems(null);
-		cbProcess.setItems(newObs);
+		// Use a map to retain only unique non-null IDs (each id maps to one Anexo
+		// object)
+		Map<Long, Processo> nonNullIdMap = uniqueItems.stream().filter(processo -> processo.getId() != null)
+				.collect(Collectors.toMap(Processo::getId, // Key: id of the Anexo
+						anexo -> anexo, // Value: Anexo itself
+						(existing, replacement) -> existing // Keep the first occurrence if duplicates are found
+		));
 
-		// Selecionando o novo item no ComboBox
-		cbProcess.getSelectionModel().select(0);
+		// Get the last item with id == null (if it exists)
+		Optional<Processo> lastNullIdItem = uniqueItems.stream().filter(processo -> processo.getId() == null)
+				.reduce((first, second) -> second); // Keep the last one
+
+		// Convert the map values (unique non-null ids) to a list
+		List<Processo> filteredList = new ArrayList<>(nonNullIdMap.values());
+
+		// Add the last item with id == null, if it exists
+		lastNullIdItem.ifPresent(filteredList::add);
+
+		return filteredList;
 	}
 }

@@ -65,7 +65,6 @@ import utilities.URLUtility;
  * Controlador para lidar com operações relacionadas aos documentos.
  */
 public class DocumentController implements Initializable {
-	
 
 	@FXML
 	private ComboBox<Documento> cbDocument;
@@ -700,9 +699,9 @@ public class DocumentController implements Initializable {
 	/**
 	 * Exibe a visualização do documento selecionado em uma nova janela.
 	 */
-	
+
 	Set<Template> templates = new HashSet<>();
-	
+
 	public void showDocumentView() {
 		try {
 			Documento selectedDocument = tvDocs.getSelectionModel().getSelectedItem();

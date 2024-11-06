@@ -10,6 +10,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -39,7 +41,16 @@ public class ProcessoService {
 			// Convert Documento object to JSON
 			String jsonInputString = convertObjectToJson(object);
 			
-			System.out.println(jsonInputString);
+			
+			try {
+				Files.write(Paths.get("src/main/resources/test-docs/"+ "save-process.json"), jsonInputString.getBytes() );
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
+			
+			
 
 			// Write JSON to request body
 			try (OutputStream os = connection.getOutputStream();

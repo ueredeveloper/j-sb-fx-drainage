@@ -1,9 +1,14 @@
 package controllers.views;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.jfoenix.controls.JFXComboBox;
 
@@ -35,7 +40,6 @@ public class AttachmentComboBoxController implements Initializable {
 	public void init() {
 
 		comboBox.setItems(obsList);
-		comboBox.setEditable(true);
 
 		utilities.FxUtilComboBoxSearchable.autoCompleteComboBoxPlus(comboBox, (typedText,
 				itemToCompare) -> itemToCompare.getNumero().toLowerCase().contains(typedText.toLowerCase()));
@@ -43,48 +47,58 @@ public class AttachmentComboBoxController implements Initializable {
 		utilities.FxUtilComboBoxSearchable.getComboBoxValue(comboBox);
 
 		// Preeche com valores do servido atualizando ao digitar
-		comboBox.getEditor().textProperty().addListener(new ChangeListener<String>() {
 
+		comboBox.valueProperty().addListener(new ChangeListener<Object>() {
 			private String lastSearch = "";
 
 			@Override
-			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+			public void changed(ObservableValue<?> observable, Object oldValue, Object newValue) {
 
-				if (newValue != null && !newValue.isEmpty() && newValue != "") {
+				// Remover os items repetidos na lista
+				List<Anexo> filteredList = filterAndMaintainLastNullId(obsList);
 
-					// Verifica se a nova busca é uma continuação da busca anterior, tanto
-					// adicionando como removendo caracteres
-					if (lastSearch.contains(newValue) || newValue.contains(lastSearch)) {
+				obsList.clear();
+				obsList.addAll(filteredList);
 
-						obsList.clear();
+				// Check if the newValue is a Processo or a String
+				if (newValue instanceof Anexo) {
+					Anexo anexo = (Anexo) newValue;
 
-						boolean containsSearchTerm = dbObjects.stream()
-								.anyMatch(object -> object.getNumero().toLowerCase().contains(newValue.toLowerCase()));
-
-						if (containsSearchTerm) {
+					if (anexo.getNumero() != null && !anexo.getNumero().isEmpty()) {
+						// Check if the new search term is a continuation of the previous one
+						if (lastSearch.contains(anexo.getNumero()) || anexo.getNumero().contains(lastSearch)) {
 							obsList.clear();
 
-							obsList.addAll(dbObjects);
-						} else {
-							obsList.clear();
-							fetchAndUpdate(newValue);
+							boolean containsSearchTerm = dbObjects.stream().anyMatch(object -> object.getNumero()
+									.toLowerCase().contains(anexo.getNumero().toLowerCase()));
+
+							if (containsSearchTerm) {
+								obsList.clear();
+								obsList.addAll(dbObjects);
+							} else {
+								obsList.clear();
+								fetchAndUpdate(anexo.getNumero());
+							}
 						}
+
+						lastSearch = anexo.getNumero();
+
+						// Sort the list to put the selected value at the top
+						obsList.sort((object1, object2) -> {
+							if (object1.getNumero().equalsIgnoreCase(anexo.getNumero())) {
+								return -1;
+							} else if (object2.getNumero().equalsIgnoreCase(anexo.getNumero())) {
+								return 1;
+							}
+							return 0;
+						});
+
 					}
-
-					lastSearch = newValue;
-
-					// Ordena a lista colocando o newValue no início e assim podendo buscar
-					// (obsList.get(0) no método getSelectedObject.
-					obsList.sort((object1, object2) -> {
-						if (object1.getNumero().equalsIgnoreCase(newValue)) {
-							return -1; // Coloca endereco1 (com logradouro igual ao newValue) no início
-						} else if (object2.getNumero().equalsIgnoreCase(newValue)) {
-							return 1; // Coloca endereco2 no início, se for o newValue
-						}
-						return 0;
-					});
+				} else if (newValue instanceof String) {
+					// Handle the case where newValue is a String (when the user is typing)
+					String searchText = (String) newValue;
+					fetchAndUpdate(searchText);
 				}
-
 			}
 		});
 	}
@@ -141,9 +155,8 @@ public class AttachmentComboBoxController implements Initializable {
 	}
 
 	public Anexo getSelectedObject() {
-		// Verifica se nulo, se não nulo preenche objeto e retorna.
-		Anexo object = comboBox.selectionModelProperty().get().isEmpty() ? null
-				: new Anexo(obsList.get(0).getId(), obsList.get(0).getNumero());
+
+		Anexo object = comboBox.selectionModelProperty().get().isEmpty() ? null : comboBox.getItems().get(0);
 		return object;
 	}
 
@@ -167,4 +180,38 @@ public class AttachmentComboBoxController implements Initializable {
 		comboBox.getSelectionModel().select(0);
 	}
 
+	/**
+	 * Filtra a lista fornecida de objetos Processo, removendo duplicatas e garantindo
+	 * que apenas uma instância com id nulo (a última) seja mantida.
+	 * Este método também garante que cada id não nulo único apareça apenas uma vez.
+	 * 
+	 * @param items ObservableList<Anexo> items a ser filtrada
+	 * @return List<Anexo> uma lista filtrada com ids não nulos únicos e, se aplicável,
+	 *         o último item com id nulo.
+	 */
+	public List<Anexo> filterAndMaintainLastNullId(ObservableList<Anexo> items) {
+
+		// Convert ObservableList to Set to remove duplicates
+		Set<Anexo> uniqueItems = new HashSet<>(items);
+
+		// Use a map to retain only unique non-null IDs (each id maps to one Anexo
+		// object)
+		Map<Long, Anexo> nonNullIdMap = uniqueItems.stream().filter(anexo -> anexo.getId() != null)
+				.collect(Collectors.toMap(Anexo::getId, // Key: id of the Anexo
+						anexo -> anexo, // Value: Anexo itself
+						(existing, replacement) -> existing // Keep the first occurrence if duplicates are found
+		));
+
+		// Get the last item with id == null (if it exists)
+		Optional<Anexo> lastNullIdItem = uniqueItems.stream().filter(anexo -> anexo.getId() == null)
+				.reduce((first, second) -> second); // Keep the last one
+
+		// Convert the map values (unique non-null ids) to a list
+		List<Anexo> filteredList = new ArrayList<>(nonNullIdMap.values());
+
+		// Add the last item with id == null, if it exists
+		lastNullIdItem.ifPresent(filteredList::add);
+
+		return filteredList;
+	}
 }

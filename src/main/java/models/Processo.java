@@ -57,8 +57,8 @@ public class Processo {
 
 	// Override toString() method to display numero in ComboBox
 	@Override
-	public String toString() {
-		return numero;
-	}
+    public String toString() {
+        return numero; // Display numero in ComboBox
+    }
 
 }

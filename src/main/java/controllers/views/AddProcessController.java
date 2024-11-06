@@ -1,8 +1,10 @@
 package controllers.views;
 
 import java.net.URL;
+import java.util.LinkedHashSet;
 import java.util.ResourceBundle;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.google.gson.Gson;
 import com.jfoenix.controls.JFXButton;
@@ -34,7 +36,7 @@ public class AddProcessController implements Initializable {
 	private JFXButton btnClose;
 
 	@FXML
-	private JFXComboBox<Processo> cbProcess;
+	private JFXTextField tfProcess;
 	@FXML
 	private JFXComboBox<Usuario> cbUser;
 	@FXML
@@ -94,12 +96,11 @@ public class AddProcessController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
-		processCbController = new ProcessComboBoxController(urlService, cbProcess);
 		userComboBoxController = new UserComboBoxController(urlService, cbUser);
 		attachmentCbController = new AttachmentComboBoxController(urlService, cbAttachment);
 
 		if (process != null) {
-			processCbController.fillAndSelectComboBoxProcess(process);
+			fillProcessAttributes(process);
 		}
 
 		tcProcess.setCellValueFactory(new PropertyValueFactory<>("numero"));
@@ -112,8 +113,12 @@ public class AddProcessController implements Initializable {
 
 			if (newSelection != null) {
 
-				processCbController.fillAndSelectComboBoxProcess(newSelection);
+				this.process = newSelection;
 
+				// Preencher o text field para edição se precisar
+				tfProcess.setText(newSelection.getNumero());
+
+				// Preencher os comboboxes
 				if (newSelection.getAnexo() != null) {
 					attachmentCbController.fillAndSelectComboBox(newSelection.getAnexo());
 				} else {
@@ -134,11 +139,14 @@ public class AddProcessController implements Initializable {
 		btnClose.setOnAction(e -> {
 			ttClose.play();
 
-			Processo object = cbProcess.selectionModelProperty().get().isEmpty() ? null
-					: processCbController.getSelectedObject();
+			// Preencher a tela de cadastro de documentos com o processo persistido
+			// (salvamento ou edição)
+			if (process != null) {
+				this.documentController.fillAndSelectComboBoxProcess(process);
 
-			if (object != null) {
-				this.documentController.fillAndSelectComboBoxProcess(object);
+				if (process.getAnexo() != null) {
+					this.documentController.fillAndSelectComboBoxAttachment(process.getAnexo());
+				}
 			}
 
 		});
@@ -172,25 +180,25 @@ public class AddProcessController implements Initializable {
 		btnDelete.setOnAction(event -> {
 			deleteProcess(event);
 		});
-		
-		/*btnEdit.setOnAction(event -> {
-			deleteProcess(event);
-		});*/
+
+		btnEdit.setOnAction(event -> {
+			saveProcess(event);
+		});
 
 	}
 
-	public void fillAndSelectComboBoxProcess(Processo process) {
-		ObservableList<Processo> newObs = FXCollections.observableArrayList();
-		cbProcess.setItems(newObs);
+	public void fillProcessAttributes(Processo process) {
 
-		newObs.add(0, process);
+		tfProcess.setText(process.getNumero());
 
-		// Atualizando o ComboBox para refletir a mudança
-		// cbProcess.setItems(null);
-		cbProcess.setItems(newObs);
+		if (process.getUsuario() != null) {
+			this.userComboBoxController.fillAndSelectComboBox(process.getUsuario());
+		}
 
-		// Selecionando o novo item no ComboBox
-		cbProcess.getSelectionModel().select(0);
+		if (process.getAnexo() != null) {
+			this.attachmentCbController.fillAndSelectComboBox(process.getAnexo());
+		}
+
 	}
 
 	public void saveProcess(ActionEvent event) {
@@ -199,22 +207,25 @@ public class AddProcessController implements Initializable {
 
 			ProcessoService service = new ProcessoService(urlService);
 
-			Processo obsProcessList0 = processCbController.getSelectedObject();
+			// Preencher com o número digitado pelo usuário, assim é possível editar o
+			// número do processo
+			this.process.setNumero(tfProcess.getText());
 
+			// Capturar as seleções dos outros atributos nos comboboxes
 			Anexo obsAttachList0 = attachmentCbController.getSelectedObject();
 
 			Usuario obsUsList0 = userComboBoxController.getSelectedObject();
 
 			// Anexar o processo principal (anexo) ao processo
 			if (obsAttachList0 != null) {
-				obsProcessList0.setAnexo(obsAttachList0);
+				this.process.setAnexo(obsAttachList0);
 				// obsProcessList0.set
 			}
 			if (obsUsList0 != null) {
-				obsProcessList0.setUsuario(obsUsList0);
+				this.process.setUsuario(obsUsList0);
 			}
 
-			ServiceResponse<?> reponse = service.save(obsProcessList0);
+			ServiceResponse<?> reponse = service.save(this.process);
 
 			if (reponse.getResponseCode() == 201) {
 
@@ -226,6 +237,7 @@ public class AddProcessController implements Initializable {
 				// Adiciona resposta na tabela
 				Processo responseObject = new Gson().fromJson((String) reponse.getResponseBody(), Processo.class);
 				// Adiciona com primeiro na lista
+
 				tableView.getItems().add(0, responseObject);
 				// Seleciona o objeto salvo na table view
 				tableView.getSelectionModel().select(responseObject);
@@ -282,8 +294,8 @@ public class AddProcessController implements Initializable {
 	}
 
 	public void clearAllComponents() {
-		cbProcess.getSelectionModel().clearSelection();
-		cbProcess.setValue(null);
+
+		tfProcess.clear();
 
 		cbAttachment.getSelectionModel().clearSelection();
 		cbAttachment.setValue(null);
@@ -292,4 +304,6 @@ public class AddProcessController implements Initializable {
 		cbUser.setValue(null);
 
 	}
+
+	
 }
