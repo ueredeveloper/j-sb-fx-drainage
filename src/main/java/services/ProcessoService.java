@@ -41,7 +41,8 @@ public class ProcessoService {
 			// Convert Documento object to JSON
 			String jsonInputString = convertObjectToJson(object);
 			
-			
+			 
+			// Escreve o objeto que será persistido para verificações
 			try {
 				Files.write(Paths.get("src/main/resources/test-docs/"+ "save-process.json"), jsonInputString.getBytes() );
 			} catch (IOException e1) {

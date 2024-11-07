@@ -12,7 +12,6 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
@@ -23,7 +22,7 @@ import javafx.stage.Stage;
 import utilities.ResizeMap;
 
 public class NavigationController implements Initializable {
-	
+
 	@FXML
 	private AnchorPane apContent;
 
@@ -57,9 +56,6 @@ public class NavigationController implements Initializable {
 
 	@FXML
 	private void toggleMode(MouseEvent event) {
-
-		Node source = (Node) event.getSource();
-		Scene scene = source.getScene();
 
 		isDarkMode = !isDarkMode; // Toggle mode
 
@@ -159,7 +155,7 @@ public class NavigationController implements Initializable {
 
 			Stage popupStage = new Stage();
 			popupStage.initModality(Modality.APPLICATION_MODAL);
-			//popupStage.setTitle("Edições e Diagramas");
+			// popupStage.setTitle("Edições e Diagramas");
 
 			Scene scene = new Scene(root);
 			popupStage.setScene(scene);

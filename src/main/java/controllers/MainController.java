@@ -12,7 +12,7 @@ import javafx.scene.Parent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 
-@SuppressWarnings("restriction")
+//@SuppressWarnings("restriction")
 public class MainController implements Initializable {
 	
 	

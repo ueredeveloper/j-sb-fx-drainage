@@ -18,13 +18,15 @@ public class InterferenceTextFieldsController {
 
 	private Interferencia interferencia = new Interferencia();
 
-	private String localUrl;
 	private JFXTextField tfLatitude;
 	private JFXTextField tfLongitude;
 	private MapController mapController;
+	
+	
+	String urlService;
 
-	public InterferenceTextFieldsController(String localUrl, JFXTextField tfLatitude, JFXTextField tfLongitude) {
-		this.localUrl = localUrl;
+	public InterferenceTextFieldsController(String urlService, JFXTextField tfLatitude, JFXTextField tfLongitude) {
+		this.urlService = urlService;
 		this.mapController = MapController.getInstance();
 		this.tfLatitude = tfLatitude;
 		this.tfLongitude = tfLongitude;

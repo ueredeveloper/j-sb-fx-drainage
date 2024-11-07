@@ -27,8 +27,7 @@ import netscape.javascript.JSObject;
  * Controlador para a interface de mapa.
  */
 public class MapController implements Initializable {
-	
-	
+
 	@FXML
 	private AnchorPane apMap;
 
@@ -54,9 +53,9 @@ public class MapController implements Initializable {
 	private WebEngine webEngine;
 	public boolean ready;
 	private AnchorPane apContent;
-	
+
 	private static MapController instance;
-	
+
 	public static MapController getInstance() {
 		return instance;
 	}
@@ -65,8 +64,6 @@ public class MapController implements Initializable {
 		this.apContent = apContent;
 		instance = this; // Define a instância no construtor
 	}
-
-	
 
 	public AnchorPane getAnchorPaneMap() {
 		return this.apMap;
@@ -191,7 +188,7 @@ public class MapController implements Initializable {
 	}
 
 	public void printCoords(String coords) {
-		
+
 		Gson gson = new Gson();
 		JsonObject jsonObject = gson.fromJson(coords, JsonObject.class);
 		Double interLatitude = jsonObject.get("lat").getAsDouble();
@@ -211,13 +208,11 @@ public class MapController implements Initializable {
 		} else {
 			System.out.println("Add Interference Controller instance is null!");
 		}
-		
 
 	}
 
 	public void handleAddMarker(String json) {
 		invokeJS("addMarker(" + json + ");");
 	}
-
 
 }

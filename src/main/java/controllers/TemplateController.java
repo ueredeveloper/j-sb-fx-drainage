@@ -2,7 +2,6 @@ package controllers;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.Set;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
@@ -31,7 +30,6 @@ import utilities.URLUtility;
 
 public class TemplateController implements Initializable {
 
-	
 	private String localUrl;
 
 	public TemplateController() {
@@ -185,16 +183,16 @@ public class TemplateController implements Initializable {
 
 			// clearAllComponents();
 
-			/*TemplateService service = new TemplateService(localUrl);
-
-			String keyword = tfSearch.getText();
-
-			Set<Template> objects = service.listByKeyword(keyword);
-
-			// Create a list of Document objects
-			obsList.clear();
-			obsList.addAll(objects);
-			tableView.setItems(obsList);*/
+			/*
+			 * TemplateService service = new TemplateService(localUrl);
+			 * 
+			 * String keyword = tfSearch.getText();
+			 * 
+			 * Set<Template> objects = service.listByKeyword(keyword);
+			 * 
+			 * // Create a list of Document objects obsList.clear();
+			 * obsList.addAll(objects); tableView.setItems(obsList);
+			 */
 
 		} catch (Exception e) {
 			e.printStackTrace();

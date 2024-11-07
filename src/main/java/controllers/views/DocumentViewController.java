@@ -1,10 +1,7 @@
 package controllers.views;
 
-import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -172,8 +169,7 @@ public class DocumentViewController implements Initializable {
 			// Busca os templates que atendem aos requisitos tipo de documento e tipo e
 			// subtipo de outorga.
 
-			Boolean ifHasTemplate = hasNameContainingAllParams(templates, typeOfDocument, typeOfGrant,
-					subtypeOfGrant);
+			Boolean ifHasTemplate = hasNameContainingAllParams(templates, typeOfDocument, typeOfGrant, subtypeOfGrant);
 
 			// TemplatesFolder.create();
 
@@ -201,8 +197,7 @@ public class DocumentViewController implements Initializable {
 						// (models, utils, actions)
 						.filter(template -> !"utils".equals(template.getDiretorio()))
 						.filter(template -> !"models".equals(template.getDiretorio()))
-						.filter(template -> !"shared".equals(template.getDiretorio()))
-						.map(Template::getNome) // Extract
+						.filter(template -> !"shared".equals(template.getDiretorio())).map(Template::getNome) // Extract
 						// the
 						// 'descricao'
 						// attribute
@@ -234,38 +229,35 @@ public class DocumentViewController implements Initializable {
 
 				if (!descricaoList.isEmpty()) {
 
-					List<Template> filteredTemplates = templates.stream()
-							.filter(t -> t.getNome().equals(search) // Filter by the selected description
-									|| "models".equals(t.getDiretorio()) // Include templates where 'pasta' is 'models'
-									|| "utils".equals(t.getDiretorio()) // Include templates where 'pasta' is 'utils'
-									|| "shared".equals(t.getDiretorio()) // Include templates where 'pasta' is
-																			// 'actions'
+					List<Template> filteredTemplates = templates.stream().filter(t -> t.getNome().equals(search) // Filter
+																													// by
+																													// the
+																													// selected
+																													// description
+							|| "models".equals(t.getDiretorio()) // Include templates where 'pasta' is 'models'
+							|| "utils".equals(t.getDiretorio()) // Include templates where 'pasta' is 'utils'
+							|| "shared".equals(t.getDiretorio()) // Include templates where 'pasta' is
+																	// 'actions'
 					).distinct() // Ensure unique templates
 							.collect(Collectors.toList());
 
 					// Adiciona depois os outros arquivos
 					filteredTemplates.forEach(t -> {
 						String str = webContent.getWebContent();
-						
-						
-							
-							str += "\n <script> \n" + t.getConteudo() + "</script> \n";
-						
-						
+
+						str += "\n <script> \n" + t.getConteudo() + "</script> \n";
+
 						webContent.setWebContent(str);
 
 					});
-					
-					
-					/*
-					String writeContent = webContent.getWebContent().toString();
 
-					try {
-						Files.write(Paths.get("src/main/resources/test-docs"+ "test-template-string-created.html"), writeContent.getBytes() );
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}*/
+					/*
+					 * String writeContent = webContent.getWebContent().toString();
+					 * 
+					 * try { Files.write(Paths.get("src/main/resources/test-docs"+
+					 * "test-template-string-created.html"), writeContent.getBytes() ); } catch
+					 * (IOException e1) { // TODO Auto-generated catch block e1.printStackTrace(); }
+					 */
 
 					// Initialize WebViewDocument with the WebView component
 					WebViewDocument webViewDocumentInstance = new WebViewDocument(webViewDocument, htmlEditor);
@@ -302,7 +294,7 @@ public class DocumentViewController implements Initializable {
 	}
 
 	public boolean hasNameContainingAllParams(Set<Template> templates, String... params) {
-		
+
 		return templates.stream().anyMatch(template -> {
 			String name = template.getNome();
 			if (name != null) {

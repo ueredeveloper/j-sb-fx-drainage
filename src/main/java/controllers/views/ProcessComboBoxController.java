@@ -14,7 +14,6 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import models.Anexo;
 import models.Processo;
 import services.ProcessoService;
 
@@ -51,13 +50,13 @@ public class ProcessComboBoxController {
 
 			@Override
 			public void changed(ObservableValue<?> observable, Object oldValue, Object newValue) {
-				
+
 				// Remover os items repetidos na lista
 				List<Processo> filteredList = filterAndMaintainLastNullId(obsList);
 
 				obsList.clear();
 				obsList.addAll(filteredList);
-				
+
 				// Check if the newValue is a Processo or a String
 				if (newValue instanceof Processo) {
 					Processo processo = (Processo) newValue;
@@ -167,7 +166,7 @@ public class ProcessComboBoxController {
 		// Select the first item (index 0)
 		comboBox.getSelectionModel().select(0);
 	}
-	
+
 	public List<Processo> filterAndMaintainLastNullId(ObservableList<Processo> items) {
 
 		// Convert ObservableList to Set to remove duplicates

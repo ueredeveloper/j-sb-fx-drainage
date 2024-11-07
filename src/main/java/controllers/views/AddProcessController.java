@@ -1,10 +1,10 @@
 package controllers.views;
 
 import java.net.URL;
-import java.util.LinkedHashSet;
+import java.util.OptionalInt;
 import java.util.ResourceBundle;
 import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import com.google.gson.Gson;
 import com.jfoenix.controls.JFXButton;
@@ -209,7 +209,12 @@ public class AddProcessController implements Initializable {
 
 			// Preencher com o número digitado pelo usuário, assim é possível editar o
 			// número do processo
-			this.process.setNumero(tfProcess.getText());
+			if (this.process == null) {
+				this.process = new Processo();
+				this.process.setNumero(tfProcess.getText());
+			} else {
+				this.process.setNumero(tfProcess.getText());
+			}
 
 			// Capturar as seleções dos outros atributos nos comboboxes
 			Anexo obsAttachList0 = attachmentCbController.getSelectedObject();
@@ -238,9 +243,22 @@ public class AddProcessController implements Initializable {
 				Processo responseObject = new Gson().fromJson((String) reponse.getResponseBody(), Processo.class);
 				// Adiciona com primeiro na lista
 
-				tableView.getItems().add(0, responseObject);
-				// Seleciona o objeto salvo na table view
-				tableView.getSelectionModel().select(responseObject);
+				ObservableList<Processo> items = tableView.getItems();
+				// Remove o objeto da lista
+				OptionalInt indexOpt = IntStream.range(0, items.size())
+				        .filter(i -> items.get(i).getId().equals(responseObject.getId()))
+				        .findFirst();
+
+				if (indexOpt.isPresent()) {
+				    // Se o objeto existe, substituí-lo pelo novo objeto
+				    items.set(indexOpt.getAsInt(), responseObject);
+				} else {
+				    // Caso contrário, adicioná-lo no início da lista e selecioná-lo
+				    items.add(0, responseObject);
+				    tableView.getSelectionModel().select(responseObject);
+				}
+				
+				
 
 			} else {
 				// adiconar alerta (Toast) de erro
@@ -296,6 +314,8 @@ public class AddProcessController implements Initializable {
 	public void clearAllComponents() {
 
 		tfProcess.clear();
+		// Limpa o id do processo para que seja salvo novo processo
+		this.process = new Processo();
 
 		cbAttachment.getSelectionModel().clearSelection();
 		cbAttachment.setValue(null);
@@ -305,5 +325,4 @@ public class AddProcessController implements Initializable {
 
 	}
 
-	
 }

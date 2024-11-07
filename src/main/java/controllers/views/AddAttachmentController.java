@@ -1,7 +1,6 @@
 package controllers.views;
 
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Set;
 
@@ -17,6 +16,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import models.Anexo;
 import models.Processo;
 import models.Usuario;
@@ -25,35 +25,47 @@ import services.ProcessoService;
 import utilities.URLUtility;
 
 public class AddAttachmentController implements Initializable {
-	
-	
+
 	@FXML
 	private JFXButton btnClose;
 
 	@FXML
+	private JFXComboBox<Anexo> cbAttachment;
+	@FXML
 	private JFXComboBox<Processo> cbProcess;
 	@FXML
 	private JFXComboBox<Usuario> cbUser;
-	@FXML
-	private JFXComboBox<Anexo> cbAttachment;
 
 	@FXML
-	private JFXTextField tfSearch;
+	private JFXTextField tfSearch, tfAttachment;
 
 	@FXML
 	private JFXButton btnSearch;
 
 	@FXML
-	private TableView<?> tvDocs;
+	private TableView<Anexo> tableView;
+	ObservableList<Anexo> tableViewObsList = FXCollections.observableArrayList();
 
 	@FXML
-	private TableColumn<?, ?> tcProcess;
+	private TableColumn<Processo, String> tcProcess;
 
 	@FXML
-	private TableColumn<?, ?> tcUser;
+	private TableColumn<Usuario, String> tcUser;
 
 	@FXML
-	private TableColumn<?, ?> tcAttachment;
+	private TableColumn<Anexo, String> tcAttachment;
+
+	@FXML
+	private JFXButton btnNew;
+
+	@FXML
+	private JFXButton btnSave;
+
+	@FXML
+	private JFXButton btnEdit;
+
+	@FXML
+	private JFXButton btnDelete;
 
 	private String urlService;
 	private TranslateTransition ttClose;
@@ -61,11 +73,12 @@ public class AddAttachmentController implements Initializable {
 	ObservableList<Anexo> obsAttachemnt;
 	Anexo attachment;
 
-	ProcessComboBoxController processCbController;
-	AttachmentComboBoxController attachmentCbController;
 	DocumentController documentController;
+	ProcessComboBoxController processComboBoxController;
+	UserComboBoxController userComboBoxController;
 
-	public AddAttachmentController(DocumentController documentController, Anexo attachment, String urlService, TranslateTransition ttClose) {
+	public AddAttachmentController(DocumentController documentController, Anexo attachment, String urlService,
+			TranslateTransition ttClose) {
 		this.documentController = documentController;
 		this.attachment = attachment;
 		this.urlService = URLUtility.getURLService();
@@ -75,25 +88,65 @@ public class AddAttachmentController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		
 
-		processCbController = new ProcessComboBoxController(urlService, cbProcess);
-		new UserComboBoxController(urlService, cbUser);
-		attachmentCbController = new AttachmentComboBoxController(urlService, cbAttachment);
+		userComboBoxController = new UserComboBoxController(urlService, cbUser);
+		processComboBoxController = new ProcessComboBoxController(urlService, cbProcess);
+
+		tcAttachment.setCellValueFactory(new PropertyValueFactory<>("numero"));
+		tcProcess.setCellValueFactory(new PropertyValueFactory<>("processo"));
+		tcUser.setCellValueFactory(new PropertyValueFactory<>("usuario"));
+
+		tableView.setItems(tableViewObsList);
 		
-		
-		if (attachment!= null) {
-			attachmentCbController.fillAndSelectComboBox(attachment);
-		}
+		tableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+
+			if (newSelection != null) {
+
+				this.attachment = newSelection;
+
+				// Preencher o text field para edição se precisar
+				tfAttachment.setText(newSelection.getNumero());
+
+				// Limpa o combobox processo e combobox usuario
+				cbProcess.getSelectionModel().clearSelection();
+				cbProcess.setValue(null);
+
+				cbUser.getSelectionModel().clearSelection();
+				cbUser.setValue(null);
+				
+
+
+			} else {
+				clearAllComponents();
+			}
+		});
 
 		btnClose.setOnAction(e -> {
 			ttClose.play();
 
-			Anexo object = cbAttachment.selectionModelProperty().get().isEmpty() ? null
-					: attachmentCbController.getSelectedObject();
+			// Preencher a tela de cadastro de documentos com o processo persistido
+			// (salvamento ou edição)
+			if (attachment != null) {
+				this.documentController.fillAndSelectComboBoxAttachment(attachment);
 
-			if (object != null) {
-				this.documentController.fillAndSelectComboBoxAttachment(object);
+			}
+
+		});
+		
+		btnSearch.setOnAction(event -> {
+
+			String keyword = tfSearch.getText();
+
+			try {
+				AnexoService service = new AnexoService(urlService);
+				Set<Anexo> objects = service.fecthByKeyword(keyword);
+
+				tableViewObsList.clear();
+				tableViewObsList.addAll(objects);
+
+			} catch (Exception e) {
+				// Trate exceções adequadamente
+				e.printStackTrace();
 			}
 
 		});
@@ -114,7 +167,7 @@ public class AddAttachmentController implements Initializable {
 		}
 		return null;
 	}
-	
+
 	public Set<Anexo> fethcAttachmentsByKeyword(String keyword) {
 
 		try {
@@ -129,12 +182,10 @@ public class AddAttachmentController implements Initializable {
 		}
 		return null;
 	}
-	
-	public void fillAndSelectComboBoxProcess (Processo process) {
+
+	public void fillAndSelectComboBoxProcess(Processo process) {
 		ObservableList<Processo> newObs = FXCollections.observableArrayList();
 		cbProcess.setItems(newObs);
-
-		
 
 		newObs.add(0, process);
 
@@ -144,6 +195,19 @@ public class AddAttachmentController implements Initializable {
 
 		// Selecionando o novo item no ComboBox
 		cbProcess.getSelectionModel().select(0);
+	}
+	public void clearAllComponents() {
+
+		tfAttachment.clear();
+		// Limpa o id do processo para que seja salvo novo processo
+		this.attachment = new Anexo();
+
+		cbProcess.getSelectionModel().clearSelection();
+		cbProcess.setValue(null);
+
+		cbUser.getSelectionModel().clearSelection();
+		cbUser.setValue(null);
+		
 	}
 
 }

@@ -1,7 +1,12 @@
 package controllers.views;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.jfoenix.controls.JFXComboBox;
 
@@ -13,7 +18,6 @@ import models.Endereco;
 import services.EnderecoService;
 
 public class AddressComboBoxController {
-	
 
 	private String localUrl;
 	private JFXComboBox<Endereco> comboBox;
@@ -34,57 +38,57 @@ public class AddressComboBoxController {
 		utilities.FxUtilComboBoxSearchable.autoCompleteComboBoxPlus(comboBox, (typedText,
 				itemToCompare) -> itemToCompare.getLogradouro().toLowerCase().contains(typedText.toLowerCase()));
 
-		/*
-		 * comboBox.setCellFactory(cellFactory -> new ListCell<Endereco>() {
-		 * 
-		 * @Override protected void updateItem(Endereco item, boolean empty) {
-		 * super.updateItem(item, empty); if (item == null || empty) { setText(null); }
-		 * else { setText(item.getLogradouro());
-		 * 
-		 * } } });
-		 */
-
-		// Não está funcionando, ao clicar em um valor aparece no combobox o objeto. Eu
-		// quero que apareça o logradouro.
-
-		comboBox.getEditor().textProperty().addListener(new ChangeListener<String>() {
+		comboBox.valueProperty().addListener(new ChangeListener<Object>() {
 			private String lastSearch = "";
 
 			@Override
-			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-				if (newValue != null && !newValue.isEmpty() && newValue != "") {
-					
-					
+			public void changed(ObservableValue<?> observable, Object oldValue, Object newValue) {
 
-					// Verifica se a nova busca é uma continuação da busca anterior, tanto
-					// adicionando como removendo caracteres
-					if (lastSearch.contains(newValue) || newValue.contains(lastSearch)) {
+				// Remover os items repetidos na lista
+				List<Endereco> filteredList = filterAndMaintainLastNullId(obsList);
 
-						obsList.clear();
+				obsList.clear();
+				obsList.addAll(filteredList);
 
-						boolean containsSearchTerm = dbObjects.stream().anyMatch(
-								endereco -> endereco.getLogradouro().toLowerCase().contains(newValue.toLowerCase()));
+				// Check if the newValue is a Processo or a String
+				if (newValue instanceof Endereco) {
+					Endereco object = (Endereco) newValue;
 
-						if (containsSearchTerm) {
+					if (object.getLogradouro() != null && !object.getLogradouro().isEmpty()) {
+						// Check if the new search term is a continuation of the previous one
+						if (lastSearch.contains(object.getLogradouro())
+								|| object.getLogradouro().contains(lastSearch)) {
 							obsList.clear();
-							obsList.addAll(dbObjects);
-						} else {
-							obsList.clear();
-							fetchAndUpdate(newValue);
+
+							boolean containsSearchTerm = dbObjects.stream().anyMatch(item -> item.getLogradouro()
+									.toLowerCase().contains(object.getLogradouro().toLowerCase()));
+
+							if (containsSearchTerm) {
+								obsList.clear();
+								obsList.addAll(dbObjects);
+							} else {
+								obsList.clear();
+								fetchAndUpdate(object.getLogradouro());
+							}
 						}
-					}
 
-					lastSearch = newValue;
-					
-					// Ordena a lista colocando o newValue no início e assim podendo buscar (obsList.get(0) no método getSelectedObject.
-		            obsList.sort((object1, object2) -> {
-		                if (object1.getLogradouro().equalsIgnoreCase(newValue)) {
-		                    return -1; // Coloca endereco1 (com logradouro igual ao newValue) no início
-		                } else if (object2.getLogradouro().equalsIgnoreCase(newValue)) {
-		                    return 1;  // Coloca endereco2 no início, se for o newValue
-		                }
-		                return 0;
-		            });
+						lastSearch = object.getLogradouro();
+
+						// Sort the list to put the selected value at the top
+						obsList.sort((object1, object2) -> {
+							if (object1.getLogradouro().equalsIgnoreCase(object.getLogradouro())) {
+								return -1;
+							} else if (object2.getLogradouro().equalsIgnoreCase(object.getLogradouro())) {
+								return 1;
+							}
+							return 0;
+						});
+
+					}
+				} else if (newValue instanceof String) {
+					// Handle the case where newValue is a String (when the user is typing)
+					String searchText = (String) newValue;
+					fetchAndUpdate(searchText);
 				}
 			}
 		});
@@ -105,13 +109,13 @@ public class AddressComboBoxController {
 			EnderecoService service = new EnderecoService(localUrl);
 			Set<Endereco> fetchedAddresses = new HashSet<>();
 			System.out.println("fetch And Update address, len" + keyword.length());
-			// Buscar endereços apenas contento 2, 4 , 6 ou 8 caracteres. Assim o serviço não fica superesplotado.
-			if (keyword.length() ==2 || keyword.length() == 4 || keyword.length() == 6 || keyword.length() == 8) {
-				System.out.println("if len 2 or 4 " +  keyword.length());
+			// Buscar endereços apenas contento 2, 4 , 6 ou 8 caracteres. Assim o serviço
+			// não fica superesplotado.
+			if (keyword.length() == 2 || keyword.length() == 4 || keyword.length() == 6 || keyword.length() == 8) {
+				System.out.println("if len 2 or 4 " + keyword.length());
 				fetchedAddresses.addAll(service.fetchAddressByKeyword(keyword));
 			}
-			
-			
+
 			System.out.println("array vazia? " + fetchedAddresses.isEmpty());
 
 			if (!fetchedAddresses.isEmpty()) {
@@ -133,9 +137,9 @@ public class AddressComboBoxController {
 
 	public Endereco getSelectedObject() {
 
-		// Verifica se nulo, se não nulo preenche objeto e retorna.
-		Endereco object = comboBox.selectionModelProperty().get().isEmpty() ? null
-				: new Endereco(obsList.get(0).getId(), obsList.get(0).getLogradouro());
+		Endereco object = comboBox.selectionModelProperty().get().isEmpty() ? null : comboBox.getItems().get(0);
+
+		System.out.println(object.getLogradouro());
 		return object;
 	}
 
@@ -152,5 +156,31 @@ public class AddressComboBoxController {
 
 	public void clearComponent() {
 		comboBox.getSelectionModel().clearSelection();
+	}
+
+	public List<Endereco> filterAndMaintainLastNullId(ObservableList<Endereco> items) {
+
+		// Convert ObservableList to Set to remove duplicates
+		Set<Endereco> uniqueItems = new HashSet<>(items);
+
+		// Use a map to retain only unique non-null IDs (each id maps to one Anexo
+		// object)
+		Map<Long, Endereco> nonNullIdMap = uniqueItems.stream().filter(item -> item.getId() != null)
+				.collect(Collectors.toMap(Endereco::getId, // Key: id of the Anexo
+						item -> item, // Value: Anexo itself
+						(existing, replacement) -> existing // Keep the first occurrence if duplicates are found
+		));
+
+		// Get the last item with id == null (if it exists)
+		Optional<Endereco> lastNullIdItem = uniqueItems.stream().filter(anexo -> anexo.getId() == null)
+				.reduce((first, second) -> second); // Keep the last one
+
+		// Convert the map values (unique non-null ids) to a list
+		List<Endereco> filteredList = new ArrayList<>(nonNullIdMap.values());
+
+		// Add the last item with id == null, if it exists
+		lastNullIdItem.ifPresent(filteredList::add);
+
+		return filteredList;
 	}
 }
