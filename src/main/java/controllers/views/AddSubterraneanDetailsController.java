@@ -2,6 +2,7 @@ package controllers.views;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -10,14 +11,17 @@ import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import enums.StaticData;
 import enums.ToastType;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -47,6 +51,9 @@ public class AddSubterraneanDetailsController implements Initializable {
 	public static AddInterferenceController getInstance() {
 		return instance;
 	}
+
+	@FXML
+	private JFXComboBox<Integer> cbReqTimeFlow;
 
 	@FXML
 	private AnchorPane apContainer;
@@ -90,12 +97,34 @@ public class AddSubterraneanDetailsController implements Initializable {
 	ObservableList<TipoPoco> obsTypesOfWells;
 
 	@FXML
-	FontAwesomeIconView btnTotalCalculate;
+	private JFXTextField tfTotalRequestedConsumption, tfTotalAuthorizedConsumption;
 
 	@FXML
-	FontAwesomeIconView btnRequestedTotalCalculate, btnAuthorizedTotalCalculate;
+	private JFXButton btnCalculateReqFin;
+
 	@FXML
-	private JFXTextField tfTotalRequestedConsumption, tfTotalAuthorizedConsumption;
+	private JFXButton btnFillReqFlow;
+
+	@FXML
+	private JFXButton btnFillReqTime;
+
+	@FXML
+	private JFXButton btnFillReqPeriod;
+
+	@FXML
+	private JFXButton btnCalculateAuthFin;
+
+	@FXML
+	private JFXButton btnFillAuthFlow;
+
+	@FXML
+	private JFXComboBox<?> cbAuthTimeFlow;
+
+	@FXML
+	private JFXButton btnFillAuthTime, btnCopyReqDemand;
+
+	@FXML
+	private JFXButton btnFillAuthPeriod;
 
 	PurpousesWrapper purpousesWrapper = new PurpousesWrapper(new HashSet<>());
 
@@ -111,9 +140,9 @@ public class AddSubterraneanDetailsController implements Initializable {
 		cbConcessionaire.getItems().addAll("Sim", "Não");
 
 		// Adiciona cadastro de finalidade
-		addPurpouseRow(0, requestedPurposesGrid, tfTotalRequestedConsumption, btnRequestedTotalCalculate,
+		addPurpouseRow(0, requestedPurposesGrid, tfTotalRequestedConsumption, btnCalculateReqFin,
 				new TipoFinalidade(1L), new Finalidade());
-		addPurpouseRow(0, authorizedPurposesGrid, tfTotalAuthorizedConsumption, btnAuthorizedTotalCalculate,
+		addPurpouseRow(0, authorizedPurposesGrid, tfTotalAuthorizedConsumption, btnCalculateAuthFin,
 				new TipoFinalidade(2L), new Finalidade());
 
 		// Cria lista de demandas requeridas e autorizadas vazias.
@@ -170,6 +199,295 @@ public class AddSubterraneanDetailsController implements Initializable {
 			addDemandPeriodLine(gpAuthorizedDemands, demand.getMes(), demand);
 		});
 
+		// Create and populate a list of integers from 1 to 20
+		ObservableList<Integer> numbers = FXCollections
+				.observableArrayList(IntStream.rangeClosed(1, 20).boxed().collect(Collectors.toList()));
+
+		// Set the items in the ComboBox
+		cbReqTimeFlow.setItems(numbers);
+
+		cbReqTimeFlow.setOnAction(event -> {
+
+		});
+
+		/**
+		 * Cria a opção false ou true encarregada por preencher as linhas de vazão
+		 * automaticamente todo os meses ou apenas os meses de chuva.
+		 */
+		ButtonBooleanOption bboBtnFillRequestedFlow = new ButtonBooleanOption(true);
+		/**
+		 * Preenche a linha das vazões automaticamente de acordo com os cálculos de
+		 * finalidade. Busca o valor para preenchimento no textfield
+		 * `tfTotalRequestedConsumption` e preenche de duas formas, todas as linhas ou
+		 * apenas as linhas de período sem chuva (abril a outubro).
+		 */
+
+		btnFillReqFlow.setOnMouseClicked(event -> {
+
+			if (bboBtnFillRequestedFlow.getOption()) {
+
+				if (tfTotalRequestedConsumption.getText() != null) {
+					System.out.println(tfTotalRequestedConsumption.getText());
+
+					// Lista para filtrar as demandas por tipo, demandas requeridas, e ordenar por
+					// mês (jan,fev,...).
+					Stream<Demanda> rdStream = demandsWrapper.getDemands().stream();
+
+					List<Demanda> rdList = rdStream.filter(d -> d.getTipoFinalidade().getId() == 1L)
+							.sorted(Comparator.comparing(d -> d.getMes())).collect(Collectors.toList());
+					;
+
+					// Preenchimento do GridPane com os textfields por linha, primeiro linha de
+					// vazão.
+
+					rdList.forEach(demand -> {
+
+						demand.setVazao(Double.parseDouble(tfTotalRequestedConsumption.getText()));
+
+						System.out.println(demand.getVazao());
+
+						addDemandFlowLine(gpRequestedDemands, demand.getMes(), demand);
+					});
+
+				}
+
+			} else {
+
+				System.out.println(bboBtnFillRequestedFlow.getOption());
+
+				if (tfTotalRequestedConsumption.getText() != null) {
+
+					// Lista para filtrar as demandas por tipo, demandas requeridas, e ordenar por
+					// mês (jan,fev,...).
+					Stream<Demanda> rdStream = demandsWrapper.getDemands().stream();
+
+					List<Demanda> rdList = rdStream.filter(d -> d.getTipoFinalidade().getId() == 1L)
+							.sorted(Comparator.comparing(d -> d.getMes())).collect(Collectors.toList());
+					;
+
+					// Preenchimento do GridPane com os textfields por linha, primeiro linha de
+					// vazão.
+					int[] idx = { 0 };
+
+					rdList.forEach(demand -> {
+
+						// meses jan, fev, mar, nov, e dez vazios
+						if (idx[0] == 0 || idx[0] == 1 || idx[0] == 2 || idx[0] == 10 || idx[0] == 11) {
+
+							demand.setVazao(0.0);
+							addDemandFlowLine(gpRequestedDemands, demand.getMes(), demand);
+
+						} else {
+							demand.setVazao(Double.parseDouble(tfTotalRequestedConsumption.getText()));
+							addDemandFlowLine(gpRequestedDemands, demand.getMes(), demand);
+						}
+						idx[0]++;
+
+					});
+
+				}
+
+			}
+
+			bboBtnFillRequestedFlow.setOption(!bboBtnFillRequestedFlow.getOption());
+
+		});
+
+		ButtonBooleanOption bboBtnFillRequestedTime = new ButtonBooleanOption(true);
+
+		btnFillReqTime.setOnMouseClicked(event -> {
+
+			Integer selectedValue = null;
+
+			try {
+				// Get the current value, which could be a String (from user input)
+				String rawValue = cbReqTimeFlow.getEditor().getText();
+
+				// Parse the raw value into an Integer
+				selectedValue = rawValue != null ? Integer.parseInt(rawValue) : null;
+
+				if (selectedValue != null) {
+					System.out.println("Selected Value: " + selectedValue);
+				}
+			} catch (NumberFormatException e) {
+				System.err.println("Invalid input: Please enter a valid number.");
+			}
+
+			if (bboBtnFillRequestedTime.getOption()) {
+
+				if (selectedValue != null) {
+
+					// Lista para filtrar as demandas por tipo, demandas requeridas, e ordenar por
+					// mês (jan,fev,...).
+					Stream<Demanda> rdStream = demandsWrapper.getDemands().stream();
+
+					List<Demanda> rdList = rdStream.filter(d -> d.getTipoFinalidade().getId() == 1L)
+							.sorted(Comparator.comparing(d -> d.getMes())).collect(Collectors.toList());
+					;
+
+					// Preenchimento do GridPane com os textfields por linha, primeiro linha de
+					// vazão.
+
+					rdList.forEach(demand -> {
+
+						// Get the current value, which could be a String (from user input)
+						String rawValue = cbReqTimeFlow.getEditor().getText();
+
+						// Parse the raw value into an Integer
+						Integer selectedTimeValue = rawValue != null ? Integer.parseInt(rawValue) : null;
+
+						demand.setTempo(selectedTimeValue);
+
+						addDemandTimeLine(gpRequestedDemands, demand.getMes(), demand);
+					});
+
+				}
+
+			} else {
+
+				if (selectedValue != null) {
+
+					// Lista para filtrar as demandas por tipo, demandas requeridas, e ordenar por
+					// mês (jan,fev,...).
+					Stream<Demanda> rdStream = demandsWrapper.getDemands().stream();
+
+					List<Demanda> rdList = rdStream.filter(d -> d.getTipoFinalidade().getId() == 1L)
+							.sorted(Comparator.comparing(d -> d.getMes())).collect(Collectors.toList());
+					;
+
+					// Preenchimento do GridPane com os textfields por linha, primeiro linha de
+					// vazão.
+					int[] idx = { 0 };
+
+					rdList.forEach(demand -> {
+
+						// meses jan, fev, mar, nov, e dez vazios
+						if (idx[0] == 0 || idx[0] == 1 || idx[0] == 2 || idx[0] == 10 || idx[0] == 11) {
+
+							demand.setTempo(0);
+							addDemandTimeLine(gpRequestedDemands, demand.getMes(), demand);
+
+						} else {
+
+							// Get the current value, which could be a String (from user input)
+							String rawValue = cbReqTimeFlow.getEditor().getText();
+
+							// Parse the raw value into an Integer
+							Integer selectedTimeValue = rawValue != null ? Integer.parseInt(rawValue) : null;
+
+							demand.setTempo(selectedTimeValue);
+							addDemandFlowLine(gpRequestedDemands, demand.getMes(), demand);
+						}
+						idx[0]++;
+
+					});
+
+				}
+
+			}
+
+			bboBtnFillRequestedTime.setOption(!bboBtnFillRequestedTime.getOption());
+
+		});
+
+		ButtonBooleanOption bboFillRequestedPeriod = new ButtonBooleanOption(true);
+
+		btnFillReqPeriod.setOnMouseClicked(event -> {
+
+			if (bboFillRequestedPeriod.getOption()) {
+
+				// Preenchimento do GridPane com os textfields por linha, primeiro linha de
+				// vazão.
+
+				List<Integer> daysInMonths = Arrays.asList(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
+				int[] idx = { 0 };
+
+				// Lista para filtrar as demandas por tipo, demandas requeridas, e ordenar por
+				// mês (jan,fev,...).
+				Stream<Demanda> rdStream = demandsWrapper.getDemands().stream();
+
+				List<Demanda> rdList = rdStream.filter(d -> d.getTipoFinalidade().getId() == 1L)
+						.sorted(Comparator.comparing(d -> d.getMes())).collect(Collectors.toList());
+				;
+				rdList.forEach(demand -> {
+
+					demand.setPeriodo(daysInMonths.get(idx[0]));
+					addDemandPeriodLine(gpRequestedDemands, demand.getMes(), demand);
+
+					idx[0]++;
+				});
+
+			} else {
+
+				List<Integer> daysInMonths = Arrays.asList(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
+
+				// Lista para filtrar as demandas por tipo, demandas requeridas, e ordenar por
+				// mês (jan,fev,...).
+				Stream<Demanda> rdStream = demandsWrapper.getDemands().stream();
+
+				List<Demanda> rdList = rdStream.filter(d -> d.getTipoFinalidade().getId() == 1L)
+						.sorted(Comparator.comparing(d -> d.getMes())).collect(Collectors.toList());
+				;
+
+				// Preenchimento do GridPane com os textfields por linha, primeiro linha de
+				// vazão.
+				int[] idx = { 0 };
+
+				rdList.forEach(demand -> {
+
+					// meses jan, fev, mar, nov, e dez vazios
+					if (idx[0] == 0 || idx[0] == 1 || idx[0] == 2 || idx[0] == 10 || idx[0] == 11) {
+
+						demand.setPeriodo(0);
+						addDemandPeriodLine(gpRequestedDemands, demand.getMes(), demand);
+
+					} else {
+						demand.setPeriodo(daysInMonths.get(idx[0]));
+						addDemandPeriodLine(gpRequestedDemands, demand.getMes(), demand);
+					}
+					idx[0]++;
+
+				});
+
+			}
+
+			bboFillRequestedPeriod.setOption(!bboFillRequestedPeriod.getOption());
+
+		});
+		
+		btnCopyReqDemand.setOnMouseClicked(event->{
+			
+			// demandsStream 
+			Stream<Demanda> ds1 = demandsWrapper.getDemands().stream();
+
+			List<Demanda> rdList = ds1.filter(d -> d.getTipoFinalidade().getId() == 1L)
+					.sorted(Comparator.comparing(d -> d.getMes())).collect(Collectors.toList());
+			;
+			
+			Stream<Demanda> ds2 = demandsWrapper.getDemands().stream();
+			
+			List<Demanda> adList = ds2.filter(d -> d.getTipoFinalidade().getId() == 2L)
+					.sorted(Comparator.comparing(d -> d.getMes())).collect(Collectors.toList());
+			;
+			
+			int[] idx = { 0 };
+			rdList.forEach(rdl-> {
+				adList.get(idx[0]).setVazao(rdl.getVazao()+30);
+				adList.get(idx[0]).setTempo(rdl.getTempo()+50);
+				adList.get(idx[0]).setPeriodo(rdl.getPeriodo()+60);
+				
+				
+				addDemandFlowLine(gpAuthorizedDemands, rdl.getMes(), adList.get(idx[0]));
+				addDemandTimeLine(gpAuthorizedDemands, rdl.getMes(), adList.get(idx[0]));
+				addDemandPeriodLine(gpAuthorizedDemands, rdl.getMes(), adList.get(idx[0]));
+				
+				idx[0]++;
+				
+			});
+			
+			
+		});
+
 	}
 
 	public void addDemandFlowLine(GridPane gridPane, int month, Demanda demand) {
@@ -181,11 +499,9 @@ public class AddSubterraneanDetailsController implements Initializable {
 		// Adiciona Textfields por célula
 		gridPane.add(tfFlow, month, 1);
 
-		if (demand.getId() != null) {
-			// Se não, é uma demanda buscada no banco e deve-se preencher os campos
+		// Se a demanda não está vazia, preencher com o valor
+		if (demand.getVazao() != null)
 			tfFlow.setText(demand.getVazao().toString());
-
-		}
 
 		DemandWrapper demandWrapper = new DemandWrapper(demand);
 		// Listeners
@@ -203,7 +519,12 @@ public class AddSubterraneanDetailsController implements Initializable {
 		clearGridCell(gridPane, month, 2);
 		gridPane.add(tfTime, month, 2);
 
-		if (demand.getId() != null) {
+		/*
+		 * if (demand.getId() != null) { // Se não, é uma demanda buscada no banco e
+		 * deve-se preencher os campos
+		 * tfTime.setText(String.valueOf(demand.getTempo())); }
+		 */
+		if (demand.getTempo() != null) {
 			// Se não, é uma demanda buscada no banco e deve-se preencher os campos
 			tfTime.setText(String.valueOf(demand.getTempo()));
 		}
@@ -227,7 +548,7 @@ public class AddSubterraneanDetailsController implements Initializable {
 		clearGridCell(gridPane, month, 3);
 		gridPane.add(tfPeriod, month, 3);
 
-		if (demand.getId() != null) {
+		if (demand.getPeriodo() != null) {
 			// Se não, é uma demanda buscada no banco e deve-se preencher os campos
 
 			tfPeriod.setText(String.valueOf(demand.getPeriodo()));
@@ -317,7 +638,7 @@ public class AddSubterraneanDetailsController implements Initializable {
 	 * @param purpouse
 	 */
 	public void addPurpouseRow(int index, GridPane gridPane, JFXTextField tfTotalConsumption,
-			FontAwesomeIconView btnTotalConsumption, TipoFinalidade typeOfPurpouse, Finalidade purpouse) {
+			JFXButton btnTotalConsumption, TipoFinalidade typeOfPurpouse, Finalidade purpouse) {
 
 		JFXTextField tfPurpouse = new JFXTextField();
 		JFXTextField tfSubpurpose = new JFXTextField();
@@ -617,11 +938,11 @@ public class AddSubterraneanDetailsController implements Initializable {
 			if (item.getTipoFinalidade().getId() == 1) {
 
 				addPurpouseRow(reqIndex.getAndIncrement(), requestedPurposesGrid, tfTotalRequestedConsumption,
-						btnRequestedTotalCalculate, item.getTipoFinalidade(), item);
+						btnCalculateReqFin, item.getTipoFinalidade(), item);
 			} else {
 
 				addPurpouseRow(autIndex.getAndIncrement(), authorizedPurposesGrid, tfTotalAuthorizedConsumption,
-						btnAuthorizedTotalCalculate, item.getTipoFinalidade(), item);
+						btnCalculateAuthFin, item.getTipoFinalidade(), item);
 			}
 		});
 	}
@@ -741,6 +1062,7 @@ public class AddSubterraneanDetailsController implements Initializable {
 	}
 
 	public class DemandWrapper {
+
 		private Demanda demand;
 
 		public DemandWrapper() {
@@ -802,6 +1124,34 @@ public class AddSubterraneanDetailsController implements Initializable {
 			// Use stream to concatenate all demands into a single string
 			return demands.stream().map(Demanda::toString) // Call Demanda's toString method for each demand
 					.collect(Collectors.joining(", ", "Demands: [", "]")); // Join all results with commas
+		}
+
+	}
+
+	/**
+	 * Com esta opção, verdadeiro ou falso, posso fazer a mudança de preenchimento
+	 * em que pode ser preenchido todos os meses com a vazão total, ou zerar os
+	 * meses de janeiro, fevereiro, março, novembro e dezembro (período de chuvas e
+	 * sem vazão outorgada) utilizado nas outorgas subterrâneas.
+	 * 
+	 * @author fabricio.barrozo
+	 *
+	 */
+	public class ButtonBooleanOption {
+
+		private Boolean option;
+
+		public ButtonBooleanOption(Boolean option) {
+			super();
+			this.option = option;
+		}
+
+		public Boolean getOption() {
+			return option;
+		}
+
+		public void setOption(Boolean option) {
+			this.option = option;
 		}
 
 	}

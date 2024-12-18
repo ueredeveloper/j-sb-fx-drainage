@@ -6,11 +6,11 @@ public class Demanda {
 
 	private Double vazao; // litros/dia
 
-	private int tempo; // horas/dia
+	private Integer tempo; // horas/dia
 
-	private int periodo; // dias/mês.
+	private Integer periodo; // dias/mês.
 
-	private int mes;
+	private Integer mes;
 
 	private TipoFinalidade tipoFinalidade;
 
@@ -30,14 +30,15 @@ public class Demanda {
 		this.mes = mes;
 	}
 
-	public Demanda(Double vazao, int tempo, int periodo, Interferencia interferencia) {
+	
+	
+	public Demanda(Double vazao, Integer tempo, Integer periodo) {
 		super();
 		this.vazao = vazao;
 		this.tempo = tempo;
 		this.periodo = periodo;
-		this.interferencia = interferencia;
 	}
-	
+
 	public Demanda(int mes, TipoFinalidade tipoFinalidade) {
 		super();
 		this.mes = mes;
@@ -60,22 +61,7 @@ public class Demanda {
 		this.vazao = vazao;
 	}
 
-	public int getTempo() {
-		return tempo;
-	}
-
-	public void setTempo(int tempo) {
-		this.tempo = tempo;
-	}
-
-	public int getPeriodo() {
-		return periodo;
-	}
-
-	public void setPeriodo(int periodo) {
-		this.periodo = periodo;
-	}
-
+	
 	public Interferencia getInterferencia() {
 		return interferencia;
 	}
@@ -84,20 +70,37 @@ public class Demanda {
 		this.interferencia = interferencia;
 	}
 
-	public int getMes() {
-		return mes;
-	}
-
-	public void setMes(int mes) {
-		this.mes = mes;
-	}
-
+	
 	public TipoFinalidade getTipoFinalidade() {
 		return tipoFinalidade;
 	}
 
 	public void setTipoFinalidade(TipoFinalidade tipoFinalidade) {
 		this.tipoFinalidade = tipoFinalidade;
+	}
+	
+	public Integer getTempo() {
+		return tempo;
+	}
+
+	public void setTempo(Integer tempo) {
+		this.tempo = tempo;
+	}
+
+	public Integer getPeriodo() {
+		return periodo;
+	}
+
+	public void setPeriodo(Integer periodo) {
+		this.periodo = periodo;
+	}
+
+	public Integer getMes() {
+		return mes;
+	}
+
+	public void setMes(Integer mes) {
+		this.mes = mes;
 	}
 
 	@Override

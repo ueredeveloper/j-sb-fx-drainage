@@ -92,6 +92,8 @@ public class AddProcessController implements Initializable {
 		this.ttClose = ttClose;
 
 	}
+	
+
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
