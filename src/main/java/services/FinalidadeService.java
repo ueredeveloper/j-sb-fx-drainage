@@ -23,8 +23,6 @@ public class FinalidadeService {
 	public FinalidadeService(String localUrl) {
 		this.localUrl = localUrl;
 	}
-	
-	
 
 	public List<Finalidade> fetchByKeyword(String keyword) {
 
@@ -55,7 +53,6 @@ public class FinalidadeService {
 		return null;
 	}
 
-	
 	public ServiceResponse<?> deleteById(Long id) {
 		try {
 			URL apiUrl = new URL(localUrl + "/purpouse/delete?id=" + id); // Updated URL
@@ -79,8 +76,7 @@ public class FinalidadeService {
 			return new ServiceResponse<>(-1, null); // You might want to use a different code for errors
 		}
 	}
-	
-	
+
 	private List<Finalidade> handleSuccessResponse(HttpURLConnection connection) throws IOException {
 		BufferedReader reader = new BufferedReader(
 				new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8));

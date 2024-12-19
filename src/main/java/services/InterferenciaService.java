@@ -111,7 +111,7 @@ public class InterferenciaService {
 						response.append(responseLine);
 					}
 
-				//	System.out.println("edited res to string " + response.toString());
+					// System.out.println("edited res to string " + response.toString());
 					responseBody = response.toString();
 				}
 			} else {
@@ -126,6 +126,7 @@ public class InterferenciaService {
 			return null; // Return null if an error occurs
 		}
 	}
+
 	public Set<Interferencia> fetchByKeyword(String keyword) {
 
 		try {
@@ -216,9 +217,9 @@ public class InterferenciaService {
 				if (interferencia instanceof Subterranea) {
 					Subterranea subterranea = (Subterranea) interferencia;
 					// Access Subterranea-specific fields
-				//	System.out.println("Subterranea attributes:");
-				//	System.out.println("Caesb: " + subterranea.getCaesb());
-				//	System.out.println("Nivel Estatico: " + subterranea.getNivelEstatico());
+					// System.out.println("Subterranea attributes:");
+					// System.out.println("Caesb: " + subterranea.getCaesb());
+					// System.out.println("Nivel Estatico: " + subterranea.getNivelEstatico());
 					// Additional fields...
 				} else {
 					// Handle regular Interferencia

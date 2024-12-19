@@ -165,3 +165,6 @@
 	Quando seleciona uma interferência e ela não  tem nenhuma finalidade requerida, o espaço de preencher as finalidades está ficando vazio. Adicionar
 	possibilidade de inserir finalidade ao selecionar uma interferência sem finalidade requerida ou autorizada.
 	
+## 19 de Dezembro de 2024
+- [] - Usuario
+	Adicionar pesquisa por nome com ou sem acento

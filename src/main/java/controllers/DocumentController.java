@@ -674,6 +674,10 @@ public class DocumentController implements Initializable {
 		obsProcess.clear();
 		cbProcess.getSelectionModel().clearSelection();
 		cbProcess.setValue(null);
+		
+	
+		cbUser.getSelectionModel().clearSelection();
+		cbUser.setValue(null);
 
 		obsAddress.clear();
 		cbAddress.getSelectionModel().clearSelection();
@@ -682,6 +686,9 @@ public class DocumentController implements Initializable {
 		obsAttachment.clear();
 		cbAttachment.getSelectionModel().clearSelection();
 		cbAttachment.setValue(null);
+		
+		tfLatitude.clear();
+		tfLongitude.clear();
 
 	}
 

@@ -61,7 +61,6 @@ public class AnexoService {
 			String responseBody;
 
 			if (responseCode == HttpURLConnection.HTTP_OK || responseCode == HttpURLConnection.HTTP_CREATED) {
-				System.out.println("service created");
 				try (BufferedReader br = new BufferedReader(
 						new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
 					StringBuilder response = new StringBuilder();
