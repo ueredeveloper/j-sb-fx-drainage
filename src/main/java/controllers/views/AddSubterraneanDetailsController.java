@@ -454,38 +454,36 @@ public class AddSubterraneanDetailsController implements Initializable {
 			bboFillRequestedPeriod.setOption(!bboFillRequestedPeriod.getOption());
 
 		});
-		
-		btnCopyReqDemand.setOnMouseClicked(event->{
-			
-			// demandsStream 
+
+		btnCopyReqDemand.setOnMouseClicked(event -> {
+
+			// demandsStream
 			Stream<Demanda> ds1 = demandsWrapper.getDemands().stream();
 
 			List<Demanda> rdList = ds1.filter(d -> d.getTipoFinalidade().getId() == 1L)
 					.sorted(Comparator.comparing(d -> d.getMes())).collect(Collectors.toList());
 			;
-			
+
 			Stream<Demanda> ds2 = demandsWrapper.getDemands().stream();
-			
+
 			List<Demanda> adList = ds2.filter(d -> d.getTipoFinalidade().getId() == 2L)
 					.sorted(Comparator.comparing(d -> d.getMes())).collect(Collectors.toList());
 			;
-			
+
 			int[] idx = { 0 };
-			rdList.forEach(rdl-> {
-				adList.get(idx[0]).setVazao(rdl.getVazao()+30);
-				adList.get(idx[0]).setTempo(rdl.getTempo()+50);
-				adList.get(idx[0]).setPeriodo(rdl.getPeriodo()+60);
-				
-				
+			rdList.forEach(rdl -> {
+				adList.get(idx[0]).setVazao(rdl.getVazao() + 30);
+				adList.get(idx[0]).setTempo(rdl.getTempo() + 50);
+				adList.get(idx[0]).setPeriodo(rdl.getPeriodo() + 60);
+
 				addDemandFlowLine(gpAuthorizedDemands, rdl.getMes(), adList.get(idx[0]));
 				addDemandTimeLine(gpAuthorizedDemands, rdl.getMes(), adList.get(idx[0]));
 				addDemandPeriodLine(gpAuthorizedDemands, rdl.getMes(), adList.get(idx[0]));
-				
+
 				idx[0]++;
-				
+
 			});
-			
-			
+
 		});
 
 	}
@@ -677,11 +675,21 @@ public class AddSubterraneanDetailsController implements Initializable {
 
 			purpousesWrapper.getPurpouses().add(purpouseWrapper.getPurpouse());
 
+			System.out.println("purpouses " + purpouseWrapper.getPurpouse());
+
 			tfPurpouse.setText(purpouseWrapper.getPurpouse().getFinalidade());
 			tfSubpurpose.setText(purpouseWrapper.getPurpouse().getSubfinalidade());
-			tfQuantity.setText(purpouseWrapper.getPurpouse().getQuantidade().toString());
+			if (purpouseWrapper.getPurpouse().getQuantidade() != null) {
+				tfQuantity.setText(purpouseWrapper.getPurpouse().getQuantidade().toString());
+			}
+
 			tfConsumption.setText(purpouseWrapper.getPurpouse().getConsumo().toString());
-			tfTotal.setText(purpouseWrapper.getPurpouse().getTotal().toString());
+
+			// Se o total não foi cadastrado não mostrar
+			if (purpouseWrapper.getPurpouse().getTotal() != null) {
+				tfTotal.setText(purpouseWrapper.getPurpouse().getTotal().toString());
+			}
+
 		}
 
 		tfPurpouse.setPrefHeight(40.0);

@@ -10,6 +10,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 
+import controllers.DocumentController;
 import controllers.MapController;
 import controllers.NavigationController;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
@@ -130,18 +131,18 @@ public class AddInterferenceController implements Initializable {
 
 	String latitude, longitude;
 	AddressComboBoxController addressCbController;
-	Endereco object;
+	Endereco address;
 	private MapController mapController;
 
-	public AddInterferenceController(String urlService, TranslateTransition ttClose, Endereco object, String latitude,
-			String longitude) {
+	private DocumentController documentController;
 
+	public AddInterferenceController(DocumentController documentController, Endereco address, String urlService,
+			TranslateTransition ttClose) {
+
+		this.documentController = documentController;
+		this.address = address;
 		this.urlService = URLUtility.getURLService();
 		this.ttClose = ttClose;
-		this.latitude = latitude;
-		this.longitude = longitude;
-		this.object = object;
-		this.mapController = MapController.getInstance();
 	}
 
 	ObservableList<TipoInterferencia> obsTypesOfInterferences;// = FXCollections.observableArrayList();
@@ -196,11 +197,11 @@ public class AddInterferenceController implements Initializable {
 				System.out.println(newValue.getEndereco());
 
 				Endereco selecteInterferenceAddres = newValue.getEndereco();
-				// Se houver endereço relacionado com a interferência, preencher o combobox do endereço
-				if (selecteInterferenceAddres!=null) {
+				// Se houver endereço relacionado com a interferência, preencher o combobox do
+				// endereço
+				if (selecteInterferenceAddres != null) {
 					addressCbController.fillAndSelectComboBox(newValue.getEndereco());
 				}
-				
 
 				TipoInterferencia ti = newValue.getTipoInterferencia();
 				cbTypeOfInterference.getSelectionModel().select(ti);
@@ -240,16 +241,27 @@ public class AddInterferenceController implements Initializable {
 
 		// Fechar tela
 		btnClose.setOnAction(e -> {
+
 			ttClose.play();
 
-			// updateComboBox(selectedEndereco);
+			Interferencia selectedObject = tableView.getSelectionModel().getSelectedItem();
+		
+			if (this.address == null) {
+				// Alerta (Toast) de sucesso na edi��o
+				Node source = (Node) e.getSource();
+				Stage ownerStage = (Stage) source.getScene().getWindow();
+				String toastMsg = "Selecione um endereço !!!";
+				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+			} else {
+				this.documentController.receiveAddressAndInterference(this.address, selectedObject);
+			}
 
 		});
 
 		// Ao abrir, verifica se object enviado é nulo, se não preenche combobox
 		// cbAddress.
-		if (object != null) {
-			addressCbController.fillAndSelectComboBox(object);
+		if (address != null) {
+			addressCbController.fillAndSelectComboBox(address);
 		}
 
 		btnSave.setOnAction(event -> save(event));

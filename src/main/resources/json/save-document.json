@@ -1,0 +1,361 @@
+{
+	"numero": "741/852",
+	"processo": {
+		"id": 1,
+		"numero": "123456/456789",
+		"anexo": {
+			"id": 1,
+			"numero": "456789/456",
+			"processos": []
+		}
+	},
+	"numeroSei": 963852,
+	"tipoDocumento": {
+		"id": 3,
+		"descricao": "Requerimento"
+	},
+	"endereco": {
+		"id": 19,
+		"logradouro": "Rua Segóvia 3499",
+		"cidade": "tag",
+		"bairro": "456/789",
+		"cep": "Brasília",
+		"documentos": [],
+		"interferencias": [
+			{
+				"id": 8,
+				"latitude": 88.0,
+				"longitude": 99.0,
+				"endereco": {
+					"id": 20,
+					"logradouro": "Rua Segóvia 3499",
+					"documentos": [],
+					"interferencias": []
+				},
+				"tipoInterferencia": {
+					"id": 2,
+					"descricao": "Subterrânea"
+				},
+				"tipoOutorga": {
+					"id": 1,
+					"descricao": "Outorga"
+				},
+				"subtipoOutorga": {
+					"id": 1,
+					"descricao": "Renovação"
+				},
+				"situacaoProcesso": {
+					"id": 1,
+					"descricao": "Arquivado"
+				},
+				"tipoAto": {
+					"id": 1,
+					"descricao": "Despacho"
+				},
+				"finalidades": [
+					{
+						"id": 19,
+						"finalidade": "",
+						"subfinalidade": "",
+						"quantidade": 0.0,
+						"consumo": 0.0,
+						"tipoFinalidade": {
+							"id": 2,
+							"descricao": "Autorizada"
+						}
+					},
+					{
+						"id": 18,
+						"finalidade": "AAA",
+						"subfinalidade": "/ssss",
+						"quantidade": 4.0,
+						"consumo": 5.0,
+						"total": 20.0,
+						"tipoFinalidade": {
+							"id": 1,
+							"descricao": "Requerida"
+						}
+					}
+				],
+				"demandas": [
+					{
+						"id": 155,
+						"vazao": 0.0,
+						"tempo": 0,
+						"periodo": 0,
+						"mes": 4,
+						"tipoFinalidade": {
+							"id": 2,
+							"descricao": "Autorizada"
+						}
+					},
+					{
+						"id": 152,
+						"vazao": 20.0,
+						"tempo": 9,
+						"periodo": 31,
+						"mes": 8,
+						"tipoFinalidade": {
+							"id": 1,
+							"descricao": "Requerida"
+						}
+					},
+					{
+						"id": 153,
+						"vazao": 0.0,
+						"tempo": 0,
+						"periodo": 0,
+						"mes": 2,
+						"tipoFinalidade": {
+							"id": 2,
+							"descricao": "Autorizada"
+						}
+					},
+					{
+						"id": 156,
+						"vazao": 0.0,
+						"tempo": 0,
+						"periodo": 0,
+						"mes": 6,
+						"tipoFinalidade": {
+							"id": 2,
+							"descricao": "Autorizada"
+						}
+					},
+					{
+						"id": 154,
+						"vazao": 0.0,
+						"tempo": 0,
+						"periodo": 0,
+						"mes": 12,
+						"tipoFinalidade": {
+							"id": 2,
+							"descricao": "Autorizada"
+						}
+					},
+					{
+						"id": 167,
+						"vazao": 20.0,
+						"tempo": 9,
+						"periodo": 30,
+						"mes": 4,
+						"tipoFinalidade": {
+							"id": 1,
+							"descricao": "Requerida"
+						}
+					},
+					{
+						"id": 151,
+						"vazao": 20.0,
+						"tempo": 9,
+						"periodo": 30,
+						"mes": 6,
+						"tipoFinalidade": {
+							"id": 1,
+							"descricao": "Requerida"
+						}
+					},
+					{
+						"id": 168,
+						"vazao": 0.0,
+						"tempo": 0,
+						"periodo": 0,
+						"mes": 9,
+						"tipoFinalidade": {
+							"id": 2,
+							"descricao": "Autorizada"
+						}
+					},
+					{
+						"id": 147,
+						"vazao": 0.0,
+						"tempo": 0,
+						"periodo": 0,
+						"mes": 10,
+						"tipoFinalidade": {
+							"id": 2,
+							"descricao": "Autorizada"
+						}
+					},
+					{
+						"id": 146,
+						"vazao": 20.0,
+						"tempo": 9,
+						"periodo": 31,
+						"mes": 10,
+						"tipoFinalidade": {
+							"id": 1,
+							"descricao": "Requerida"
+						}
+					},
+					{
+						"id": 150,
+						"vazao": 0.0,
+						"tempo": 0,
+						"periodo": 0,
+						"mes": 11,
+						"tipoFinalidade": {
+							"id": 2,
+							"descricao": "Autorizada"
+						}
+					},
+					{
+						"id": 149,
+						"vazao": 0.0,
+						"tempo": 0,
+						"periodo": 0,
+						"mes": 7,
+						"tipoFinalidade": {
+							"id": 2,
+							"descricao": "Autorizada"
+						}
+					},
+					{
+						"id": 148,
+						"vazao": 20.0,
+						"tempo": 9,
+						"periodo": 31,
+						"mes": 12,
+						"tipoFinalidade": {
+							"id": 1,
+							"descricao": "Requerida"
+						}
+					},
+					{
+						"id": 162,
+						"vazao": 0.0,
+						"tempo": 0,
+						"periodo": 0,
+						"mes": 5,
+						"tipoFinalidade": {
+							"id": 2,
+							"descricao": "Autorizada"
+						}
+					},
+					{
+						"id": 157,
+						"vazao": 0.0,
+						"tempo": 0,
+						"periodo": 0,
+						"mes": 1,
+						"tipoFinalidade": {
+							"id": 2,
+							"descricao": "Autorizada"
+						}
+					},
+					{
+						"id": 158,
+						"vazao": 20.0,
+						"tempo": 9,
+						"periodo": 30,
+						"mes": 11,
+						"tipoFinalidade": {
+							"id": 1,
+							"descricao": "Requerida"
+						}
+					},
+					{
+						"id": 159,
+						"vazao": 0.0,
+						"tempo": 0,
+						"periodo": 0,
+						"mes": 8,
+						"tipoFinalidade": {
+							"id": 2,
+							"descricao": "Autorizada"
+						}
+					},
+					{
+						"id": 160,
+						"vazao": 20.0,
+						"tempo": 9,
+						"periodo": 31,
+						"mes": 7,
+						"tipoFinalidade": {
+							"id": 1,
+							"descricao": "Requerida"
+						}
+					},
+					{
+						"id": 164,
+						"vazao": 20.0,
+						"tempo": 9,
+						"periodo": 31,
+						"mes": 3,
+						"tipoFinalidade": {
+							"id": 1,
+							"descricao": "Requerida"
+						}
+					},
+					{
+						"id": 145,
+						"vazao": 20.0,
+						"tempo": 9,
+						"periodo": 28,
+						"mes": 2,
+						"tipoFinalidade": {
+							"id": 1,
+							"descricao": "Requerida"
+						}
+					},
+					{
+						"id": 165,
+						"vazao": 20.0,
+						"tempo": 9,
+						"periodo": 30,
+						"mes": 9,
+						"tipoFinalidade": {
+							"id": 1,
+							"descricao": "Requerida"
+						}
+					},
+					{
+						"id": 163,
+						"vazao": 0.0,
+						"tempo": 0,
+						"periodo": 0,
+						"mes": 3,
+						"tipoFinalidade": {
+							"id": 2,
+							"descricao": "Autorizada"
+						}
+					},
+					{
+						"id": 166,
+						"vazao": 20.0,
+						"tempo": 9,
+						"periodo": 31,
+						"mes": 1,
+						"tipoFinalidade": {
+							"id": 1,
+							"descricao": "Requerida"
+						}
+					},
+					{
+						"id": 161,
+						"vazao": 20.0,
+						"tempo": 9,
+						"periodo": 31,
+						"mes": 5,
+						"tipoFinalidade": {
+							"id": 1,
+							"descricao": "Requerida"
+						}
+					}
+				]
+			}
+		],
+		"estado": {
+			"id": 1,
+			"descricao": "DF"
+		}
+	},
+	"usuarios": [
+		{
+			"id": 46,
+			"nome": "Borges Landeiro 23",
+			"cpfCnpj": 45612378985,
+			"documentos": []
+		}
+	]
+}
