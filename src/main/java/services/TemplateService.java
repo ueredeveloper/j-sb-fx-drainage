@@ -10,18 +10,15 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 import java.util.Set;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import models.Documento;
 import models.Template;
 import utilities.JsonConverter;
 
 public class TemplateService {
-	
 
 	private String localUrl;
 
@@ -30,60 +27,60 @@ public class TemplateService {
 	}
 
 	public ServiceResponse<?> save(Template object) {
-	    try {
-	        URL apiUrl = new URL(localUrl + "/template/create");
-	        HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
-	        connection.setRequestMethod("POST");
-	        connection.setRequestProperty("Content-Type", "application/json");
-	        connection.setDoOutput(true);
-	       
-	        // Convert Template object to JSON
-	        String jsonInputString = JsonConverter.convertObjectToJson(object);
-	       // System.out.println("Request JSON: " + jsonInputString);
+		try {
+			URL apiUrl = new URL(localUrl + "/template/create");
+			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
+			connection.setRequestMethod("POST");
+			connection.setRequestProperty("Content-Type", "application/json");
+			connection.setDoOutput(true);
 
-	        // Write JSON to request body
-	        try (OutputStream os = connection.getOutputStream();
-	             OutputStreamWriter osw = new OutputStreamWriter(os, "UTF-8")) {
-	            osw.write(jsonInputString);
-	            osw.flush();
-	        }
+			// Convert Template object to JSON
+			String jsonInputString = JsonConverter.convertObjectToJson(object);
+			// System.out.println("Request JSON: " + jsonInputString);
 
-	        int responseCode = connection.getResponseCode();
-	        String responseBody;
+			// Write JSON to request body
+			try (OutputStream os = connection.getOutputStream();
+					OutputStreamWriter osw = new OutputStreamWriter(os, "UTF-8")) {
+				osw.write(jsonInputString);
+				osw.flush();
+			}
 
-	        if (responseCode == HttpURLConnection.HTTP_CREATED) {
-	            try (BufferedReader br = new BufferedReader(
-	                    new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
-	                StringBuilder response = new StringBuilder();
-	                String responseLine;
-	                while ((responseLine = br.readLine()) != null) {
-	                    response.append(responseLine);
-	                }
-	                responseBody = response.toString();
-	            }
-	        } else {
-	            System.out.println("HttpURLConnection != HTTP_CREATED, Error occurred");
-	            handleErrorResponse(connection);
-	            responseBody = readErrorStream(connection);
-	        }
+			int responseCode = connection.getResponseCode();
+			String responseBody;
 
-	        System.out.println("Response body: " + responseBody);
-	        connection.disconnect();
+			if (responseCode == HttpURLConnection.HTTP_CREATED) {
+				try (BufferedReader br = new BufferedReader(
+						new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
+					StringBuilder response = new StringBuilder();
+					String responseLine;
+					while ((responseLine = br.readLine()) != null) {
+						response.append(responseLine);
+					}
+					responseBody = response.toString();
+				}
+			} else {
+				System.out.println("HttpURLConnection != HTTP_CREATED, Error occurred");
+				handleErrorResponse(connection);
+				responseBody = readErrorStream(connection);
+			}
 
-	        // Check if response body is a JSON object
-	        if (responseBody.trim().startsWith("{")) {
-	            Template responseObject = new Gson().fromJson(responseBody, Template.class);
-	            //System.out.println("Parsed response object: " + responseObject);
-	            return new ServiceResponse<>(responseCode, responseObject);
-	        } else {
-	          //  System.out.println("Unexpected response format: " + responseBody);
-	            return new ServiceResponse<>(responseCode, responseBody);
-	        }
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	        System.out.println("Exception occurred");
-	        return null; // Return null if an error occurs
-	    }
+			//System.out.println("Response body: " + responseBody);
+			connection.disconnect();
+
+			// Check if response body is a JSON object
+			if (responseBody.trim().startsWith("{")) {
+				Template responseObject = new Gson().fromJson(responseBody, Template.class);
+				// System.out.println("Parsed response object: " + responseObject);
+				return new ServiceResponse<>(responseCode, responseObject);
+			} else {
+				// System.out.println("Unexpected response format: " + responseBody);
+				return new ServiceResponse<>(responseCode, responseBody);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("Exception occurred");
+			return null; // Return null if an error occurs
+		}
 	}
 
 	public ServiceResponse<?> update(Template object) {
@@ -97,7 +94,7 @@ public class TemplateService {
 			// Convert object to JSON
 			String jsonInputString = JsonConverter.convertObjectToJson(object);
 
-			//System.out.println(jsonInputString);
+			// System.out.println(jsonInputString);
 
 			// Write JSON to request body
 			try (OutputStream os = connection.getOutputStream();
@@ -135,17 +132,14 @@ public class TemplateService {
 		}
 	}
 
-	public Set<Template> listTemplatesByParams(String typeOfDocument, String typeOfGrand, String subtypeOfGrant) throws UnsupportedEncodingException {
-		
+	public Set<Template> listTemplatesByParams(String typeOfDocument, String typeOfGrand, String subtypeOfGrant)
+			throws UnsupportedEncodingException {
+
 		System.out.println("search  template if not has");
-		String url = localUrl + "/template/list-templates-by-params?"
-				+ "tipoDocumento="
-				+ URLEncoder.encode(typeOfDocument, "UTF-8")
-				+ "&tipoOutorga="
-				+ URLEncoder.encode(typeOfGrand, "UTF-8")
-				+ "&subtipoOutorga="
-				+ URLEncoder.encode(subtypeOfGrant, "UTF-8");
-		
+		String url = localUrl + "/template/list-templates-by-params?" + "tipoDocumento="
+				+ URLEncoder.encode(typeOfDocument, "UTF-8") + "&tipoOutorga=" + URLEncoder.encode(typeOfGrand, "UTF-8")
+				+ "&subtipoOutorga=" + URLEncoder.encode(subtypeOfGrant, "UTF-8");
+
 		System.out.println(url);
 
 		try {
@@ -186,7 +180,7 @@ public class TemplateService {
 		}
 
 		reader.close();
-		
+
 		System.out.println("templates " + response.toString());
 
 		return new Gson().fromJson(response.toString(), new TypeToken<Set<Template>>() {
@@ -209,11 +203,10 @@ public class TemplateService {
 			return response.toString();
 		}
 	}
-	
+
 	private String convertObjectToJson(Object object) {
 		Gson gson = new Gson();
 		return gson.toJson(object);
 	}
-
 
 }

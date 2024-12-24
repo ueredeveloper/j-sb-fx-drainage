@@ -85,9 +85,9 @@ public class EnderecoService {
 			// Convert Documento object to JSON
 			String jsonInputString = convertObjectToJson(endereco);
 			
-			System.out.println("edited string return");
+			//System.out.println("edited string return");
 
-			System.out.println(jsonInputString);
+			//System.out.println(jsonInputString);
 
 			// Write JSON to request body
 			try (OutputStream os = connection.getOutputStream();
@@ -98,7 +98,7 @@ public class EnderecoService {
 
 			int responseCode = connection.getResponseCode();
 			
-			System.out.println("edição res code " + responseCode);
+			//System.out.println("edição res code " + responseCode);
 
 			String responseBody;
 			if (responseCode == HttpURLConnection.HTTP_OK) {
@@ -169,13 +169,13 @@ public class EnderecoService {
 
 			connection.disconnect();
 			
-			System.out.println(responseBody);
+			//System.out.println(responseBody);
 
 			return new ServiceResponse<>(responseCode, responseBody); // Change null to the actual response body if
 																		// needed
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println(e.getMessage());
+			//System.out.println(e.getMessage());
 			// Handle the exception if needed
 			return new ServiceResponse<>(-1, e.getMessage()); // You might want to use a different code for errors
 		}
@@ -194,7 +194,7 @@ public class EnderecoService {
 
 		reader.close();
 		
-		System.out.println(response.toString());
+		//System.out.println(response.toString());
 
 		return new Gson().fromJson(response.toString(), new TypeToken<List<Endereco>>() {
 		}.getType());

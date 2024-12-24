@@ -194,8 +194,6 @@ public class AddInterferenceController implements Initializable {
 				tfLatitude.setText(newValue.getLatitude().toString());
 				tfLongitude.setText(newValue.getLongitude().toString());
 
-				System.out.println(newValue.getEndereco());
-
 				Endereco selecteInterferenceAddres = newValue.getEndereco();
 				// Se houver endereço relacionado com a interferência, preencher o combobox do
 				// endereço
@@ -560,8 +558,6 @@ public class AddInterferenceController implements Initializable {
 		try {
 			InterferenciaService service = new InterferenciaService(urlService);
 
-			System.out.println(
-					selected.getTipoInterferencia().getId() + " desc " + selected.getTipoInterferenciaDescricao());
 			// É preciso informar o tipo de
 			ServiceResponse<?> response = service.deleteById(selected.getId(), selected.getTipoInterferencia().getId());
 

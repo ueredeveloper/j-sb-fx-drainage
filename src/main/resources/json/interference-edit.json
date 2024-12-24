@@ -1,0 +1,306 @@
+{
+	"caesb": false,
+	"nivelEstatico": "99",
+	"nivelDinamico": "1010",
+	"profundidade": "11",
+	"vazaoOutorgavel": 77,
+	"vazaoSistema": 66,
+	"vazaoTeste": 88,
+	"tipoPoco": {
+		"id": 1
+	},
+	"id": 10,
+	"latitude": 1.0,
+	"longitude": 2.0,
+	"endereco": {
+		"id": 16,
+		"logradouro": "Rua Nevoeiro, 1234",
+		"documentos": [],
+		"interferencias": []
+	},
+	"tipoInterferencia": {
+		"id": 2,
+		"descricao": "Subterrânea"
+	},
+	"tipoOutorga": {
+		"id": 1,
+		"descricao": "Outorga"
+	},
+	"subtipoOutorga": {
+		"id": 1,
+		"descricao": "Renovação"
+	},
+	"situacaoProcesso": {
+		"id": 1,
+		"descricao": "Arquivado"
+	},
+	"tipoAto": {
+		"id": 1,
+		"descricao": "Despacho"
+	},
+	"finalidades": [
+		{
+			"id": 22,
+			"finalidade": "Abastecimento Humano",
+			"subfinalidade": "Urbano",
+			"quantidade": 100.0,
+			"consumo": 10500.0,
+			"total": 1050000.0,
+			"tipoFinalidade": {
+				"id": 1
+			}
+		},
+		{
+			"finalidade": "Indústria Natal",
+			"subfinalidade": "Nat Ind ",
+			"quantidade": 45.0,
+			"consumo": 8987.0,
+			"total": 404415.0,
+			"tipoFinalidade": {
+				"id": 2
+			}
+		}
+	],
+	"demandas": [
+		{
+			"id": 193,
+			"vazao": 1050000.0,
+			"tempo": 9,
+			"periodo": 31,
+			"mes": 1,
+			"tipoFinalidade": {
+				"id": 1
+			}
+		},
+		{
+			"id": 196,
+			"vazao": 1050000.0,
+			"tempo": 9,
+			"periodo": 30,
+			"mes": 11,
+			"tipoFinalidade": {
+				"id": 1
+			}
+		},
+		{
+			"id": 197,
+			"vazao": 1050000.0,
+			"tempo": 9,
+			"periodo": 31,
+			"mes": 5,
+			"tipoFinalidade": {
+				"id": 1
+			}
+		},
+		{
+			"id": 199,
+			"vazao": 1050000.0,
+			"tempo": 9,
+			"periodo": 31,
+			"mes": 10,
+			"tipoFinalidade": {
+				"id": 1
+			}
+		},
+		{
+			"id": 201,
+			"vazao": 1050000.0,
+			"tempo": 9,
+			"periodo": 30,
+			"mes": 6,
+			"tipoFinalidade": {
+				"id": 1
+			}
+		},
+		{
+			"id": 205,
+			"vazao": 1050000.0,
+			"tempo": 9,
+			"periodo": 31,
+			"mes": 8,
+			"tipoFinalidade": {
+				"id": 1
+			}
+		},
+		{
+			"id": 206,
+			"vazao": 1050000.0,
+			"tempo": 9,
+			"periodo": 30,
+			"mes": 9,
+			"tipoFinalidade": {
+				"id": 1
+			}
+		},
+		{
+			"id": 209,
+			"vazao": 1050000.0,
+			"tempo": 9,
+			"periodo": 31,
+			"mes": 7,
+			"tipoFinalidade": {
+				"id": 1
+			}
+		},
+		{
+			"id": 211,
+			"vazao": 1050000.0,
+			"tempo": 9,
+			"periodo": 31,
+			"mes": 3,
+			"tipoFinalidade": {
+				"id": 1
+			}
+		},
+		{
+			"id": 213,
+			"vazao": 1050000.0,
+			"tempo": 9,
+			"periodo": 30,
+			"mes": 4,
+			"tipoFinalidade": {
+				"id": 1
+			}
+		},
+		{
+			"id": 215,
+			"vazao": 1050000.0,
+			"tempo": 9,
+			"periodo": 28,
+			"mes": 2,
+			"tipoFinalidade": {
+				"id": 1
+			}
+		},
+		{
+			"id": 216,
+			"vazao": 1050000.0,
+			"tempo": 9,
+			"periodo": 31,
+			"mes": 12,
+			"tipoFinalidade": {
+				"id": 1
+			}
+		},
+		{
+			"id": 194,
+			"vazao": 1050030.0,
+			"tempo": 59,
+			"periodo": 91,
+			"mes": 3,
+			"tipoFinalidade": {
+				"id": 2
+			}
+		},
+		{
+			"id": 195,
+			"vazao": 1050030.0,
+			"tempo": 59,
+			"periodo": 91,
+			"mes": 5,
+			"tipoFinalidade": {
+				"id": 2
+			}
+		},
+		{
+			"id": 198,
+			"vazao": 1050030.0,
+			"tempo": 59,
+			"periodo": 90,
+			"mes": 4,
+			"tipoFinalidade": {
+				"id": 2
+			}
+		},
+		{
+			"id": 200,
+			"vazao": 1050030.0,
+			"tempo": 59,
+			"periodo": 91,
+			"mes": 8,
+			"tipoFinalidade": {
+				"id": 2
+			}
+		},
+		{
+			"id": 202,
+			"vazao": 1050030.0,
+			"tempo": 59,
+			"periodo": 90,
+			"mes": 9,
+			"tipoFinalidade": {
+				"id": 2
+			}
+		},
+		{
+			"id": 203,
+			"vazao": 1050030.0,
+			"tempo": 59,
+			"periodo": 91,
+			"mes": 12,
+			"tipoFinalidade": {
+				"id": 2
+			}
+		},
+		{
+			"id": 204,
+			"vazao": 1050030.0,
+			"tempo": 59,
+			"periodo": 91,
+			"mes": 10,
+			"tipoFinalidade": {
+				"id": 2
+			}
+		},
+		{
+			"id": 207,
+			"vazao": 1050030.0,
+			"tempo": 59,
+			"periodo": 88,
+			"mes": 2,
+			"tipoFinalidade": {
+				"id": 2
+			}
+		},
+		{
+			"id": 208,
+			"vazao": 1050030.0,
+			"tempo": 59,
+			"periodo": 91,
+			"mes": 7,
+			"tipoFinalidade": {
+				"id": 2
+			}
+		},
+		{
+			"id": 210,
+			"vazao": 1050030.0,
+			"tempo": 59,
+			"periodo": 90,
+			"mes": 11,
+			"tipoFinalidade": {
+				"id": 2
+			}
+		},
+		{
+			"id": 212,
+			"vazao": 1050030.0,
+			"tempo": 59,
+			"periodo": 91,
+			"mes": 1,
+			"tipoFinalidade": {
+				"id": 2
+			}
+		},
+		{
+			"id": 214,
+			"vazao": 1050030.0,
+			"tempo": 59,
+			"periodo": 90,
+			"mes": 6,
+			"tipoFinalidade": {
+				"id": 2
+			}
+		}
+	]
+}

@@ -108,15 +108,12 @@ public class AddressComboBoxController {
 		try {
 			EnderecoService service = new EnderecoService(localUrl);
 			Set<Endereco> fetchedAddresses = new HashSet<>();
-			System.out.println("fetch And Update address, len" + keyword.length());
+
 			// Buscar endereços apenas contento 2, 4 , 6 ou 8 caracteres. Assim o serviço
 			// não fica superesplotado.
 			if (keyword.length() == 2 || keyword.length() == 4 || keyword.length() == 6 || keyword.length() == 8) {
-				System.out.println("if len 2 or 4 " + keyword.length());
 				fetchedAddresses.addAll(service.fetchAddressByKeyword(keyword));
 			}
-
-			System.out.println("array vazia? " + fetchedAddresses.isEmpty());
 
 			if (!fetchedAddresses.isEmpty()) {
 
@@ -138,8 +135,6 @@ public class AddressComboBoxController {
 	public Endereco getSelectedObject() {
 
 		Endereco object = comboBox.selectionModelProperty().get().isEmpty() ? null : comboBox.getItems().get(0);
-
-		System.out.println(object.getLogradouro());
 		return object;
 	}
 

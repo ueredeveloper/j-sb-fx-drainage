@@ -227,7 +227,6 @@ public class AddSubterraneanDetailsController implements Initializable {
 			if (bboBtnFillRequestedFlow.getOption()) {
 
 				if (tfTotalRequestedConsumption.getText() != null) {
-					System.out.println(tfTotalRequestedConsumption.getText());
 
 					// Lista para filtrar as demandas por tipo, demandas requeridas, e ordenar por
 					// mês (jan,fev,...).
@@ -244,16 +243,12 @@ public class AddSubterraneanDetailsController implements Initializable {
 
 						demand.setVazao(Double.parseDouble(tfTotalRequestedConsumption.getText()));
 
-						System.out.println(demand.getVazao());
-
 						addDemandFlowLine(gpRequestedDemands, demand.getMes(), demand);
 					});
 
 				}
 
 			} else {
-
-				System.out.println(bboBtnFillRequestedFlow.getOption());
 
 				if (tfTotalRequestedConsumption.getText() != null) {
 
@@ -675,8 +670,6 @@ public class AddSubterraneanDetailsController implements Initializable {
 
 			purpousesWrapper.getPurpouses().add(purpouseWrapper.getPurpouse());
 
-			System.out.println("purpouses " + purpouseWrapper.getPurpouse());
-
 			tfPurpouse.setText(purpouseWrapper.getPurpouse().getFinalidade());
 			tfSubpurpose.setText(purpouseWrapper.getPurpouse().getSubfinalidade());
 			if (purpouseWrapper.getPurpouse().getQuantidade() != null) {
@@ -934,6 +927,44 @@ public class AddSubterraneanDetailsController implements Initializable {
 	}
 
 	public void setPurpouses(Set<Finalidade> newPurpouses) {
+
+		/**
+		 * Se não houver finalidades cadastradas, adicione uma requerida e uma
+		 * autorizada com valores vazios
+		 */
+		if (newPurpouses.size() == 0) {
+			newPurpouses.add(new Finalidade("", "", 0.0, 0.0, null, new TipoFinalidade(1L)));
+			newPurpouses.add(new Finalidade("", "", 0.0, 0.0, null, new TipoFinalidade(2L)));
+		}
+
+		/*
+		 * Se não tiver sido salvo o tipo de finalidade, adicinar como finalidade
+		 * requerida. Assim o usuário pode ver, editar ou apagar se for o caso
+		 */
+		newPurpouses.forEach(item -> {
+			if (item.getTipoFinalidade() == null) {
+				item.setTipoFinalidade(new TipoFinalidade(1L));
+			}
+		});
+
+		// Busca finalidade requerida, se não houver, adiciona. É preciso have ao menos
+		// uma para que o usuário possa manipular.
+		Finalidade finReq = newPurpouses.stream().filter(obj -> obj.getTipoFinalidade().getId() == 1L).findAny()
+				.orElse(null);
+
+		if (finReq == null) {
+			newPurpouses.add(new Finalidade("", "", 0.0, 0.0, null, new TipoFinalidade(1L)));
+		}
+
+		// Busca finalidade autorizada, se não houver, adiciona. É preciso have ao menos
+		// uma para que o usuário possa manipular.
+		Finalidade finAuth = newPurpouses.stream().filter(obj -> obj.getTipoFinalidade().getId() == 2L).findAny()
+				.orElse(null);
+
+		if (finAuth == null) {
+			newPurpouses.add(new Finalidade("", "", 0.0, 0.0, null, new TipoFinalidade(2L)));
+		}
+
 		purpousesWrapper.setPurpouses(newPurpouses);
 
 		requestedPurposesGrid.getChildren().clear();
@@ -943,15 +974,14 @@ public class AddSubterraneanDetailsController implements Initializable {
 		AtomicInteger autIndex = new AtomicInteger(0);
 
 		purpousesWrapper.getPurpouses().forEach(item -> {
-			if (item.getTipoFinalidade().getId() == 1) {
-
+			if (item.getTipoFinalidade().getId() == 1L) {
 				addPurpouseRow(reqIndex.getAndIncrement(), requestedPurposesGrid, tfTotalRequestedConsumption,
 						btnCalculateReqFin, item.getTipoFinalidade(), item);
 			} else {
-
 				addPurpouseRow(autIndex.getAndIncrement(), authorizedPurposesGrid, tfTotalAuthorizedConsumption,
 						btnCalculateAuthFin, item.getTipoFinalidade(), item);
 			}
+
 		});
 	}
 

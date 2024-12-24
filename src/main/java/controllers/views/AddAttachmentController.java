@@ -206,8 +206,6 @@ public class AddAttachmentController implements Initializable {
 
 			ServiceResponse<?> response = service.save(this.attachment);
 
-			System.out.println(response);
-
 			if (response.getResponseCode() == 200) {
 
 				// Informa salvamento com sucesso
@@ -235,8 +233,7 @@ public class AddAttachmentController implements Initializable {
 
 			} else {
 				// adiconar alerta (Toast) de erro
-				// System.out.println(serviceResponse.getResponseCode());
-
+		
 				// Informa salvamento com sucesso
 				Node source = (Node) event.getSource();
 				Stage ownerStage = (Stage) source.getScene().getWindow();

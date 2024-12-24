@@ -269,7 +269,8 @@ public class DocumentController implements Initializable {
 					addressCbController.addItemToDbObjects(endereco);
 
 				}
-				cbAddress.getSelectionModel().select(endereco);
+				//cbAddress.getSelectionModel().select(endereco);
+				addressCbController.fillAndSelectComboBox(endereco);
 
 				// Limpar componentes que não são preenchidos.
 
@@ -407,7 +408,9 @@ public class DocumentController implements Initializable {
 
 		loader.setRoot(apAddInterference);
 
+		// Captura o endereço selecionado
 		Endereco address = cbAddress.selectionModelProperty().get().isEmpty() ? null : cbAddress.getItems().get(0);
+		
 		if (address == null) {
 			// Alerta (Toast) de sucesso na edi��o
 			Node source = cbAddress; // The source is tfPurpouse (JFXTextField)
@@ -918,11 +921,9 @@ public class DocumentController implements Initializable {
 		Set<Usuario> usuarios = new HashSet<>();
 		usuarios.add(selectedUser);
 
-
 		try {
 
 			DocumentService documentService = new DocumentService(urlService);
-
 
 			DocumentoTipo docType = cbDocType.getValue();
 
@@ -932,7 +933,7 @@ public class DocumentController implements Initializable {
 			newDocument.setNumeroSei(toUpdateNumberSeiLong);
 			newDocument.setEndereco(selectedAddress);
 			newDocument.setProcesso(selectedProcess);
-			
+
 			newDocument.setUsuarios(usuarios);
 
 			ServiceResponse<?> documentoServiceResponse = documentService.save(newDocument);

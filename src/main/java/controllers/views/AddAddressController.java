@@ -169,8 +169,6 @@ public class AddAddressController implements Initializable {
 
 		Long id = object != null && object.getId() != null ? object.getId() : null;
 
-		System.out.println(id);
-
 		String logradouro = tfAddress.getText();
 		String bairro = tfNeighborhood.getText();
 		String cidade = tfCity.getText();

@@ -168,3 +168,18 @@
 ## 19 de Dezembro de 2024
 - [] - Usuario
 	Adicionar pesquisa por nome com ou sem acento
+
+## 23 de Dezembro de 2024
+- [] - Tela Adicionar Usuário
+	Adicionar busca por documentos
+	
+- [] - Tela Adicionar Usuário
+	 - [] - Listar Endereços
+	 
+- [] - Finalidade Requerida - Cópia
+	 - [] Adicionar botão de cópia da finalidade requerida na tela finalidade autorizada.
+	 
+	 
+	
+	
+

@@ -113,8 +113,6 @@ public class UserComboBoxCpfCnpjController {
 
 			if (keyword.length() == 2 || keyword.length() == 4 || keyword.length() == 6 || keyword.length() == 8) {
 				fetchedObjects.addAll(service.listByCpfCnpj(keyword));
-
-				System.out.println("quantidade de cpfs " + fetchedObjects.size());
 			}
 
 			if (!fetchedObjects.isEmpty()) {

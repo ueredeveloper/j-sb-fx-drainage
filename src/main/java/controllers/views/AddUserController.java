@@ -219,8 +219,6 @@ public class AddUserController implements Initializable {
 		String nome = tfName.getText();
 		String cpfCnpj = cbCpfCnpj.selectionModelProperty().get().isEmpty() ? null : cbCpfCnpj.getItems().get(0);
 
-		System.out.println(cpfCnpj);
-
 		if (nome.isEmpty() || nome == null) {
 			Node source = (Node) event.getSource();
 			Stage ownerStage = (Stage) source.getScene().getWindow();

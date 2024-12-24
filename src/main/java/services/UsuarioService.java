@@ -43,7 +43,7 @@ public class UsuarioService {
 			// Convert Documento object to JSON
 			String jsonInputString = convertObjectToJson(toSaveObject);
 
-			System.out.println("save usuario " + jsonInputString);
+			//System.out.println("save usuario " + jsonInputString);
 
 			// Write JSON to request body
 			try (OutputStream os = connection.getOutputStream();
@@ -54,7 +54,7 @@ public class UsuarioService {
 
 			int responseCode = connection.getResponseCode();
 			
-			System.out.println("response code " + responseCode);
+			//System.out.println("response code " + responseCode);
 
 			String responseBody;
 		
@@ -216,6 +216,8 @@ public class UsuarioService {
 	}
 
 	public Set<Usuario> listUsersByDocumentId(Long id) {
+		
+		System.out.println("list users by documento id " + id);
 
 		try {
 			URL apiUrl = new URL(urlService + "/user/list-by-document-id?id=" + id);
