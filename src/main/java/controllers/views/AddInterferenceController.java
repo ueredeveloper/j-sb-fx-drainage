@@ -612,7 +612,7 @@ public class AddInterferenceController implements Initializable {
 	/**
 	 * Atualiza as coordenadas dos TextFields de acordo com o clique no mapa.
 	 * 
-	 * @param interferencia
+	 *  interferencia
 	 */
 	public void updateCoordinates(Interferencia interferencia) {
 

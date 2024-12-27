@@ -124,7 +124,7 @@ public class WebViewDocument {
 	/**
 	 * Invokes JavaScript code in the WebView, waiting for the content to be ready.
 	 * 
-	 * @param script
+	 *  script
 	 *            String with the JavaScript code to be executed.
 	 */
 	private void invokeJS(final String script) {

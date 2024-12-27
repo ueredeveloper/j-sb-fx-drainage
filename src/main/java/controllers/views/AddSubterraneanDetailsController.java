@@ -115,16 +115,10 @@ public class AddSubterraneanDetailsController implements Initializable {
 	private JFXButton btnCalculateAuthFin;
 
 	@FXML
-	private JFXButton btnFillAuthFlow;
-
-	@FXML
 	private JFXComboBox<?> cbAuthTimeFlow;
 
 	@FXML
-	private JFXButton btnFillAuthTime, btnCopyReqDemand;
-
-	@FXML
-	private JFXButton btnFillAuthPeriod;
+	private JFXButton btnFillAuthFlow, btnFillAuthTime, btnFillAuthPeriod, btnCopyReqDemand;
 
 	PurpousesWrapper purpousesWrapper = new PurpousesWrapper(new HashSet<>());
 
@@ -199,7 +193,7 @@ public class AddSubterraneanDetailsController implements Initializable {
 			addDemandPeriodLine(gpAuthorizedDemands, demand.getMes(), demand);
 		});
 
-		// Create and populate a list of integers from 1 to 20
+		// Cria as horas de vazão para o combobox cbReqTimeFlow (1 - 20 horas)
 		ObservableList<Integer> numbers = FXCollections
 				.observableArrayList(IntStream.rangeClosed(1, 20).boxed().collect(Collectors.toList()));
 
@@ -288,8 +282,15 @@ public class AddSubterraneanDetailsController implements Initializable {
 
 		});
 
+		/**
+		 * Cria as opções false ou true. Assim preenche de duas formas o tempo, todos os
+		 * campos, ou apenas de abril a outubro.
+		 */
 		ButtonBooleanOption bboBtnFillRequestedTime = new ButtonBooleanOption(true);
 
+		/**
+		 * Ação de preenchimento da linha tempo de captação
+		 */
 		btnFillReqTime.setOnMouseClicked(event -> {
 
 			Integer selectedValue = null;
@@ -385,8 +386,15 @@ public class AddSubterraneanDetailsController implements Initializable {
 
 		});
 
+		/**
+		 * Cria a opção falso ou true de preenchimento completo da linha ou somente de
+		 * abril a outubro, período de seca.
+		 */
 		ButtonBooleanOption bboFillRequestedPeriod = new ButtonBooleanOption(true);
 
+		/**
+		 * Ação de preenchimento automático dos dias de captação mês a mês.
+		 */
 		btnFillReqPeriod.setOnMouseClicked(event -> {
 
 			if (bboFillRequestedPeriod.getOption()) {
@@ -450,6 +458,10 @@ public class AddSubterraneanDetailsController implements Initializable {
 
 		});
 
+		/**
+		 * Copia a finalidades e demandas requeridas para as finalidades e demandas
+		 * autorizadas, igualando as duas.
+		 */
 		btnCopyReqDemand.setOnMouseClicked(event -> {
 
 			Stream<Finalidade> purpouses = purpousesWrapper.getPurpouses().stream();
@@ -471,13 +483,15 @@ public class AddSubterraneanDetailsController implements Initializable {
 			purpousesWrapper.getPurpouses().clear();
 			// Limpa o GridPane de finalidades autorizadas
 			authorizedPurposesGrid.getChildren().clear();
-			
-			// Ajusta o tamanho da array de finalidade autorizada para o mesmo tamanho das finalidades requeridas. 
-			// Assim se houver mais finalidades autorizadas que requeridas, será removida estas finalidades a mais
+
+			// Ajusta o tamanho da array de finalidade autorizada para o mesmo tamanho das
+			// finalidades requeridas.
+			// Assim se houver mais finalidades autorizadas que requeridas, será removida
+			// estas finalidades a mais
 			if (purListType2.size() > purListType1.size()) {
-			    while (purListType2.size() > purListType1.size()) {
-			        purListType2.remove(purListType2.size() - 1); // Remove elements from the end
-			    }
+				while (purListType2.size() > purListType1.size()) {
+					purListType2.remove(purListType2.size() - 1); // Remove elements from the end
+				}
 			}
 
 			purListType1.forEach(pur -> {
@@ -508,7 +522,8 @@ public class AddSubterraneanDetailsController implements Initializable {
 				}
 
 				// Atualiza o GridPane
-				addPurpouseRow(idxPur[0], authorizedPurposesGrid, tfTotalConsumption, btnCalculateAuthFin, null, pur);
+				addPurpouseRow(idxPur[0], authorizedPurposesGrid, tfTotalConsumption, btnCalculateAuthFin,
+						new TipoFinalidade(2L), pur);
 
 				idxPur[0]++;
 
@@ -532,16 +547,14 @@ public class AddSubterraneanDetailsController implements Initializable {
 			;
 
 			int[] idxDem = { 0 };
-			
+
 			demType1List.forEach(dem -> {
-				
-				
+
 				demType2List.get(idxDem[0]).setMes(dem.getMes());
 				demType2List.get(idxDem[0]).setTempo(dem.getTempo());
 				demType2List.get(idxDem[0]).setPeriodo(dem.getPeriodo());
 				demType2List.get(idxDem[0]).setTipoFinalidade(new TipoFinalidade(2L));
-			
-				
+
 				// Atualiza a visualização (GridPane)
 				addDemandFlowLine(gpAuthorizedDemands, dem.getMes(), dem);
 				addDemandTimeLine(gpAuthorizedDemands, dem.getMes(), dem);
@@ -698,12 +711,7 @@ public class AddSubterraneanDetailsController implements Initializable {
 	 * Adiciona linhas de finalidades, cada linha tem uma finalidade, subfinalidade,
 	 * quantidade, consumo e total por finalidade.
 	 * 
-	 * @param index
-	 * @param gridPane
-	 * @param tfTotalConsumption
-	 * @param btnTotalConsumption
-	 * @param typeOfPurpouse
-	 * @param purpouse
+	 * index gridPane tfTotalConsumption btnTotalConsumption typeOfPurpouse purpouse
 	 */
 	public void addPurpouseRow(int index, GridPane gridPane, JFXTextField tfTotalConsumption,
 			JFXButton btnTotalConsumption, TipoFinalidade typeOfPurpouse, Finalidade purpouse) {
@@ -925,15 +933,25 @@ public class AddSubterraneanDetailsController implements Initializable {
 		});
 
 		btnTotalConsumption.setOnMouseClicked(event -> {
-			final Double[] total = { 0.0 }; // Usando um array para contornar a limitação de variáveis finais
+			// Usando um array para contornar a limitação de variáveis finais
+			final Double[] total = { 0.0 };
+
 			purpousesWrapper.getPurpouses().forEach(p -> {
-				Double subtotal = p.getTotal();
-				if (subtotal != null) {
-					total[0] += subtotal;
+
+				if (p.getTipoFinalidade().getId() == typeOfPurpouse.getId()) {
+					Double subtotal = p.getTotal();
+					if (subtotal != null) {
+						total[0] += subtotal;
+					}
 				}
+
 			});
 
-			tfTotalConsumption.setText(total[0].toString());
+			// Quando copia as finalidades requeridas para as finalidades autozizadas este textfild fica nulo e não atualiza o total.
+			if (tfTotalConsumption != null) {
+				tfTotalConsumption.setText(total[0].toString());
+
+			}
 
 		});
 

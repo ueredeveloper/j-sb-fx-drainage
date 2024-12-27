@@ -185,9 +185,9 @@ public class AttachmentComboBoxController implements Initializable {
 	 * garantindo que apenas uma instância com id nulo (a última) seja mantida. Este
 	 * método também garante que cada id não nulo único apareça apenas uma vez.
 	 * 
-	 * @param items
+	 *  items
 	 *            ObservableList<Anexo> items a ser filtrada
-	 * @return List<Anexo> uma lista filtrada com ids não nulos únicos e, se
+	 *  List<Anexo> uma lista filtrada com ids não nulos únicos e, se
 	 *         aplicável, o último item com id nulo.
 	 */
 	public List<Anexo> filterAndMaintainLastNullId(ObservableList<Anexo> items) {

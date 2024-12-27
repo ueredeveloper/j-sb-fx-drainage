@@ -14,7 +14,7 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
 	/**
-	 * Método principal que inicia a aplicação
+	 * Método principal que inicia a aplicação  
 	 *
 	 * @param args.
 	 */

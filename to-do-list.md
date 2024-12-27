@@ -161,25 +161,33 @@
 	Adicione nome do ponto, por exemplo, Ponto 1, Ponto 2.
 	
 ## 11 de Outubro de 2024
-- [] - Seleção de Interferência e Finalidades
-	Quando seleciona uma interferência e ela não  tem nenhuma finalidade requerida, o espaço de preencher as finalidades está ficando vazio. Adicionar
-	possibilidade de inserir finalidade ao selecionar uma interferência sem finalidade requerida ou autorizada.
+- [] - Seleï¿½ï¿½o de Interferï¿½ncia e Finalidades
+	Quando seleciona uma interferï¿½ncia e ela nï¿½o  tem nenhuma finalidade requerida, o espaï¿½o de preencher as finalidades estï¿½ ficando vazio. Adicionar
+	possibilidade de inserir finalidade ao selecionar uma interferï¿½ncia sem finalidade requerida ou autorizada.
 	
 ## 19 de Dezembro de 2024
 - [] - Usuario
 	Adicionar pesquisa por nome com ou sem acento
 
 ## 23 de Dezembro de 2024
-- [] - Tela Adicionar Usuário
+- [] - Tela Adicionar Usuï¿½rio
 	Adicionar busca por documentos
 	
-- [] - Tela Adicionar Usuário
-	 - [] - Listar Endereços
+- [] - Tela Adicionar Usuï¿½rio
+	 - [] - Listar Endereï¿½os
 	 
-- [] - Finalidade Requerida - Cópia
-	 - [] Adicionar botão de cópia da finalidade requerida na tela finalidade autorizada.
+- [] - Finalidade Requerida - Cï¿½pia
+	 - [] Adicionar botï¿½o de cï¿½pia da finalidade requerida na tela finalidade autorizada.
+
+## 27 de Dezembro de 2024
+- [X] Para compilar sem testes e sem gerar documentaÃ§Ã£o
+	mvn clean install -DskipTests -Dmaven.javadoc.skip=true
+
+- [] Adicioanr conversor de coordenadas
 	 
-	 
+- [] Verificar ediÃ§Ã£o de processo e anexo na tela documento
+
+- [] Ao salvar o documento nÃ£o estÃ¡ relacionando o usuÃ¡rio selecionado
 	
 	
 
