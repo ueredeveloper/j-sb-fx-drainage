@@ -452,32 +452,107 @@ public class AddSubterraneanDetailsController implements Initializable {
 
 		btnCopyReqDemand.setOnMouseClicked(event -> {
 
-			// demandsStream
-			Stream<Demanda> ds1 = demandsWrapper.getDemands().stream();
+			Stream<Finalidade> purpouses = purpousesWrapper.getPurpouses().stream();
 
-			List<Demanda> rdList = ds1.filter(d -> d.getTipoFinalidade().getId() == 1L)
-					.sorted(Comparator.comparing(d -> d.getMes())).collect(Collectors.toList());
+			List<Finalidade> purListType1 = purpouses.filter(d -> d.getTipoFinalidade().getId() == 1L)
+					// .sorted(Comparator.comparing(d -> d.getMes()))
+					.collect(Collectors.toList());
 			;
 
-			Stream<Demanda> ds2 = demandsWrapper.getDemands().stream();
+			purpouses = purpousesWrapper.getPurpouses().stream();
 
-			List<Demanda> adList = ds2.filter(d -> d.getTipoFinalidade().getId() == 2L)
-					.sorted(Comparator.comparing(d -> d.getMes())).collect(Collectors.toList());
+			List<Finalidade> purListType2 = purpouses.filter(d -> d.getTipoFinalidade().getId() == 2L)
+					// .sorted(Comparator.comparing(d -> d.getMes()))
+					.collect(Collectors.toList());
 			;
 
-			int[] idx = { 0 };
-			rdList.forEach(rdl -> {
-				adList.get(idx[0]).setVazao(rdl.getVazao() + 30);
-				adList.get(idx[0]).setTempo(rdl.getTempo() + 50);
-				adList.get(idx[0]).setPeriodo(rdl.getPeriodo() + 60);
+			int[] idxPur = { 0 };
+			// Limpa todas as finalidades
+			purpousesWrapper.getPurpouses().clear();
+			// Limpa o GridPane de finalidades autorizadas
+			authorizedPurposesGrid.getChildren().clear();
+			
+			// Ajusta o tamanho da array de finalidade autorizada para o mesmo tamanho das finalidades requeridas. 
+			// Assim se houver mais finalidades autorizadas que requeridas, será removida estas finalidades a mais
+			if (purListType2.size() > purListType1.size()) {
+			    while (purListType2.size() > purListType1.size()) {
+			        purListType2.remove(purListType2.size() - 1); // Remove elements from the end
+			    }
+			}
 
-				addDemandFlowLine(gpAuthorizedDemands, rdl.getMes(), adList.get(idx[0]));
-				addDemandTimeLine(gpAuthorizedDemands, rdl.getMes(), adList.get(idx[0]));
-				addDemandPeriodLine(gpAuthorizedDemands, rdl.getMes(), adList.get(idx[0]));
+			purListType1.forEach(pur -> {
 
-				idx[0]++;
+				if (idxPur[0] < purListType2.size()) {
+
+					if (purListType2.get(idxPur[0]).getId() != null) {
+
+						System.out.println("!null id " + purListType2.get(idxPur[0]).getId());
+						// Edita a finalidade autorizada com os valores da finalidade requerida
+						purListType2.get(idxPur[0]).setFinalidade(pur.getFinalidade());
+						purListType2.get(idxPur[0]).setSubfinalidade(pur.getSubfinalidade());
+						purListType2.get(idxPur[0]).setQuantidade(pur.getQuantidade());
+						purListType2.get(idxPur[0]).setConsumo(pur.getConsumo());
+						purListType2.get(idxPur[0]).setTotal(pur.getTotal());
+
+					} else {
+
+						purListType2.add(new Finalidade(pur.getFinalidade(), pur.getSubfinalidade(),
+								pur.getQuantidade(), pur.getConsumo(), pur.getTotal(), pur.getInterferencia(),
+								new TipoFinalidade(2L)));
+					}
+
+				} else {
+
+					purListType2.add(new Finalidade(pur.getFinalidade(), pur.getSubfinalidade(), pur.getQuantidade(),
+							pur.getConsumo(), pur.getTotal(), pur.getInterferencia(), new TipoFinalidade(2L)));
+				}
+
+				// Atualiza o GridPane
+				addPurpouseRow(idxPur[0], authorizedPurposesGrid, tfTotalConsumption, btnCalculateAuthFin, null, pur);
+
+				idxPur[0]++;
 
 			});
+
+			// Adiciona as finalidades
+			purpousesWrapper.getPurpouses().addAll(purListType1);
+			purpousesWrapper.getPurpouses().addAll(purListType2);
+
+			// demandsStream
+			Stream<Demanda> demands = demandsWrapper.getDemands().stream();
+
+			List<Demanda> demType1List = demands.filter(d -> d.getTipoFinalidade().getId() == 1L)
+					.sorted(Comparator.comparing(d -> d.getMes())).collect(Collectors.toList());
+			;
+
+			demands = demandsWrapper.getDemands().stream();
+
+			List<Demanda> demType2List = demands.filter(d -> d.getTipoFinalidade().getId() == 2L)
+					.sorted(Comparator.comparing(d -> d.getMes())).collect(Collectors.toList());
+			;
+
+			int[] idxDem = { 0 };
+			
+			demType1List.forEach(dem -> {
+				
+				
+				demType2List.get(idxDem[0]).setMes(dem.getMes());
+				demType2List.get(idxDem[0]).setTempo(dem.getTempo());
+				demType2List.get(idxDem[0]).setPeriodo(dem.getPeriodo());
+				demType2List.get(idxDem[0]).setTipoFinalidade(new TipoFinalidade(2L));
+			
+				
+				// Atualiza a visualização (GridPane)
+				addDemandFlowLine(gpAuthorizedDemands, dem.getMes(), dem);
+				addDemandTimeLine(gpAuthorizedDemands, dem.getMes(), dem);
+				addDemandPeriodLine(gpAuthorizedDemands, dem.getMes(), dem);
+
+				idxDem[0]++;
+
+			});
+
+			demandsWrapper.getDemands().addAll(demType1List);
+			demandsWrapper.getDemands().addAll(demType2List);
 
 		});
 
@@ -675,8 +750,9 @@ public class AddSubterraneanDetailsController implements Initializable {
 			if (purpouseWrapper.getPurpouse().getQuantidade() != null) {
 				tfQuantity.setText(purpouseWrapper.getPurpouse().getQuantidade().toString());
 			}
-
-			tfConsumption.setText(purpouseWrapper.getPurpouse().getConsumo().toString());
+			if (purpouseWrapper.getPurpouse().getConsumo() != null) {
+				tfConsumption.setText(purpouseWrapper.getPurpouse().getConsumo().toString());
+			}
 
 			// Se o total não foi cadastrado não mostrar
 			if (purpouseWrapper.getPurpouse().getTotal() != null) {
@@ -933,8 +1009,8 @@ public class AddSubterraneanDetailsController implements Initializable {
 		 * autorizada com valores vazios
 		 */
 		if (newPurpouses.size() == 0) {
-			newPurpouses.add(new Finalidade("", "", 0.0, 0.0, null, new TipoFinalidade(1L)));
-			newPurpouses.add(new Finalidade("", "", 0.0, 0.0, null, new TipoFinalidade(2L)));
+			newPurpouses.add(new Finalidade("", "", 0.0, 0.0, 0.0, null, new TipoFinalidade(1L)));
+			newPurpouses.add(new Finalidade("", "", 0.0, 0.0, 0.0, null, new TipoFinalidade(2L)));
 		}
 
 		/*
@@ -953,7 +1029,7 @@ public class AddSubterraneanDetailsController implements Initializable {
 				.orElse(null);
 
 		if (finReq == null) {
-			newPurpouses.add(new Finalidade("", "", 0.0, 0.0, null, new TipoFinalidade(1L)));
+			newPurpouses.add(new Finalidade("", "", 0.0, 0.0, 0.0, null, new TipoFinalidade(1L)));
 		}
 
 		// Busca finalidade autorizada, se não houver, adiciona. É preciso have ao menos
@@ -962,7 +1038,7 @@ public class AddSubterraneanDetailsController implements Initializable {
 				.orElse(null);
 
 		if (finAuth == null) {
-			newPurpouses.add(new Finalidade("", "", 0.0, 0.0, null, new TipoFinalidade(2L)));
+			newPurpouses.add(new Finalidade("", "", 0.0, 0.0, 0.0, null, new TipoFinalidade(2L)));
 		}
 
 		purpousesWrapper.setPurpouses(newPurpouses);

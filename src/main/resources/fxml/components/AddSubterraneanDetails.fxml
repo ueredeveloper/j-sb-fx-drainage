@@ -328,7 +328,7 @@
                               <Label GridPane.columnIndex="13" />
                               <JFXButton fx:id="btnCopyReqDemand" ellipsisString="" prefHeight="10.0" prefWidth="10.0" styleClass="icons" GridPane.columnIndex="14">
                                  <graphic>
-                                    <FontAwesomeIconView glyphName="EDIT">
+                                    <FontAwesomeIconView glyphName="CLONE">
                                        <styleClass>
                                           <String fx:value="icon-light-dark" />
                                           <String fx:value="icons" />
@@ -336,7 +336,7 @@
                                     </FontAwesomeIconView>
                                  </graphic>
                                  <tooltip>
-                                    <Tooltip text="Copia a vazão requirida" />
+                                    <Tooltip text="Copia finalidade requerida" />
                                  </tooltip>
                               </JFXButton>
                               <Label text="Vazão (l/dia)" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />

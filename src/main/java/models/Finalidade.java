@@ -28,18 +28,19 @@ public class Finalidade {
 		this.tipoFinalidade = tipoFinalidade;
 	}
 
-	public Finalidade(String finalidade, String subfinalidade, Double quantidade, Double consumo,
+	
+
+	public Finalidade(String finalidade, String subfinalidade, Double quantidade, Double consumo, Double total,
 			Interferencia interferencia, TipoFinalidade tipoFinalidade) {
 		super();
 		this.finalidade = finalidade;
 		this.subfinalidade = subfinalidade;
 		this.quantidade = quantidade;
 		this.consumo = consumo;
+		this.total = total;
 		this.interferencia = interferencia;
 		this.tipoFinalidade = tipoFinalidade;
 	}
-	
-	
 
 	public Finalidade(String finalidade) {
 		super();

@@ -3,7 +3,7 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXTextField?>
-<?import de.jensd.fx.glyphs.jensd.fx.glyphs.FontAwesomeIconView?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import java.lang.String?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
@@ -69,11 +69,7 @@
 				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
 			</rowConstraints>
 			<children>
-				<FontAwesomeIconView fx:id="btnAddress" glyphName="MAP_SIGNS" styleClass="icons" textAlignment="CENTER" wrappingWidth="30.0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS">
-					<GridPane.margin>
-						<Insets left="5.0" right="5.0" />
-					</GridPane.margin>
-				</FontAwesomeIconView>
+				
 				<JFXComboBox fx:id="cbAddress" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="650.0" promptText="Endereço" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS">
 					<GridPane.margin>
 						<Insets left="5.0" right="5.0" />
@@ -90,11 +86,7 @@
 						<Insets left="5.0" right="5.0" />
 					</padding>
 				</JFXTextField>
-				<FontAwesomeIconView fx:id="btnUser" glyphName="USER" styleClass="icons" textAlignment="CENTER" wrappingWidth="30.0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1">
-					<GridPane.margin>
-						<Insets left="5.0" right="5.0" />
-					</GridPane.margin>
-				</FontAwesomeIconView>
+				
 				<JFXComboBox fx:id="cbUser" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="400.0" promptText="Usuário" styleClass="combo-box" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1">
 					<GridPane.margin>
 						<Insets left="5.0" right="5.0" />
@@ -108,11 +100,7 @@
 						<Tooltip text="Processo em que o documento se econtra" />
 					</tooltip>
 				</JFXComboBox>
-				<FontAwesomeIconView fx:id="btnAttachment" glyphName="FILE_ZIP_ALT" styleClass="icons" textAlignment="CENTER" wrappingWidth="30.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1">
-					<GridPane.margin>
-						<Insets left="5.0" right="5.0" />
-					</GridPane.margin>
-				</FontAwesomeIconView>
+				
 				<JFXComboBox fx:id="cbAttachment" labelFloat="true" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="280.0" promptText="Anexo" styleClass="combo-box" GridPane.columnIndex="5" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1">
 					<tooltip>
 						<Tooltip text="Processo em que o documento se econtra" />
@@ -121,16 +109,28 @@
 						<Insets left="5.0" right="5.0" />
 					</GridPane.margin>
 				</JFXComboBox>
-				<FontAwesomeIconView fx:id="btnProcess" glyphName="CLIPBOARD" styleClass="icons" textAlignment="CENTER" wrappingWidth="30.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+            <FontAwesomeIconView fx:id="btnAddress" glyphName="MAP_SIGNS" styleClass="icons" textAlignment="CENTER" wrappingWidth="30.0">
                <GridPane.margin>
                   <Insets left="5.0" right="5.0" />
-               </GridPane.margin>
-				</FontAwesomeIconView>
-            <FontAwesomeIconView fx:id="btnInterference" glyphName="MAP_MARKER" styleClass="icons" textAlignment="CENTER" wrappingWidth="30.0" GridPane.columnIndex="2" GridPane.halignment="CENTER">
+               </GridPane.margin></FontAwesomeIconView>
+            <FontAwesomeIconView fx:id="btnInterference" glyphName="MAP_MARKER" styleClass="icons" textAlignment="CENTER" wrappingWidth="30.0" GridPane.columnIndex="2">
                <GridPane.margin>
                   <Insets left="5.0" right="5.0" />
-               </GridPane.margin>
-            </FontAwesomeIconView>
+               </GridPane.margin></FontAwesomeIconView>
+            <FontAwesomeIconView fx:id="btnUser" glyphName="USER" styleClass="icons" textAlignment="CENTER" wrappingWidth="30.0" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets left="5.0" right="5.0" />
+               </GridPane.margin></FontAwesomeIconView>
+            <FontAwesomeIconView fx:id="btnProcess" glyphName="CLIPBOARD" styleClass="icons" textAlignment="CENTER" wrappingWidth="30.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets left="5.0" right="5.0" />
+               </GridPane.margin></FontAwesomeIconView>
+            <FontAwesomeIconView fx:id="btnAttachment" glyphName="FILE_ZIP_ALT" styleClass="icons" textAlignment="CENTER" wrappingWidth="30.0" GridPane.columnIndex="4" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets left="5.0" right="5.0" />
+               </GridPane.margin></FontAwesomeIconView>
+				
+           
 			</children>
 		</GridPane>
 		<GridPane layoutX="10.0" layoutY="230.0" prefHeight="50.0" prefWidth="780.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
@@ -181,7 +181,7 @@
 		<HBox layoutX="7.0" layoutY="290.0" prefHeight="50.0" prefWidth="800.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
 			<children>
 				<Pane prefWidth="100.0" HBox.hgrow="ALWAYS" />
-				<Pane prefWidth="100.0" HBox.hgrow="ALWAYS" />
+				<Pane prefHeight="50.0" prefWidth="298.0" HBox.hgrow="ALWAYS" />
 				<JFXTextField fx:id="tfSearch" alignment="TOP_LEFT" labelFloat="true" prefHeight="30.0" prefWidth="300.0" promptText="Pesquisar número, sei, processo e endereço" HBox.hgrow="ALWAYS">
 					<HBox.margin>
 						<Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
