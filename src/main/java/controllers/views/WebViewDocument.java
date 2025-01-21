@@ -1,5 +1,6 @@
 package controllers.views;
 
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -10,6 +11,8 @@ import javafx.scene.web.HTMLEditor;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import models.Documento;
+import models.Interferencia;
+import models.Subterranea;
 import netscape.javascript.JSException;
 import netscape.javascript.JSObject;
 import utilities.JsonConverter;
@@ -54,6 +57,27 @@ public class WebViewDocument {
 	    webEngine.setOnError(event -> {
 	        System.err.println("JavaScript error: " + event.getMessage());
 	    });
+	    
+	    Interferencia selectedInterference = null;
+	    Set<Interferencia> interferencias = selectedDocument.getEndereco().getInterferencias();
+
+	    if (!interferencias.isEmpty()) {
+	    	selectedInterference = interferencias.iterator().next();
+	    }
+	    
+		// Verifica se a interferência é do tipo Subterrânea apenas para teste, sem necessidade a mais
+        if (selectedInterference   instanceof Subterranea) {
+            Subterranea subterranea = (Subterranea) selectedInterference;
+
+            // Obtém a vazão outorgável
+            Integer vazaoOutorgavel = subterranea.getVazaoOutorgavel();
+
+            // Exibe a vazão para depuração ou uso
+            System.out.println("Vazão Outorgável: " + vazaoOutorgavel);
+        } else {
+            System.out.println("A interferência selecionada não é do tipo Subterrânea.");
+        }
+        
 
 	    // Convert the Documento object to JSON
 	    String strJson = JsonConverter.convertObjectToJson(selectedDocument);

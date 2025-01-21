@@ -81,6 +81,8 @@ public class Interferencia {
 		this.finalidades = finalidades;
 		this.demandas = demandas;
 	}
+	
+	
 
 	public Long getId() {
 		return id;

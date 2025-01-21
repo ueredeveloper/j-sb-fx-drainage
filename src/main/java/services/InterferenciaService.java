@@ -209,6 +209,8 @@ public class InterferenciaService {
 
 		// Parse the string as a JsonArray
 		JsonArray jsonArray = JsonParser.parseString(json).getAsJsonArray();
+		
+		System.out.println(jsonArray);
 
 		Gson gson = new GsonBuilder().registerTypeAdapter(Interferencia.class, new InterferenciaTypeAdapter()).create();
 

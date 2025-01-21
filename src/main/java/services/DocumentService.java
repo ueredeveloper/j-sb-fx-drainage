@@ -74,7 +74,7 @@ public class DocumentService {
 			// Convert Documento object to JSON
 			String jsonInputString = convertObjectToJson(documento);
 			
-			//System.out.println("save " + jsonInputString);
+			System.out.println("save " + jsonInputString);
 			
 			// Write JSON to request body
 			try (OutputStream os = connection.getOutputStream();
@@ -84,6 +84,8 @@ public class DocumentService {
 			}
 
 			int responseCode = connection.getResponseCode();
+			
+			System.out.println(responseCode);
 
 			String responseBody;
 			if (responseCode == HttpURLConnection.HTTP_CREATED) {

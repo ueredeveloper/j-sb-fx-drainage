@@ -176,8 +176,8 @@
 - [] - Tela Adicionar Usu�rio
 	 - [] - Listar Endere�os
 	 
-- [] - Finalidade Requerida - C�pia
-	 - [] Adicionar bot�o de c�pia da finalidade requerida na tela finalidade autorizada.
+- [] - Finalidade Requerida - Cópia
+	 - [X] Adicionar botão de cópia da finalidade requerida na tela finalidade autorizada.
 
 ## 27 de Dezembro de 2024
 - [X] Para compilar sem testes e sem gerar documentação
@@ -185,9 +185,20 @@
 
 - [] Adicioanr conversor de coordenadas
 	 
-- [] Verificar edição de processo e anexo na tela documento
+- [X] Verificar edição de processo e anexo na tela documento
 
-- [] Ao salvar o documento não está relacionando o usuário selecionado
+- [X] Ao salvar o documento não está relacionando o usuário selecionado
 	
+## 20/01/2025
+- [] Preencher o total de vazao solicitada nas finalidades autorizadas.
 	
+- [X] A vazão requerida nas demandas não está sendo copiada para as vazões autorizadas
+	- Resolvido em 21/01/2025
+	
+## 21/01/2025
+- [] Adicionar na tela de edição de usuário a possíbilidade de editar relacionamentos com documentos, só assim é possível
+deletar um usuário ou documento, deletando o relacionamento usuario_documento
+
+
+
 

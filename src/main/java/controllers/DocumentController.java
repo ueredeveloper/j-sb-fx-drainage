@@ -934,6 +934,7 @@ public class DocumentController implements Initializable {
 			newDocument.setEndereco(selectedAddress);
 			newDocument.setProcesso(selectedProcess);
 
+			System.out.println(usuarios.size());
 			newDocument.setUsuarios(usuarios);
 
 			ServiceResponse<?> documentoServiceResponse = documentService.save(newDocument);

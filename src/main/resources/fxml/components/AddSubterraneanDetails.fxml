@@ -125,7 +125,7 @@
                            </rowConstraints>
                            <children>
                               <JFXTextField fx:id="tfTotalRequestedConsumption" prefHeight="30.0" prefWidth="200.0" promptText="DEMANDA TOTAL (l/dia)" GridPane.columnIndex="4" />
-                              <JFXButton fx:id="btnCalculateReqFin" ellipsisString="" prefHeight="10.0" prefWidth="10.0" styleClass="icons" GridPane.columnIndex="7">
+                              <JFXButton fx:id="btnCalculateReqTotalConsumption" ellipsisString="" prefHeight="10.0" prefWidth="10.0" styleClass="icons" GridPane.columnIndex="7">
                                  <graphic>
                                     <FontAwesomeIconView glyphName="EDIT">
                                        <styleClass>
@@ -272,7 +272,7 @@
                            </rowConstraints>
                            <children>
                               <JFXTextField fx:id="tfTotalAuthorizedConsumption" prefHeight="30.0" prefWidth="200.0" promptText="DEMANDA TOTAL (l/dia)" GridPane.columnIndex="4" />
-                              <JFXButton fx:id="btnCalculateAuthFin" ellipsisString="" prefHeight="10.0" styleClass="icons" GridPane.columnIndex="8">
+                              <JFXButton fx:id="btnCalculateAuthTotalConsumption" ellipsisString="" prefHeight="10.0" styleClass="icons" GridPane.columnIndex="8">
                                  <graphic>
                                     <FontAwesomeIconView glyphName="EDIT">
                                        <styleClass>

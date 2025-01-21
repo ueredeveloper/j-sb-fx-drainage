@@ -224,6 +224,8 @@ public class AddInterferenceController implements Initializable {
 				Set<Demanda> demands = newValue.getDemandas();
 
 				addSubterraneanDetailsController.fillDemandsDetails(demands);
+				
+				addSubterraneanDetailsController.fillAttributes(newValue);
 
 			} else {
 
@@ -243,7 +245,7 @@ public class AddInterferenceController implements Initializable {
 			ttClose.play();
 
 			Interferencia selectedObject = tableView.getSelectionModel().getSelectedItem();
-		
+
 			if (this.address == null) {
 				// Alerta (Toast) de sucesso na edi��o
 				Node source = (Node) e.getSource();
@@ -495,36 +497,62 @@ public class AddInterferenceController implements Initializable {
 		selectedObject.setSituacaoProcesso(processSituation);
 		selectedObject.setTipoAto(typeOfAct);
 
-		try {
-			InterferenciaService service = new InterferenciaService(urlService);
+		Subterranea subterraneanAttributes = null;
 
-			// Requisicao de edicao e reposta
-			ServiceResponse<?> response = service.update(selectedObject);
+		if (addSubterraneanDetailsController != null) {
+			subterraneanAttributes = addSubterraneanDetailsController.getSubterraneanAttributes();
+		}
+		// If Subterrâneo
+		if (selectedObject instanceof Subterranea) {
+			Subterranea subterranea = (Subterranea) selectedObject;
 
-			if (response.getResponseCode() == 200) {
-				// Alerta (Toast) de sucesso na edi��o
-				Node source = (Node) event.getSource();
-				Stage ownerStage = (Stage) source.getScene().getWindow();
-				String toastMsg = "Sucesso!";
-				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.SUCCESS);
+			// Set specific attributes for subterranean interference
+			subterranea.setCaesb(subterraneanAttributes.getCaesb());
+			subterranea.setNivelEstatico(subterraneanAttributes.getNivelEstatico());
+			subterranea.setNivelDinamico(subterraneanAttributes.getNivelDinamico());
+			subterranea.setProfundidade(subterraneanAttributes.getProfundidade());
+			subterranea.setVazaoOutorgavel(subterraneanAttributes.getVazaoOutorgavel());
+			subterranea.setVazaoSistema(subterraneanAttributes.getVazaoSistema());
+			subterranea.setVazaoTeste(subterraneanAttributes.getVazaoTeste());
+			subterranea.setTipoPoco(subterraneanAttributes.getTipoPoco());
 
-				tableView.getItems().remove(selectedObject);
-				// Converte objeto editado para Json
-				Interferencia jsonObject = new Gson().fromJson((String) response.getResponseBody(),
-						Interferencia.class);
-				// Adiciona objeto editado como primeiro �tem ma fila na table view
-				tableView.getItems().add(0, jsonObject);
-				// Seleciona o objeto editado na table view
-				tableView.getSelectionModel().select(jsonObject);
+			try {
+				InterferenciaService service = new InterferenciaService(urlService);
 
-			} else {
+				// Requisicao de edicao e reposta
+				ServiceResponse<?> response = service.update(subterranea);
+
+				if (response.getResponseCode() == 200) {
+					// Alerta (Toast) de sucesso na edi��o
+					Node source = (Node) event.getSource();
+					Stage ownerStage = (Stage) source.getScene().getWindow();
+					String toastMsg = "Sucesso!";
+					utilities.Toast.makeText(ownerStage, toastMsg, ToastType.SUCCESS);
+
+					tableView.getItems().remove(selectedObject);
+					// Converte objeto editado para Json
+					Interferencia jsonObject = new Gson().fromJson((String) response.getResponseBody(),
+							Interferencia.class);
+					// Adiciona objeto editado como primeiro �tem ma fila na table view
+					tableView.getItems().add(0, jsonObject);
+					// Seleciona o objeto editado na table view
+					tableView.getSelectionModel().select(jsonObject);
+
+				} else {
+					// Display an error toast or alert
+					// System.out.println(serviceResponse.getResponseCode());
+				}
+
+			} catch (Exception e) {
 				// Display an error toast or alert
-				// System.out.println(serviceResponse.getResponseCode());
+				e.printStackTrace();
 			}
 
-		} catch (Exception e) {
-			// Display an error toast or alert
-			e.printStackTrace();
+		}
+		// If not subterrâneo
+		else {
+			// Handle the case where selectedObject is not a Subterranea instance
+			System.out.println("Selected object is not a Subterranea instance.");
 		}
 	}
 
@@ -612,7 +640,7 @@ public class AddInterferenceController implements Initializable {
 	/**
 	 * Atualiza as coordenadas dos TextFields de acordo com o clique no mapa.
 	 * 
-	 *  interferencia
+	 * interferencia
 	 */
 	public void updateCoordinates(Interferencia interferencia) {
 

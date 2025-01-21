@@ -60,7 +60,8 @@ class DemandaModel {
     
     // Função para formatar o número com ponto separador de milhar
 	formatNumber(value) {
-		console.log("format number ", value)
+		console.log('format value')
+		console.log(value);
 		return value?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 	}
 	

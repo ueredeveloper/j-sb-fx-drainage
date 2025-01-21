@@ -51,6 +51,10 @@
         -fx-font: normal bold 22px 'serif';
         -fx-text-fill: -fx-addictional-color;
 }
+.secondary-content .subtitle{
+        -fx-font: normal bold 18px 'serif';
+        -fx-text-fill: -fx-addictional-color;
+}
 .secondary-content .sec-text-color {
 	-fx-text-fill: -fx-addictional-color;
 }

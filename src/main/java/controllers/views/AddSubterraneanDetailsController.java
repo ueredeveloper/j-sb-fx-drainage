@@ -31,6 +31,7 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import models.Demanda;
 import models.Finalidade;
+import models.Interferencia;
 import models.Subterranea;
 import models.TipoFinalidade;
 import models.TipoPoco;
@@ -100,7 +101,7 @@ public class AddSubterraneanDetailsController implements Initializable {
 	private JFXTextField tfTotalRequestedConsumption, tfTotalAuthorizedConsumption;
 
 	@FXML
-	private JFXButton btnCalculateReqFin;
+	private JFXButton btnCalculateReqTotalConsumption;
 
 	@FXML
 	private JFXButton btnFillReqFlow;
@@ -112,7 +113,7 @@ public class AddSubterraneanDetailsController implements Initializable {
 	private JFXButton btnFillReqPeriod;
 
 	@FXML
-	private JFXButton btnCalculateAuthFin;
+	private JFXButton btnCalculateAuthTotalConsumption;
 
 	@FXML
 	private JFXComboBox<?> cbAuthTimeFlow;
@@ -134,9 +135,9 @@ public class AddSubterraneanDetailsController implements Initializable {
 		cbConcessionaire.getItems().addAll("Sim", "Não");
 
 		// Adiciona cadastro de finalidade
-		addPurpouseRow(0, requestedPurposesGrid, tfTotalRequestedConsumption, btnCalculateReqFin,
+		addPurpouseRow(0, requestedPurposesGrid, tfTotalRequestedConsumption, btnCalculateReqTotalConsumption,
 				new TipoFinalidade(1L), new Finalidade());
-		addPurpouseRow(0, authorizedPurposesGrid, tfTotalAuthorizedConsumption, btnCalculateAuthFin,
+		addPurpouseRow(0, authorizedPurposesGrid, tfTotalAuthorizedConsumption, btnCalculateAuthTotalConsumption,
 				new TipoFinalidade(2L), new Finalidade());
 
 		// Cria lista de demandas requeridas e autorizadas vazias.
@@ -522,7 +523,7 @@ public class AddSubterraneanDetailsController implements Initializable {
 				}
 
 				// Atualiza o GridPane
-				addPurpouseRow(idxPur[0], authorizedPurposesGrid, tfTotalConsumption, btnCalculateAuthFin,
+				addPurpouseRow(idxPur[0], authorizedPurposesGrid, tfTotalConsumption, btnCalculateAuthTotalConsumption,
 						new TipoFinalidade(2L), pur);
 
 				idxPur[0]++;
@@ -548,20 +549,36 @@ public class AddSubterraneanDetailsController implements Initializable {
 
 			int[] idxDem = { 0 };
 
+			/*
+			 * Copia a demanda requerida para a demanda autorizada
+			 */
 			demType1List.forEach(dem -> {
 
-				demType2List.get(idxDem[0]).setMes(dem.getMes());
+				demType2List.get(idxDem[0]).setVazao(dem.getVazao());
 				demType2List.get(idxDem[0]).setTempo(dem.getTempo());
 				demType2List.get(idxDem[0]).setPeriodo(dem.getPeriodo());
+				demType2List.get(idxDem[0]).setMes(dem.getMes());
 				demType2List.get(idxDem[0]).setTipoFinalidade(new TipoFinalidade(2L));
-
-				// Atualiza a visualização (GridPane)
-				addDemandFlowLine(gpAuthorizedDemands, dem.getMes(), dem);
-				addDemandTimeLine(gpAuthorizedDemands, dem.getMes(), dem);
-				addDemandPeriodLine(gpAuthorizedDemands, dem.getMes(), dem);
 
 				idxDem[0]++;
 
+			});
+
+			// Atualiza a visualização (GridPane)
+			// addDemandFlowLine(gpAuthorizedDemands, dem.getMes(), dem);
+			// addDemandTimeLine(gpAuthorizedDemands, dem.getMes(), dem);
+			// addDemandPeriodLine(gpAuthorizedDemands, dem.getMes(), dem);
+
+			demType2List.forEach(demand -> {
+				addDemandFlowLine(gpAuthorizedDemands, demand.getMes(), demand);
+			});
+
+			demType2List.forEach(demand -> {
+				addDemandTimeLine(gpAuthorizedDemands, demand.getMes(), demand);
+			});
+
+			demType2List.forEach(demand -> {
+				addDemandPeriodLine(gpAuthorizedDemands, demand.getMes(), demand);
 			});
 
 			demandsWrapper.getDemands().addAll(demType1List);
@@ -947,7 +964,8 @@ public class AddSubterraneanDetailsController implements Initializable {
 
 			});
 
-			// Quando copia as finalidades requeridas para as finalidades autozizadas este textfild fica nulo e não atualiza o total.
+			// Quando copia as finalidades requeridas para as finalidades autozizadas este
+			// textfild fica nulo e não atualiza o total.
 			if (tfTotalConsumption != null) {
 				tfTotalConsumption.setText(total[0].toString());
 
@@ -1070,10 +1088,10 @@ public class AddSubterraneanDetailsController implements Initializable {
 		purpousesWrapper.getPurpouses().forEach(item -> {
 			if (item.getTipoFinalidade().getId() == 1L) {
 				addPurpouseRow(reqIndex.getAndIncrement(), requestedPurposesGrid, tfTotalRequestedConsumption,
-						btnCalculateReqFin, item.getTipoFinalidade(), item);
+						btnCalculateReqTotalConsumption, item.getTipoFinalidade(), item);
 			} else {
 				addPurpouseRow(autIndex.getAndIncrement(), authorizedPurposesGrid, tfTotalAuthorizedConsumption,
-						btnCalculateAuthFin, item.getTipoFinalidade(), item);
+						btnCalculateAuthTotalConsumption, item.getTipoFinalidade(), item);
 			}
 
 		});
@@ -1120,6 +1138,48 @@ public class AddSubterraneanDetailsController implements Initializable {
 		}
 	}
 
+	public void fillAttributes(Interferencia selectedObject) {
+
+		// Verifica se a interferência é do tipo Subterrânea apenas para teste, sem
+		// necessidade a mais
+		if (selectedObject instanceof Subterranea) {
+			Subterranea subterranea = (Subterranea) selectedObject;
+
+			// Como os valores no banco é true ou false (boolean), verifica se true = "Sim", false = "não".
+			cbConcessionaire.getSelectionModel().select(subterranea.getCaesb() ? "Sim" : "Não");
+			// Como só recebo o id do tipo do poço, sem a descrição, preciso buscar o tipo de poço pelo id.
+			Long tipoPocoId = subterranea.getTipoPoco() != null ? subterranea.getTipoPoco().getId() : null;
+
+			if (tipoPocoId != null) {
+				// Busca o item correspondente na ObservableList
+				TipoPoco matchingTipoPoco = obsTypesOfWells.stream()
+						.filter(tipoPoco -> tipoPoco.getId().equals(tipoPocoId)).findFirst().orElse(null);
+
+				if (matchingTipoPoco != null) {
+					// Seleciona o item no ComboBox
+					cbWellType.getSelectionModel().select(matchingTipoPoco);
+				} else {
+					System.out.println("Nenhum TipoPoco encontrado com o ID: " + tipoPocoId);
+				}
+			} else {
+				System.out.println("TipoPoco ID é nulo.");
+			}
+			
+			// Continua os outros preenchimentos
+			tfSystemFlow.setText(subterranea.getVazaoSistema().toString());
+			tfSystemGrant.setText(subterranea.getVazaoOutorgavel().toString());
+			tfSystemTest.setText(subterranea.getVazaoTeste().toString());
+			tfStaticLevel.setText(subterranea.getNivelDinamico());
+			tfDynamicLevel.setText(subterranea.getNivelDinamico().toString());
+			tfWaterDepth.setText(subterranea.getProfundidade());
+			
+
+		} else {
+			System.out.println("A interferência selecionada não é do tipo Subterrânea.");
+		}
+
+	}
+
 	public Set<Demanda> getDemands() {
 		return demandsWrapper.getDemands();
 	}
@@ -1154,6 +1214,10 @@ public class AddSubterraneanDetailsController implements Initializable {
 		}
 
 		return subterraneanAttributes;
+
+	}
+
+	public void setSubterraneanAttributes() {
 
 	}
 

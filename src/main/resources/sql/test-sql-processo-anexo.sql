@@ -16,5 +16,8 @@ Problema: ao editar documento inserindo anexo diferente do anexo relacionado com
 Não está funcionando
 */
 
-select _p.id p_id, _p.numero p_numero, _a.id a_id, _a.numero an_numero from processo _p
+
+
+select _d.id d_id, _d.numero d_numero, _p.id p_id, _p.numero p_numero, _a.id a_id, _a.numero an_numero from processo _p
+left join documento _d on _d.processo = _p.id
 left join anexo _a on _a.id = _p.anexo

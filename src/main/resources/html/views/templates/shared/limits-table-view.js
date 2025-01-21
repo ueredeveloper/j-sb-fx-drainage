@@ -177,6 +177,8 @@ class LimitsTableView {
             .sort((a, b) => a.mes - b.mes);  // Ordena por mês (de 1 a 12)
 
         months.forEach((month, index) => {
+	console.log('vazao outorgavel')
+	console.log(interferencia.vazaoOutorgavel)
 
             // Atualização
             document.getElementById(`q-litros-hora-${month}`).innerText = new DemandaModel().formatNumber(interferencia.vazaoOutorgavel);
