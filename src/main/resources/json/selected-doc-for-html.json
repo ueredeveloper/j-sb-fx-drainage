@@ -1,0 +1,346 @@
+{
+	"id": 83,
+	"numero": "52/2586",
+	"processo": {
+		"id": 43,
+		"numero": "123.456+789",
+		"anexo": {
+			"id": 51,
+			"numero": "456.123.789",
+			"processos": [
+			]
+		}
+	},
+	"numeroSei": 654987321,
+	"tipoDocumento": {
+		"id": 1,
+		"descricao": "Parecer"
+	},
+	"endereco": {
+		"id": 80,
+		"logradouro": "Rua de Sobradinho, 0909",
+		"documentos": [
+		],
+		"interferencias": [
+			{
+				"id": 38,
+				"latitude": -89.0,
+				"longitude": -899.0,
+				"endereco": {
+					"id": 80,
+					"logradouro": "Rua de Sobradinho, 0909",
+					"documentos": [
+					],
+					"interferencias": [
+					]
+				},
+				"tipoInterferencia": {
+					"id": 2,
+					"descricao": "Subterrânea"
+				},
+				"tipoOutorga": {
+					"id": 2,
+					"descricao": "Outorga Prévia"
+				},
+				"subtipoOutorga": {
+					"id": 3,
+					"descricao": "Transferência"
+				},
+				"situacaoProcesso": {
+					"id": 2,
+					"descricao": "Em Análise"
+				},
+				"tipoAto": {
+					"id": 4,
+					"descricao": "Registro"
+				},
+				"finalidades": [
+					{
+						"id": 128,
+						"finalidade": "",
+						"subfinalidade": "",
+						"quantidade": 0.0,
+						"consumo": 0.0,
+						"total": 0.0,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 129,
+						"finalidade": "Criação de Animais",
+						"subfinalidade": "Bovino",
+						"quantidade": 41.0,
+						"consumo": 52.0,
+						"total": 2132.0,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 130,
+						"finalidade": "Criação de Animais",
+						"subfinalidade": "Bovino",
+						"quantidade": 41.0,
+						"consumo": 52.0,
+						"total": 2132.0,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					}
+				],
+				"demandas": [
+					{
+						"id": 793,
+						"vazao": 2132.0,
+						"tempo": 10,
+						"periodo": 31,
+						"mes": 12,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 794,
+						"vazao": 2132.0,
+						"tempo": 10,
+						"periodo": 31,
+						"mes": 8,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 795,
+						"vazao": 2132.0,
+						"tempo": 10,
+						"periodo": 31,
+						"mes": 1,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 796,
+						"vazao": 2132.0,
+						"tempo": 10,
+						"periodo": 31,
+						"mes": 3,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 797,
+						"vazao": 2132.0,
+						"tempo": 10,
+						"periodo": 28,
+						"mes": 2,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 798,
+						"vazao": 2132.0,
+						"tempo": 10,
+						"periodo": 30,
+						"mes": 6,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 799,
+						"vazao": 2132.0,
+						"tempo": 10,
+						"periodo": 31,
+						"mes": 10,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 800,
+						"vazao": 2132.0,
+						"tempo": 10,
+						"periodo": 30,
+						"mes": 11,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 801,
+						"vazao": 2132.0,
+						"tempo": 10,
+						"periodo": 31,
+						"mes": 1,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 802,
+						"vazao": 2132.0,
+						"tempo": 10,
+						"periodo": 31,
+						"mes": 10,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 803,
+						"vazao": 2132.0,
+						"tempo": 10,
+						"periodo": 30,
+						"mes": 9,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 804,
+						"vazao": 2132.0,
+						"tempo": 10,
+						"periodo": 30,
+						"mes": 4,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 805,
+						"vazao": 2132.0,
+						"tempo": 10,
+						"periodo": 31,
+						"mes": 12,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 806,
+						"vazao": 2132.0,
+						"tempo": 10,
+						"periodo": 30,
+						"mes": 9,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 807,
+						"vazao": 2132.0,
+						"tempo": 10,
+						"periodo": 30,
+						"mes": 6,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 808,
+						"vazao": 2132.0,
+						"tempo": 10,
+						"periodo": 30,
+						"mes": 4,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 809,
+						"vazao": 2132.0,
+						"tempo": 10,
+						"periodo": 30,
+						"mes": 11,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 810,
+						"vazao": 2132.0,
+						"tempo": 10,
+						"periodo": 31,
+						"mes": 5,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 811,
+						"vazao": 2132.0,
+						"tempo": 10,
+						"periodo": 31,
+						"mes": 7,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 812,
+						"vazao": 2132.0,
+						"tempo": 10,
+						"periodo": 28,
+						"mes": 2,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 813,
+						"vazao": 2132.0,
+						"tempo": 10,
+						"periodo": 31,
+						"mes": 5,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 814,
+						"vazao": 2132.0,
+						"tempo": 10,
+						"periodo": 31,
+						"mes": 7,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 815,
+						"vazao": 2132.0,
+						"tempo": 10,
+						"periodo": 31,
+						"mes": 3,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 816,
+						"vazao": 2132.0,
+						"tempo": 10,
+						"periodo": 31,
+						"mes": 8,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					}
+				]
+			}
+		]
+	},
+	"usuarios": [
+		{
+			"id": 96,
+			"nome": "Julio de Sobradinho",
+			"cpfCnpj": 41452563687,
+			"documentos": [
+			]
+		}
+	]
+}

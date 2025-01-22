@@ -11,6 +11,7 @@ import javafx.scene.web.HTMLEditor;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import models.Documento;
+import models.Endereco;
 import models.Interferencia;
 import models.Subterranea;
 import netscape.javascript.JSException;
@@ -58,31 +59,51 @@ public class WebViewDocument {
 	        System.err.println("JavaScript error: " + event.getMessage());
 	    });
 	    
-	    Interferencia selectedInterference = null;
-	    Set<Interferencia> interferencias = selectedDocument.getEndereco().getInterferencias();
+	    /**
+	     * 
+	     * Verificação se a interferência é subterrânea. Isto é necessário pois estava perdendo atributos da outorga
+	     * subterrânea como vazão outorgável. Assim, é preciso verificar, limpar a array e realocar com interferências 
+	     * subterrâneas.
+	     */
+	    if (selectedDocument != null && selectedDocument.getEndereco() != null) {
+	    	
+		    
+		    Endereco endereco = selectedDocument.getEndereco();
+		    
+		    
+		    // Clear all interferencias
+		    selectedDocument.setEndereco(null);
 
-	    if (!interferencias.isEmpty()) {
-	    	selectedInterference = interferencias.iterator().next();
-	    }
-	    
-		// Verifica se a interferência é do tipo Subterrânea apenas para teste, sem necessidade a mais
-        if (selectedInterference   instanceof Subterranea) {
-            Subterranea subterranea = (Subterranea) selectedInterference;
+	       
+	        for (Interferencia interferencia : endereco.getInterferencias()) {
+	        	
+	        	 // Find and retain the Subterranea instance if it exists
+		        Subterranea retainedSubterranea = null;
+		        
+	            if (interferencia instanceof Subterranea) {
+	                retainedSubterranea = (Subterranea) interferencia;
+	                
+	             // Re-add the retained Subterranea instance if it exists
+	    	        if (retainedSubterranea != null) {
+	    	            endereco.getInterferencias().add(retainedSubterranea);
+	    	        }
+	    	        
+	                break; // Only keep one Subterranea instance
+	            }
+	        }
+	        
+	       selectedDocument.setEndereco(endereco);
 
-            // Obtém a vazão outorgável
-            Integer vazaoOutorgavel = subterranea.getVazaoOutorgavel();
-
-            // Exibe a vazão para depuração ou uso
-            System.out.println("Vazão Outorgável: " + vazaoOutorgavel);
-        } else {
-            System.out.println("A interferência selecionada não é do tipo Subterrânea.");
-        }
+		}
+		    
         
 
-	    // Convert the Documento object to JSON
+	    // Converte o documento selecionado para json.
 	    String strJson = JsonConverter.convertObjectToJson(selectedDocument);
+	    System.out.println("selected document");
+	    System.out.println(strJson);
 
-	    // Ensure the page is loaded before executing JS and updating HTML
+	    // Verifica se a página já renderizou e adicona o objeto json
 	    webEngine.getLoadWorker().stateProperty().addListener((obs, oldState, newState) -> {
 	        if (newState == Worker.State.SUCCEEDED) {
 	            try {

@@ -4,19 +4,23 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import enums.ToastType;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 import javafx.util.Callback;
 import models.Documento;
 import models.Usuario;
 import services.DocumentService;
+import services.ServiceResponse;
 import utilities.URLUtility;
 
 public class UserDocumentsController implements Initializable {
@@ -60,8 +64,8 @@ public class UserDocumentsController implements Initializable {
 					{
 						// Add event handler for the button
 						actionButton.setOnAction(event -> {
-							Documento currentDocumento = getTableView().getItems().get(getIndex());
-							handleAction(currentDocumento);
+							Documento document = getTableView().getItems().get(getIndex());
+							handleAction(document, user);
 						});
 					}
 
@@ -80,9 +84,10 @@ public class UserDocumentsController implements Initializable {
 		});
 	}
 
-	private void handleAction(Documento documento) {
-		// Define what happens when the button is clicked
-		System.out.println("Button clicked for: " + documento);
+	private void handleAction(Documento document, Usuario user) {
+
+		System.out.println(document.getId() + " " + user.getId());
+		deleteDocUserRelation(document.getId(), user.getId());
 	}
 
 	Usuario user;
@@ -106,6 +111,38 @@ public class UserDocumentsController implements Initializable {
 
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+	}
+
+	@SuppressWarnings("unused")
+	public void deleteDocUserRelation(Long docId, Long usId) {
+		DocumentService documentService = new DocumentService(urlService);
+		ServiceResponse<?> response = documentService.deleteDocUserRelation(docId, usId);
+
+		System.out.println(response.getResponseBody()); // 77
+
+		// Check if the response body contains the deleted document ID (e.g., 77)
+		Long deletedDocId = Long.parseLong((String) response.getResponseBody());
+
+		if (deletedDocId != null) {
+
+			// Iterate over the observable list to find and remove the object
+			obsList.removeIf(document -> document.getId().equals(deletedDocId));
+
+			// Optional: If you want to print the updated list
+			System.out.println("Updated Observable List: " + obsList);
+
+			// Success toast message
+			Node source = tableView; // The source is tfPurpouse (JFXTextField)
+			Stage ownerStage = (Stage) source.getScene().getWindow();
+			String toastMsg = "Relacionamento deletado !!!";
+			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.SUCCESS);
+		} else {
+			// Error toast message if the document was not found
+			Node source = tableView; // The source is tfPurpouse (JFXTextField)
+			Stage ownerStage = (Stage) source.getScene().getWindow();
+			String toastMsg = "Relacionamento não encontrado !!!";
+			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
 		}
 	}
 

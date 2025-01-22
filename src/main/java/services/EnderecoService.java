@@ -11,6 +11,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.google.gson.Gson;
@@ -125,7 +126,7 @@ public class EnderecoService {
 		}
 	}
 
-	public List<Endereco> fetchAddressByKeyword (String keyword) {
+	public Set<Endereco> fetchAddressByKeyword (String keyword) {
 
 		try {
 			URL apiUrl = new URL(localUrl + "/address/list-by-keyword?keyword=" + URLEncoder.encode(keyword, "UTF-8"));
@@ -182,7 +183,7 @@ public class EnderecoService {
 	}
 	
 	
-	private List<Endereco> handleSuccessResponse(HttpURLConnection connection) throws IOException {
+	private Set<Endereco> handleSuccessResponse(HttpURLConnection connection) throws IOException {
 		BufferedReader reader = new BufferedReader(
 				new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8));
 		StringBuilder response = new StringBuilder();
@@ -196,7 +197,7 @@ public class EnderecoService {
 		
 		//System.out.println(response.toString());
 
-		return new Gson().fromJson(response.toString(), new TypeToken<List<Endereco>>() {
+		return new Gson().fromJson(response.toString(), new TypeToken<Set<Endereco>>() {
 		}.getType());
 	}
 

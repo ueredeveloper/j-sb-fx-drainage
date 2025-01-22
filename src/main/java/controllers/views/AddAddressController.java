@@ -3,6 +3,7 @@ package controllers.views;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 import com.google.gson.Gson;
 import com.jfoenix.controls.JFXButton;
@@ -315,7 +316,7 @@ public class AddAddressController implements Initializable {
 
 			String keyword = tfSearch.getText();
 
-			List<Endereco> enderecos = service.fetchAddressByKeyword(keyword);
+			Set<Endereco> enderecos = service.fetchAddressByKeyword(keyword);
 
 			// Create a list of Document objects
 			obsList.clear();
