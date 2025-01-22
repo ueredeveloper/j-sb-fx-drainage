@@ -11,6 +11,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.google.gson.Gson;
@@ -61,6 +62,35 @@ public class DocumentService {
 		}
 		return null;
 	}
+	
+	public List<Documento> fetchDocumentByUserId (Long userId) {
+		
+		try {
+			URL apiUrl = new URL(localUrl + "/document/list-by-user-id?id=" + userId);
+			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
+			connection.setRequestMethod("GET");
+
+			int responseCode = connection.getResponseCode();
+
+			if (responseCode == HttpURLConnection.HTTP_OK) {
+				// System.out.println("HTTP OK");
+				return handleSuccessResponse(connection);
+			} else if (responseCode == HttpURLConnection.HTTP_CREATED) {
+				// System.out.println("HTTP Created");
+				return handleSuccessResponse(connection);
+			} else {
+				handleErrorResponse(connection);
+			}
+
+			connection.disconnect();
+		} catch (Exception e) {
+			e.printStackTrace();
+			// System.out.println("serv save e print ");
+
+			// showAlert("Erro na busca de algum documento", AlertType.ERROR);
+		}
+		return null;
+	}
 
 	public ServiceResponse<?> save(Documento documento) {
 		
@@ -73,8 +103,6 @@ public class DocumentService {
 
 			// Convert Documento object to JSON
 			String jsonInputString = convertObjectToJson(documento);
-			
-			System.out.println("save " + jsonInputString);
 			
 			// Write JSON to request body
 			try (OutputStream os = connection.getOutputStream();
@@ -203,8 +231,6 @@ public class DocumentService {
 		}
 
 		reader.close();
-		
-		//System.out.println("list doc " + response.toString());
 
 		return new Gson().fromJson(response.toString(), new TypeToken<List<Documento>>() {
 		}.getType());

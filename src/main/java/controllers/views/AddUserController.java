@@ -1,5 +1,6 @@
 package controllers.views;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.Set;
@@ -18,17 +19,17 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import models.Documento;
-import models.Endereco;
 import models.Processo;
 import models.Usuario;
-import services.DocumentService;
 import services.ProcessoService;
 import services.ServiceResponse;
 import services.UsuarioService;
@@ -38,6 +39,9 @@ public class AddUserController implements Initializable {
 
 	@FXML
 	private JFXTextField tfName;
+
+	@FXML
+	AnchorPane apUserDocuments;
 
 	@FXML
 	private JFXComboBox<String> cbCpfCnpj;
@@ -108,13 +112,17 @@ public class AddUserController implements Initializable {
 						userCbController.fillAndSelectComboBox(selecteInterferenceAddres.getCpfCnpj().toString());
 					}
 
+					if (userDocumentsController != null) {
+						userDocumentsController.updateUser(newValue);
+					}
+
 				}
 			}
 		});
 
 		btnClose.setOnAction(e -> {
 			ttClose.play();
-			
+
 			Usuario seletedObject = tableView.getSelectionModel().getSelectedItem();
 			this.documentController.fillAndSelectComboBoxUser(seletedObject);
 
@@ -124,7 +132,10 @@ public class AddUserController implements Initializable {
 		btnSave.setOnAction(event -> save(event));
 		btnEdit.setOnAction(event -> update(event));
 		btnDelete.setOnAction(event -> delete(event));
-		btnNew.setOnAction(event-> clearAllComponents());
+		btnNew.setOnAction(event -> clearAllComponents());
+
+		openUserDocumentsController();
+
 	}
 
 	public void save(ActionEvent event) {
@@ -312,7 +323,7 @@ public class AddUserController implements Initializable {
 		}
 
 	}
-	
+
 	public void searchByKeyword(ActionEvent event) {
 
 		try {
@@ -357,10 +368,37 @@ public class AddUserController implements Initializable {
 		newObsList.add(0, process);
 
 	}
-	
+
 	public void clearAllComponents() {
 		tfName.clear();
 		cbCpfCnpj.getSelectionModel().clearSelection();
+
+	}
+
+	UserDocumentsController userDocumentsController;
+
+	public void openUserDocumentsController() {
+
+		// Carrega o arquivo FXML para o painel de edição
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/components/UserDocuments.fxml"));
+
+		loader.setRoot(apUserDocuments);
+
+		userDocumentsController = new UserDocumentsController(this);
+		loader.setController(userDocumentsController);
+
+		try {
+			loader.load();
+		} catch (IOException e) {
+			System.out.println("erro na abertura do pane atendimento");
+			e.printStackTrace();
+		}
+
+	}
+
+	public Set<Documento> searchDocumentsByUser() {
+
+		return null;
 
 	}
 
