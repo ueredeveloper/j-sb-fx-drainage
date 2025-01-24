@@ -1,0 +1,294 @@
+{
+	"caesb": true,
+	"nivelEstatico": "15000",
+	"nivelDinamico": "16000",
+	"profundidade": "17000",
+	"vazaoOutorgavel": 13000,
+	"vazaoSistema": 12000,
+	"vazaoTeste": 14000,
+	"tipoPoco": {
+		"id": 3,
+		"descricao": "Tubular Profundo"
+	},
+	"latitude": -15.8722731,
+	"longitude": -47.9164122,
+	"endereco": {
+		"id": 81,
+		"logradouro": "Condomínio Flórida",
+		"documentos": [
+		],
+		"interferencias": [
+		]
+	},
+	"tipoInterferencia": {
+		"id": 2,
+		"descricao": "Subterrânea"
+	},
+	"tipoOutorga": {
+		"id": 1,
+		"descricao": "Outorga"
+	},
+	"subtipoOutorga": {
+		"id": 1,
+		"descricao": "Renovação"
+	},
+	"situacaoProcesso": {
+		"id": 1,
+		"descricao": "Arquivado"
+	},
+	"tipoAto": {
+		"id": 1,
+		"descricao": "Despacho"
+	},
+	"baciaHidrografica": {
+		"objectid": 7
+	},
+	"unidadeHidrografica": {
+		"objectid": 23
+	},
+	"finalidades": [
+		{
+			"tipoFinalidade": {
+				"id": 2
+			}
+		},
+		{
+			"finalidade": "Irrigação",
+			"subfinalidade": "Paisagismo",
+			"quantidade": 1000.0,
+			"consumo": 150.0,
+			"total": 150000.0,
+			"tipoFinalidade": {
+				"id": 1
+			}
+		},
+		{
+			"finalidade": "Irrigação",
+			"subfinalidade": "Paisagismo",
+			"quantidade": 1000.0,
+			"consumo": 150.0,
+			"total": 150000.0,
+			"tipoFinalidade": {
+				"id": 2
+			}
+		}
+	],
+	"demandas": [
+		{
+			"vazao": 150000.0,
+			"tempo": 9,
+			"periodo": 31,
+			"mes": 10,
+			"tipoFinalidade": {
+				"id": 2
+			}
+		},
+		{
+			"vazao": 150000.0,
+			"tempo": 9,
+			"periodo": 28,
+			"mes": 2,
+			"tipoFinalidade": {
+				"id": 1
+			}
+		},
+		{
+			"vazao": 150000.0,
+			"tempo": 9,
+			"periodo": 31,
+			"mes": 3,
+			"tipoFinalidade": {
+				"id": 2
+			}
+		},
+		{
+			"vazao": 150000.0,
+			"tempo": 9,
+			"periodo": 31,
+			"mes": 1,
+			"tipoFinalidade": {
+				"id": 2
+			}
+		},
+		{
+			"vazao": 150000.0,
+			"tempo": 9,
+			"periodo": 31,
+			"mes": 1,
+			"tipoFinalidade": {
+				"id": 1
+			}
+		},
+		{
+			"vazao": 150000.0,
+			"tempo": 9,
+			"periodo": 28,
+			"mes": 2,
+			"tipoFinalidade": {
+				"id": 2
+			}
+		},
+		{
+			"vazao": 150000.0,
+			"tempo": 9,
+			"periodo": 30,
+			"mes": 4,
+			"tipoFinalidade": {
+				"id": 1
+			}
+		},
+		{
+			"vazao": 150000.0,
+			"tempo": 9,
+			"periodo": 30,
+			"mes": 4,
+			"tipoFinalidade": {
+				"id": 2
+			}
+		},
+		{
+			"vazao": 150000.0,
+			"tempo": 9,
+			"periodo": 30,
+			"mes": 6,
+			"tipoFinalidade": {
+				"id": 1
+			}
+		},
+		{
+			"vazao": 150000.0,
+			"tempo": 9,
+			"periodo": 31,
+			"mes": 8,
+			"tipoFinalidade": {
+				"id": 1
+			}
+		},
+		{
+			"vazao": 150000.0,
+			"tempo": 9,
+			"periodo": 31,
+			"mes": 12,
+			"tipoFinalidade": {
+				"id": 1
+			}
+		},
+		{
+			"vazao": 150000.0,
+			"tempo": 9,
+			"periodo": 31,
+			"mes": 5,
+			"tipoFinalidade": {
+				"id": 1
+			}
+		},
+		{
+			"vazao": 150000.0,
+			"tempo": 9,
+			"periodo": 30,
+			"mes": 9,
+			"tipoFinalidade": {
+				"id": 2
+			}
+		},
+		{
+			"vazao": 150000.0,
+			"tempo": 9,
+			"periodo": 30,
+			"mes": 11,
+			"tipoFinalidade": {
+				"id": 2
+			}
+		},
+		{
+			"vazao": 150000.0,
+			"tempo": 9,
+			"periodo": 31,
+			"mes": 7,
+			"tipoFinalidade": {
+				"id": 1
+			}
+		},
+		{
+			"vazao": 150000.0,
+			"tempo": 9,
+			"periodo": 31,
+			"mes": 10,
+			"tipoFinalidade": {
+				"id": 1
+			}
+		},
+		{
+			"vazao": 150000.0,
+			"tempo": 9,
+			"periodo": 30,
+			"mes": 11,
+			"tipoFinalidade": {
+				"id": 1
+			}
+		},
+		{
+			"vazao": 150000.0,
+			"tempo": 9,
+			"periodo": 31,
+			"mes": 8,
+			"tipoFinalidade": {
+				"id": 2
+			}
+		},
+		{
+			"vazao": 150000.0,
+			"tempo": 9,
+			"periodo": 31,
+			"mes": 3,
+			"tipoFinalidade": {
+				"id": 1
+			}
+		},
+		{
+			"vazao": 150000.0,
+			"tempo": 9,
+			"periodo": 30,
+			"mes": 9,
+			"tipoFinalidade": {
+				"id": 1
+			}
+		},
+		{
+			"vazao": 150000.0,
+			"tempo": 9,
+			"periodo": 31,
+			"mes": 12,
+			"tipoFinalidade": {
+				"id": 2
+			}
+		},
+		{
+			"vazao": 150000.0,
+			"tempo": 9,
+			"periodo": 31,
+			"mes": 7,
+			"tipoFinalidade": {
+				"id": 2
+			}
+		},
+		{
+			"vazao": 150000.0,
+			"tempo": 9,
+			"periodo": 31,
+			"mes": 5,
+			"tipoFinalidade": {
+				"id": 2
+			}
+		},
+		{
+			"vazao": 150000.0,
+			"tempo": 9,
+			"periodo": 30,
+			"mes": 6,
+			"tipoFinalidade": {
+				"id": 2
+			}
+		}
+	]
+}

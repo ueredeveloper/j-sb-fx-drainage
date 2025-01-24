@@ -90,7 +90,7 @@
                               <Insets left="10.0" right="10.0" />
                            </GridPane.margin>
                         </JFXComboBox>
-                        <JFXComboBox fx:id="cbWatershedBasin" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="200.0" promptText="Bacia Hidrográfica" styleClass="sec-combo-box" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3">
+                        <JFXComboBox fx:id="cbHydrographicBasin" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="200.0" promptText="Bacia Hidrográfica" styleClass="sec-combo-box" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3">
                            <GridPane.margin>
                               <Insets left="10.0" right="10.0" />
                            </GridPane.margin>
@@ -115,6 +115,19 @@
                               <Insets left="10.0" right="10.0" />
                            </GridPane.margin>
                         </HBox>
+                        <JFXButton fx:id="btnRefresh" ellipsisString="" prefHeight="35.0" prefWidth="33.0" styleClass="icons" GridPane.columnIndex="3" GridPane.rowIndex="3">
+                           <graphic>
+                              <FontAwesomeIconView glyphName="REFRESH">
+                                 <styleClass>
+                                    <String fx:value="icon-light-dark" />
+                                    <String fx:value="icons" />
+                                 </styleClass>
+                              </FontAwesomeIconView>
+                           </graphic>
+                           <tooltip>
+                              <Tooltip text="Atualiza dados automatizados com bacia e unidade hidrográfica" />
+                           </tooltip>
+                        </JFXButton>
                      </children>
                   </GridPane>
                   <GridPane layoutY="250.0" prefHeight="50.0" prefWidth="780.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">

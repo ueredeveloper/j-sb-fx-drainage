@@ -2,18 +2,27 @@ package enums;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import models.BaciaHidrografica;
 import models.Dominio;
 import models.Estado;
+import models.HidrogeoFraturado;
+import models.HidrogeoPoroso;
 import models.SituacaoProcesso;
 import models.SubtipoOutorga;
 import models.TipoAto;
 import models.TipoInterferencia;
 import models.TipoOutorga;
 import models.TipoPoco;
+import models.UnidadeHidrografica;
+import services.BaciaHidrograficaService;
 import services.DominioService;
+import services.HidrogeoFraturadoService;
+import services.HidrogeoPorosoService;
+import services.UnidadeHidrograficaService;
 import utilities.URLUtility;
 
 public enum StaticData {
@@ -32,6 +41,11 @@ public enum StaticData {
 	private ObservableList<TipoAto> obsTypesOfActs;
 	private ObservableList<Estado> obsStates;
 	private ObservableList<TipoPoco> obsTypeOfWells;
+	private ObservableList<UnidadeHidrografica> obsHidrographicUnits;
+	private ObservableList<BaciaHidrografica> obsBasins;
+	private ObservableList<HidrogeoFraturado> obsHidrogeoFraturado;
+	private ObservableList<HidrogeoPoroso> obsHidrogeoPoroso;
+	
 
 	private Dominio dominio;
 
@@ -165,5 +179,107 @@ public enum StaticData {
 		}
 		return obsTypeOfWells;
 	}
+
+	public ObservableList<UnidadeHidrografica> fetchAllHidrographicUnits() {
+
+		// Se já houver solicitado uma vez não precisa solicitar mais.
+		if (obsHidrographicUnits == null) {
+
+			System.out.println("obs units null static data");
+
+			try {
+
+				UnidadeHidrograficaService service = new UnidadeHidrograficaService(localUrl);
+
+				Set<UnidadeHidrografica> set = service.listAll();
+
+				obsHidrographicUnits = FXCollections.observableArrayList(set);
+				return obsHidrographicUnits;
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+		} else {
+			return obsHidrographicUnits;
+		}
+		return null;
+	}
+
+	public ObservableList<BaciaHidrografica> fetchAllHydrographicBasins() {
+
+		// Se já houver solicitado uma vez não precisa solicitar mais.
+		if (obsBasins == null) {
+
+			System.out.println("obs basins null static data");
+
+			try {
+
+				BaciaHidrograficaService service = new BaciaHidrograficaService(localUrl);
+
+				Set<BaciaHidrografica> set = service.listAll();
+
+				obsBasins = FXCollections.observableArrayList(set);
+				return obsBasins;
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+		} else {
+			return obsBasins;
+		}
+		return null;
+	}
+	
+	public ObservableList<HidrogeoPoroso> fetchAllPoroso() {
+
+		// Se já houver solicitado uma vez não precisa solicitar mais.
+		if (obsHidrogeoPoroso == null) {
+
+			try {
+
+				HidrogeoPorosoService service = new HidrogeoPorosoService(localUrl);
+
+				Set<HidrogeoPoroso> set = service.listAll();
+
+				obsHidrogeoPoroso = FXCollections.observableArrayList(set);
+				return obsHidrogeoPoroso;
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+		} else {
+			return obsHidrogeoPoroso;
+		}
+		return null;
+	}
+	
+	public ObservableList<HidrogeoFraturado> fetchAllFraturado () {
+
+		// Se já houver solicitado uma vez não precisa solicitar mais.
+		if (obsHidrogeoFraturado == null) {
+
+			try {
+
+				HidrogeoFraturadoService service = new HidrogeoFraturadoService(localUrl);
+
+				Set<HidrogeoFraturado> set = service.listAll();
+
+				obsHidrogeoFraturado = FXCollections.observableArrayList(set);
+				return obsHidrogeoFraturado;
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+		} else {
+			return obsHidrogeoFraturado;
+		}
+		return null;
+	}
+	
+	
 
 }

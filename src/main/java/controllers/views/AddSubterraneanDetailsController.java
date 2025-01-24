@@ -31,26 +31,32 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import models.Demanda;
 import models.Finalidade;
+import models.HidrogeoFraturado;
+import models.HidrogeoPoroso;
 import models.Interferencia;
+import models.SubsystemCodeAttributes;
 import models.Subterranea;
 import models.TipoFinalidade;
+import models.TipoInterferencia;
 import models.TipoPoco;
 import services.FinalidadeService;
+import services.HidrogeoFraturadoService;
+import services.HidrogeoPorosoService;
 import services.ServiceResponse;
 import utilities.URLUtility;
 
 public class AddSubterraneanDetailsController implements Initializable {
 
-	private String localUrl;
+	private String urlService;
+
+	AddInterferenceController addInterferenceControler;
 
 	public AddSubterraneanDetailsController() {
-		this.localUrl = URLUtility.getURLService();
+		this.urlService = URLUtility.getURLService();
 	}
 
-	private static AddInterferenceController instance;
-
-	public static AddInterferenceController getInstance() {
-		return instance;
+	public void setAddInterferenceController(AddInterferenceController addInterferenceControler) {
+		this.addInterferenceControler = addInterferenceControler;
 	}
 
 	@FXML
@@ -66,7 +72,7 @@ public class AddSubterraneanDetailsController implements Initializable {
 	private JFXComboBox<String> cbConcessionaire;
 
 	@FXML
-	private JFXComboBox<?> cbSubsystem;
+	private JFXComboBox<String> cbSystem, cbSubsystem;
 
 	@FXML
 	private JFXTextField tfCodeSystem;
@@ -104,16 +110,7 @@ public class AddSubterraneanDetailsController implements Initializable {
 	private JFXButton btnCalculateReqTotalConsumption;
 
 	@FXML
-	private JFXButton btnFillReqFlow;
-
-	@FXML
-	private JFXButton btnFillReqTime;
-
-	@FXML
-	private JFXButton btnFillReqPeriod;
-
-	@FXML
-	private JFXButton btnCalculateAuthTotalConsumption;
+	private JFXButton btnFillReqFlow, btnFillReqTime, btnFillReqPeriod, btnCalculateAuthTotalConsumption, btnRefresh;
 
 	@FXML
 	private JFXComboBox<?> cbAuthTimeFlow;
@@ -131,6 +128,118 @@ public class AddSubterraneanDetailsController implements Initializable {
 		// Tipo de poço, se manual ou tubular
 		obsTypesOfWells = StaticData.INSTANCE.getTypesOfWells();
 		cbWellType.setItems(obsTypesOfWells);
+
+		cbWellType.setOnAction((event) -> {
+
+			SubsystemCodeAttributes sca = addInterferenceControler.getSubsystemCodeAttributes();
+			TipoPoco tp = cbWellType.getSelectionModel().getSelectedItem();
+			
+			fillSystemAndSubsystem( 
+					sca.getTypeOfInterference(), 
+					tp, 
+					sca.getLatitude().toString(), 
+					sca.getLongitude().toString());
+			
+			
+
+			// Se tipo de interferência subterrânea
+			/*if (sca.getTypeOfInterference().getId() == 2L) {
+
+				TipoPoco tp = cbWellType.getSelectionModel().getSelectedItem();
+
+				if (tp != null) {
+
+					if (tp.getId() == 1L || tp.getId() == 2L) {
+						
+						// Buscar o sistema poroso e remover apenas os sistema (P1, P2) em formato de string.
+						ObservableList<HidrogeoPoroso> obsList = StaticData.INSTANCE.fetchAllPoroso();
+						// Cria nova ObservableList<String> para os valores do "sistema", cbSystem.
+
+						ObservableList<String> obsSystem = FXCollections.observableArrayList();
+						
+						// Cria uma array em formato set para não repetir os valores
+						Set<String> setSystem = new HashSet<>();
+						Set<String> setSubsystem = new HashSet<>();
+
+						// Extrai o sistema em formato string e preenche a lista para o comobobx cbSystem.
+						for (HidrogeoPoroso item : obsList) {
+							setSystem.add(item.getSistema()); // Assuming `getSistema()` is the getter for the `sistema` attribute
+							
+						}
+
+						// Preenche observable list e combobox
+						obsSystem.addAll(setSystem);
+						cbSystem.setItems(obsSystem);
+
+						// Preenchimento do código do subsistema
+						Set<HidrogeoPoroso> set = findSubsystemPorosoByPoint(sca.getLatitude(), sca.getLongitude());
+						// Como foi solicitado um select no banco, virá uma array com um valor, sendo necessário
+						//capturar o primeiro valor desta array
+						if (set != null) {
+							
+							set.forEach(s -> {
+								cbSystem.getSelectionModel().select(s.getSistema());
+								// Como não há subsistema no poroso, limpe a seleção
+								cbSubsystem.getSelectionModel().clearSelection();
+								tfCodeSystem.setText(s.getCodPlan());
+							});
+
+						}
+						
+						
+
+					} else {
+						
+						// Buscar o sistema poroso e remover apenas os sistema (P1, P2) em formato de string.
+						ObservableList<HidrogeoFraturado> obsList = StaticData.INSTANCE.fetchAllFraturado();
+						// Cria nova ObservableList<String> para os valores do "sistema", cbSystem.
+
+						ObservableList<String> obsSystem = FXCollections.observableArrayList();
+						// No caso do subsistema fraturado há o subsistema.
+						ObservableList<String> obsSubsystem = FXCollections.observableArrayList();
+						
+						// Cria uma array em formato set para não repetir os valores
+						Set<String> setSystem = new HashSet<>();
+						Set<String> setSubsystem = new HashSet<>();
+
+						// Extrai o sistema em formato string e preenche a lista para o comobobx cbSystem.
+						for (HidrogeoFraturado item : obsList) {
+							setSystem.add(item.getSistema()); // Assuming `getSistema()` is the getter for the `sistema` attribute
+							setSubsystem.add(item.getSubsistema());
+						}
+
+						// Preenche observable list e combobox (Systema)
+						obsSystem.addAll(setSystem);
+						cbSystem.setItems(obsSystem);
+						// Preenche o subsistema (cbSubsystem)
+						obsSubsystem.addAll(setSubsystem);
+						cbSubsystem.setItems(obsSubsystem);
+						
+						
+						
+						Set<HidrogeoFraturado> set = findSubsystemFraturadoByPoint(sca.getLatitude(),
+								sca.getLongitude());
+						if (set != null) {
+
+							set.forEach(s -> {
+								cbSystem.getSelectionModel().select(s.getSistema());
+								cbSubsystem.getSelectionModel().select(s.getSubsistema());
+								tfCodeSystem.setText(s.getCodPlan());
+							});
+
+						}
+
+					}
+
+				} else {
+
+				}
+
+			}*/
+
+			// No action needed for other cases, so the else block is removed
+		});
+
 		// Se há Caesb ou não
 		cbConcessionaire.getItems().addAll("Sim", "Não");
 
@@ -458,6 +567,10 @@ public class AddSubterraneanDetailsController implements Initializable {
 			bboFillRequestedPeriod.setOption(!bboFillRequestedPeriod.getOption());
 
 		});
+		
+		btnRefresh.setOnAction(e -> { 
+			System.out.println("clickd");
+			});
 
 		/**
 		 * Copia a finalidades e demandas requeridas para as finalidades e demandas
@@ -529,7 +642,7 @@ public class AddSubterraneanDetailsController implements Initializable {
 				idxPur[0]++;
 
 			});
-
+			
 			// Adiciona as finalidades
 			purpousesWrapper.getPurpouses().addAll(purListType1);
 			purpousesWrapper.getPurpouses().addAll(purListType2);
@@ -585,6 +698,8 @@ public class AddSubterraneanDetailsController implements Initializable {
 			demandsWrapper.getDemands().addAll(demType2List);
 
 		});
+		
+		
 
 	}
 
@@ -1145,9 +1260,11 @@ public class AddSubterraneanDetailsController implements Initializable {
 		if (selectedObject instanceof Subterranea) {
 			Subterranea subterranea = (Subterranea) selectedObject;
 
-			// Como os valores no banco é true ou false (boolean), verifica se true = "Sim", false = "não".
+			// Como os valores no banco é true ou false (boolean), verifica se true = "Sim",
+			// false = "não".
 			cbConcessionaire.getSelectionModel().select(subterranea.getCaesb() ? "Sim" : "Não");
-			// Como só recebo o id do tipo do poço, sem a descrição, preciso buscar o tipo de poço pelo id.
+			// Como só recebo o id do tipo do poço, sem a descrição, preciso buscar o tipo
+			// de poço pelo id.
 			Long tipoPocoId = subterranea.getTipoPoco() != null ? subterranea.getTipoPoco().getId() : null;
 
 			if (tipoPocoId != null) {
@@ -1158,13 +1275,35 @@ public class AddSubterraneanDetailsController implements Initializable {
 				if (matchingTipoPoco != null) {
 					// Seleciona o item no ComboBox
 					cbWellType.getSelectionModel().select(matchingTipoPoco);
+					
+					fillSystemAndSubsystem( 
+							subterranea.getTipoInterferencia(), 
+							subterranea.getTipoPoco(), 
+							subterranea.getLatitude().toString(), 
+							subterranea.getLongitude().toString());
+					
+					if (subterranea.getCodPlan()!=null && !subterranea.getCodPlan().isEmpty()) {
+						if (matchingTipoPoco.getId() == 1L || matchingTipoPoco.getId() ==2L) {
+							Set<HidrogeoPoroso> set = findPorosoByCodPlan(subterranea.getCodPlan());
+							
+							set.forEach(s-> System.out.println("poroso " + s.getCodPlan()));
+							
+							
+							
+						} else {
+							Set<HidrogeoFraturado> set = findSubsystemFraturadoByCodPlan(subterranea.getCodPlan());
+							
+							set.forEach(s-> System.out.println("fraturado " + s.getCodPlan()));
+						}
+					}
+					
 				} else {
 					System.out.println("Nenhum TipoPoco encontrado com o ID: " + tipoPocoId);
 				}
 			} else {
 				System.out.println("TipoPoco ID é nulo.");
 			}
-			
+
 			// Continua os outros preenchimentos
 			tfSystemFlow.setText(subterranea.getVazaoSistema().toString());
 			tfSystemGrant.setText(subterranea.getVazaoOutorgavel().toString());
@@ -1172,6 +1311,7 @@ public class AddSubterraneanDetailsController implements Initializable {
 			tfStaticLevel.setText(subterranea.getNivelDinamico());
 			tfDynamicLevel.setText(subterranea.getNivelDinamico().toString());
 			tfWaterDepth.setText(subterranea.getProfundidade());
+			
 			
 
 		} else {
@@ -1212,6 +1352,12 @@ public class AddSubterraneanDetailsController implements Initializable {
 			// Set the selected item if it exists
 			subterraneanAttributes.setTipoPoco(cbWellType.getSelectionModel().getSelectedItem());
 		}
+		
+		
+		// Sistema e Subsistema (Hidrogeo Poroso ou Fraturado)
+		subterraneanAttributes.setSistema(cbSystem.getSelectionModel().getSelectedItem());
+		subterraneanAttributes.setSubsistema(cbSubsystem.getSelectionModel().getSelectedItem());
+		subterraneanAttributes.setCodPlan(tfCodeSystem.getText());
 
 		return subterraneanAttributes;
 
@@ -1355,7 +1501,7 @@ public class AddSubterraneanDetailsController implements Initializable {
 	public void deletePurpouse(Node source, Finalidade purpouse) {
 
 		try {
-			FinalidadeService documentService = new FinalidadeService(localUrl);
+			FinalidadeService documentService = new FinalidadeService(urlService);
 
 			ServiceResponse<?> serviceResponse = documentService.deleteById(purpouse.getId());
 
@@ -1383,6 +1529,169 @@ public class AddSubterraneanDetailsController implements Initializable {
 			e.printStackTrace();
 		}
 
+	}
+
+	public Set<HidrogeoFraturado> findSubsystemFraturadoByPoint(String lat, String lng) {
+
+		try {
+
+			HidrogeoFraturadoService service = new HidrogeoFraturadoService(urlService);
+
+			Set<HidrogeoFraturado> set = service.findByPoint(lat, lng);
+
+			return set;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+
+	}
+
+	public Set<HidrogeoPoroso> findSubsystemPorosoByPoint(String lat, String lng) {
+
+		try {
+
+			HidrogeoPorosoService service = new HidrogeoPorosoService(urlService);
+
+			Set<HidrogeoPoroso> set = service.findByPoint(lat, lng);
+
+			return set;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+
+	}
+	
+	public Set<HidrogeoPoroso> findPorosoByCodPlan (String codPlan) {
+
+		try {
+
+			HidrogeoPorosoService service = new HidrogeoPorosoService(urlService);
+
+			Set<HidrogeoPoroso> set = service.findByCodPlan(codPlan);
+
+			return set;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+
+	}
+	
+	public Set<HidrogeoFraturado> findSubsystemFraturadoByCodPlan(String codPlan) {
+
+		try {
+
+			HidrogeoFraturadoService service = new HidrogeoFraturadoService(urlService);
+
+			Set<HidrogeoFraturado> set = service.findByCodPlan(codPlan);
+
+			return set;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+
+	}
+
+	public void fillSystemAndSubsystem (TipoInterferencia typeOfInterference, TipoPoco typeOfWell, String latitude, String longitude) {
+		// Se tipo de interferência subterrânea
+					if (typeOfInterference.getId() == 2L) {
+
+
+						if (typeOfWell != null) {
+
+							if (typeOfWell.getId() == 1L || typeOfWell.getId() == 2L) {
+								
+								// Buscar o sistema poroso e remover apenas os sistema (P1, P2) em formato de string.
+								ObservableList<HidrogeoPoroso> obsList = StaticData.INSTANCE.fetchAllPoroso();
+								// Cria nova ObservableList<String> para os valores do "sistema", cbSystem.
+
+								ObservableList<String> obsSystem = FXCollections.observableArrayList();
+								
+								// Cria uma array em formato set para não repetir os valores
+								Set<String> setSystem = new HashSet<>();
+								
+								// Extrai o sistema em formato string e preenche a lista para o comobobx cbSystem.
+								for (HidrogeoPoroso item : obsList) {
+									setSystem.add(item.getSistema()); // Assuming `getSistema()` is the getter for the `sistema` attribute
+									
+								}
+
+								// Preenche observable list e combobox
+								obsSystem.addAll(setSystem);
+								cbSystem.setItems(obsSystem);
+
+								// Preenchimento do código do subsistema
+								Set<HidrogeoPoroso> set = findSubsystemPorosoByPoint(latitude, longitude);
+								// Como foi solicitado um select no banco, virá uma array com um valor, sendo necessário
+								//capturar o primeiro valor desta array
+								if (set != null) {
+									
+									set.forEach(s -> {
+										cbSystem.getSelectionModel().select(s.getSistema());
+										// Como não há subsistema no poroso, limpe a seleção
+										cbSubsystem.getSelectionModel().clearSelection();
+										tfCodeSystem.setText(s.getCodPlan());
+									});
+
+								}
+								
+								
+
+							} else {
+								
+								// Buscar o sistema poroso e remover apenas os sistema (P1, P2) em formato de string.
+								ObservableList<HidrogeoFraturado> obsList = StaticData.INSTANCE.fetchAllFraturado();
+								// Cria nova ObservableList<String> para os valores do "sistema", cbSystem.
+
+								ObservableList<String> obsSystem = FXCollections.observableArrayList();
+								// No caso do subsistema fraturado há o subsistema.
+								ObservableList<String> obsSubsystem = FXCollections.observableArrayList();
+								
+								// Cria uma array em formato set para não repetir os valores
+								Set<String> setSystem = new HashSet<>();
+								Set<String> setSubsystem = new HashSet<>();
+
+								// Extrai o sistema em formato string e preenche a lista para o comobobx cbSystem.
+								for (HidrogeoFraturado item : obsList) {
+									setSystem.add(item.getSistema()); // Assuming `getSistema()` is the getter for the `sistema` attribute
+									setSubsystem.add(item.getSubsistema());
+								}
+
+								// Preenche observable list e combobox (Systema)
+								obsSystem.addAll(setSystem);
+								cbSystem.setItems(obsSystem);
+								// Preenche o subsistema (cbSubsystem)
+								obsSubsystem.addAll(setSubsystem);
+								cbSubsystem.setItems(obsSubsystem);
+								
+								
+								
+								Set<HidrogeoFraturado> set = findSubsystemFraturadoByPoint(latitude,
+										longitude);
+								if (set != null) {
+
+									set.forEach(s -> {
+										cbSystem.getSelectionModel().select(s.getSistema());
+										cbSubsystem.getSelectionModel().select(s.getSubsistema());
+										tfCodeSystem.setText(s.getCodPlan());
+									});
+
+								}
+
+							}
+
+						} else {
+
+						}
+
+					}
 	}
 
 }

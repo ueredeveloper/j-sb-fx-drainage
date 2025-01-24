@@ -26,6 +26,7 @@
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
          </columnConstraints>
          <rowConstraints>
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -42,12 +43,12 @@
                   <Insets left="10.0" right="10.0" />
                </padding>
             </JFXComboBox>
-            <JFXTextField fx:id="tfCodeSystem" prefHeight="30.0" prefWidth="166.0" promptText="Código do Subsistema" GridPane.columnIndex="3">
+            <JFXTextField fx:id="tfCodeSystem" prefHeight="30.0" prefWidth="166.0" promptText="Código do Subsistema" GridPane.columnIndex="4">
                <padding>
                   <Insets left="10.0" right="10.0" />
                </padding>
             </JFXTextField>
-            <JFXTextField fx:id="tfSystemFlow" prefHeight="30.0" prefWidth="200.0" promptText="Vazão do Subsistema" GridPane.columnIndex="4">
+            <JFXTextField fx:id="tfSystemFlow" prefHeight="30.0" prefWidth="200.0" promptText="Vazão do Subsistema" GridPane.columnIndex="5">
                <padding>
                   <Insets left="10.0" right="10.0" />
                </padding>
@@ -77,11 +78,29 @@
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
             </JFXTextField>
-            <JFXComboBox fx:id="cbSubsystem" prefHeight="30.0" prefWidth="200.0" promptText="Subsistema" GridPane.columnIndex="2">
+            <JFXComboBox fx:id="cbSystem" prefHeight="30.0" prefWidth="200.0" promptText="Subsistema" GridPane.columnIndex="2">
                <padding>
                   <Insets left="10.0" right="10.0" />
                </padding>
             </JFXComboBox>
+            <JFXComboBox fx:id="cbSubsystem" prefHeight="30.0" prefWidth="200.0" promptText="Subsistema" GridPane.columnIndex="3">
+               <padding>
+                  <Insets left="10.0" right="10.0" />
+               </padding>
+            </JFXComboBox>
+            <JFXButton fx:id="btnRefresh" ellipsisString="" prefHeight="35.0" prefWidth="33.0" styleClass="icons" GridPane.columnIndex="5" GridPane.rowIndex="1">
+               <graphic>
+                  <FontAwesomeIconView glyphName="REFRESH">
+                     <styleClass>
+                        <String fx:value="icon-light-dark" />
+                        <String fx:value="icons" />
+                     </styleClass>
+                  </FontAwesomeIconView>
+               </graphic>
+               <tooltip>
+                  <Tooltip text="Atualiza dados automatizados com sistema e subsistema..." />
+               </tooltip>
+            </JFXButton>
          </children>
       </GridPane>
       <TabPane layoutX="11.0" layoutY="160.0" prefHeight="536.0" prefWidth="890.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">

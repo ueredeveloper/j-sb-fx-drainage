@@ -83,6 +83,26 @@ public class Interferencia {
 	}
 	
 	
+	public Interferencia(Long id, Double latitude, Double longitude, String geometry, Endereco endereco,
+			TipoInterferencia tipoInterferencia, TipoOutorga tipoOutorga, SubtipoOutorga subtipoOutorga,
+			SituacaoProcesso situacaoProcesso, TipoAto tipoAto, BaciaHidrografica baciaHidrografica,
+			UnidadeHidrografica unidadeHidrografica, Set<Finalidade> finalidades, Set<Demanda> demandas) {
+		super();
+		this.id = id;
+		this.latitude = latitude;
+		this.longitude = longitude;
+		this.geometry = geometry;
+		this.endereco = endereco;
+		this.tipoInterferencia = tipoInterferencia;
+		this.tipoOutorga = tipoOutorga;
+		this.subtipoOutorga = subtipoOutorga;
+		this.situacaoProcesso = situacaoProcesso;
+		this.tipoAto = tipoAto;
+		this.baciaHidrografica = baciaHidrografica;
+		this.unidadeHidrografica = unidadeHidrografica;
+		this.finalidades = finalidades;
+		this.demandas = demandas;
+	}
 
 	public Long getId() {
 		return id;
@@ -170,6 +190,22 @@ public class Interferencia {
 
 	public void setDemandas(Set<Demanda> demandas) {
 		this.demandas = demandas;
+	}
+
+	public BaciaHidrografica getBaciaHidrografica() {
+		return baciaHidrografica;
+	}
+
+	public void setBaciaHidrografica(BaciaHidrografica baciaHidrografica) {
+		this.baciaHidrografica = baciaHidrografica;
+	}
+
+	public UnidadeHidrografica getUnidadeHidrografica() {
+		return unidadeHidrografica;
+	}
+
+	public void setUnidadeHidrografica(UnidadeHidrografica unidadeHidrografica) {
+		this.unidadeHidrografica = unidadeHidrografica;
 	}
 
 	@Override
