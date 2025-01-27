@@ -59,44 +59,6 @@ public class WebViewDocument {
 	        System.err.println("JavaScript error: " + event.getMessage());
 	    });
 	    
-	    /**
-	     * 
-	     * Verificação se a interferência é subterrânea. Isto é necessário pois estava perdendo atributos da outorga
-	     * subterrânea como vazão outorgável. Assim, é preciso verificar, limpar a array e realocar com interferências 
-	     * subterrâneas.
-	     */
-	    if (selectedDocument != null && selectedDocument.getEndereco() != null) {
-	    	
-		    
-		    Endereco endereco = selectedDocument.getEndereco();
-		    
-		    
-		    // Clear all interferencias
-		    selectedDocument.setEndereco(null);
-
-	       
-	        for (Interferencia interferencia : endereco.getInterferencias()) {
-	        	
-	        	 // Find and retain the Subterranea instance if it exists
-		        Subterranea retainedSubterranea = null;
-		        
-	            if (interferencia instanceof Subterranea) {
-	                retainedSubterranea = (Subterranea) interferencia;
-	                
-	             // Re-add the retained Subterranea instance if it exists
-	    	        if (retainedSubterranea != null) {
-	    	            endereco.getInterferencias().add(retainedSubterranea);
-	    	        }
-	    	        
-	                break; // Only keep one Subterranea instance
-	            }
-	        }
-	        
-	       selectedDocument.setEndereco(endereco);
-
-		}
-		    
-        
 
 	    // Converte o documento selecionado para json.
 	    String strJson = JsonConverter.convertObjectToJson(selectedDocument);

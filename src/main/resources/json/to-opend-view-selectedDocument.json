@@ -1,0 +1,362 @@
+{
+	"id": 85,
+	"numero": "123",
+	"processo": {
+		"id": 44,
+		"numero": "123.456789",
+		"anexo": {
+			"id": 52,
+			"numero": "456.789.123.456",
+			"processos": [
+			]
+		}
+	},
+	"numeroSei": 456,
+	"tipoDocumento": {
+		"id": 4,
+		"descricao": "Ofício"
+	},
+	"endereco": {
+		"id": 80,
+		"logradouro": "Rua de Sobradinho, 0909",
+		"documentos": [
+		],
+		"interferencias": [
+			{
+				"caesb": false,
+				"nivelEstatico": "89",
+				"nivelDinamico": "89",
+				"profundidade": "5",
+				"vazaoOutorgavel": 84,
+				"vazaoSistema": 6,
+				"vazaoTeste": 5,
+				"tipoPoco": {
+					"id": 2
+				},
+				"id": 40,
+				"latitude": -15.845453681566372,
+				"longitude": -47.77212544572302,
+				"endereco": {
+					"id": 80,
+					"logradouro": "Rua de Sobradinho, 0909",
+					"documentos": [
+					],
+					"interferencias": [
+					]
+				},
+				"tipoInterferencia": {
+					"id": 2,
+					"descricao": "Subterrânea"
+				},
+				"tipoOutorga": {
+					"id": 2,
+					"descricao": "Outorga Prévia"
+				},
+				"subtipoOutorga": {
+					"id": 2,
+					"descricao": "Modificação"
+				},
+				"situacaoProcesso": {
+					"id": 2,
+					"descricao": "Em Análise"
+				},
+				"tipoAto": {
+					"id": 2,
+					"descricao": "Portaria"
+				},
+				"baciaHidrografica": {
+					"objectid": 4
+				},
+				"unidadeHidrografica": {
+					"objectid": 24
+				},
+				"finalidades": [
+					{
+						"id": 134,
+						"finalidade": "irrigação",
+						"subfinalidade": "colve flor",
+						"quantidade": 41.0,
+						"consumo": 52.0,
+						"total": 2132.0,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 135,
+						"finalidade": "irrigação",
+						"subfinalidade": "colve flor",
+						"quantidade": 41.0,
+						"consumo": 52.0,
+						"total": 2132.0,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 136,
+						"finalidade": "",
+						"subfinalidade": "",
+						"quantidade": 0.0,
+						"consumo": 0.0,
+						"total": 0.0,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					}
+				],
+				"demandas": [
+					{
+						"id": 841,
+						"vazao": 2132.0,
+						"tempo": 10,
+						"periodo": 31,
+						"mes": 8,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 842,
+						"vazao": 2132.0,
+						"tempo": 10,
+						"periodo": 31,
+						"mes": 5,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 843,
+						"vazao": 2132.0,
+						"tempo": 10,
+						"periodo": 31,
+						"mes": 10,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 844,
+						"vazao": 2132.0,
+						"tempo": 10,
+						"periodo": 30,
+						"mes": 6,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 845,
+						"vazao": 2132.0,
+						"tempo": 10,
+						"periodo": 31,
+						"mes": 10,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 846,
+						"vazao": 2132.0,
+						"tempo": 10,
+						"periodo": 30,
+						"mes": 6,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 847,
+						"vazao": 2132.0,
+						"tempo": 10,
+						"periodo": 31,
+						"mes": 12,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 848,
+						"vazao": 2132.0,
+						"tempo": 10,
+						"periodo": 30,
+						"mes": 9,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 849,
+						"vazao": 2132.0,
+						"tempo": 10,
+						"periodo": 31,
+						"mes": 1,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 850,
+						"vazao": 2132.0,
+						"tempo": 10,
+						"periodo": 31,
+						"mes": 3,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 851,
+						"vazao": 2132.0,
+						"tempo": 10,
+						"periodo": 30,
+						"mes": 9,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 852,
+						"vazao": 2132.0,
+						"tempo": 10,
+						"periodo": 28,
+						"mes": 2,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 853,
+						"vazao": 2132.0,
+						"tempo": 10,
+						"periodo": 28,
+						"mes": 2,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 854,
+						"vazao": 2132.0,
+						"tempo": 10,
+						"periodo": 31,
+						"mes": 8,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 855,
+						"vazao": 2132.0,
+						"tempo": 10,
+						"periodo": 31,
+						"mes": 7,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 856,
+						"vazao": 2132.0,
+						"tempo": 10,
+						"periodo": 30,
+						"mes": 4,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 857,
+						"vazao": 2132.0,
+						"tempo": 10,
+						"periodo": 30,
+						"mes": 11,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 858,
+						"vazao": 2132.0,
+						"tempo": 10,
+						"periodo": 30,
+						"mes": 11,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 859,
+						"vazao": 2132.0,
+						"tempo": 10,
+						"periodo": 31,
+						"mes": 5,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 860,
+						"vazao": 2132.0,
+						"tempo": 10,
+						"periodo": 31,
+						"mes": 7,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 861,
+						"vazao": 2132.0,
+						"tempo": 10,
+						"periodo": 31,
+						"mes": 12,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 862,
+						"vazao": 2132.0,
+						"tempo": 10,
+						"periodo": 31,
+						"mes": 3,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 863,
+						"vazao": 2132.0,
+						"tempo": 10,
+						"periodo": 31,
+						"mes": 1,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 864,
+						"vazao": 2132.0,
+						"tempo": 10,
+						"periodo": 30,
+						"mes": 4,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					}
+				]
+			}
+		]
+	},
+	"usuarios": [
+		{
+			"id": 97,
+			"nome": "Carlos Coqueiro",
+			"cpfCnpj": 52585896987,
+			"documentos": [
+			]
+		}
+	]
+}

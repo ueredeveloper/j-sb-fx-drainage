@@ -788,7 +788,7 @@ public class DocumentController implements Initializable {
 
 			String keyword = tfSearch.getText();
 
-			List<Documento> documentos = documentService.fetchByParam(keyword);
+			Set<Documento> documentos = documentService.fetchByParam(keyword);
 
 			// Create a list of Document objects
 			obsListDocs.clear();

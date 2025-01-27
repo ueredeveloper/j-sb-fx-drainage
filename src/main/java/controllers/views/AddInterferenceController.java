@@ -973,6 +973,10 @@ public class AddInterferenceController implements Initializable {
 		}
 	}
 
+	/**
+	 * Captura variáveis necessárias para obter o sistema (P1, Paranoá ) e
+	 * subsistema (R3/Q3, ...) e o código do sistema.
+	 */
 	public SubsystemCodeAttributes getSubsystemCodeAttributes() {
 		// Retrieve the values from the UI
 		String lat = tfLatitude.getText();

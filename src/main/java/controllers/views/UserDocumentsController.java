@@ -3,6 +3,7 @@ package controllers.views;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 import enums.ToastType;
 import javafx.collections.FXCollections;
@@ -103,7 +104,7 @@ public class UserDocumentsController implements Initializable {
 		try {
 
 			DocumentService documentService = new DocumentService(urlService);
-			List<Documento> documents = documentService.fetchDocumentByUserId(userId);
+			Set<Documento> documents = documentService.fetchDocumentByUserId(userId);
 
 			// Create a list of Document objects
 			obsList.clear();

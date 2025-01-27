@@ -49,7 +49,7 @@ public class DocumentService {
 
 			int responseCode = connection.getResponseCode();
 			
-			System.out.println(responseCode);
+			//System.out.println(responseCode);
 
 			String responseBody;
 			if (responseCode == HttpURLConnection.HTTP_CREATED) {
@@ -69,8 +69,8 @@ public class DocumentService {
 			}
 
 			connection.disconnect();
-			System.out.println("json resp salva doc");
-			System.out.println(responseBody);
+			//System.out.println("json resp salva doc");
+			//System.out.println(responseBody);
 			return new ServiceResponse<>(responseCode, responseBody);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -90,7 +90,7 @@ public class DocumentService {
 			// Convert Documento object to JSON
 			String jsonInputString = convertObjectToJson(documento);
 			
-			System.out.println("update doc \n" + jsonInputString);
+			//System.out.println("update doc \n" + jsonInputString);
 
 			// Write JSON to request body
 			try (OutputStream os = connection.getOutputStream();
@@ -129,7 +129,7 @@ public class DocumentService {
 	}
 
 	
-	public List<Documento> fetchByParam(String keyword) {
+	public Set<Documento> fetchByParam(String keyword) {
 		
 		try {
 			URL apiUrl = new URL(localUrl + "/document/list?keyword=" + URLEncoder.encode(keyword, "UTF-8"));
@@ -158,7 +158,7 @@ public class DocumentService {
 		return null;
 	}
 	
-	public List<Documento> fetchDocumentByUserId (Long userId) {
+	public Set<Documento> fetchDocumentByUserId (Long userId) {
 		
 		try {
 			URL apiUrl = new URL(localUrl + "/document/list-by-user-id?id=" + userId);
@@ -240,7 +240,7 @@ public class DocumentService {
 		return gson.toJson(object);
 	}
 
-	private List<Documento> handleSuccessResponse(HttpURLConnection connection) throws IOException {
+	private Set<Documento> handleSuccessResponse(HttpURLConnection connection) throws IOException {
 		BufferedReader reader = new BufferedReader(
 				new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8));
 		StringBuilder response = new StringBuilder();
@@ -253,7 +253,7 @@ public class DocumentService {
 
 		reader.close();
 
-		return new Gson().fromJson(response.toString(), new TypeToken<List<Documento>>() {
+		return new Gson().fromJson(response.toString(), new TypeToken<Set<Documento>>() {
 		}.getType());
 	}
 

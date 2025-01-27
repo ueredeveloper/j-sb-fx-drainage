@@ -28,9 +28,6 @@
 	 */
 	updateHtmlDocument(documento) {
 		
-		console.log("utils")
-		console.log(JSON.stringify(documento))
-
 		// Verifica se a classe ObjectView está disponível
 		if (typeof ObjectView !== 'undefined') {
 			// Atualiza ObjectView
