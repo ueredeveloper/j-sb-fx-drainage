@@ -568,9 +568,67 @@ public class AddSubterraneanDetailsController implements Initializable {
 
 		});
 		
-		btnRefresh.setOnAction(e -> { 
-			System.out.println("clickd");
-			});
+		btnRefresh.setOnAction(event -> {
+			
+			System.out.println("clicked");
+
+			SubsystemCodeAttributes sca = addInterferenceControler.getSubsystemCodeAttributes();
+			
+			if (sca.getLatitude()!= null && sca.getLongitude()!=null) {
+				
+				fillSystemAndSubsystem( 
+						sca.getTypeOfInterference(), 
+						cbWellType.getSelectionModel().getSelectedItem(),
+						sca.getLatitude().toString(), 
+						sca.getLongitude().toString());
+				
+			}
+
+			/*if (lat != null && lng != null) {
+				Set<BaciaHidrografica> basis = findBhByPoint(lat, lng);
+
+				// Iterar e no primeiro resultado buscar este valor na observable list e
+				// selecionar.
+
+				if (basis != null) {
+					for (BaciaHidrografica basin : basis) {
+						// Iterar sobre o ObservableList e encontrar o primeiro item correspondente
+						for (BaciaHidrografica obsBasin : obsBasins) {
+							// Comparar os ObjectIds (substitua getId() pelo nome real do método)
+							if (obsBasin.getObjectid().equals(basin.getObjectid())) {
+								// Selecionar o item correspondente no ComboBox
+								cbHydrographicBasin.getSelectionModel().select(obsBasin);
+								break; // Parar após o primeiro item encontrado
+							}
+						}
+					}
+				}
+
+				Set<UnidadeHidrografica> units = findUhByPoint(lat, lng);
+
+				if (units != null) {
+					for (UnidadeHidrografica obj : units) {
+						// Iterar sobre o ObservableList e encontrar o primeiro item correspondente
+						for (UnidadeHidrografica obsUnit : obsHidrographicUnits) {
+							// Comparar os ObjectIds (substitua getId() pelo nome real do método)
+							if (obsUnit.getObjectid().equals(obj.getObjectid())) {
+								// Selecionar o item correspondente no ComboBox
+								cbHydrographicUnit.getSelectionModel().select(obsUnit);
+								break; // Parar após o primeiro item encontrado
+							}
+						}
+					}
+				}
+
+			} else {
+				// Informa sucesso em deletar
+				Node source = (Node) tfLatitude;
+				Stage ownerStage = (Stage) source.getScene().getWindow();
+				String toastMsg = "Preencha as coordenadas para buscar a bacia hidrográfica !!!";
+				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.WARNING);
+			}*/
+
+		});
 
 		/**
 		 * Copia a finalidades e demandas requeridas para as finalidades e demandas
