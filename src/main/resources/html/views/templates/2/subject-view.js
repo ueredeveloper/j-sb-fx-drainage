@@ -33,10 +33,10 @@ class SubjectView {
 		if (this.div !== null) this.div.innerHTML = innerHTML;
 
 	}
-	update(documento) {
+	update(documento, interferencia) {
 
-		let tipoPoco = documento.endereco.interferencias[0].tipoPoco;
-		let finalidades = documento.endereco.interferencias[0].finalidades;
+		let tipoPoco = interferencia.tipoPoco;
+		let finalidades = interferencia.finalidades;
 
 		let _items = document.getElementsByClassName('int-tipo-poco');
 

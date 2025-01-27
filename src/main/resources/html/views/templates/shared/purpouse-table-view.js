@@ -14,24 +14,25 @@
  *
  */
 
-
 class PurpouseTableView {
-  constructor(documento, tipoFinalidade, cssId) {
+	
+	constructor(documento, tipoFinalidade, interferencia, cssId) {
 
-    this.div = document.getElementById(cssId);
-    this.documento = documento;
-    this.tipoFinalidade = tipoFinalidade;
+	    this.div = document.getElementById(cssId);
+	    this.documento = documento;
+	    this.tipoFinalidade = tipoFinalidade;
+	    this.interferencia = interferencia;
 
     this.render();
   }
 
   render() {
 
-    let anexo = this.documento.processo.anexo
-    let usuario = this.documento.usuarios[0]
-    let tipoOutorga = this.documento.endereco.interferencias[0].tipoOutorga
-    let sutipoOutorga = this.documento.endereco.interferencias[0].subtipoOutorga
-    let finalidades = this.documento.endereco.interferencias[0].finalidades
+    let anexo = this.documento.processo.anexo;
+    let usuario = this.documento.usuarios[0];
+    let tipoOutorga = this.interferencia.tipoOutorga;
+    let sutipoOutorga = this.interferencia.subtipoOutorga;
+    let finalidades = this.interferencia.finalidades;
 
     let _finalidades = finalidades.filter(f => f.tipoFinalidade.id === this.tipoFinalidade);
 

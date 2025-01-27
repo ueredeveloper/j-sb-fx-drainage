@@ -6,13 +6,6 @@
  * @arquivo limits-table-view.js
  * @id 37
  * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
  */
  
 class LimitsTableView {
@@ -161,9 +154,8 @@ class LimitsTableView {
         if (this.div !== null) this.div.innerHTML = innerHTML;
 
     }
-    update(documento) {
+    update(interferencia) {
 
-        let interferencia = documento.endereco.interferencias[0];
         // Atualizar vazão (l/h)
         const months = [
             "jan", "fev", "mar", "abr", "mai", "jun",

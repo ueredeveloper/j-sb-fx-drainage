@@ -5,14 +5,6 @@
  * @direitorio models
  * @arquivo usuario-model.js
  * @id 33
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
  *
  */
 

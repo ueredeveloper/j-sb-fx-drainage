@@ -1,9 +1,11 @@
 package controllers.views;
 
-import java.util.Set;
 import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import javafx.application.Platform;
 import javafx.concurrent.Worker;
@@ -11,9 +13,8 @@ import javafx.scene.web.HTMLEditor;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import models.Documento;
-import models.Endereco;
 import models.Interferencia;
-import models.Subterranea;
+import models.InterferenciaTypeAdapter;
 import netscape.javascript.JSException;
 import netscape.javascript.JSObject;
 import utilities.JsonConverter;
@@ -54,40 +55,48 @@ public class WebViewDocument {
 	}
 
 	public void changeContent(Documento selectedDocument) {
-	    // Register error handler for JavaScript errors
-	    webEngine.setOnError(event -> {
-	        System.err.println("JavaScript error: " + event.getMessage());
-	    });
-	    
+		// Register error handler for JavaScript errors
+		webEngine.setOnError(event -> {
+			System.err.println("JavaScript error: " + event.getMessage());
+		});
 
-	    // Converte o documento selecionado para json.
-	    String strJson = JsonConverter.convertObjectToJson(selectedDocument);
-	    System.out.println("selected document");
-	    System.out.println(strJson);
+		// Convert the document to JSON
+		String docJson = JsonConverter.convertObjectToJson(selectedDocument);
 
-	    // Verifica se a página já renderizou e adicona o objeto json
-	    webEngine.getLoadWorker().stateProperty().addListener((obs, oldState, newState) -> {
-	        if (newState == Worker.State.SUCCEEDED) {
-	            try {
-	                // Call JavaScript to update the document with the JSON content
-	                invokeJS("utils.updateHtmlDocument(" + strJson + ");");
+		Gson gson = new GsonBuilder().registerTypeAdapter(Interferencia.class, new InterferenciaTypeAdapter()).create();
 
-	                // Limpa o html de scripts
-	                String cleanHtml = clearHtmlContent();
+		// Use a StringBuilder to hold the JSON for the first interferencia
+		StringBuilder interJson = new StringBuilder();
 
-	                // Leitura do html limpol no editor html
-	                htmlEditor.setHtmlText(cleanHtml);
+		selectedDocument.getEndereco().getInterferencias().forEach(interferencia -> {
+			if (interferencia != null) {
+				interJson.append(JsonConverter.convertInterferenciaToJson(interferencia));
+				return; // Exit the loop after processing the first interferencia
+			}
+		});
 
-	                System.out.println("HTML content updated and reloaded successfully.");
-	            } catch (JSException e) {
-	                System.err.println("Error updating HTML content: " + e.getMessage());
-	            }
-	        } else if (newState == Worker.State.FAILED) {
-	            System.err.println("Failed to load the web content.");
-	        }
-	    });
+		// Verifica se a página já renderizou e adicona o objeto json
+		webEngine.getLoadWorker().stateProperty().addListener((obs, oldState, newState) -> {
+			if (newState == Worker.State.SUCCEEDED) {
+				try {
+					// Call JavaScript to update the document with the JSON content
+					invokeJS("utils.updateHtmlDocument(" + docJson + "," + interJson + ");");
+
+					// Limpa o html de scripts
+					String cleanHtml = clearHtmlContent();
+
+					// Leitura do html limpol no editor html
+					htmlEditor.setHtmlText(cleanHtml);
+
+					System.out.println("HTML content updated and reloaded successfully.");
+				} catch (JSException e) {
+					System.err.println("Error updating HTML content: " + e.getMessage());
+				}
+			} else if (newState == Worker.State.FAILED) {
+				System.err.println("Failed to load the web content.");
+			}
+		});
 	}
-
 
 	public void getHtmlContent(Consumer<String> callback) {
 
@@ -131,35 +140,32 @@ public class WebViewDocument {
 	/**
 	 * Invokes JavaScript code in the WebView, waiting for the content to be ready.
 	 * 
-	 *  script
-	 *            String with the JavaScript code to be executed.
+	 * script String with the JavaScript code to be executed.
 	 */
 	private void invokeJS(final String script) {
-		
+
 		// Check if `utils` exists in the JavaScript environment
-        Boolean utilsExists = (Boolean) window.eval("typeof utils !== 'undefined';");
-        if (utilsExists) {
-        	if (window != null) {
-    			try {
-    				window.eval(script);
-    			} catch (JSException e) {
-    				System.err.println("Erro ao executar script JavaScript: " + e.getMessage());
-    			}
-    		} else {
-    			// Wait until the content is completely loaded
-    			webEngine.getLoadWorker().stateProperty().addListener((observableValue, oldState, newState) -> {
-    				if (newState == Worker.State.SUCCEEDED) {
-    					window = (JSObject) webEngine.executeScript("window");
-    					window.eval(script);
-    				}
-    			});
-    		}
-        } else {
-            System.err.println("JavaScript 'utils' is not defined in the current HTML context.");
-        }
-        
-        
-		
+		Boolean utilsExists = (Boolean) window.eval("typeof utils !== 'undefined';");
+		if (utilsExists) {
+			if (window != null) {
+				try {
+					window.eval(script);
+				} catch (JSException e) {
+					System.err.println("Erro ao executar script JavaScript: " + e.getMessage());
+				}
+			} else {
+				// Wait until the content is completely loaded
+				webEngine.getLoadWorker().stateProperty().addListener((observableValue, oldState, newState) -> {
+					if (newState == Worker.State.SUCCEEDED) {
+						window = (JSObject) webEngine.executeScript("window");
+						window.eval(script);
+					}
+				});
+			}
+		} else {
+			System.err.println("JavaScript 'utils' is not defined in the current HTML context.");
+		}
+
 	}
 
 	class HtmlString {

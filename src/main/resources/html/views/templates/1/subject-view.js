@@ -33,9 +33,9 @@ class SubjectView {
 		this.div.innerHTML = innerHTML;
 
 	}
-	update(documento){
+	update(documento, interferencia){
 
-		let finalidades = documento.endereco.interferencias[0].finalidades;
+		let finalidades = interferencia.finalidades;
 		let usuario = documento.usuarios[0];
 
 		let _items = document.getElementsByClassName('us-name');

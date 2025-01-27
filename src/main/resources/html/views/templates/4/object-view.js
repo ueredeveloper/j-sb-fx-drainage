@@ -46,11 +46,14 @@ class ObjectView {
 		if (this.div !== null) this.div.innerHTML = innerHTML;
 
 	}
-	update(documento) {
+	update(documento, interferencia) {
+		
+			console.log('4')
+		 console.log (JSON.stringify(documento))
 
 		let _items = document.getElementsByClassName('inter-finalidades');
 
-		let finalidades = documento.endereco.interferencias[0].finalidades;
+		let finalidades = interferencia.finalidades;
 		let usuario = documento.usuarios[0];
 		let endereco = documento.endereco;
 

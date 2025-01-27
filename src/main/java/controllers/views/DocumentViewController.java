@@ -26,7 +26,6 @@ import javafx.scene.web.HTMLEditor;
 import javafx.scene.web.WebView;
 import models.Documento;
 import models.Interferencia;
-import models.Subterranea;
 import models.Template;
 import models.Usuario;
 import services.InterferenciaService;
@@ -159,7 +158,7 @@ public class DocumentViewController implements Initializable {
 			}
 
 			Interferencia selectedInterference = cbInterferencies.getSelectionModel().getSelectedItem();
-			
+
 			String typeOfGrant = "";
 			String subtypeOfGrant = "";
 			if (selectedInterference != null) {
@@ -221,7 +220,7 @@ public class DocumentViewController implements Initializable {
 			if (selectedInterference != null) {
 
 				this.selectedDocument.getEndereco().getInterferencias().clear();
-				
+
 				this.selectedDocument.getEndereco().getInterferencias().add(selectedInterference);
 
 				WebContent webContent = new WebContent();

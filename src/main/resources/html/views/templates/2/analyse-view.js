@@ -91,13 +91,12 @@ class AnalyseView {
 
 	}
 
-	update(documento) {
+	update (documento, interferencia) {
 
 		let items = document.getElementsByClassName('inter-subsistema');
 
 		// Converte o resultado para array e atualiza
 		Array.from(items).forEach(element => {
-			let interferencia = documento.endereco.interferencias[0];
 			element.innerHTML = new InterferenciaModel().getNomeSubsistema(interferencia) || 'XXX';
 		});
 	}

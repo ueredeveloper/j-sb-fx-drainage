@@ -4,6 +4,9 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import models.Interferencia;
+import models.Subterranea;
+
 public class JsonConverter {
 
     private static final Gson gson = new Gson();
@@ -22,6 +25,17 @@ public class JsonConverter {
             }
         }
         return false;
+    }
+    
+    public static String convertInterferenciaToJson(Interferencia interferencia) {
+        if (interferencia instanceof Subterranea) {
+            Subterranea subterranea = (Subterranea) interferencia;
+            System.out.println("Interferencia is of type Subterranea.");
+            return gson.toJson(subterranea); // Converts with all Subterranea attributes
+        } else {
+            System.out.println("Interferencia is not of type Subterranea.");
+            return gson.toJson(interferencia); // Converts as a generic Interferencia
+        }
     }
 
     public static String convertHtmlContentToRawJson(String htmlContent) {

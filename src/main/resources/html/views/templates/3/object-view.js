@@ -40,9 +40,11 @@ class ObjectView {
 
 
 	}
-	update(documento) {
+	update(documento, interferencia) {
+		
+		console.log('3')
+		 console.log (JSON.stringify(documento))
 
-		let interferencia = documento.endereco.interferencias[0];
 		let finalidades = interferencia.finalidades;
 		let usuario = documento.usuarios[0];
 		let endereco = documento.endereco;

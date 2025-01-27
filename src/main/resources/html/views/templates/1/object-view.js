@@ -46,9 +46,10 @@ class ObjectView {
 
 
 	}
-	update(documento) {
-
-		let interferencia = documento.endereco.interferencias[0];
+	update(docJson, interJson) {
+		
+		let documento = docJson;
+		let interferencia = interJson;
 		let finalidades = interferencia.finalidades;
 		let usuario = documento.usuarios[0];
 		let endereco = documento.endereco;

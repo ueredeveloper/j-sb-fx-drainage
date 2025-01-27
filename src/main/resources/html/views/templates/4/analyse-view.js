@@ -147,9 +147,9 @@ class AnalyseView {
 		new LimitsTableView();
 
     }
-    update (documento){
+    update (documento, interferencia){
 
-        let finalidades = documento.endereco.interferencias[0].finalidades;
+        let finalidades = interferencia.finalidades;
 		let usuario = documento.usuarios[0];
        
 		let _items = document.getElementsByClassName('inter-finalidades');
@@ -173,7 +173,7 @@ class AnalyseView {
 		let ____items = document.getElementsByClassName('int-tipo-poco');
 
 		Array.from(____items).forEach(element => {
-			let innerHTML = documento.endereco.interferencias[0]?.tipoPoco?.descricao || 'XXX';
+			let innerHTML = interferencia?.tipoPoco?.descricao || 'XXX';
 			element.innerHTML = innerHTML;
 		});
 
