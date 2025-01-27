@@ -63,8 +63,6 @@ public class WebViewDocument {
 		// Convert the document to JSON
 		String docJson = JsonConverter.convertObjectToJson(selectedDocument);
 
-		Gson gson = new GsonBuilder().registerTypeAdapter(Interferencia.class, new InterferenciaTypeAdapter()).create();
-
 		// Use a StringBuilder to hold the JSON for the first interferencia
 		StringBuilder interJson = new StringBuilder();
 
