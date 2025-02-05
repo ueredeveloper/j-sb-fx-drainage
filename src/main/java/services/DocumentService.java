@@ -40,6 +40,10 @@ public class DocumentService {
 			// Convert Documento object to JSON
 			String jsonInputString = convertObjectToJson(documento);
 			
+			System.out.println("save doc");
+			
+			System.out.println(jsonInputString);
+			
 			// Write JSON to request body
 			try (OutputStream os = connection.getOutputStream();
 					OutputStreamWriter osw = new OutputStreamWriter(os, "UTF-8")) {
@@ -90,7 +94,9 @@ public class DocumentService {
 			// Convert Documento object to JSON
 			String jsonInputString = convertObjectToJson(documento);
 			
-			//System.out.println("update doc \n" + jsonInputString);
+			System.out.println("update doc");
+			
+			System.out.println(jsonInputString);
 
 			// Write JSON to request body
 			try (OutputStream os = connection.getOutputStream();

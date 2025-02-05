@@ -1,0 +1,222 @@
+[
+	{
+		"us_id": 64,
+		"us_nome": "Roberto Carlos de Lima",
+		"us_cpf_cnpj": 35812990115,
+		"us_doc_id": 87,
+		"doc_end": 81,
+		"doc_sei": 6549879696,
+		"proc_sei": 30,
+		"end_id": 81,
+		"end_logradouro": "Condomínio Flórida, Lote 08"
+	},
+	{
+		"us_id": 99,
+		"us_nome": "José Saramago",
+		"us_cpf_cnpj": 44466699985,
+		"us_doc_id": 87,
+		"doc_end": 81,
+		"doc_sei": 6549879696,
+		"proc_sei": 30,
+		"end_id": 81,
+		"end_logradouro": "Condomínio Flórida, Lote 08"
+	},
+	{
+		"us_id": 94,
+		"us_nome": "Edgar CAyce",
+		"us_cpf_cnpj": 74185245632,
+		"us_doc_id": null,
+		"doc_end": null,
+		"doc_sei": null,
+		"proc_sei": null,
+		"end_id": null,
+		"end_logradouro": null
+	},
+	{
+		"us_id": 96,
+		"us_nome": "Julio de Sobradinho",
+		"us_cpf_cnpj": 41452563687,
+		"us_doc_id": 88,
+		"doc_end": 46,
+		"doc_sei": 4567899875,
+		"proc_sei": 43,
+		"end_id": 46,
+		"end_logradouro": "Rua Borges Landeiro, Apt 123456789 "
+	},
+	{
+		"us_id": 99,
+		"us_nome": "José Saramago",
+		"us_cpf_cnpj": 44466699985,
+		"us_doc_id": 88,
+		"doc_end": 46,
+		"doc_sei": 4567899875,
+		"proc_sei": 43,
+		"end_id": 46,
+		"end_logradouro": "Rua Borges Landeiro, Apt 123456789 "
+	},
+	{
+		"us_id": 100,
+		"us_nome": "Jordão lavour",
+		"us_cpf_cnpj": 74185265498,
+		"us_doc_id": 91,
+		"doc_end": 77,
+		"doc_sei": 45852456,
+		"proc_sei": 42,
+		"end_id": 77,
+		"end_logradouro": "Casa de Sartori, Casa nº 0909"
+	},
+	{
+		"us_id": 92,
+		"us_nome": "Campeão Brasileiro",
+		"us_cpf_cnpj": 12365485214,
+		"us_doc_id": null,
+		"doc_end": null,
+		"doc_sei": null,
+		"proc_sei": null,
+		"end_id": null,
+		"end_logradouro": null
+	},
+	{
+		"us_id": 95,
+		"us_nome": "Elon Musk",
+		"us_cpf_cnpj": 44455566685,
+		"us_doc_id": 91,
+		"doc_end": 77,
+		"doc_sei": 45852456,
+		"proc_sei": 42,
+		"end_id": 77,
+		"end_logradouro": "Casa de Sartori, Casa nº 0909"
+	},
+	{
+		"us_id": 95,
+		"us_nome": "Elon Musk",
+		"us_cpf_cnpj": 44455566685,
+		"us_doc_id": 86,
+		"doc_end": 82,
+		"doc_sei": 123456789,
+		"proc_sei": 36,
+		"end_id": 82,
+		"end_logradouro": "Rua das Moedas, 1234"
+	},
+	{
+		"us_id": 97,
+		"us_nome": "Carlos Coqueiro",
+		"us_cpf_cnpj": 52585896987,
+		"us_doc_id": 85,
+		"doc_end": 76,
+		"doc_sei": 456,
+		"proc_sei": 47,
+		"end_id": 76,
+		"end_logradouro": "Rua Quadra Cabedal, 123"
+	},
+	{
+		"us_id": 93,
+		"us_nome": "Curumin",
+		"us_cpf_cnpj": 12365498752,
+		"us_doc_id": null,
+		"doc_end": null,
+		"doc_sei": null,
+		"proc_sei": null,
+		"end_id": null,
+		"end_logradouro": null
+	},
+	{
+		"us_id": 100,
+		"us_nome": "Jordão lavour",
+		"us_cpf_cnpj": 74185265498,
+		"us_doc_id": 85,
+		"doc_end": 76,
+		"doc_sei": 456,
+		"proc_sei": 47,
+		"end_id": 76,
+		"end_logradouro": "Rua Quadra Cabedal, 123"
+	},
+	{
+		"us_id": 97,
+		"us_nome": "Carlos Coqueiro",
+		"us_cpf_cnpj": 52585896987,
+		"us_doc_id": 84,
+		"doc_end": 68,
+		"doc_sei": 258369741,
+		"proc_sei": 34,
+		"end_id": 68,
+		"end_logradouro": "Campos do Jordão, Pedra Nova, 12"
+	},
+	{
+		"us_id": 99,
+		"us_nome": "José Saramago",
+		"us_cpf_cnpj": 44466699985,
+		"us_doc_id": 84,
+		"doc_end": 68,
+		"doc_sei": 258369741,
+		"proc_sei": 34,
+		"end_id": 68,
+		"end_logradouro": "Campos do Jordão, Pedra Nova, 12"
+	},
+	{
+		"us_id": 89,
+		"us_nome": "Querubin Nascimento",
+		"us_cpf_cnpj": 55544466688,
+		"us_doc_id": 86,
+		"doc_end": 82,
+		"doc_sei": 123456789,
+		"proc_sei": 36,
+		"end_id": 82,
+		"end_logradouro": "Rua das Moedas, 1234"
+	},
+	{
+		"us_id": 100,
+		"us_nome": "Jordão lavour",
+		"us_cpf_cnpj": 74185265498,
+		"us_doc_id": 90,
+		"doc_end": 87,
+		"doc_sei": 45852456,
+		"proc_sei": 47,
+		"end_id": 87,
+		"end_logradouro": "Rua do Google, 909"
+	},
+	{
+		"us_id": 87,
+		"us_nome": "Paco de Lucia",
+		"us_cpf_cnpj": 85274196356,
+		"us_doc_id": 84,
+		"doc_end": 68,
+		"doc_sei": 258369741,
+		"proc_sei": 34,
+		"end_id": 68,
+		"end_logradouro": "Campos do Jordão, Pedra Nova, 12"
+	},
+	{
+		"us_id": 101,
+		"us_nome": "Jorandir",
+		"us_cpf_cnpj": 12365474155,
+		"us_doc_id": 92,
+		"doc_end": 88,
+		"doc_sei": 45685242,
+		"proc_sei": 48,
+		"end_id": 88,
+		"end_logradouro": "Rua Carlos Gomes, 09803"
+	},
+	{
+		"us_id": 98,
+		"us_nome": "Joaquim Teixeira",
+		"us_cpf_cnpj": 12345685245,
+		"us_doc_id": 87,
+		"doc_end": 81,
+		"doc_sei": 6549879696,
+		"proc_sei": 30,
+		"end_id": 81,
+		"end_logradouro": "Condomínio Flórida, Lote 08"
+	},
+	{
+		"us_id": 99,
+		"us_nome": "José Saramago",
+		"us_cpf_cnpj": 44466699985,
+		"us_doc_id": 89,
+		"doc_end": 86,
+		"doc_sei": 4567899875,
+		"proc_sei": 46,
+		"end_id": 86,
+		"end_logradouro": "Rua de Sobradinho, 0909"
+	}
+]

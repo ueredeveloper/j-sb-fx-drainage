@@ -65,7 +65,7 @@
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
             </JFXTextField>
-            <JFXComboBox fx:id="cbState" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="200.0" promptText="Estado" GridPane.columnIndex="4" GridPane.rowIndex="1">
+            <JFXComboBox fx:id="cbState" labelFloat="true" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="200.0" promptText="Estado" GridPane.columnIndex="4" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>

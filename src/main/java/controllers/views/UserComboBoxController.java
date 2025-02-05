@@ -116,7 +116,7 @@ public class UserComboBoxController {
 			Set<Usuario> fetchedObjects = new HashSet<>();
 
 			if (keyword.length() == 2 || keyword.length() == 4 || keyword.length() == 6 || keyword.length() == 8) {
-				fetchedObjects.addAll(service.listByKeyword(keyword));
+				fetchedObjects.addAll(service.listByName(keyword));
 			}
 
 			if (!fetchedObjects.isEmpty()) {
@@ -140,7 +140,7 @@ public class UserComboBoxController {
 		try {
 			UsuarioService service = new UsuarioService(localUrl);
 
-			Set<Usuario> list = service.listByKeyword(keyword);
+			Set<Usuario> list = service.listByName(keyword);
 
 			return list;
 

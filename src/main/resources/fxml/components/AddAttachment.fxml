@@ -41,7 +41,7 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <JFXTextField fx:id="tfAttachment" promptText="Processo Principal">
+            <JFXTextField fx:id="tfAttachment" labelFloat="true" promptText="Processo Principal">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>

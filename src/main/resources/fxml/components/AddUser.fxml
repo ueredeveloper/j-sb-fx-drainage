@@ -44,7 +44,7 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <JFXTextField fx:id="tfName" GridPane.columnSpan="4" />
+            <JFXTextField fx:id="tfName" labelFloat="true" promptText="Nome" GridPane.columnSpan="4" />
             <JFXComboBox fx:id="cbCpfCnpj" labelFloat="true" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="280.0" promptText="Cpf/Cnpj" GridPane.columnIndex="4" GridPane.columnSpan="4" GridPane.halignment="CENTER">
                <styleClass>
                   <String fx:value="jfx-combo-box" />

@@ -334,7 +334,7 @@ public class AddUserController implements Initializable {
 
 			String keyword = tfSearch.getText();
 
-			Set<Usuario> objects = service.listByKeyword(keyword);
+			Set<Usuario> objects = service.listByName(keyword);
 
 			// Create a list of Document objects
 			obsList.clear();

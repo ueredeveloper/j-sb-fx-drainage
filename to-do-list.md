@@ -199,6 +199,11 @@
 - [] Adicionar na tela de edição de usuário a possíbilidade de editar relacionamentos com documentos, só assim é possível
 deletar um usuário ou documento, deletando o relacionamento usuario_documento
 
+- [] Se possível adicionar procura por processo também pelo nome do usuário
 
+## 05/02/2025
 
+- [X] Endereço - Adicionar DF como seleção inicial no combobox de edição de endereço
+- [X] Endereço - Adicionar todos os estados no banco para mostrá-los no combobox de Estados
 
+- [] Combobox e Css - Rever para que o prompt text apareça acima de todos os comobox ao selecionar.

@@ -51,7 +51,7 @@
                                        <Insets left="5.0" right="5.0" />
                                     </padding>
                                  </JFXTextField>
-                                          <JFXComboBox fx:id="cbInterferencies" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="300.0" promptText="Interferência" styleClass="sec-combo-box" GridPane.rowIndex="1">
+                                          <JFXComboBox fx:id="cbInterferencies" labelFloat="true" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="300.0" promptText="Interferência" styleClass="sec-combo-box" GridPane.rowIndex="1">
                                     <GridPane.margin>
                                        <Insets left="5.0" right="5.0" />
                                     </GridPane.margin>
@@ -65,12 +65,12 @@
                                        <String fx:value="icon" />
                                     </styleClass>
                                  </FontAwesomeIconView>
-                                 <JFXComboBox fx:id="cbTemplates" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="500.0" promptText="Modelos" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                 <JFXComboBox fx:id="cbTemplates" labelFloat="true" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="500.0" promptText="Modelos" GridPane.columnIndex="2" GridPane.rowIndex="1">
                                     <GridPane.margin>
                                        <Insets left="5.0" right="5.0" />
                                     </GridPane.margin>
                                  </JFXComboBox>
-                                 <JFXComboBox fx:id="cbUsers" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="300.0" promptText="Usuário" styleClass="sec-combo-box" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                 <JFXComboBox fx:id="cbUsers" labelFloat="true" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="300.0" promptText="Usuário" styleClass="sec-combo-box" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                     <GridPane.margin>
                                        <Insets left="5.0" right="5.0" />
                                     </GridPane.margin>

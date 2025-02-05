@@ -157,10 +157,10 @@ public class UsuarioService {
 	}
 	
 	
-	public Set<Usuario> listByKeyword(String keyword) {
+	public Set<Usuario> listByName(String keyword) {
 
 		try {
-			URL apiUrl = new URL(urlService + "/user/list-by-keyword?keyword=" + URLEncoder.encode(keyword, "UTF-8"));
+			URL apiUrl = new URL(urlService + "/user/list-by-name?name=" + URLEncoder.encode(keyword, "UTF-8"));
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
 			connection.setRequestMethod("GET");
 
@@ -280,6 +280,8 @@ public class UsuarioService {
 		}
 
 		reader.close();
+		
+		//System.out.println(response.toString());
 
 		return new Gson().fromJson(response.toString(), new TypeToken<Set<Usuario>>() {
 		}.getType());

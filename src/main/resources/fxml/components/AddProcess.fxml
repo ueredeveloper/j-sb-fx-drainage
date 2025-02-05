@@ -41,13 +41,13 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <JFXTextField fx:id="tfProcess" />
-            <JFXComboBox fx:id="cbUser" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="400.0" promptText="Usuário" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS">
+            <JFXTextField fx:id="tfProcess" labelFloat="true" promptText="Número" />
+            <JFXComboBox fx:id="cbUser" labelFloat="true" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="400.0" promptText="Usuário" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS">
                <GridPane.margin>
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
             </JFXComboBox>
-            <JFXComboBox fx:id="cbAttachment" labelFloat="true" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="280.0" promptText="Anexo" GridPane.columnIndex="4" GridPane.halignment="CENTER">
+            <JFXComboBox fx:id="cbAttachment" labelFloat="true" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="280.0" promptText="Processo Principal" GridPane.columnIndex="4" GridPane.halignment="CENTER">
                <styleClass>
                   <String fx:value="jfx-combo-box" />
                   <String fx:value="jfx-text-field-custom" />

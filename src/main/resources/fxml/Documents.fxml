@@ -55,7 +55,7 @@
 				</JFXTextField>
 			</children>
 		</GridPane>
-		<GridPane layoutX="12.0" layoutY="70.0" prefHeight="112.0" prefWidth="980.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+		<GridPane layoutX="12.0" layoutY="70.0" prefHeight="150.0" prefWidth="1180.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
 			<columnConstraints>
 				<ColumnConstraints maxWidth="45.0" minWidth="15.0" prefWidth="45.0" />
 				<ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="525.0" />
@@ -70,24 +70,24 @@
 			</rowConstraints>
 			<children>
 				
-				<JFXComboBox fx:id="cbAddress" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="650.0" promptText="Endereço" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS">
+				<JFXComboBox fx:id="cbAddress" labelFloat="true" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="650.0" promptText="Endereço" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS">
 					<GridPane.margin>
 						<Insets left="5.0" right="5.0" />
 					</GridPane.margin>
 				</JFXComboBox>
 
-				<JFXTextField fx:id="tfLatitude" prefHeight="30.0" prefWidth="280.0" promptText="Latitude" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS">
+				<JFXTextField fx:id="tfLatitude" labelFloat="true" prefHeight="30.0" prefWidth="280.0" promptText="Latitude" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS">
 					<padding>
 						<Insets left="5.0" right="5.0" />
 					</padding>
 				</JFXTextField>
-				<JFXTextField fx:id="tfLongitude" prefHeight="30.0" prefWidth="280.0" promptText="Longitude" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS">
+				<JFXTextField fx:id="tfLongitude" labelFloat="true" prefHeight="30.0" prefWidth="280.0" promptText="Longitude" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS">
 					<padding>
 						<Insets left="5.0" right="5.0" />
 					</padding>
 				</JFXTextField>
 				
-				<JFXComboBox fx:id="cbUser" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="400.0" promptText="Usuário" styleClass="combo-box" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1">
+				<JFXComboBox fx:id="cbUser" labelFloat="true" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="400.0" promptText="Usuário" styleClass="combo-box" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1">
 					<GridPane.margin>
 						<Insets left="5.0" right="5.0" />
 					</GridPane.margin>
@@ -101,7 +101,7 @@
 					</tooltip>
 				</JFXComboBox>
 				
-				<JFXComboBox fx:id="cbAttachment" labelFloat="true" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="280.0" promptText="Anexo" styleClass="combo-box" GridPane.columnIndex="5" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1">
+				<JFXComboBox fx:id="cbAttachment" labelFloat="true" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="280.0" promptText="Processo Principal" styleClass="combo-box" GridPane.columnIndex="5" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1">
 					<tooltip>
 						<Tooltip text="Processo em que o documento se econtra" />
 					</tooltip>
