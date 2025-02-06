@@ -1630,6 +1630,9 @@ public class AddSubterraneanDetailsController implements Initializable {
 							// Como não há subsistema no poroso, limpe a seleção
 							cbSubsystem.getSelectionModel().clearSelection();
 							tfCodeSystem.setText(s.getCodPlan());
+							tfSystemFlow.setText(String.valueOf((int) (s.getqMedia() * 1000)));
+							
+							
 						});
 
 					}
@@ -1668,9 +1671,11 @@ public class AddSubterraneanDetailsController implements Initializable {
 					if (set != null) {
 
 						set.forEach(s -> {
+							// Preenchimento de dados do subsistema
 							cbSystem.getSelectionModel().select(s.getSistema());
 							cbSubsystem.getSelectionModel().select(s.getSubsistema());
 							tfCodeSystem.setText(s.getCodPlan());
+							tfSystemFlow.setText(String.valueOf((int) (s.getVazao() * 1000)));
 						});
 
 					}

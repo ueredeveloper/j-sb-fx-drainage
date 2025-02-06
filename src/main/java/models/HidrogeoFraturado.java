@@ -6,6 +6,7 @@ public class HidrogeoFraturado {
 	private String codPlan;
 	private String sistema;
 	private String subsistema;
+	private Double vazao;
 
 	public HidrogeoFraturado() {
 		super();
@@ -42,5 +43,14 @@ public class HidrogeoFraturado {
 	public void setSubsistema(String subsistema) {
 		this.subsistema = subsistema;
 	}
+
+	public Double getVazao() {
+		return vazao;
+	}
+
+	public void setVazao(Double vazao) {
+		this.vazao = vazao;
+	}
+	
 
 }

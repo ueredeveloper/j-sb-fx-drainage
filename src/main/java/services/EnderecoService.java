@@ -37,6 +37,9 @@ public class EnderecoService {
 
 			// Convert Documento object to JSON
 			String jsonInputString = convertObjectToJson(endereco);
+			
+			System.out.println("save address");
+			System.out.println(jsonInputString);
 
 			// Write JSON to request body
 			try (OutputStream os = connection.getOutputStream();

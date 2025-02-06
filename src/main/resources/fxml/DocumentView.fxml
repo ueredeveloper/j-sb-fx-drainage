@@ -25,7 +25,7 @@
                         <Tab text="Documento">
                             <content>
                                 <AnchorPane styleClass="secondary-content">
-                           <GridPane layoutX="14.0" layoutY="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0">
+                           <GridPane layoutX="14.0" layoutY="14.0" prefHeight="108.0" prefWidth="972.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0">
                               <columnConstraints>
                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="319.0" />
                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="400.0" />
@@ -38,18 +38,10 @@
                               </rowConstraints>
                               <children>
                                           <!-- TextField e ComboBox fora do ScrollPane -->
-                                          <JFXTextField fx:id="tfDocument" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="300.0" promptText="Documento" styleClass="sec">
+                                          <JFXTextField fx:id="tfDocument" labelFloat="true" prefHeight="30.0" prefWidth="300.0" promptText="Documento">
                                     <GridPane.margin>
                                        <Insets left="5.0" right="5.0" />
                                     </GridPane.margin>
-                                 </JFXTextField>
-                                          <JFXTextField fx:id="tfAddress" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="500.0" promptText="Endereço" GridPane.columnIndex="1" GridPane.columnSpan="2">
-                                    <GridPane.margin>
-                                       <Insets left="5.0" right="5.0" />
-                                    </GridPane.margin>
-                                    <padding>
-                                       <Insets left="5.0" right="5.0" />
-                                    </padding>
                                  </JFXTextField>
                                           <JFXComboBox fx:id="cbInterferencies" labelFloat="true" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="300.0" promptText="Interferência" styleClass="sec-combo-box" GridPane.rowIndex="1">
                                     <GridPane.margin>
@@ -75,21 +67,22 @@
                                        <Insets left="5.0" right="5.0" />
                                     </GridPane.margin>
                                  </JFXComboBox>
+                                 <JFXTextField fx:id="tfAddress" labelFloat="true" prefHeight="30.0" prefWidth="300.0" promptText="Endereço" GridPane.columnIndex="1" GridPane.columnSpan="2" />
                               </children>
                            </GridPane>
                                     
                                     <!-- ScrollPane para o HTMLEditor -->
-                                    <ScrollPane fitToWidth="true" hbarPolicy="NEVER" layoutY="100.0" prefHeight="500.0" vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="100.0">
+                                    <ScrollPane fitToWidth="true" hbarPolicy="NEVER" layoutY="134.0" prefHeight="430.0" prefWidth="1000.0" vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="134.0">
                                         <content>
                                             <AnchorPane prefHeight="500.0" prefWidth="900.0">
-                                                <WebView fx:id="webViewDocument" layoutY="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                                                <WebView fx:id="webViewDocument" layoutY="19.0" prefHeight="581.0" prefWidth="983.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
                                             </AnchorPane>
                                         </content>
                                     </ScrollPane>
                                 </AnchorPane>
                             </content>
                         </Tab>
-                        <Tab text="Editor" fx:id="editorTab">
+                        <Tab fx:id="editorTab" text="Editor">
                             <content>
                                 <AnchorPane fx:id="apHtmlEditor" prefHeight="180.0" prefWidth="200.0" styleClass="secondary-content" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <children>

@@ -11,6 +11,11 @@
 
 * **[X] Tarefa 1 - DocumentoController - CSS**
     * Adicionar `on focus`, cor secund�ria ao combobox.
+    
+#06/02/2025
+- [] Endereço na Parecer - Não está trazendo endereço no parecer de direito de uso. No de outorga prévia está trazendo.
+- [] Unidade e Bacia - Adicionar no parecer e despachos se necessário.
+- [] Parecer - Tabela 1 - Formatar número de vazão, ex: 38272 para 38.272,00 Demanda (L/dia) e Demanda Total (L/dia)d
 
 * **[X] Tarefa 2 - DocumentoController - CSS**
     * O Combobox est� desalinhado com os textfields.
@@ -206,4 +211,11 @@ deletar um usuário ou documento, deletando o relacionamento usuario_documento
 - [X] Endereço - Adicionar DF como seleção inicial no combobox de edição de endereço
 - [X] Endereço - Adicionar todos os estados no banco para mostrá-los no combobox de Estados
 
-- [] Combobox e Css - Rever para que o prompt text apareça acima de todos os comobox ao selecionar.
+- [X] Combobox e Css - Rever para que o prompt text apareça acima de todos os comobox ao selecionar.
+- [] Adicionar no preenchimento automático de subsistema a vazão do subsistema.
+- [] Adicionar conversor de coordenadas
+- [] Rever tipo de número nas finalidades, se double ou integer e ao preencher utilizar o padrão do banco de dados.
+- [X] Endereço - aumentar quantidade de caracteres
+	O endereço está com 500 carateres, o suficiente.
+	
+

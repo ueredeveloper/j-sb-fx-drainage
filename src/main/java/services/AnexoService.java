@@ -39,6 +39,8 @@ public class AnexoService {
 
 			// Convert Documento object to JSON
 			String jsonInputString = convertObjectToJson(object);
+			System.out.println("save anexo");
+			System.out.println(jsonInputString);
 
 			// Escreve o objeto que será persistido para verificações
 			try {
