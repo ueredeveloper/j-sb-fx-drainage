@@ -4,13 +4,6 @@
 * @diretorio 4
 * @arquivo analyse-view.js
 * @id 17
- * 
- * 
- * 
- * 
- * 
- * 
-* 
 * 
 */
 

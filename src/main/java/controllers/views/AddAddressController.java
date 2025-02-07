@@ -1,7 +1,6 @@
 package controllers.views;
 
 import java.net.URL;
-import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.Set;
@@ -34,7 +33,6 @@ import services.ServiceResponse;
 import utilities.URLUtility;
 
 public class AddAddressController implements Initializable {
-	
 
 	@FXML
 	private JFXButton btnClose;
@@ -265,8 +263,7 @@ public class AddAddressController implements Initializable {
 			// estado);
 
 			Endereco endereco = new Endereco();
-			
-			
+
 			endereco.setId(seletedObject.getId());
 			endereco.setLogradouro(logradouro);
 			endereco.setBairro(bairro);
@@ -368,9 +365,9 @@ public class AddAddressController implements Initializable {
 	}
 
 	public void clearAllComponents() {
-		
+
 		object = null;
-		
+
 		tfAddress.clear();
 		tfNeighborhood.clear();
 		tfCity.clear();
@@ -378,10 +375,9 @@ public class AddAddressController implements Initializable {
 		tfZipCode.clear();
 		tfArea.clear();
 		cbState.getSelectionModel().clearSelection();
-		Optional<Estado> estadoDF = obsListState.stream()
-	            .filter(estado -> "DF".equals(estado.getDescricao()))
-	            .findFirst();
-		
+		Optional<Estado> estadoDF = obsListState.stream().filter(estado -> "DF".equals(estado.getDescricao()))
+				.findFirst();
+
 		cbState.getSelectionModel().select(estadoDF.orElse(null));
 	}
 

@@ -4,6 +4,7 @@
  * @descricao Modelos de Tabelas
  * @arquivo interferencia-model.js
  * @id 31
+ *
  */
  
 class InterferenciaModel {

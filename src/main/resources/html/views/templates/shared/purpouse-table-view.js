@@ -4,13 +4,6 @@
  * @nome Tabela de Finalidades
  * @arquivo purpouse-table-view.js
  * @id 39
- * 
- * 
- * 
- * 
- * 
- * 
- * 
  *
  */
 

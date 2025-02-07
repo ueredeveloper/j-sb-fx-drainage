@@ -4,16 +4,6 @@
 * @diretorio 4
 * @arquivo subject-view.js
 * @id 23
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
-* 
 * 
 */
 

@@ -4,13 +4,6 @@
  * @diretorio shared
  * @arquivo signature-view.js
  * @id 40
- * 
- * 
- * 
- * 
- * 
- * 
- * 
  *
  */
 

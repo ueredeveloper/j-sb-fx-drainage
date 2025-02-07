@@ -5,12 +5,6 @@
  * @arquivo geographic-table-view.js
  * @id 36
  * 
- * 
- * 
- * 
- * 
- * 
- * 
  *
  */
 

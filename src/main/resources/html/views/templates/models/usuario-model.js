@@ -6,6 +6,7 @@
  * @arquivo usuario-model.js
  * @id 33
  *
+ *
  */
 
 class UsuarioModel {

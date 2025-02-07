@@ -4,12 +4,6 @@
  * @diretorio 1
  * @arquivo object-view.js
  * @id 3
- * 
- * 
- * 
- * 
- * 
- * 
  *
  */
 

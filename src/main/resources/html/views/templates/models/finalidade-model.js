@@ -5,14 +5,6 @@
  * @arquivo finalidade-model.js
  * @id 30
  * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
  *
  */
  

@@ -6,13 +6,6 @@
 * @diretorio 2
 * @arquivo subject-view.js
 * @id 12
- * 
- * 
- * 
- * 
- * 
- * 
-* 
 * 
 */
 

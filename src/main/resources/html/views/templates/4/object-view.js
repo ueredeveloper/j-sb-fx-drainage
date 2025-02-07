@@ -4,12 +4,6 @@
 * @diretorio 4
 * @arquivo object-view.js
 * @id 21
- * 
- * 
- * 
- * 
- * 
- * 
 * 
 */
 

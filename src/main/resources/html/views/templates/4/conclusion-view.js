@@ -4,13 +4,6 @@
 * @diretorio 4
 * @arquivo conclusion-view.js
 * @id 18
- * 
- * 
- * 
- * 
- * 
- * 
-* 
 */
 
 class ConclusionView {

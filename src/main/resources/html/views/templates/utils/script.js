@@ -6,13 +6,6 @@
  * @arquivo script.js
  * @id 42
  * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
  */
 
  class Utils {

@@ -1,13 +1,9 @@
  /**
  * @arquivo script.js
- * @id 22
- * 
- * 
- * 
  * @diretorio 4
  * @descricao Arquivo principal .js
  * @nome Parecer de Outorga De Direito de Uso
- * 
+ * @id 22
  * 
  * 
  */

@@ -6,13 +6,6 @@
  * @arquivo legal-basis-view.js
  * @id 9
  * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
  *
  */
 

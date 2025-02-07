@@ -5,13 +5,6 @@
  * @direitorio models
  * @arquivo tipo-poco-model.js
  * @id 32
- * 
- * 
- * 
- * 
- * 
- * 
- * 
  *
  */
  

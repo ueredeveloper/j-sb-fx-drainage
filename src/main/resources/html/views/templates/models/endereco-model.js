@@ -5,13 +5,6 @@
  * @arquivo endereco-model.js
  * @id 29
  * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
  *
  */
 class EnderecoModel {

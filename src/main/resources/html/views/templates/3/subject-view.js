@@ -4,7 +4,6 @@
 * @diretorio 3
 * @arquivo subject-view.js
 * @id 5
- * 
 * 
 */
 

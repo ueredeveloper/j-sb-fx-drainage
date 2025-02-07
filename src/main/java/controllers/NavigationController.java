@@ -23,6 +23,7 @@ import utilities.ResizeMap;
 
 public class NavigationController implements Initializable {
 
+	
 	@FXML
 	private AnchorPane apContent;
 
@@ -119,15 +120,6 @@ public class NavigationController implements Initializable {
 			}
 		});
 
-		btnModels.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-
-				loadTemplate();
-
-			}
-		});
-
 	}
 
 	public void loadDocuments() {
@@ -144,27 +136,6 @@ public class NavigationController implements Initializable {
 		}
 	}
 
-	public void loadTemplate() {
-		try {
-
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Template.fxml"));
-			TemplateController controller = new TemplateController();
-			loader.setController(controller);
-
-			Parent root = loader.load();
-
-			Stage popupStage = new Stage();
-			popupStage.initModality(Modality.APPLICATION_MODAL);
-			// popupStage.setTitle("Edições e Diagramas");
-
-			Scene scene = new Scene(root);
-			popupStage.setScene(scene);
-
-			popupStage.showAndWait();
-		} catch (Exception e) {
-			e.printStackTrace();
-
-		}
-	}
+	
 
 }

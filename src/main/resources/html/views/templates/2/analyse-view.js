@@ -5,13 +5,6 @@
  * @diretorio 2
  * @arquivo analyse-view.js
  * @id 6
- * 
- * 
- * 
- * 
- * 
- * 
- * 
  *
  */
 

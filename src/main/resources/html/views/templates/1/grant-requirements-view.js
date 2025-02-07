@@ -4,12 +4,6 @@
  * @descricao Obrigações do usuário
  * @arquivo grant-requirements-view.js
  * @id 1
- * 
- * 
- * 
- * 
- * 
- * 
  *
  */
 

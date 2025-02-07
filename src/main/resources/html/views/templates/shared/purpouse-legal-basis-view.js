@@ -5,12 +5,6 @@
  * @arquivo purpouse-legal-basis-view.js
  * @id 38
  * 
- * 
- * 
- * 
- * 
- * 
- * 
  */
 
 

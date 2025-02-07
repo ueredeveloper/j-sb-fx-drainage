@@ -4,14 +4,6 @@
  * @diretorio 1
  * @arquivo script.js
  * @id 4
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- *
  */
 
 

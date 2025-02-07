@@ -15,6 +15,7 @@ import services.UsuarioService;
 
 public class UserComboBoxCpfCnpjController {
 
+	
 	String localUrl;
 
 	private JFXComboBox<String> comboBox;
