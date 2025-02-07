@@ -169,9 +169,6 @@ class LimitsTableView {
             .sort((a, b) => a.mes - b.mes);  // Ordena por mês (de 1 a 12)
 
         months.forEach((month, index) => {
-	console.log('json stringfy interferencia')
-	console.log(JSON.stringify(interferencia))
-
 
             // Atualização
             document.getElementById(`q-litros-hora-${month}`).innerText = new DemandaModel().formatNumber(interferencia.vazaoOutorgavel);

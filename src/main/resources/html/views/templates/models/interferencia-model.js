@@ -19,4 +19,8 @@ class InterferenciaModel {
     getNomeSubsistema (interferencia){
     	return interferencia.subsistema;
     }
+    getUnidadeHidrografica(interferencia){
+		return interferencia.unidadeHidrografica.uhNome;
+	}
+
 }

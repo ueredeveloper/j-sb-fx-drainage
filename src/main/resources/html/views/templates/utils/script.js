@@ -31,6 +31,8 @@
 		let documento = docJson;
 		let interferencia = interJson;
 		
+		console.log('update html doc', interferencia.unidadeHidrografica.uhNome)
+		
 		// Verifica se a classe ObjectView está disponível
 		if (typeof ObjectView !== 'undefined') {
 			// Atualiza ObjectView
@@ -45,7 +47,6 @@
 		} else {
 			console.error("SubjectView não definida.");
 		}
-
 
 		// Verifica e atualiza AnalyseView se estiver disponível
 		if (typeof AnalyseView !== 'undefined') {
@@ -90,9 +91,7 @@
 			console.error("LimitsTableView não definida.");
 		}
 
-
 	}
-
 
 }
 

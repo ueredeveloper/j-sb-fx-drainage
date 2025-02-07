@@ -177,6 +177,74 @@ public class AddAttachmentController implements Initializable {
 
 		try {
 
+			this.attachment = tableView.getSelectionModel().getSelectedItem();
+
+			// Capturar as seleções dos outros atributos nos comboboxes
+			Processo selectedProcess = processComboBoxController.getSelectedObject();
+
+			Usuario selectedUser = userComboBoxController.getSelectedObject();
+
+			// Anexar o processo principal (anexo) ao processo
+			if (selectedProcess != null) {
+
+				if (selectedUser != null) {
+					selectedProcess.setUsuario(selectedUser);
+				}
+
+				this.attachment.getProcessos().add(selectedProcess);
+			}
+
+			// DocumentService documentService = new DocumentService(localUrl);
+			AnexoService service = new AnexoService(urlService);
+
+			ServiceResponse<?> response = service.update(this.attachment);
+
+			if (response.getResponseCode() == 200) {
+
+				// Informa salvamento com sucesso
+				Node source = (Node) event.getSource();
+				Stage ownerStage = (Stage) source.getScene().getWindow();
+				String toastMsg = "Objeto editado com sucesso!";
+				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.SUCCESS);
+				// Adiciona resposta na tabela
+				Anexo responseObject = new Gson().fromJson((String) response.getResponseBody(), Anexo.class);
+				// Adiciona com primeiro na lista
+
+				ObservableList<Anexo> items = tableView.getItems();
+				// Remove o objeto da lista
+				OptionalInt indexOpt = IntStream.range(0, items.size())
+						.filter(i -> items.get(i).getId().equals(responseObject.getId())).findFirst();
+
+				if (indexOpt.isPresent()) {
+					// Se o objeto existe, substituí-lo pelo novo objeto
+					items.set(indexOpt.getAsInt(), responseObject);
+				} else {
+					// Caso contrário, adicioná-lo no início da lista e selecioná-lo
+					items.add(0, responseObject);
+					tableView.getSelectionModel().select(responseObject);
+				}
+
+			} else {
+				// adiconar alerta (Toast) de erro
+		
+				// Informa salvamento com sucesso
+				Node source = (Node) event.getSource();
+				Stage ownerStage = (Stage) source.getScene().getWindow();
+				String toastMsg = "Erro ao salvar o objeto !";
+				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+			}
+
+		} catch (Exception e) {
+			// adicionar Toast de erro
+			e.printStackTrace();
+		}
+
+	}
+	
+	public void update (ActionEvent event) {
+
+		try {
+
 			// Preencher com o número digitado pelo usuário, assim é possível editar o
 			// número do processo
 			if (this.attachment == null) {

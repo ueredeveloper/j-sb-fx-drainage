@@ -31,7 +31,7 @@ class AnalyseView {
 			<p></p>
             <p><br></p>
 			<p>5. O ponto de captação analisado está localizado no subsistema <span class="inter-subsistema"></span>, 
-            Unidade Hidrográfica <span class="inter-uh"></span>, Bacia Hidrográfica do <span class="inter-bh"></span>.
+            Unidade Hidrográfica do <span class="inter-uh"></span>, Bacia Hidrográfica do <span class="inter-bh"></span>.
             </p>
 			</div><div>
 			<p></p><p><br></p>
@@ -175,6 +175,12 @@ class AnalyseView {
 		Array.from(____items).forEach(element => {
 			let innerHTML = interferencia?.tipoPoco?.descricao || 'XXX';
 			element.innerHTML = innerHTML;
+		});
+		
+		let _____items = document.getElementsByClassName('inter-uh');
+		
+		Array.from(_____items).forEach(element => {
+			element.innerHTML = new InterferenciaModel().getUnidadeHidrografica(interferencia) || 'vvv';
 		});
 
     }

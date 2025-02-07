@@ -12,14 +12,12 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import models.Anexo;
 import models.Processo;
 
 public class ProcessoService {
@@ -29,7 +27,7 @@ public class ProcessoService {
 	public ProcessoService(String localUrl) {
 		this.localUrl = localUrl;
 	}
-	
+
 	public ServiceResponse<?> save(Processo object) {
 		try {
 			URL apiUrl = new URL(localUrl + "/process/create");
@@ -40,19 +38,17 @@ public class ProcessoService {
 
 			// Convert Documento object to JSON
 			String jsonInputString = convertObjectToJson(object);
-			
+
 			System.out.println("save processo");
 			System.out.println(jsonInputString);
 			// Escreve o objeto que será persistido para verificações
 			try {
-				Files.write(Paths.get("src/main/resources/test-docs/"+ "save-process.json"), jsonInputString.getBytes() );
+				Files.write(Paths.get("src/main/resources/test-docs/" + "save-process.json"),
+						jsonInputString.getBytes());
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-
-			
-			
 
 			// Write JSON to request body
 			try (OutputStream os = connection.getOutputStream();
@@ -62,8 +58,6 @@ public class ProcessoService {
 			}
 
 			int responseCode = connection.getResponseCode();
-			
-			
 
 			String responseBody;
 			if (responseCode == HttpURLConnection.HTTP_CREATED) {
@@ -91,6 +85,56 @@ public class ProcessoService {
 		}
 	}
 
+	public ServiceResponse<?> update(Processo processo) {
+		try {
+			URL apiUrl = new URL(localUrl + "/process/update?id=" + processo.getId());
+			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
+			connection.setRequestMethod("PUT");
+			connection.setRequestProperty("Content-Type", "application/json");
+			connection.setDoOutput(true);
+
+			// Convert Documento object to JSON
+			String jsonInputString = convertObjectToJson(processo);
+
+			System.out.println("update processo");
+
+			System.out.println(jsonInputString);
+
+			// Write JSON to request body
+			try (OutputStream os = connection.getOutputStream();
+					OutputStreamWriter osw = new OutputStreamWriter(os, "UTF-8")) {
+				osw.write(jsonInputString);
+				osw.flush();
+			}
+
+			int responseCode = connection.getResponseCode();
+
+			// System.out.println("update " + jsonInputString);
+
+			String responseBody;
+			if (responseCode == HttpURLConnection.HTTP_OK) {
+
+				try (BufferedReader br = new BufferedReader(
+						new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
+					StringBuilder response = new StringBuilder();
+					String responseLine;
+					while ((responseLine = br.readLine()) != null) {
+						response.append(responseLine);
+					}
+					responseBody = response.toString();
+				}
+			} else {
+				handleErrorResponse(connection);
+				responseBody = readErrorStream(connection);
+			}
+
+			connection.disconnect();
+			return new ServiceResponse<String>(responseCode, responseBody);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null; // Return null if an error occurs
+		}
+	}
 
 	public Set<Processo> fetchByKeyword(String keyword) {
 
@@ -144,8 +188,7 @@ public class ProcessoService {
 			return new ServiceResponse<>(-1, null); // You might want to use a different code for errors
 		}
 	}
-	
-	
+
 	private Set<Processo> handleSuccessResponse(HttpURLConnection connection) throws IOException {
 		BufferedReader reader = new BufferedReader(
 				new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8));

@@ -48,9 +48,6 @@ class ObjectView {
 	}
 	update(documento, interferencia) {
 		
-			console.log('4')
-		 console.log (JSON.stringify(documento))
-
 		let _items = document.getElementsByClassName('inter-finalidades');
 
 		let finalidades = interferencia.finalidades;

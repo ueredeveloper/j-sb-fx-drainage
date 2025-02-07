@@ -83,7 +83,6 @@ class ObjectView {
 		let _____items = document.getElementsByClassName('us-nome');
 		// Converte o resultado para array e atualiza
 		Array.from(_____items).forEach(element => {
-			console.log('usuario', usuario)
 			element.innerHTML = new UsuarioModel().getNome(usuario);
 		});
 		let ______items = document.getElementsByClassName('us-cpf-cnpj');

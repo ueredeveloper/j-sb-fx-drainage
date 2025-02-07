@@ -4,17 +4,12 @@ import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
 import javafx.application.Platform;
 import javafx.concurrent.Worker;
 import javafx.scene.web.HTMLEditor;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import models.Documento;
-import models.Interferencia;
-import models.InterferenciaTypeAdapter;
 import netscape.javascript.JSException;
 import netscape.javascript.JSObject;
 import utilities.JsonConverter;
@@ -72,6 +67,9 @@ public class WebViewDocument {
 				return; // Exit the loop after processing the first interferencia
 			}
 		});
+		
+		System.out.println("webview selected interference");
+		System.out.println(interJson);
 
 		// Verifica se a página já renderizou e adicona o objeto json
 		webEngine.getLoadWorker().stateProperty().addListener((obs, oldState, newState) -> {

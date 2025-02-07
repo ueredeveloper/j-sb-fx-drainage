@@ -19,6 +19,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import models.Anexo;
+import models.Processo;
 
 public class AnexoService {
 
@@ -82,6 +83,57 @@ public class AnexoService {
 		} catch (Exception e) {
 			e.printStackTrace();
 			// showAlert("Error saving document", AlertType.ERROR);
+			return null; // Return null if an error occurs
+		}
+	}
+	
+	public ServiceResponse<?> update(Anexo object) {
+		try {
+			URL apiUrl = new URL(urlService + "/attachment/update?id=" + object.getId());
+			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
+			connection.setRequestMethod("PUT");
+			connection.setRequestProperty("Content-Type", "application/json");
+			connection.setDoOutput(true);
+
+			// Convert Documento object to JSON
+			String jsonInputString = convertObjectToJson(object);
+
+			System.out.println("update anexo");
+
+			System.out.println(jsonInputString);
+
+			// Write JSON to request body
+			try (OutputStream os = connection.getOutputStream();
+					OutputStreamWriter osw = new OutputStreamWriter(os, "UTF-8")) {
+				osw.write(jsonInputString);
+				osw.flush();
+			}
+
+			int responseCode = connection.getResponseCode();
+
+			// System.out.println("update " + jsonInputString);
+
+			String responseBody;
+			if (responseCode == HttpURLConnection.HTTP_OK) {
+
+				try (BufferedReader br = new BufferedReader(
+						new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
+					StringBuilder response = new StringBuilder();
+					String responseLine;
+					while ((responseLine = br.readLine()) != null) {
+						response.append(responseLine);
+					}
+					responseBody = response.toString();
+				}
+			} else {
+				handleErrorResponse(connection);
+				responseBody = readErrorStream(connection);
+			}
+
+			connection.disconnect();
+			return new ServiceResponse<String>(responseCode, responseBody);
+		} catch (Exception e) {
+			e.printStackTrace();
 			return null; // Return null if an error occurs
 		}
 	}

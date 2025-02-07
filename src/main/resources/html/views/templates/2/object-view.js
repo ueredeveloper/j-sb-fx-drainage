@@ -41,9 +41,6 @@ class ObjectView {
     }
     
     update (documento, interferencia){
-	
-	console.log('2')
-		 console.log (JSON.stringify(documento))
 
 		let usuario = documento.usuarios[0];
 		let endereco = documento.endereco;
