@@ -97,7 +97,6 @@ class AnalyseView {
 	
 		// Converte o resultado para array e atualiza
 		Array.from(__items).forEach(__el => {
-			console.log('items ---->>>> ')
 			__el.innerHTML = new InterferenciaModel().getUnidadeHidrografica(interferencia) || "<b>ZZZZ</b>";
 			
 		});

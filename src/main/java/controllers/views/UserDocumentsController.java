@@ -87,7 +87,7 @@ public class UserDocumentsController implements Initializable {
 
 	private void handleAction(Documento document, Usuario user) {
 
-		System.out.println(document.getId() + " " + user.getId());
+		//System.out.println(document.getId() + " " + user.getId());
 		deleteDocUserRelation(document.getId(), user.getId());
 	}
 
@@ -120,7 +120,7 @@ public class UserDocumentsController implements Initializable {
 		DocumentService documentService = new DocumentService(urlService);
 		ServiceResponse<?> response = documentService.deleteDocUserRelation(docId, usId);
 
-		System.out.println(response.getResponseBody()); // 77
+		//System.out.println(response.getResponseBody()); // 77
 
 		// Check if the response body contains the deleted document ID (e.g., 77)
 		Long deletedDocId = Long.parseLong((String) response.getResponseBody());
@@ -131,7 +131,7 @@ public class UserDocumentsController implements Initializable {
 			obsList.removeIf(document -> document.getId().equals(deletedDocId));
 
 			// Optional: If you want to print the updated list
-			System.out.println("Updated Observable List: " + obsList);
+		//	System.out.println("Updated Observable List: " + obsList);
 
 			// Success toast message
 			Node source = tableView; // The source is tfPurpouse (JFXTextField)

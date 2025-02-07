@@ -41,10 +41,7 @@ class ObjectView {
 
 	}
 	update(documento, interferencia) {
-		
-		console.log('3')
-		 console.log (JSON.stringify(documento))
-
+	
 		let finalidades = interferencia.finalidades;
 		let usuario = documento.usuarios[0];
 		let endereco = documento.endereco;
@@ -78,7 +75,6 @@ class ObjectView {
 		let _____items = document.getElementsByClassName('us-nome');
 		// Converte o resultado para array e atualiza
 		Array.from(_____items).forEach(element => {
-			console.log('usuario', usuario)
 			element.innerHTML = new UsuarioModel().getNome(usuario);
 		});
 		let ______items = document.getElementsByClassName('us-cpf-cnpj');

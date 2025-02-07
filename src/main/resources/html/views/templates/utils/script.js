@@ -24,7 +24,7 @@
 		let documento = docJson;
 		let interferencia = interJson;
 		
-		console.log('update html doc', interferencia.unidadeHidrografica.uhNome)
+		//console.log('update html doc', interferencia.unidadeHidrografica.uhNome)
 		
 		// Verifica se a classe ObjectView está disponível
 		if (typeof ObjectView !== 'undefined') {

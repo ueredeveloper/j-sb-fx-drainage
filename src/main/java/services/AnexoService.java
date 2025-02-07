@@ -40,11 +40,11 @@ public class AnexoService {
 
 			// Convert Documento object to JSON
 			String jsonInputString = convertObjectToJson(object);
-			System.out.println("save anexo");
-			System.out.println(jsonInputString);
+			//System.out.println("save anexo");
+			//System.out.println(jsonInputString);
 
 			// Escreve o objeto que será persistido para verificações
-			try {
+			/*try {
 				Files.write(Paths.get("src/main/resources/test-docs/" + "save-attachment.json"),
 						jsonInputString.getBytes());
 			} catch (IOException e1) {
@@ -57,7 +57,7 @@ public class AnexoService {
 					OutputStreamWriter osw = new OutputStreamWriter(os, "UTF-8")) {
 				osw.write(jsonInputString);
 				osw.flush();
-			}
+			}*/
 
 			int responseCode = connection.getResponseCode();
 

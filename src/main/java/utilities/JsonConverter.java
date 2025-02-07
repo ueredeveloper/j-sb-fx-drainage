@@ -30,10 +30,10 @@ public class JsonConverter {
     public static String convertInterferenciaToJson(Interferencia interferencia) {
         if (interferencia instanceof Subterranea) {
             Subterranea subterranea = (Subterranea) interferencia;
-            System.out.println("Interferencia is of type Subterranea.");
+            //System.out.println("Interferencia is of type Subterranea.");
             return gson.toJson(subterranea); // Converts with all Subterranea attributes
         } else {
-            System.out.println("Interferencia is not of type Subterranea.");
+           // System.out.println("Interferencia is not of type Subterranea.");
             return gson.toJson(interferencia); // Converts as a generic Interferencia
         }
     }
