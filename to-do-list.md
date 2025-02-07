@@ -178,10 +178,11 @@
 - [] - Tela Adicionar Usu�rio
 	Adicionar busca por documentos
 	
-- [] - Tela Adicionar Usu�rio
+- [X] - Tela Adicionar Usu�rio
 	 - [] - Listar Endere�os
+	 		Foi adicionado lista de documentos relacionados com o usuário
 	 
-- [] - Finalidade Requerida - Cópia
+- [X] - Finalidade Requerida - Cópia
 	 - [X] Adicionar botão de cópia da finalidade requerida na tela finalidade autorizada.
 
 ## 27 de Dezembro de 2024
@@ -201,7 +202,7 @@
 	- Resolvido em 21/01/2025
 	
 ## 21/01/2025
-- [] Adicionar na tela de edição de usuário a possíbilidade de editar relacionamentos com documentos, só assim é possível
+- [X] Adicionar na tela de edição de usuário a possíbilidade de editar relacionamentos com documentos, só assim é possível
 deletar um usuário ou documento, deletando o relacionamento usuario_documento
 
 - [] Se possível adicionar procura por processo também pelo nome do usuário
@@ -214,7 +215,8 @@ deletar um usuário ou documento, deletando o relacionamento usuario_documento
 - [X] Combobox e Css - Rever para que o prompt text apareça acima de todos os comobox ao selecionar.
 - [X] Adicionar no preenchimento automático de subsistema a vazão do subsistema.
 - [] Adicionar conversor de coordenadas
-- [] Rever tipo de número nas finalidades, se double ou integer e ao preencher utilizar o padrão do banco de dados.
+- [X] Rever tipo de número nas finalidades, se double ou integer e ao preencher utilizar o padrão do banco de dados.
+		- [] Aqui é melhor colocar máscara, ver depois. Másca para trocar vírgula ao salvar por ponto, ex: 12,2 para 10.2
 - [X] Endereço - aumentar quantidade de caracteres
 	O endereço está com 500 carateres, o suficiente.
 
@@ -227,14 +229,24 @@ deletar um usuário ou documento, deletando o relacionamento usuario_documento
 		-[] Tipo de Poço: ...de 01 (um) poço (tubular ou manual)
 		-[] Endereço: está sem endereço
 		-[] Finalidade: para fins de irrigação paisagística - (0,2 ha - paisagismo) 
-- [] Finalidade
-		Ao copiar as finalidades requeridas para as autorizadas está aumentando uma vazia na autorizada
+- [X] Finalidade
+		Ao copiar as finalidades requeridas para as autorizadas está aumentando uma vazia na autorizada.
+		Resolvido.
 - [X] Bacia Hidrográfica e Unidade - Adicionar no parecer
 	Resolvido.
 - [X] Processo
 	Ao salvar o processo, adicioanr cnpj no usuário.
 		Resolvido: ao salvar o processo só é preciso o relacionamento com o usuário, sem necessidade
 			de informar o cpf/cnpj.
+			
+-[X] Finalidades
+	Adicionar quantidade maior de caracteres.
+		Resolvido: aumentei para 70 caracteres na escrita da finalidade e subfinalidade
+- [] Planílha de Cálculo de Finalidade
+	Adicionar planilha de cálculo de finalidade
+- [] Parecer
+	rever nível estático e dinâmico, vazão de teste
+	
 
 		
 

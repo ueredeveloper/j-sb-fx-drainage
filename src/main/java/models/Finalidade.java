@@ -19,10 +19,6 @@ public class Finalidade {
 	private TipoFinalidade tipoFinalidade;
 	
 	
-	public Finalidade() {
-		super();
-	}
-	
 	public Finalidade(TipoFinalidade tipoFinalidade) {
 		super();
 		this.tipoFinalidade = tipoFinalidade;
@@ -42,9 +38,10 @@ public class Finalidade {
 		this.tipoFinalidade = tipoFinalidade;
 	}
 
-	public Finalidade(String finalidade) {
+	public Finalidade(String finalidade, TipoFinalidade tipoFinalidade) {
 		super();
 		this.finalidade = finalidade;
+		this.tipoFinalidade = tipoFinalidade;
 	}
 
 	public Long getId() {
