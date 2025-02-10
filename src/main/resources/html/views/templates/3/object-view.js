@@ -29,7 +29,7 @@ class ObjectView {
     	<p>
         Art. 1º Outorgar a <b><span class="us-nome"></span></b>, 
         CPF/CNPJ n.º <b><span class="us-cpf-cnpj"></span></b>, o direito de uso de água subterrânea, por meio de 01 (um) poço 
-        <span class="int-tipo-poco"></span>, para fins de <span class="int-finalidades"></span>, localizado no endereço: 
+        <span class="inter-tipo-poco"></span>, para fins de <span class="int-finalidades"></span>, localizado no endereço: 
         <span class="end-logradouro"></span>, <span class="end-ra"></span> - Distrito Federal, tendo a seguinte característica:
     	</p>
 		</div>
@@ -53,12 +53,11 @@ class ObjectView {
 			element.innerHTML = innerHTML;
 		});
 
-		let __items = document.getElementsByClassName('int-tipo-poco');
+		let __items = document.getElementsByClassName('inter-tipo-poco');
 
-		Array.from(__items).forEach(element => {
-			let innerHTML = documento.endereco.interferencias[0]?.tipoPoco?.descricao || 'XXX';
-			element.innerHTML = innerHTML;
-		});
+        Array.from(__items).forEach(element => {
+            element.textContent = new InterferenciaModel().getTipoPoco(interferencia)
+        });
 
 		let ___items = document.getElementsByClassName('end-logradouro');
 		// Converte o resultado para array e atualiza

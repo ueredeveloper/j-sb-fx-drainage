@@ -1,0 +1,331 @@
+{
+	"caesb": false,
+	"nivelEstatico": "98",
+	"nivelDinamico": "98",
+	"profundidade": "56",
+	"vazaoOutorgavel": 16566,
+	"vazaoSistema": 12500,
+	"vazaoTeste": 14255,
+	"tipoPoco": {
+		"id": 3,
+		"descricao": "Tubular Profundo"
+	},
+	"sistema": "Paranoá",
+	"subsistema": "R4",
+	"id": 57,
+	"latitude": -15.660754104479297,
+	"longitude": -47.64467486925091,
+	"endereco": {
+		"id": 92,
+		"logradouro": "Campos do Jordão, Pedra Nova, 12",
+		"documentos": [
+		],
+		"interferencias": [
+		]
+	},
+	"tipoInterferencia": {
+		"id": 2,
+		"descricao": "Subterrânea"
+	},
+	"tipoOutorga": {
+		"id": 2,
+		"descricao": "Outorga Prévia"
+	},
+	"subtipoOutorga": {
+		"id": 2,
+		"descricao": "Modificação"
+	},
+	"situacaoProcesso": {
+		"id": 3,
+		"descricao": "Outorgado"
+	},
+	"tipoAto": {
+		"id": 3,
+		"descricao": "Despacho"
+	},
+	"baciaHidrografica": {
+		"objectid": 4,
+		"baciaNome": "Rio São Bartolomeu"
+	},
+	"unidadeHidrografica": {
+		"objectid": 7,
+		"uhNome": "Rio Pipiripau"
+	},
+	"finalidades": [
+		{
+			"id": 194,
+			"finalidade": "Criação de Animais ",
+			"subfinalidade": "Bovino",
+			"quantidade": 45.0,
+			"consumo": 65.0,
+			"total": 2925.0,
+			"tipoFinalidade": {
+				"id": 2
+			}
+		},
+		{
+			"id": 196,
+			"finalidade": "Criação de Animais ",
+			"subfinalidade": "Bovino",
+			"quantidade": 45.0,
+			"consumo": 65.0,
+			"total": 2925.0,
+			"tipoFinalidade": {
+				"id": 1
+			}
+		},
+		{
+			"id": 195,
+			"finalidade": "",
+			"subfinalidade": "",
+			"quantidade": 0.0,
+			"consumo": 0.0,
+			"total": 0.0,
+			"tipoFinalidade": {
+				"id": 2
+			}
+		}
+	],
+	"demandas": [
+		{
+			"id": 1060,
+			"vazao": 2925.0,
+			"tempo": 10,
+			"periodo": 30,
+			"mes": 11,
+			"tipoFinalidade": {
+				"id": 1
+			}
+		},
+		{
+			"id": 1061,
+			"vazao": 2925.0,
+			"tempo": 10,
+			"periodo": 31,
+			"mes": 5,
+			"tipoFinalidade": {
+				"id": 2
+			}
+		},
+		{
+			"id": 1062,
+			"vazao": 2925.0,
+			"tempo": 10,
+			"periodo": 31,
+			"mes": 1,
+			"tipoFinalidade": {
+				"id": 2
+			}
+		},
+		{
+			"id": 1063,
+			"vazao": 2925.0,
+			"tempo": 10,
+			"periodo": 31,
+			"mes": 12,
+			"tipoFinalidade": {
+				"id": 2
+			}
+		},
+		{
+			"id": 1064,
+			"vazao": 2925.0,
+			"tempo": 10,
+			"periodo": 31,
+			"mes": 5,
+			"tipoFinalidade": {
+				"id": 1
+			}
+		},
+		{
+			"id": 1065,
+			"vazao": 2925.0,
+			"tempo": 10,
+			"periodo": 31,
+			"mes": 7,
+			"tipoFinalidade": {
+				"id": 2
+			}
+		},
+		{
+			"id": 1066,
+			"vazao": 2925.0,
+			"tempo": 10,
+			"periodo": 30,
+			"mes": 9,
+			"tipoFinalidade": {
+				"id": 1
+			}
+		},
+		{
+			"id": 1067,
+			"vazao": 2925.0,
+			"tempo": 10,
+			"periodo": 30,
+			"mes": 6,
+			"tipoFinalidade": {
+				"id": 1
+			}
+		},
+		{
+			"id": 1068,
+			"vazao": 2925.0,
+			"tempo": 10,
+			"periodo": 30,
+			"mes": 4,
+			"tipoFinalidade": {
+				"id": 2
+			}
+		},
+		{
+			"id": 1069,
+			"vazao": 2925.0,
+			"tempo": 10,
+			"periodo": 31,
+			"mes": 12,
+			"tipoFinalidade": {
+				"id": 1
+			}
+		},
+		{
+			"id": 1070,
+			"vazao": 2925.0,
+			"tempo": 10,
+			"periodo": 28,
+			"mes": 2,
+			"tipoFinalidade": {
+				"id": 1
+			}
+		},
+		{
+			"id": 1071,
+			"vazao": 2925.0,
+			"tempo": 10,
+			"periodo": 31,
+			"mes": 3,
+			"tipoFinalidade": {
+				"id": 1
+			}
+		},
+		{
+			"id": 1072,
+			"vazao": 2925.0,
+			"tempo": 10,
+			"periodo": 31,
+			"mes": 1,
+			"tipoFinalidade": {
+				"id": 1
+			}
+		},
+		{
+			"id": 1073,
+			"vazao": 2925.0,
+			"tempo": 10,
+			"periodo": 31,
+			"mes": 7,
+			"tipoFinalidade": {
+				"id": 1
+			}
+		},
+		{
+			"id": 1074,
+			"vazao": 2925.0,
+			"tempo": 10,
+			"periodo": 30,
+			"mes": 11,
+			"tipoFinalidade": {
+				"id": 2
+			}
+		},
+		{
+			"id": 1075,
+			"vazao": 2925.0,
+			"tempo": 10,
+			"periodo": 30,
+			"mes": 4,
+			"tipoFinalidade": {
+				"id": 1
+			}
+		},
+		{
+			"id": 1076,
+			"vazao": 2925.0,
+			"tempo": 10,
+			"periodo": 30,
+			"mes": 6,
+			"tipoFinalidade": {
+				"id": 2
+			}
+		},
+		{
+			"id": 1077,
+			"vazao": 2925.0,
+			"tempo": 10,
+			"periodo": 31,
+			"mes": 8,
+			"tipoFinalidade": {
+				"id": 1
+			}
+		},
+		{
+			"id": 1078,
+			"vazao": 2925.0,
+			"tempo": 10,
+			"periodo": 30,
+			"mes": 9,
+			"tipoFinalidade": {
+				"id": 2
+			}
+		},
+		{
+			"id": 1079,
+			"vazao": 2925.0,
+			"tempo": 10,
+			"periodo": 31,
+			"mes": 8,
+			"tipoFinalidade": {
+				"id": 2
+			}
+		},
+		{
+			"id": 1080,
+			"vazao": 2925.0,
+			"tempo": 10,
+			"periodo": 31,
+			"mes": 10,
+			"tipoFinalidade": {
+				"id": 1
+			}
+		},
+		{
+			"id": 1081,
+			"vazao": 2925.0,
+			"tempo": 10,
+			"periodo": 28,
+			"mes": 2,
+			"tipoFinalidade": {
+				"id": 2
+			}
+		},
+		{
+			"id": 1082,
+			"vazao": 2925.0,
+			"tempo": 10,
+			"periodo": 31,
+			"mes": 3,
+			"tipoFinalidade": {
+				"id": 2
+			}
+		},
+		{
+			"id": 1083,
+			"vazao": 2925.0,
+			"tempo": 10,
+			"periodo": 31,
+			"mes": 10,
+			"tipoFinalidade": {
+				"id": 2
+			}
+		}
+	]
+}

@@ -18,7 +18,7 @@ class AnalyseView {
 		let innerHTML = `
         <h2>III. DA ANÁLISE</h2>
 			<p>3. Existe outorga anterior: </p>
-	    	<p>4. O ponto de captação analisado está localizado no subsistema <span class="inter-subsistema" class="highlight"></span>, 
+	    	<p>4. O ponto de captação analisado está localizado no subsistema <span class="inter-sistema"></span>, 
 	    	Unidade Hidrográfica do
 	        <span class="inter-uh" class="highlight"></span>, 
 	        Bacia Hidrográfica do 
@@ -86,22 +86,22 @@ class AnalyseView {
 
 	update (documento, interferencia) {
 
-		let _items = document.getElementsByClassName('inter-subsistema');
-
-		// Converte o resultado para array e atualiza
-		Array.from(_items).forEach(element => {
-			element.innerHTML = new InterferenciaModel().getNomeSubsistema(interferencia) || 'XXX';
-		});
-		
 		let __items = document.getElementsByClassName('inter-uh');
 	
 		// Converte o resultado para array e atualiza
 		Array.from(__items).forEach(__el => {
-			__el.innerHTML = new InterferenciaModel().getUnidadeHidrografica(interferencia) || "<b>ZZZZ</b>";
+			__el.innerHTML = new InterferenciaModel().getUnidadeHidrografica(interferencia) || 'XXX';
 			
 		});
 		
-		
+		let ___items = document.getElementsByClassName('inter-sistema');
+	
+		// Converte o resultado para array e atualiza
+		Array.from(___items).forEach(__el => {
+			__el.innerHTML = new InterferenciaModel().getSistemaSubsistema(interferencia) || 'XXX';
+			
+		});
+	
 	}
 
 }

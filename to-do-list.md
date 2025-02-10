@@ -221,31 +221,40 @@ deletar um usuário ou documento, deletando o relacionamento usuario_documento
 	O endereço está com 500 carateres, o suficiente.
 
 ## 07/02/2025	
-- [] Adicionar lista de região adminstrativa, lista de finalidades e subfinalidades
-- [] Aumentar quantidade de caracteres nas finalidades e subfinalidades	
-- [] Parecer de Direito
+- 	[] Adicionar lista de região adminstrativa, lista de finalidades e subfinalidades
+- 	[X] Aumentar quantidade de caracteres nas finalidades e subfinalidades	
+- 	[] Parecer de Direito
 		Rever assunto, vírgula desnecessária: ... construção civil, e abastecimento humano.
 		-[] Cnpj desformatado: CPF/CNPJ: 1585584000138
 		-[] Tipo de Poço: ...de 01 (um) poço (tubular ou manual)
 		-[] Endereço: está sem endereço
 		-[] Finalidade: para fins de irrigação paisagística - (0,2 ha - paisagismo) 
-- [X] Finalidade
+- 	[X] Finalidade
 		Ao copiar as finalidades requeridas para as autorizadas está aumentando uma vazia na autorizada.
 		Resolvido.
-- [X] Bacia Hidrográfica e Unidade - Adicionar no parecer
+- 	[X] Bacia Hidrográfica e Unidade - Adicionar no parecer
 	Resolvido.
-- [X] Processo
-	Ao salvar o processo, adicioanr cnpj no usuário.
+- 	[X] Processo
+		Ao salvar o processo, adicioanr cnpj no usuário.
 		Resolvido: ao salvar o processo só é preciso o relacionamento com o usuário, sem necessidade
 			de informar o cpf/cnpj.
 			
--[X] Finalidades
-	Adicionar quantidade maior de caracteres.
+-	[X] Finalidades
+		Adicionar quantidade maior de caracteres.
 		Resolvido: aumentei para 70 caracteres na escrita da finalidade e subfinalidade
-- [] Planílha de Cálculo de Finalidade
-	Adicionar planilha de cálculo de finalidade
-- [] Parecer
-	rever nível estático e dinâmico, vazão de teste
+-	[X] Planílha de Cálculo de Finalidade
+		Adicionar planilha de cálculo de finalidade
+		10/02/2025 - Não será feito agora. No momento apenas foi aberto o cadastro das finalidades para o técnico
+	colocar os valores que quiser.
+-- 	[] Parecer
+		Adicionar nível estático e dinâmico, vazão de teste
+	
+## 10 de fevereiro de 2025
+
+* **[] Domínio
+	Trazer dados do poço e do domínio no parecer
+	
+		
 	
 
 		

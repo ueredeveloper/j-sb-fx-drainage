@@ -13,8 +13,6 @@ class SubjectView {
 		this.render();
 	}
 
-	// classes: int-finalidades int-tipo-poco
-
 	render() {
 		let innerHTML = `
 			<div style="float:right;width:40rem">

@@ -23,7 +23,7 @@ class AnalyseView {
 			<p>4. Outorga anterior: Despacho nºou Regularização</p>
 			<p></p>
             <p><br></p>
-			<p>5. O ponto de captação analisado está localizado no subsistema <span class="inter-subsistema"></span>, 
+			<p>5. O ponto de captação analisado está localizado no subsistema <span class="inter-sistema"></span>, 
             Unidade Hidrográfica do <span class="inter-uh"></span>, Bacia Hidrográfica do <span class="inter-bh"></span>.
             </p>
 			</div><div>
@@ -100,7 +100,7 @@ class AnalyseView {
 			<p style="margin-left:30.0pt;">&nbsp;</p>
 
 			<p><br></p>
-			<p>11. Considerando que o ponto de captação está localizado no subsistema <span class="inter-subsistema"></span>, o limite a ser outorgado é de 80% da vazão média do subsistema, pois o empreendimento está localizado em área rural. A demanda solicitada pelo usuário, ajustada segundo os valores de referência da Resolução nº 18/2020 é de <listros_dia_abr_tag></listros_dia_abr_tag> L/dia, sendo estimado tempo de captação máximo de&nbsp; <litros_hora_abr_tag></litros_hora_abr_tag> h/dia. O ato de outorga seguirá as seguintes características:<o:p></o:p></p>
+			<p>11. Considerando que o ponto de captação está localizado no subsistema <span class="inter-sistema"></span>, o limite a ser outorgado é de 80% da vazão média do subsistema, pois o empreendimento está localizado em área rural. A demanda solicitada pelo usuário, ajustada segundo os valores de referência da Resolução nº 18/2020 é de <listros_dia_abr_tag></listros_dia_abr_tag> L/dia, sendo estimado tempo de captação máximo de&nbsp; <litros_hora_abr_tag></litros_hora_abr_tag> h/dia. O ato de outorga seguirá as seguintes características:<o:p></o:p></p>
 
 			<p>&nbsp;</p>
 
@@ -163,17 +163,24 @@ class AnalyseView {
     		element.innerHTML = new UsuarioModel().formatCpfCnpj(usuario.cpfCnpj);
     	});
 
-		let ____items = document.getElementsByClassName('int-tipo-poco');
+		let ____items = document.getElementsByClassName('inter-tipo-poco');
 
-		Array.from(____items).forEach(element => {
-			let innerHTML = interferencia?.tipoPoco?.descricao || 'XXX';
-			element.innerHTML = innerHTML;
-		});
+        Array.from(____items).forEach(element => {
+            element.textContent = new InterferenciaModel().getTipoPoco(interferencia)
+        });
 		
 		let _____items = document.getElementsByClassName('inter-uh');
 		
 		Array.from(_____items).forEach(element => {
 			element.innerHTML = new InterferenciaModel().getUnidadeHidrografica(interferencia) || 'vvv';
+		});
+		
+		 let ______items = document.getElementsByClassName('inter-sistema');
+	
+		// Converte o resultado para array e atualiza
+		Array.from(______items).forEach(__el => {
+			__el.innerHTML = new InterferenciaModel().getSistemaSubsistema(interferencia) || 'XXX';
+			
 		});
 
     }

@@ -29,7 +29,7 @@ class ObjectView {
 			<p>Art. 1º Emitir outorga prévia para reservar o direito de uso de água subterrânea a <b><span class="us-nome"></span>
 			</b>, 
 			CPF/CNPJ n.º <b><span class="us-cpf-cnpj"></span></b>, mediante a perfuração de 01 (um) poço 
-			<span class="int-tipo-poco"></span>, 
+			<span class="inter-tipo-poco"></span>, 
 			para fins de <span class="int-finalidades"></span>, localizado no endereço: <span class="end-logradouro"></span> - 
 			Distrito Federal, 
 			tendo a seguinte característica:</p>
@@ -55,12 +55,12 @@ class ObjectView {
 			element.innerHTML = innerHTML;
 		});
 
-		let __items = document.getElementsByClassName('int-tipo-poco');
+		        // Tipo de Poço
+        let __items = document.getElementsByClassName('inter-tipo-poco');
+        Array.from(__items).forEach(element => {
+            element.textContent = new InterferenciaModel().getTipoPoco(interferencia)
+        });
 
-		Array.from(__items).forEach(element => {
-			let innerHTML = documento.endereco.interferencias[0]?.tipoPoco?.descricao || 'XXX';
-			element.innerHTML = innerHTML;
-		});
 
 		let ___items = document.getElementsByClassName('end-logradouro');
 		// Converte o resultado para array e atualiza

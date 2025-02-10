@@ -129,6 +129,9 @@ public class AddSubterraneanDetailsController implements Initializable {
 		obsTypesOfWells = StaticData.INSTANCE.getTypesOfWells();
 		cbWellType.setItems(obsTypesOfWells);
 
+		/*
+		 * Através do tipo de poço captura o subsistema e vazão do subsistema
+		 */
 		cbWellType.setOnAction((event) -> {
 
 			SubsystemCodeAttributes sca = addInterferenceControler.getSubsystemCodeAttributes();

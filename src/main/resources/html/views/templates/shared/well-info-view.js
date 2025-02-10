@@ -24,7 +24,7 @@ class WellInfoView {
             <span class="inter-latitude" class="highlight"></span>, 
             <span class="inter-longitude" class="highlight"></span>
             </li>
-            <li>Tipo de Poço: <span class="inter-tipo-poco" class="highlight"></span></li>
+            <li>Tipo de Poço: <span class="inter-tipo-poco"></span></li>
             <!-- Cálculos do poço em metros -->
             <li>Profundidade: <span class="inter-profundidade" class="highlight"></span></li>
             <li>Nível Estático N.E: <span class="inter-nivel-estatico" class="highlight"></span></li>
@@ -53,9 +53,9 @@ class WellInfoView {
         });
 
         // Tipo de Poço
-        let tiposPoço = document.getElementsByClassName('inter-tipo-poco');
-        Array.from(tiposPoço).forEach(element => {
-            element.textContent = interferencia?.tipoPoco?.descricao || 'XXX';
+        let typeOfWell = document.getElementsByClassName('inter-tipo-poco');
+        Array.from(typeOfWell).forEach(element => {
+            element.textContent = new InterferenciaModel().getTipoPoco(interferencia)
         });
 
         // Profundidade do Poço

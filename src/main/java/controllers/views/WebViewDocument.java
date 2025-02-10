@@ -1,18 +1,30 @@
 package controllers.views;
 
+import java.util.Optional;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import enums.StaticData;
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.concurrent.Worker;
 import javafx.scene.web.HTMLEditor;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import models.Documento;
+import models.HidrogeoFraturado;
+import models.HidrogeoPoroso;
+import models.Interferencia;
+import models.Subterranea;
+import models.TipoPoco;
 import netscape.javascript.JSException;
 import netscape.javascript.JSObject;
+import services.HidrogeoFraturadoService;
+import services.HidrogeoPorosoService;
 import utilities.JsonConverter;
+import utilities.URLUtility;
 
 public class WebViewDocument {
 
@@ -58,16 +70,79 @@ public class WebViewDocument {
 		// Convert the document to JSON
 		String docJson = JsonConverter.convertObjectToJson(selectedDocument);
 
-		// Use a StringBuilder to hold the JSON for the first interferencia
+		/*
+		 * Separa a interferência do documento para não haver erro quando for converter
+		 * a interferência para subterrânea e depois para json. Só assim não se perde
+		 * atributos específicos da captação subterrânea.
+		 */
 		StringBuilder interJson = new StringBuilder();
 
 		selectedDocument.getEndereco().getInterferencias().forEach(interferencia -> {
+			System.out.println("instance of sub " );
+			System.out.println(interferencia instanceof Subterranea);
+			
 			if (interferencia != null) {
+
+				if (interferencia instanceof Subterranea) {
+
+					Subterranea subterranea = (Subterranea) interferencia; // Cast it first
+
+					Long typeOfWell = subterranea.getTipoPoco().getId();
+					String urlService = URLUtility.getURLService();
+					ObservableList<TipoPoco> obsTypeOfWell = StaticData.INSTANCE.getTypesOfWells();
+
+					if (typeOfWell == 1L || typeOfWell == 2L) {
+						
+						System.out.println("tipo poço " + typeOfWell);
+
+						HidrogeoPorosoService service = new HidrogeoPorosoService(urlService);
+
+						Set<HidrogeoPoroso> set = service.findByPoint(subterranea.getLatitude().toString(),
+								subterranea.getLongitude().toString());
+
+						set.forEach(s -> {
+							subterranea.setSistema(s.getSistema());
+
+						});
+						
+						
+						
+						Optional<TipoPoco> foundTipoPoco = obsTypeOfWell.stream()
+							    .filter(tp -> tp.getId() == typeOfWell) // Assuming getId() returns the ID
+							    .findFirst();
+						foundTipoPoco.ifPresent(subterranea::setTipoPoco);
+
+					} else {
+						
+						System.out.println("tipo poço " + typeOfWell);
+						
+						HidrogeoFraturadoService service = new HidrogeoFraturadoService(urlService);
+
+						Set<HidrogeoFraturado> set = service.findByPoint(subterranea.getLatitude().toString(),
+								subterranea.getLongitude().toString());
+
+						set.forEach(s -> {
+							subterranea.setSistema(s.getSistema());
+							subterranea.setSubsistema(s.getSubsistema());
+
+						});
+						Optional<TipoPoco> foundTipoPoco = obsTypeOfWell.stream()
+							    .filter(tp -> tp.getId() == typeOfWell) // Assuming getId() returns the ID
+							    .findFirst();
+						foundTipoPoco.ifPresent(subterranea::setTipoPoco);
+					}
+					
+					// Atualiza a interferência com estes novos dados
+					interferencia = (Interferencia) subterranea;
+				}
+				
+				
+
 				interJson.append(JsonConverter.convertInterferenciaToJson(interferencia));
 				return; // Exit the loop after processing the first interferencia
 			}
 		});
-		
+
 		System.out.println("webview selected interference");
 		System.out.println(interJson);
 
