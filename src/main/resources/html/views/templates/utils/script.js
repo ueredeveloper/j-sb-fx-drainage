@@ -56,12 +56,19 @@
 		}
 
 		// Verifica e inicializa PurpouseTableView
-		if (typeof PurpouseTableView !== 'undefined') {
-			new PurpouseTableView(documento, 1, interferencia, 'tbl-request-purpouse-view');
-			new PurpouseTableView(documento, 2, interferencia, 'tbl-authorized-purpouse-view');
+		if (typeof PurpouseRequestedTableView !== 'undefined') {
+			new PurpouseRequestedTableView(documento, 1, interferencia, 'tbl-request-purpouse-view');
 		} else {
-			console.error("PurpouseTableView não definida.");
+			console.error("Purpouse Requested Table View não definida.");
 		}
+
+		// Verifica e inicializa PurpouseTableView
+		if (typeof PurpouseAuthorizedTableView !== 'undefined') {
+			new PurpouseAuthorizedTableView(documento, 2, interferencia, 'tbl-authorized-purpouse-view');
+		} else {
+			console.error("Purpouse Authorized Table View não definida.");
+		}
+
 
 		// Verifica e atualiza ExploitableReserveView
 		if (typeof ExploitableReserveView !== 'undefined') {

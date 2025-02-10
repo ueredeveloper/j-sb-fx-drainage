@@ -19,7 +19,7 @@ class SubjectView {
 		let innerHTML = `
 				<p style="float:right;width:40rem">Assunto: análise de requerimento de outorga prévia para 
                 reservar o direito de uso de água subterrânea por meio de 01 (um) poço 
-                <span class="int-tipo-poco"></span> para fins de 
+                <span class="inter-tipo-poco"></span> para fins de 
 				<span class="int-finalidades"></span>.
 				</p>
 		`;
@@ -28,16 +28,7 @@ class SubjectView {
 	}
 	update(documento, interferencia) {
 
-		let tipoPoco = interferencia.tipoPoco;
 		let finalidades = interferencia.finalidades;
-
-		let _items = document.getElementsByClassName('int-tipo-poco');
-
-		Array.from(_items).forEach(element => {
-			let innerHTML = tipoPoco?.descricao?.toLowerCase() || 'XXX';
-			element.innerHTML = innerHTML;
-		});
-
 
 		let __items = document.getElementsByClassName('int-finalidades');
 

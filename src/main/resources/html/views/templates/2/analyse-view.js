@@ -27,7 +27,7 @@ class AnalyseView {
 	        <p>Figura 01: croqui de localização da propriedade.</p>
 	        <p>Figura 02: croqui de localização do poço.</p>
 	        <p>Figura 03: Croqui da área com existência de irrigação (Frutífera) em 31/05/2016.</p>
-	        <p>Figura 04: Croqui da área do sistema de abastecimento da Caesb - (Portal Atlas Caesb).</p> 
+	        <p>Figura 04: Croqui da área atendida pela CAESB - Sistema de abastecimento da área (Portal Atlas Caesb).</p> 
 			
 			
             <!-- Informações do poço -->

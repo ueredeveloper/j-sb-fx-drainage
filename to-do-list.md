@@ -256,7 +256,8 @@ deletar um usuário ou documento, deletando o relacionamento usuario_documento
 	
 		
 	
-
+* **[] Compile
+	mvn clean package -DskipTests -Dmaven.javadoc.skip=true
 		
 
 		
