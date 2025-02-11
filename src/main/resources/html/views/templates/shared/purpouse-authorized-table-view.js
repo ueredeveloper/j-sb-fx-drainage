@@ -3,9 +3,11 @@
  * @descricao Tabela de Finalidades
  * @nome Tabela de Finalidades
  * @arquivo purpouse-authorized-table-view.js
- * @id
+ * @id 
+ *
  *
  */
+
 
 class PurpouseAuthorizedTableView {
 	
@@ -39,7 +41,7 @@ class PurpouseAuthorizedTableView {
                 <td style="text-align: center;"><p>Finalidades</p></td>
                 <td style="text-align: center;"><p>Subfinalidades</p></td>
                 <td style="text-align: center;"><p>Quantidade</p></td>
-                <td style="text-align: center;"><p>Demanda (L/dia)</p></td>
+                <td style="text-align: center;"><p>Demanda Solicitada (L/dia)</p></td>
                 <td style="text-align: center;"><p>Valor de referência Resolução nº 18/2020 (L/dia)</p></td>
                 <td style="text-align: center;"><p>Demanda Resolução nº 18/2020 (L/dia)</p></td>
                 <td style="text-align: center;"><p>Demanda Total ajustada Resolução nº 18/2020 (L/dia)</p></td>

@@ -3,8 +3,9 @@
 * @descricao Objeto do parecer
 * @diretorio 4
 * @arquivo object-view.js
-* @id 21
-* 
+* @id 
+*
+*
 */
 
 class ObjectView {
@@ -23,16 +24,16 @@ class ObjectView {
 					<p></p>
 					<p>
 					1. Em XXX, foi protocolado requerimento de outorga de direito 
-					de uso de água subterrânea, por meio de 01 (um) poço <span id="inter-tipo-poco"></span> em nome de 
-					<span class="us-nome"></span>, 
-					CPF/CNPJ: <span class="us-cpf-cnpj"></span>, 
+					de uso de água subterrânea, por meio de 01 (um) poço <span class="inter-tipo-poco"></span> em nome de 
+					<b><span class="us-nome"></span></b>, 
+					CPF/CNPJ: <b><span class="us-cpf-cnpj"></span></b>, 
 					no endereço: <span class="end-logradouro"></span> - Distrito Federal, 
 					para fins de <span class="inter-finalidades"></span>.
 					</p>
 					<p>
-					2. Trata o presente processo de outorga de direito de uso de água subterrânea por meio de 01 (um) poço <span class="inter-tipo-poco"></span>, para fins de <span class="inter-finalidades"></span> e demanda total de XXX L/dia. Foi apresentado: 
-					perfilagem ótica - () onde indica características no domínio freático/XXX. Conforme Resolução nº 16, de 03 
-					de fevereiro de 2023, a captação de água existente no domínio freático/XXX de um <span class="highlight" class="type-well"></span> é considerado 
+					2. Trata o presente processo de outorga de direito de uso de água subterrânea por meio de 01 (um) poço <span class="inter-tipo-poco"></span>, para fins de <span class="inter-finalidades"></span> e demanda total de <span class="dem-l-dia"></span> L/dia. Foi apresentado: 
+					perfilagem ótica - () onde indica características no domínio freático/<span class="inter-sistema"></span>. Conforme Resolução nº 16, de 03 
+					de fevereiro de 2023, a captação de água existente no domínio freático/<span class="inter-sistema"></span> de um <span class="highlight" class="type-well"></span> é considerado 
 					um <span class="highlight" class="type-well"></span>. Dessa forma, o pedido de outorga será objeto de análise do presente parecer.
 					</p>
 				</div>
@@ -78,6 +79,17 @@ class ObjectView {
 		Array.from(_____items).forEach(element => {
 			element.innerHTML = new EnderecoModel().getLogradouro(endereco);
 		});
+		
+		// Captura a demanda de abril, que sempre está preenchida. As vazões de jan, fev, mar, nov, dez podem
+		//não estar preenchidas
+		let aprilFlow4 = interferencia?.demandas.find(dem => dem.mes = 4);
+
+	    let ______items = document.getElementsByClassName('dem-l-dia');
+	    // Converte o resultado para array e atualiza
+	    Array.from(______items).forEach(item => {
+	      item.innerHTML = aprilFlow4?.vazao || 'XXX';
+	
+	    });
 
 	}
 }

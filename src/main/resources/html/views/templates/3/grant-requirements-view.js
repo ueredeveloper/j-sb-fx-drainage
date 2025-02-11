@@ -3,8 +3,8 @@
  * @nome Despacho de Outorga De Direito de Uso
  * @descricao Obrigações do usuário
  * @arquivo grant-requirements-view.js
- * @id 1
- * 
+ * @id 
+ *
  *
  */
 
@@ -22,6 +22,7 @@ class GrantRequirementsView {
         Diário Oficial do Distrito Federal, podendo ser renovada mediante solicitação do outorgado, ou 
         prorrogada, observada a legislação vigente.
         </p>
+        <div style="margin-left: 2%">
         <p>
             § 1º O pedido de renovação desta outorga poderá ser requerido à Adasa com antecedência mínima de 
             90 (noventa) dias do término do prazo de vigência fixado no caput.
@@ -34,11 +35,14 @@ class GrantRequirementsView {
             § 3º A outorga será automaticamente prorrogada até deliberação da Adasa sobre o referido pedido de 
             renovação, se cumpridos os termos previstos no §1º.
         </p>
+        </div>
+        <p>&nbsp;</p>
         <p>
             Art. 4º A outorga poderá ser suspensa, parcial ou totalmente, revogada ou revista, por prazo 
             determinado, nos seguintes casos, previstos nos artigos 29 e 30 da Resolução nº 350, de 23 de 
             junho de 2006:
         </p>
+        <div style="margin-left: 2%">
         <p>
             I – quando o outorgado descumprir quaisquer condições e termos fixados no presente ato de outorga;
         </p>
@@ -62,6 +66,7 @@ class GrantRequirementsView {
         <p>
             IV – indeferimento ou cassação da licença ambiental, se for o caso.
         </p>
+        
         <p>
             § 1º A suspensão total ou parcial da outorga não implica em indenização a qualquer título.
         </p>
@@ -69,9 +74,12 @@ class GrantRequirementsView {
             § 2º A outorga para abastecimento humano será revogada ou modificada quando ocorrer a ligação 
             da rede de abastecimento de água pela concessionária de saneamento básico.
         </p>
+        </div>
+        <p>&nbsp;</p>
         <p>
             Art. 5º Constituem obrigações do outorgado:
         </p>
+        <div style="margin-left: 2%">
         <p>
             I - observar os limites estabelecidos no art. 2º deste ato de outorga;
         </p>
@@ -121,36 +129,48 @@ class GrantRequirementsView {
             Parágrafo único. Em situações especiais, a Adasa poderá reduzir o tamanho do raio de que trata o 
             inciso V deste artigo, não podendo ser o raio inferior a 1 m (um metro).
         </p>
+        </div>
+        <p>&nbsp;</p>
         <p>
             Art. 6º Fica o outorgado sujeito à fiscalização da Adasa, por intermédio de seus agentes ou 
             prepostos indicados, devendo franquear-lhes o acesso ao empreendimento e à documentação respectiva, 
             como projetos, contratos, relatórios, registros e quaisquer outros documentos referentes à presente 
             outorga.
         </p>
+        <p>&nbsp;</p>
         <p>
             Art. 7º Fica o outorgado sujeito às penalidades previstas na legislação em vigor em caso de 
             descumprimento das disposições legais e regulamentares decorrentes da reserva do direito de uso da 
             água subterrânea e pelo não atendimento das solicitações, recomendações e determinações da 
             fiscalização.
         </p>
+        <p>&nbsp;</p>
         <p>
             Art. 8º A transferência do direito previsto neste ato, bem como qualquer alteração nas 
             características do empreendimento sujeito a esta outorga, deverá ser precedida de anuência formal 
             da Adasa.
         </p>
+        <p>&nbsp;</p>
         <p>
             Art. 9º A presente outorga não dispensa ou substitui a obtenção, pelo outorgado, de certidões, 
             alvarás ou licenças de qualquer natureza, exigidos pela legislação vigente.
         </p>
+        <div style="margin-left: 2%">
         <p>
             Parágrafo único. O outorgado deverá respeitar a legislação ambiental e articular-se com o órgão 
             competente, com vistas à obtenção de licenças ambientais, quando couber, cumprir as exigências 
             nelas contidas e responder pelas consequências do descumprimento das leis, regulamentos e licenças.
         </p>
+        </div>
+        <p>&nbsp;</p>
         <p>
             Art. 10. O outorgado responderá civil, penal e administrativamente, por danos causados à vida, à 
             saúde, ao meio ambiente, bem como a terceiros, pelo uso inadequado que vier a fazer da presente 
             outorga, na forma da Lei.
+        </p>
+        <p>&nbsp;</p>
+        <p>
+            Art. 11. Esta outorga entra em vigor na data de sua publicação.
         </p>
 
 

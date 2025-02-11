@@ -3,7 +3,8 @@
  * @diretorio models
  * @descricao Modelos de Tabelas
  * @arquivo interferencia-model.js
- * @id 31
+ * @id 
+ *
  *
  */
  
@@ -34,7 +35,6 @@ class InterferenciaModel {
      */
     parseOrDefault (value) {
         let _value = Number(value);
-		console.log( isNaN(_value),_value === 0 , _value)
         return isNaN(_value) || _value === 0 ? 'Não informado' : _value;
     }
 }

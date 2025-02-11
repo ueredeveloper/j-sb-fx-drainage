@@ -5,13 +5,14 @@
 * @descricao Assunto do Parecer
 * @diretorio 2
 * @arquivo subject-view.js
-* @id 12
-* 
-*/
+* @id
+*
+*
+*/ 
 
 class SubjectView {
 	constructor() {
-		this.div = document.getElementById('subjective-view');
+		this.div = document.getElementById('subject-view');
 		this.render();
 	}
 

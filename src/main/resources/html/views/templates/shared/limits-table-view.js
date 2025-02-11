@@ -4,8 +4,9 @@
  *            captação
  * @diretorio shared
  * @arquivo limits-table-view.js
- * @id 37
- * 
+ * @id 
+ *
+ *
  */
  
 class LimitsTableView {
@@ -132,23 +133,15 @@ class LimitsTableView {
                 </tbody>
             </table>
 
-            <table border="0" style="margin-left:auto;margin-right:auto; width:90%">
-                <tbody>
-                    <tr border="0">
-                        <td border="0">
-                        <div border="0" style="font-size:12px">
-                        <em>Q. max:Vazão máxima em litros por hora e em metros cúbicos por hora;&nbsp;<br>
-                        T. max:Tempo máximo de captação em horas por dia;&nbsp;&nbsp;<br>
-                        V. max. dia:Volume máximo em metros cúbicos por dia;&nbsp;<br>
-                        P:Dias de captação por mês; e&nbsp;&nbsp;<br>
-                        V. max. mês:Volume máximo em metros cúbicos por mês.&nbsp;<br>
-                        * 1 m³ (um metro cúbico) corresponde a 1.000 L (mil litros)&nbsp;</em></div>
-                        </td>
-                    </tr>
-                </tbody>
-                <tbody>
-                </tbody>
-            </table>
+            <div border="0" style="font-size:12px; margin-left:5%">
+            <em>Q. max:Vazão máxima em litros por hora e em metros cúbicos por hora;&nbsp;<br>
+            T. max:Tempo máximo de captação em horas por dia;&nbsp;&nbsp;<br>
+            V. max. dia:Volume máximo em metros cúbicos por dia;&nbsp;<br>
+            P:Dias de captação por mês; e&nbsp;&nbsp;<br>
+            V. max. mês:Volume máximo em metros cúbicos por mês.&nbsp;<br>
+            * 1 m³ (um metro cúbico) corresponde a 1.000 L (mil litros)&nbsp;</em>
+            </div>
+        
         </div>   
         `;
         if (this.div !== null) this.div.innerHTML = innerHTML;

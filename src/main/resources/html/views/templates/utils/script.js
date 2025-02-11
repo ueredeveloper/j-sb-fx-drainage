@@ -4,8 +4,9 @@
  * @descricao Funções compartilhadas
  * @diretorio utils
  * @arquivo script.js
- * @id 42
- * 
+ * @id 
+ *
+ *
  */
 
  class Utils {
@@ -67,14 +68,6 @@
 			new PurpouseAuthorizedTableView(documento, 2, interferencia, 'tbl-authorized-purpouse-view');
 		} else {
 			console.error("Purpouse Authorized Table View não definida.");
-		}
-
-
-		// Verifica e atualiza ExploitableReserveView
-		if (typeof ExploitableReserveView !== 'undefined') {
-			new ExploitableReserveView().update(interferencia);
-		} else {
-			console.error("ExploitableReserveView não definida.");
 		}
 
 		// Atualiza despachos com as tabelas geográficas

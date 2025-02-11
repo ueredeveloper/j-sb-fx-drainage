@@ -3,7 +3,8 @@
  * @descricao Ações de verificação dos métodos
  * @diretorio actions
  * @arquivo script.js
- * @id 26
+ * @id 
+ *
  *
  */
 
@@ -82,9 +83,9 @@ class ActionsView {
 			new WellInfoView().update(interferencia);
 
 			// Finalidades requeridas
-			new PurpouseTableView(documento, 1, interferencia, 'tbl-finalidades-requeridas');
+			new PurpouseRequestedTableView(documento, 1, interferencia, 'tbl-finalidades-requeridas');
 			// Finalidades autorizadas
-			new PurpouseTableView(documento, 2, interferencia, 'tbl-finalidades-autorizadas');
+			new PurpouseAuthorizedTableView(documento, 2, interferencia, 'tbl-finalidades-autorizadas');
 
 			new ExploitableReserveView().update(interferencia);
 

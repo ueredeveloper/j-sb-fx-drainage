@@ -4,7 +4,8 @@
  * @descricao Análise da outorga
  * @diretorio 2
  * @arquivo analyse-view.js
- * @id 6
+ * @id 
+ *
  *
  */
 
@@ -55,7 +56,11 @@ class AnalyseView {
 			<!-- Finalidades Autorizadas -->
             <div id="tbl-authorized-purpouse-view" style="display:flex; justify-content: center;"></div>
 
-			<div id="exploitable-reserve-view"></div>
+			<p>8. A reserva explotável e balanço hídrico do subsistema subterrâneo apresenta dados favoráveis, 
+        	considerando a inclusão das demandas requeridas, conforme tabelas abaixo:
+        	</p>
+
+        	<p>Figura 04: Reserva explotável e balanço hídrico do subsistema <span class="inter-sistema"></span>.</p>
 
 			<!-- Demanda --> 
 			 <div id="water-demand-view"></div>
@@ -75,7 +80,6 @@ class AnalyseView {
 
 		new WellInfoView();
 		new PurpouseLegalBasisView();
-		new ExploitableReserveView();
 
 		new WaterDemandView();
 		new WaterDataView();
@@ -101,6 +105,8 @@ class AnalyseView {
 			__el.innerHTML = new InterferenciaModel().getSistemaSubsistema(interferencia) || 'XXX';
 			
 		});
+
+		new WaterDataView().update(interferencia)
 	
 	}
 

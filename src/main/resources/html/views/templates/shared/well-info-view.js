@@ -3,9 +3,9 @@
  * @descricao Informações como nível estático, nível dinâmico e coordenada
  * @diretorio shared
  * @arquivo well-info-view.js
- * @id 41
- * 
- * 
+ * @id 
+ *
+ *
  */
 
 
@@ -67,7 +67,6 @@ class WellInfoView {
         // Profundidade do Poço
         let _____items = document.getElementsByClassName('inter-nivel-estatico');
         Array.from(_____items).forEach(element => {
-            console.log('nivel estatico ', interferencia?.nivelEstatico)
             element.textContent = new InterferenciaModel().parseOrDefault(interferencia?.nivelEstatico);
         });
 

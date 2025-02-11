@@ -4,15 +4,8 @@
  * @descricao Arquivo principal .js
  * @diretorio 2
  * @arquivo script.js
- * @id 11
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
+ * @id 
+ *
  *
  */
 

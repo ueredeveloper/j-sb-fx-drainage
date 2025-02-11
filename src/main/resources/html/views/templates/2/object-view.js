@@ -4,8 +4,8 @@
  * @diretorio 2
  * @descricao Parecer de Outorga Prévia
  * @nome Parecer de Outorga Prévia
- * @id 10
- * 
+ * @id 
+ *
  *
  */
 
@@ -23,8 +23,8 @@ class ObjectView {
     	<p>1. Em XXX, foi protocolado requerimento relacionado a 
     	<span class="inter-tipo-outorga"></span> para reservar o direito de uso de água subterrânea, 
     	por meio de 01 (um) poço <span class="inter-tipo-poco"></span> em nome de 
-    	<span class="us-nome"></span>, 
-    	CPF/CNPJ: <span class="us-cpf-cnpj"></span>, 
+    	<b><span class="us-nome"></span></b>, 
+    	CPF/CNPJ: <b><span class="us-cpf-cnpj"></span></b>, 
     	no endereço: <span class="end-logradouro"></span>, <span class="end-ra" ></span>
     	 - Distrito Federal, para fins de <span class="inter-finalidades"></span>.</p>
     `;

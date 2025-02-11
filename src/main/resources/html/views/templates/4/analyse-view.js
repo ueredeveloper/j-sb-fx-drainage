@@ -3,8 +3,9 @@
 * @descricao Análise do parecer
 * @diretorio 4
 * @arquivo analyse-view.js
-* @id 17
-* 
+* @id 
+*
+*
 */
 
 class AnalyseView {
@@ -41,7 +42,7 @@ class AnalyseView {
 			<p>Figura 03: Croqui da área com existência de irrigação (Frutífera) em 31/05/2016.</p>
 			<p><br></p><p></p>
 
-			<p>Figura 04: Croqui da área do sistema de abastecimento da Caesb - ( Portal Atlas Caesb).</p>
+			<p>Figura 04: Croqui da área atendida pela CAESB - Sistema de abastecimento da área (Portal Atlas Caesb).</p> 
 			<p></p><p><br></p>
 
 			<!--<p>II. Dados do poço:</p>-->
@@ -77,10 +78,12 @@ class AnalyseView {
             <!-- Finalidades Autorizadas -->
             <div id="tbl-authorized-purpouse-view" style="display:flex; justify-content: center;"></div>
 
-            
-            <div id="exploitable-reserve-view"></div>
+			<p>9. A reserva explotável e balanço hídrico do subsistema subterrâneo apresenta dados favoráveis, 
+			considerando a inclusão das demandas requeridas, conforme tabelas abaixo:
+			</p>
 
-
+			<p>Figura 04: Reserva explotável e balanço hídrico do subsistema <span class="inter-sistema"></span>.</p>
+        
 			<p>10.&nbsp;As demandas poderão ser outorgadas pela Adasa, desde que observados os limites estabelecidos pela 
 			Resolução/ADASA nº 16/2018 e valores da demanda ajustados na tabela 2.</p>
 			<p><br></p>
@@ -100,11 +103,10 @@ class AnalyseView {
 			<p style="margin-left:30.0pt;">&nbsp;</p>
 
 			<p><br></p>
-			<p>11. Considerando que o ponto de captação está localizado no subsistema <span class="inter-sistema"></span>, o limite a ser outorgado é de 80% da vazão média do subsistema, pois o empreendimento está localizado em área rural. A demanda solicitada pelo usuário, ajustada segundo os valores de referência da Resolução nº 18/2020 é de <listros_dia_abr_tag></listros_dia_abr_tag> L/dia, sendo estimado tempo de captação máximo de&nbsp; <litros_hora_abr_tag></litros_hora_abr_tag> h/dia. O ato de outorga seguirá as seguintes características:<o:p></o:p></p>
+			
+			<!-- Ponto de Captação e Limites Outorgados -->
+			<div id="water-data-view"></div>
 
-			<p>&nbsp;</p>
-
-		
 			<p><br></p><p>I -&nbsp; Dados da captação:</p>
 
 			<div id="geographic-table-view"></div>
@@ -134,8 +136,8 @@ class AnalyseView {
 		if (this.div !== null) this.div.innerHTML = innerHTML;
 
         new PurpouseLegalBasisView();
-        //new PurpouseView();
         new WellInfoView();
+		new WaterDataView();
 		new GeographicTableView();
 		new LimitsTableView();
 
@@ -182,6 +184,8 @@ class AnalyseView {
 			__el.innerHTML = new InterferenciaModel().getSistemaSubsistema(interferencia) || 'XXX';
 			
 		});
+
+		new WaterDataView().update(interferencia)
 
     }
 }

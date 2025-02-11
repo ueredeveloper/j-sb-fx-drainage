@@ -3,8 +3,9 @@
 * @descricao Assunto do Despacho
 * @diretorio 3
 * @arquivo subject-view.js
-* @id 5
-* 
+* @id 
+*
+*
 */
 
 class SubjectView {
@@ -30,7 +31,7 @@ class SubjectView {
 		let finalidades = interferencia.finalidades;
 		let usuario = documento.usuarios[0];
 
-		let _items = document.getElementsByClassName('us-name');
+		let _items = document.getElementsByClassName('us-nome');
 
     	Array.from(_items).forEach(element => {
     		let innerHTML = usuario?.nome || 'XXX';
