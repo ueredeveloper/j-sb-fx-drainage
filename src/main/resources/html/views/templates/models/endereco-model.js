@@ -18,7 +18,7 @@ class EnderecoModel {
         }
     }
     getLogradouro (endereco){
-       let logradouro =  endereco?.logradouro;
+       let logradouro =  endereco?.logradouro || 'XXX' + ',' + endereco?.bairro || 'XXX';
 
        return logradouro;
     }

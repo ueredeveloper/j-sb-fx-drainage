@@ -25,7 +25,7 @@ class ObjectView {
     	por meio de 01 (um) poço <span class="inter-tipo-poco"></span> em nome de 
     	<b><span class="us-nome"></span></b>, 
     	CPF/CNPJ: <b><span class="us-cpf-cnpj"></span></b>, 
-    	no endereço: <span class="end-logradouro"></span>, <span class="end-ra" ></span>
+    	no endereço: <span class="end-logradouro"></span></span>
     	 - Distrito Federal, para fins de <span class="inter-finalidades"></span>.</p>
     `;
 		if (this.div !== null) this.div.innerHTML = innerHTML;

@@ -221,14 +221,14 @@ deletar um usuário ou documento, deletando o relacionamento usuario_documento
 	O endereço está com 500 carateres, o suficiente.
 
 ## 07/02/2025	
-- 	[] Adicionar lista de região adminstrativa, lista de finalidades e subfinalidades
+- 	[] Adicionar lista de região administrativa, lista de finalidades e subfinalidades
 - 	[X] Aumentar quantidade de caracteres nas finalidades e subfinalidades	
-- 	[] Parecer de Direito
+- 	[X] Parecer de Direito
 		Rever assunto, vírgula desnecessária: ... construção civil, e abastecimento humano.
-		-[] Cnpj desformatado: CPF/CNPJ: 1585584000138
-		-[] Tipo de Poço: ...de 01 (um) poço (tubular ou manual)
-		-[] Endereço: está sem endereço
-		-[] Finalidade: para fins de irrigação paisagística - (0,2 ha - paisagismo) 
+		-[X] Cnpj desformatado: CPF/CNPJ: 1585584000138
+		-[X] Tipo de Poço: ...de 01 (um) poço (tubular ou manual)
+		-[X] Endereço: está sem endereço
+		-[X] Finalidade: para fins de irrigação paisagística - (0,2 ha - paisagismo) 
 - 	[X] Finalidade
 		Ao copiar as finalidades requeridas para as autorizadas está aumentando uma vazia na autorizada.
 		Resolvido.
@@ -246,19 +246,26 @@ deletar um usuário ou documento, deletando o relacionamento usuario_documento
 		Adicionar planilha de cálculo de finalidade
 		10/02/2025 - Não será feito agora. No momento apenas foi aberto o cadastro das finalidades para o técnico
 	colocar os valores que quiser.
--- 	[] Parecer
+-- 	[X] Parecer
 		Adicionar nível estático e dinâmico, vazão de teste
 	
 ## 10 de fevereiro de 2025
 
-* **[] Domínio
+* **[X] Domínio
 	Trazer dados do poço e do domínio no parecer
 	
 		
 	
-* **[] Compile
+* **[X] Compile
 	mvn clean package -DskipTests -Dmaven.javadoc.skip=true
 		
+## 11 de fevereiro de 2025
 
-		
+* **[X] Usuário não cadastrado
+	Adicionar aviso de usuário não cadastrado ao cadastrar documento. Ver também de avisar de interferência não cadastrada.
+	
+## 12 de fevereiro de 2025	
+* **[X] Adicionar bairro no endereço dos documentos.
+
+	
 

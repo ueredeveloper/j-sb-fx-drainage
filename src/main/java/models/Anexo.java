@@ -1,13 +1,13 @@
 package models;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Anexo {
 
 	private Long id;
 	private String numero;
-	private List<Processo> processos = new ArrayList<>();
+	private Set<Processo> processos = new HashSet<Processo>();
 
 	public Anexo() {
 		super();
@@ -22,6 +22,13 @@ public class Anexo {
 		super();
 		this.id = id;
 		this.numero = numero;
+	}
+	
+	public Anexo(Long id, String numero, Set<Processo> processos) {
+		super();
+		this.id = id;
+		this.numero = numero;
+		this.processos = processos;
 	}
 
 	public Long getId() {
@@ -40,11 +47,11 @@ public class Anexo {
 		this.numero = numero;
 	}
 
-	public List<Processo> getProcessos() {
+	public Set<Processo> getProcessos() {
 		return processos;
 	}
 
-	public void setProcessos(List<Processo> processos) {
+	public void setProcessos(Set<Processo> processos) {
 		this.processos = processos;
 	}
 

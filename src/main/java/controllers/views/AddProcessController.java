@@ -222,13 +222,29 @@ public class AddProcessController implements Initializable {
 			Usuario obsUsList0 = userComboBoxController.getSelectedObject();
 
 			// Anexar o processo principal (anexo) ao processo
-			if (obsAttachList0 != null) {
-				this.process.setAnexo(obsAttachList0);
-				// obsProcessList0.set
+			if (obsAttachList0 == null) {
+
+				// this.process.setAnexo(obsAttachList0);
+				// Informa salvamento com sucesso
+				Node source = (Node) event.getSource();
+				Stage ownerStage = (Stage) source.getScene().getWindow();
+				String toastMsg = "Selecione o processo principal!";
+				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+
+				return;
 			}
-			if (obsUsList0 != null) {
-				this.process.setUsuario(obsUsList0);
-			}
+			if (obsUsList0 == null) {
+				// this.process.setUsuario(obsUsList0);
+
+				// Informa salvamento com sucesso
+				Node source = (Node) event.getSource();
+				Stage ownerStage = (Stage) source.getScene().getWindow();
+				String toastMsg = "Selecione um usuário!";
+				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+
+				return;
+
+			} 
 
 			ServiceResponse<?> reponse = service.save(this.process);
 
@@ -299,12 +315,28 @@ public class AddProcessController implements Initializable {
 				Usuario obsUsList0 = userComboBoxController.getSelectedObject();
 
 				// Anexar o processo principal (anexo) ao processo
-				if (obsAttachList0 != null) {
-					this.process.setAnexo(obsAttachList0);
-					// obsProcessList0.set
+				if (obsAttachList0 == null) {
+
+					// this.process.setAnexo(obsAttachList0);
+					// Informa salvamento com sucesso
+					Node source = (Node) event.getSource();
+					Stage ownerStage = (Stage) source.getScene().getWindow();
+					String toastMsg = "Selecione o processo principal!";
+					utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+
+					return;
 				}
-				if (obsUsList0 != null) {
-					this.process.setUsuario(obsUsList0);
+				if (obsUsList0 == null) {
+					// this.process.setUsuario(obsUsList0);
+
+					// Informa salvamento com sucesso
+					Node source = (Node) event.getSource();
+					Stage ownerStage = (Stage) source.getScene().getWindow();
+					String toastMsg = "Selecione um usuário!";
+					utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+
+					return;
+
 				}
 
 				ServiceResponse<?> reponse = service.update(this.process);

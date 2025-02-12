@@ -107,14 +107,6 @@ class AnalyseView {
 			<!-- Ponto de Captação e Limites Outorgados -->
 			<div id="water-data-view"></div>
 
-			<p><br></p><p>I -&nbsp; Dados da captação:</p>
-
-			<div id="geographic-table-view"></div>
-
-			<p>&nbsp;</p>
-
-			<p><br></p><p>II - &nbsp;&nbsp;Demanda a ser outorgada:</p>
-
 			<div id="limits-table-view"></div>
 
 			<p>12. As solicitações de renovação de outorga protocoladas fora do prazo previsto no parágrafo único, art. 27 
