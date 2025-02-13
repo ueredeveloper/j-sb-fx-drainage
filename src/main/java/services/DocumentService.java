@@ -258,6 +258,8 @@ public class DocumentService {
 		}
 
 		reader.close();
+		
+		System.out.println(response.toString());
 
 		return new Gson().fromJson(response.toString(), new TypeToken<Set<Documento>>() {
 		}.getType());

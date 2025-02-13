@@ -76,6 +76,8 @@ public class WebViewDocument {
 		 * atributos específicos da captação subterrânea.
 		 */
 		StringBuilder interJson = new StringBuilder();
+		
+		System.out.println(interJson);
 
 		selectedDocument.getEndereco().getInterferencias().forEach(interferencia -> {
 			System.out.println("instance of sub " );

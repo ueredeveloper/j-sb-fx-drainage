@@ -14,11 +14,8 @@
 	constructor() {}
 
 	/**
-	 * Atualiza tudo utilizando um exemplo da tabela documento com endereço,
-	 * interferências e usuário
-	 * 
+	 * Atualiza tudo utilizando um exemplo da tabela documento com endereço, interferências e usuário
 	 * @param {*}
-	 *            documento
 	 */
 	updateHtmlDocument(docJson, interJson) {
 		

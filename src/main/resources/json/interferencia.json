@@ -1,44 +1,332 @@
 {
-	"id": 10,
-	"numero": "444/555",
-	"processo": {
-		"id": 1,
-		"numero": "123456/456789",
-		"anexo": {
-			"id": 11,
-			"numero": "123456852/2588",
-			"processos": [
-				{
-					"id": 7,
-					"numero": "123456.789/522"
-				}
-			]
-		}
-	},
-	"numeroSei": 77899,
-	"tipoDocumento": {
+	"caesb": true,
+	"nivelEstatico": "",
+	"nivelDinamico": "",
+	"profundidade": "",
+	"vazaoOutorgavel": 658,
+	"vazaoSistema": 800,
+	"vazaoTeste": 0,
+	"tipoPoco": {
 		"id": 2,
-		"descricao": "Despacho"
+		"descricao": "Tubular Raso"
 	},
+	"sistema": "P1",
+	"codPlan": "058_17_P1",
+	"latitude": -15.872222,
+	"longitude": -47.91222,
 	"endereco": {
-		"id": 1,
-		"logradouro": "Rua 1, Vicente 34",
-		"cidade": "",
+		"id": 7,
+		"logradouro": "Lote 15, N. R. Santos Dumont 2",
 		"bairro": "",
-		"cep": "",
-		"documentos": [],
-		"interferencias": [],
-		"estado": {
-			"id": 2,
-			"descricao": "SP"
-		}
+		"documentos": [
+		],
+		"interferencias": [
+		]
 	},
-	"usuarios": [
+	"tipoInterferencia": {
+		"id": 2,
+		"descricao": "Subterrânea"
+	},
+	"tipoOutorga": {
+		"id": 1,
+		"descricao": "Outorga"
+	},
+	"subtipoOutorga": {
+		"id": 1,
+		"descricao": "Renovação"
+	},
+	"situacaoProcesso": {
+		"id": 1,
+		"descricao": "Arquivado"
+	},
+	"tipoAto": {
+		"id": 2,
+		"descricao": "Portaria"
+	},
+	"baciaHidrografica": {
+		"objectid": 7
+	},
+	"unidadeHidrografica": {
+		"objectid": 23
+	},
+	"finalidades": [
 		{
-			"id": 44,
-			"nome": "Carlos Queiler",
-			"cpfCnpj": 12345678985,
-			"documentos": []
+			"finalidade": "Abastecimento",
+			"subfinalidade": "juis",
+			"quantidade": 45.0,
+			"consumo": 6.0,
+			"total": 270.0,
+			"tipoFinalidade": {
+				"id": 2
+			}
+		},
+		{
+			"finalidade": "Abastecimento",
+			"subfinalidade": "juis",
+			"quantidade": 45.0,
+			"consumo": 6.0,
+			"total": 270.0,
+			"tipoFinalidade": {
+				"id": 1
+			}
+		},
+		{
+			"finalidade": "Criação ",
+			"subfinalidade": "criaç",
+			"quantidade": 4.0,
+			"consumo": 5.0,
+			"total": 20.0,
+			"tipoFinalidade": {
+				"id": 2
+			}
+		},
+		{
+			"finalidade": "Criação ",
+			"subfinalidade": "criaç",
+			"quantidade": 4.0,
+			"consumo": 5.0,
+			"total": 20.0,
+			"tipoFinalidade": {
+				"id": 1
+			}
+		},
+		{
+			"finalidade": "Irrigação",
+			"subfinalidade": "irr",
+			"quantidade": 990.0,
+			"consumo": 9.0,
+			"total": 8910.0,
+			"tipoFinalidade": {
+				"id": 1
+			}
+		},
+		{
+			"finalidade": "Irrigação",
+			"subfinalidade": "irr",
+			"quantidade": 990.0,
+			"consumo": 9.0,
+			"total": 8910.0,
+			"tipoFinalidade": {
+				"id": 2
+			}
+		}
+	],
+	"demandas": [
+		{
+			"vazao": 9200.0,
+			"tempo": 10,
+			"periodo": 30,
+			"mes": 9,
+			"tipoFinalidade": {
+				"id": 2
+			}
+		},
+		{
+			"vazao": 9200.0,
+			"tempo": 10,
+			"periodo": 30,
+			"mes": 11,
+			"tipoFinalidade": {
+				"id": 1
+			}
+		},
+		{
+			"vazao": 9200.0,
+			"tempo": 10,
+			"periodo": 31,
+			"mes": 5,
+			"tipoFinalidade": {
+				"id": 1
+			}
+		},
+		{
+			"vazao": 9200.0,
+			"tempo": 10,
+			"periodo": 31,
+			"mes": 10,
+			"tipoFinalidade": {
+				"id": 1
+			}
+		},
+		{
+			"vazao": 9200.0,
+			"tempo": 10,
+			"periodo": 30,
+			"mes": 4,
+			"tipoFinalidade": {
+				"id": 2
+			}
+		},
+		{
+			"vazao": 9200.0,
+			"tempo": 10,
+			"periodo": 30,
+			"mes": 4,
+			"tipoFinalidade": {
+				"id": 1
+			}
+		},
+		{
+			"vazao": 9200.0,
+			"tempo": 10,
+			"periodo": 30,
+			"mes": 9,
+			"tipoFinalidade": {
+				"id": 1
+			}
+		},
+		{
+			"vazao": 9200.0,
+			"tempo": 10,
+			"periodo": 31,
+			"mes": 3,
+			"tipoFinalidade": {
+				"id": 1
+			}
+		},
+		{
+			"vazao": 9200.0,
+			"tempo": 10,
+			"periodo": 31,
+			"mes": 3,
+			"tipoFinalidade": {
+				"id": 2
+			}
+		},
+		{
+			"vazao": 9200.0,
+			"tempo": 10,
+			"periodo": 31,
+			"mes": 12,
+			"tipoFinalidade": {
+				"id": 2
+			}
+		},
+		{
+			"vazao": 9200.0,
+			"tempo": 10,
+			"periodo": 30,
+			"mes": 11,
+			"tipoFinalidade": {
+				"id": 2
+			}
+		},
+		{
+			"vazao": 9200.0,
+			"tempo": 10,
+			"periodo": 31,
+			"mes": 8,
+			"tipoFinalidade": {
+				"id": 2
+			}
+		},
+		{
+			"vazao": 9200.0,
+			"tempo": 10,
+			"periodo": 31,
+			"mes": 1,
+			"tipoFinalidade": {
+				"id": 2
+			}
+		},
+		{
+			"vazao": 9200.0,
+			"tempo": 10,
+			"periodo": 31,
+			"mes": 10,
+			"tipoFinalidade": {
+				"id": 2
+			}
+		},
+		{
+			"vazao": 9200.0,
+			"tempo": 10,
+			"periodo": 30,
+			"mes": 6,
+			"tipoFinalidade": {
+				"id": 2
+			}
+		},
+		{
+			"vazao": 9200.0,
+			"tempo": 10,
+			"periodo": 31,
+			"mes": 7,
+			"tipoFinalidade": {
+				"id": 1
+			}
+		},
+		{
+			"vazao": 9200.0,
+			"tempo": 10,
+			"periodo": 30,
+			"mes": 6,
+			"tipoFinalidade": {
+				"id": 1
+			}
+		},
+		{
+			"vazao": 9200.0,
+			"tempo": 10,
+			"periodo": 31,
+			"mes": 7,
+			"tipoFinalidade": {
+				"id": 2
+			}
+		},
+		{
+			"vazao": 9200.0,
+			"tempo": 10,
+			"periodo": 31,
+			"mes": 5,
+			"tipoFinalidade": {
+				"id": 2
+			}
+		},
+		{
+			"vazao": 9200.0,
+			"tempo": 10,
+			"periodo": 28,
+			"mes": 2,
+			"tipoFinalidade": {
+				"id": 2
+			}
+		},
+		{
+			"vazao": 9200.0,
+			"tempo": 10,
+			"periodo": 31,
+			"mes": 1,
+			"tipoFinalidade": {
+				"id": 1
+			}
+		},
+		{
+			"vazao": 9200.0,
+			"tempo": 10,
+			"periodo": 31,
+			"mes": 8,
+			"tipoFinalidade": {
+				"id": 1
+			}
+		},
+		{
+			"vazao": 9200.0,
+			"tempo": 10,
+			"periodo": 28,
+			"mes": 2,
+			"tipoFinalidade": {
+				"id": 1
+			}
+		},
+		{
+			"vazao": 9200.0,
+			"tempo": 10,
+			"periodo": 31,
+			"mes": 12,
+			"tipoFinalidade": {
+				"id": 1
+			}
 		}
 	]
 }

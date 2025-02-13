@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Set;
@@ -47,7 +48,6 @@ import utilities.URLUtility;
 
 public class AddSubterraneanDetailsController implements Initializable {
 
-	
 	private String urlService;
 
 	AddInterferenceController addInterferenceControler;
@@ -111,9 +111,8 @@ public class AddSubterraneanDetailsController implements Initializable {
 	private JFXButton btnCalculateReqTotalConsumption;
 
 	@FXML
-	private JFXButton btnFillReqFlow, btnFillReqTime, btnFillReqPeriod, btnCalculateAuthTotalConsumption, btnRefereshSubsystem;
-
-	
+	private JFXButton btnFillReqFlow, btnFillReqTime, btnFillReqPeriod, btnCalculateAuthTotalConsumption,
+			btnRefereshSubsystem;
 
 	@FXML
 	private JFXButton btnFillAuthFlow, btnFillAuthTime, btnFillAuthPeriod, btnCopyReqDemand;
@@ -293,7 +292,7 @@ public class AddSubterraneanDetailsController implements Initializable {
 			bboBtnFillRequestedFlow.setOption(!bboBtnFillRequestedFlow.getOption());
 
 		});
-		
+
 		/**
 		 * Cria a opção false ou true encarregada por preencher as linhas de vazão
 		 * automaticamente todo os meses ou apenas os meses de chuva.
@@ -372,7 +371,6 @@ public class AddSubterraneanDetailsController implements Initializable {
 			bboBtnFillAuthFlow.setOption(!bboBtnFillAuthFlow.getOption());
 
 		});
-		
 
 		/**
 		 * Cria as opções false ou true. Assim preenche de duas formas o tempo, todos os
@@ -477,8 +475,7 @@ public class AddSubterraneanDetailsController implements Initializable {
 			bboBtnFillRequestedTime.setOption(!bboBtnFillRequestedTime.getOption());
 
 		});
-		
-		
+
 		/**
 		 * Cria as opções false ou true. Assim preenche de duas formas o tempo, todos os
 		 * campos, ou apenas de abril a outubro.
@@ -654,7 +651,7 @@ public class AddSubterraneanDetailsController implements Initializable {
 			bboFillRequestedPeriod.setOption(!bboFillRequestedPeriod.getOption());
 
 		});
-		
+
 		/**
 		 * Cria a opção falso ou true de preenchimento completo da linha ou somente de
 		 * abril a outubro, período de seca.
@@ -726,7 +723,6 @@ public class AddSubterraneanDetailsController implements Initializable {
 			bboFillAuthPeriod.setOption(!bboFillAuthPeriod.getOption());
 
 		});
-		
 
 		/**
 		 * Atualiza dados do subsistema, com sistema, subsistema, código e vazão.
@@ -762,11 +758,12 @@ public class AddSubterraneanDetailsController implements Initializable {
 			purpouses = purpousesWrapper.getPurpouses().stream();
 
 			List<Finalidade> purListType2 = new ArrayList<Finalidade>();
-			// 07/02/2025 -> removi pois neste caso não me parece necessário captura o que já existe nas finalidades autorizadas
-					
-					//purpouses.filter(d -> d.getTipoFinalidade().getId() == 2L)
-					// .sorted(Comparator.comparing(d -> d.getMes()))
-					//.collect(Collectors.toList());
+			// 07/02/2025 -> removi pois neste caso não me parece necessário captura o que
+			// já existe nas finalidades autorizadas
+
+			// purpouses.filter(d -> d.getTipoFinalidade().getId() == 2L)
+			// .sorted(Comparator.comparing(d -> d.getMes()))
+			// .collect(Collectors.toList());
 
 			int[] idxPur = { 0 };
 			// Limpa todas as finalidades
@@ -778,11 +775,11 @@ public class AddSubterraneanDetailsController implements Initializable {
 			// finalidades requeridas.
 			// Assim se houver mais finalidades autorizadas que requeridas, será removida
 			// estas finalidades a mais
-			//if (purListType2.size() > purListType1.size()) {
-			//	while (purListType2.size() > purListType1.size()) {
-			//		purListType2.remove(purListType2.size() - 1); // Remove elements from the end
-		//		}
-		//	}
+			// if (purListType2.size() > purListType1.size()) {
+			// while (purListType2.size() > purListType1.size()) {
+			// purListType2.remove(purListType2.size() - 1); // Remove elements from the end
+			// }
+			// }
 
 			purListType1.forEach(pur -> {
 
@@ -1176,11 +1173,11 @@ public class AddSubterraneanDetailsController implements Initializable {
 			}
 
 		});
-		
+
 		tfTotal.textProperty().addListener((observable, oldValue, newValue) -> {
 
 			purpouseWrapper.getPurpouse().setTotal(Double.parseDouble((newValue)));
-			
+
 			// You can add custom logic here, for example:
 			if (newValue.length() > 30) {
 				// Since you don't have access to an Event, just use the tfPurpouse as the
@@ -1194,7 +1191,7 @@ public class AddSubterraneanDetailsController implements Initializable {
 			}
 
 		});
-		
+
 		btnCalculate.setOnMouseClicked(event -> {
 			Double x = Double.parseDouble(tfConsumption.getText());
 			Double y = Double.parseDouble(tfQuantity.getText());
@@ -1547,10 +1544,6 @@ public class AddSubterraneanDetailsController implements Initializable {
 
 	}
 
-	public void setSubterraneanAttributes() {
-
-	}
-
 	// Modifica as finalidade dentro de uma expressão lambda.
 	public class PurpouseWrapper {
 
@@ -1827,8 +1820,7 @@ public class AddSubterraneanDetailsController implements Initializable {
 							cbSubsystem.getSelectionModel().clearSelection();
 							tfCodeSystem.setText(s.getCodPlan());
 							tfSystemFlow.setText(String.valueOf((int) (s.getqMedia() * 1000)));
-							
-							
+
 						});
 
 					}
