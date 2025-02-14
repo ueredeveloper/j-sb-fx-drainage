@@ -40,6 +40,7 @@ import utilities.WebViewContentLoader;
 
 public class DocumentViewController implements Initializable {
 
+	
 	private static DocumentViewController instance;
 
 	public static DocumentViewController getInstance() {

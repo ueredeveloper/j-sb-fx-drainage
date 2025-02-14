@@ -15,6 +15,7 @@ import models.TipoInterferencia;
 
 public class TipoInterferenciaService {
 
+	
 	private String localUrl;
 
 	public TipoInterferenciaService(String localUrl) {

@@ -23,6 +23,7 @@ import utilities.URLUtility;
 
 public class AddUserController implements Initializable {
 
+	
 	@FXML
 	private JFXButton btnClose;
 

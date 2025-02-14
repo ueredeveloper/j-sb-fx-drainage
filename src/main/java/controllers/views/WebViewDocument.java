@@ -16,6 +16,7 @@ import utilities.JsonConverter;
 
 public class WebViewDocument {
 
+	
 	private WebView webView;
 	private WebEngine webEngine;
 	private JSObject window; // Moved here

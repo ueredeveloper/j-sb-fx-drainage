@@ -15,6 +15,7 @@ import models.Estado;
 
 public class EstadoService {
 
+	
 	private String localUrl;
 
 	public EstadoService(String localUrl) {

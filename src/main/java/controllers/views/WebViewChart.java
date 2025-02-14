@@ -12,6 +12,7 @@ import utilities.HTMLFileLoader;
 
 public class WebViewChart {
 
+	
 	private WebView webView;
 	private Object selectedDocument;
 

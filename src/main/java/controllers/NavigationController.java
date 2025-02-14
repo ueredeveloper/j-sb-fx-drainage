@@ -24,6 +24,7 @@ import utilities.ResizeMap;
 
 public class NavigationController implements Initializable {
 	
+	
 	@FXML
 	private AnchorPane apContent;
 

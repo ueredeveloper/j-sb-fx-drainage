@@ -14,6 +14,7 @@ import services.UsuarioService;
 
 public class UserComboBoxController {
 
+	
 	String localUrl;
 
 	private JFXComboBox<Usuario> comboBox;

@@ -15,6 +15,7 @@ import models.DocumentoTipo;
 
 public class DocumentoTipoService {
 
+	
 	private String localUrl;
 
 	public DocumentoTipoService(String localUrl) {

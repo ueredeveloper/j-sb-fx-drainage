@@ -18,6 +18,7 @@ import models.Finalidade;
 
 public class FinalidadeService {
 
+	
 	private String localUrl;
 
 	public FinalidadeService(String localUrl) {

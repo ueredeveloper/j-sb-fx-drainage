@@ -16,6 +16,7 @@ import models.Usuario;
 
 public class UsuarioService {
 
+	
 	private String localUrl;
 
 	public UsuarioService(String localUrl) {

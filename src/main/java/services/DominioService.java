@@ -13,6 +13,7 @@ import models.Dominio;
 
 public class DominioService {
 
+	
 	private String localUrl;
 
 	public DominioService(String localUrl) {

@@ -10,6 +10,7 @@ import utilities.JsonConverter;
 
 public class InterferenceTextFieldsController {
 
+	
 	private static InterferenceTextFieldsController instance;
 
 	public static InterferenceTextFieldsController getInstance() {
