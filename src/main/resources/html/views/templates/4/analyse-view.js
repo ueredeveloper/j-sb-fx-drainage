@@ -9,15 +9,15 @@
 */
 
 class AnalyseView {
-    constructor() {
-        this.div = document.getElementById('analyse-view');
-        this.render();
-    }
+	constructor() {
+		this.div = document.getElementById('analyse-view');
+		this.render();
+	}
 
-    //classes: inter-subsistema inter-bh inter-uh
+	//classes: inter-subsistema inter-bh inter-uh
 
-    render() {
-        let innerHTML = `
+	render() {
+		let innerHTML = `
 			<div>
 			<p><strong>III. DA ANÁLISE</strong></p>
 			<p></p><p><br></p>
@@ -115,9 +115,9 @@ class AnalyseView {
  			<p>13. Cabe ressaltar que conforme o art. 39 da Resolução Adasa n° 350/2006, o outorgado deverá se 
 			responsabilizar pelo padrão de qualidade e potabilidade da água a partir da retirada do aquífero subterrâneo.</p>
 
- 			<p>14. De acordo com a perfilagem ótica (vídeo inspeção do poço - documento SEI - 153209612, indicando 
-			características no domínio freático/poroso (captação da água existente no domínio freático/poroso de um poço 
-			tubular raso), em conformidade com a Resolução nº 16, de 03 de fevereiro de 2023.</p>
+ 			<p>Com base no perfil construtivo e geológico do poço, bem como na perfilagem ótica obtida por inspeção de vídeo, 
+ 			indica que a captação da água ocorre no domínio freático/poroso. Essas características estão em conformidade com 
+ 			a Resolução nº 16, de 03 de fevereiro de 2023.</p>
 
 			<p>15. A documentação solicitada foi atendida e sustenta a solicitação de outorga de direito de uso  de água 
 			subterrânea.</p>
@@ -127,57 +127,59 @@ class AnalyseView {
 		`
 		if (this.div !== null) this.div.innerHTML = innerHTML;
 
-        new PurpouseLegalBasisView();
-        new WellInfoView();
+		new PurpouseLegalBasisView();
+		new WellInfoView();
 		new WaterDataView();
 		new GeographicTableView();
 		new LimitsTableView();
 
-    }
-    update (documento, interferencia){
+		new ConclusionView();
 
-        let finalidades = interferencia.finalidades;
+	}
+	update(documento, interferencia) {
+
+		let finalidades = interferencia.finalidades;
 		let usuario = documento.usuarios[0];
-       
+
 		let _items = document.getElementsByClassName('inter-finalidades');
 
-        Array.from(_items).forEach(element => {
-            let innerHTML = new FinalidadeModel().getPurpouseString(finalidades);
-            element.innerHTML = innerHTML
-        });
+		Array.from(_items).forEach(element => {
+			let innerHTML = new FinalidadeModel().getPurpouseString(finalidades);
+			element.innerHTML = innerHTML
+		});
 
 		let __items = document.getElementsByClassName('us-nome');
-    	// Converte o resultado para array e atualiza
-    	Array.from(__items).forEach(element => {
-    		element.innerHTML = new UsuarioModel().getNome(usuario);
-    	});
-    	let ___items = document.getElementsByClassName('us-cpf-cnpj');
-    	// Converte o resultado para array e atualiza
-    	Array.from(___items).forEach(element => {
-    		element.innerHTML = new UsuarioModel().formatCpfCnpj(usuario.cpfCnpj);
-    	});
+		// Converte o resultado para array e atualiza
+		Array.from(__items).forEach(element => {
+			element.innerHTML = new UsuarioModel().getNome(usuario);
+		});
+		let ___items = document.getElementsByClassName('us-cpf-cnpj');
+		// Converte o resultado para array e atualiza
+		Array.from(___items).forEach(element => {
+			element.innerHTML = new UsuarioModel().formatCpfCnpj(usuario.cpfCnpj);
+		});
 
 		let ____items = document.getElementsByClassName('inter-tipo-poco');
 
-        Array.from(____items).forEach(element => {
-            element.textContent = new InterferenciaModel().getTipoPoco(interferencia)
-        });
-		
+		Array.from(____items).forEach(element => {
+			element.textContent = new InterferenciaModel().getTipoPoco(interferencia)
+		});
+
 		let _____items = document.getElementsByClassName('inter-uh');
-		
+
 		Array.from(_____items).forEach(element => {
 			element.innerHTML = new InterferenciaModel().getUnidadeHidrografica(interferencia) || 'vvv';
 		});
-		
-		 let ______items = document.getElementsByClassName('inter-sistema');
-	
+
+		let ______items = document.getElementsByClassName('inter-sistema');
+
 		// Converte o resultado para array e atualiza
 		Array.from(______items).forEach(__el => {
 			__el.innerHTML = new InterferenciaModel().getSistemaSubsistema(interferencia) || 'XXX';
-			
+
 		});
 
 		new WaterDataView().update(interferencia)
 
-    }
+	}
 }
