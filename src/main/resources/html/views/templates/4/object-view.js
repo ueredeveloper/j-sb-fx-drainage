@@ -3,14 +3,9 @@
 * @descricao Objeto do parecer
 * @diretorio 4
 * @arquivo object-view.js
-* @id 21
- * 
- * 
- * 
- * 
- * 
- * 
-* 
+* @id 
+*
+*
 */
 
 class ObjectView {
@@ -28,17 +23,17 @@ class ObjectView {
 					<strong>I. DO OBJETO</strong></p>
 					<p></p>
 					<p>
-					1. Em <span class="highlight"></span>, foi protocolado requerimento de outorga de direito 
-					de uso de água subterrânea, por meio de 01 (um) poço <span id="inter-tipo-poco"></span> em nome de 
-					<span class="us-nome"></span>, 
-					CPF/CNPJ: <span class="us-cpf-cnpj"></span>, 
-					no endereço: <span id="doc-endereco"></span> - Distrito Federal, 
+					1. Em XXX, foi protocolado requerimento de outorga de direito 
+					de uso de água subterrânea, por meio de 01 (um) poço <span class="inter-tipo-poco"></span> em nome de 
+					<b><span class="us-nome"></span></b>, 
+					CPF/CNPJ: <b><span class="us-cpf-cnpj"></span></b>, 
+					no endereço: <span class="end-logradouro"></span> - Distrito Federal, 
 					para fins de <span class="inter-finalidades"></span>.
 					</p>
 					<p>
-					2. Trata o presente processo de outorga de direito de uso de água subterrânea por meio de 01 (um) poço <span class="highlight" class="type-well"></span>, para fins de irrigação paisagística - (0,2 ha - paisagismo) e demanda total de 4.449 L/dia. Foi apresentado: 
-					perfilagem ótica - () onde indica características no domínio freático/poroso. Conforme Resolução nº 16, de 03 
-					de fevereiro de 2023, a captação de água existente no domínio freático/poroso de um <span class="highlight" class="type-well"></span> é considerado 
+					2. Trata o presente processo de outorga de direito de uso de água subterrânea por meio de 01 (um) poço <span class="inter-tipo-poco"></span>, para fins de <span class="inter-finalidades"></span> e demanda total de <span class="dem-l-dia"></span> L/dia. Foi apresentado: 
+					perfilagem ótica - () onde indica características no domínio freático/<span class="inter-sistema"></span>. Conforme Resolução nº 16, de 03 
+					de fevereiro de 2023, a captação de água existente no domínio freático/<span class="inter-sistema"></span> de um <span class="highlight" class="type-well"></span> é considerado 
 					um <span class="highlight" class="type-well"></span>. Dessa forma, o pedido de outorga será objeto de análise do presente parecer.
 					</p>
 				</div>
@@ -46,11 +41,11 @@ class ObjectView {
 		if (this.div !== null) this.div.innerHTML = innerHTML;
 
 	}
-	update(documento) {
-
+	update(documento, interferencia) {
+		
 		let _items = document.getElementsByClassName('inter-finalidades');
 
-		let finalidades = documento.endereco.interferencias[0].finalidades;
+		let finalidades = interferencia.finalidades;
 		let usuario = documento.usuarios[0];
 		let endereco = documento.endereco;
 
@@ -73,14 +68,28 @@ class ObjectView {
 			element.innerHTML = innerHTML;
 		});
 
-		let tipoPoco = endereco.interferencias[0].tipoPoco;
-
 		let ____items = document.getElementsByClassName('inter-tipo-poco');
 
-		Array.from(____items).forEach(element => {
-			let innerHTML = tipoPoco?.descricao?.toLowerCase() || 'XXX';
-			element.innerHTML = innerHTML;
+        Array.from(____items).forEach(element => {
+            element.textContent = new InterferenciaModel().getTipoPoco(interferencia)
+        });
+		
+		let _____items = document.getElementsByClassName('end-logradouro');
+		// Converte o resultado para array e atualiza
+		Array.from(_____items).forEach(element => {
+			element.innerHTML = new EnderecoModel().getLogradouro(endereco);
 		});
+		
+		// Captura a demanda de abril, que sempre está preenchida. As vazões de jan, fev, mar, nov, dez podem
+		//não estar preenchidas
+		let aprilFlow4 = interferencia?.demandas.find(dem => dem.mes = 4);
+
+	    let ______items = document.getElementsByClassName('dem-l-dia');
+	    // Converte o resultado para array e atualiza
+	    Array.from(______items).forEach(item => {
+	      item.innerHTML = aprilFlow4?.vazao || 'XXX';
+	
+	    });
 
 	}
 }

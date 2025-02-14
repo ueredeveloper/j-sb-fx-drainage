@@ -54,7 +54,7 @@ public class ResourceFileLister {
 				for (Path path : filesAndDirs) {
 					if (Files.isDirectory(path)) {
 
-						System.out.println("path of paths " + path);
+						//System.out.println("path of paths " + path);
 						// Cria um mapa para a pasta atual
 						Map<String, List<String>> folderMap = new HashMap<>();
 
@@ -148,7 +148,7 @@ public class ResourceFileLister {
 
 	/**
 	 * Cria a pasta templates na mesma pasta em que o usuário adicionar o arquivo .jar
-	 * @return
+	 * 
 	 */
 	public static File createFileDir() {
 		String jarPath = "";
@@ -174,7 +174,7 @@ public class ResourceFileLister {
 	 * Para utilização ao compilar. Será adicionado na pasta do arquivo .jar a pasta
 	 * templates e todos os arquivos de modelos de parcer.
 	 * 
-	 * @return
+	 * 
 	 */
 	public static URL loadResourceForJarCompiled() {
 
@@ -195,8 +195,8 @@ public class ResourceFileLister {
 	/**
 	 * Para utilização no Eclipse
 	 * 
-	 * @param resourceDir
-	 * @return
+	 *  resourceDir
+	 * 
 	 */
 	public static URL loadResourceForEclipse(String resourceDir) {
 

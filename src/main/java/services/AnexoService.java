@@ -2,6 +2,7 @@ package services;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -9,8 +10,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -18,7 +19,6 @@ import com.google.gson.reflect.TypeToken;
 import models.Anexo;
 
 public class AnexoService {
-	
 
 	
 	private String urlService;
@@ -27,7 +27,7 @@ public class AnexoService {
 		this.urlService = urlService;
 	}
 
-	public ServiceResponse<?> save(Anexo anexo) {
+	public ServiceResponse<?> save(Anexo object) {
 		try {
 			URL apiUrl = new URL(urlService + "/attachment/create");
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
@@ -36,7 +36,11 @@ public class AnexoService {
 			connection.setDoOutput(true);
 
 			// Convert Documento object to JSON
-			String jsonInputString = convertObjectToJson(anexo);
+			String jsonInputString = convertObjectToJson(object);
+
+			System.out.println("save anexo service");
+
+			System.out.println(jsonInputString);
 
 			// Write JSON to request body
 			try (OutputStream os = connection.getOutputStream();
@@ -48,8 +52,8 @@ public class AnexoService {
 			int responseCode = connection.getResponseCode();
 
 			String responseBody;
-			if (responseCode == HttpURLConnection.HTTP_CREATED) {
-				// System.out.println("service created");
+			if (responseCode == HttpURLConnection.HTTP_CREATED || responseCode == HttpURLConnection.HTTP_OK) {
+
 				try (BufferedReader br = new BufferedReader(
 						new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
 					StringBuilder response = new StringBuilder();
@@ -70,6 +74,81 @@ public class AnexoService {
 			e.printStackTrace();
 			// showAlert("Error saving document", AlertType.ERROR);
 			return null; // Return null if an error occurs
+		}
+	}
+
+	public ServiceResponse<?> update(Anexo object) {
+		try {
+			URL apiUrl = new URL(urlService + "/attachment/update?id=" + object.getId());
+			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
+			connection.setRequestMethod("PUT");
+			connection.setRequestProperty("Content-Type", "application/json");
+			connection.setDoOutput(true);
+
+			// Convert Documento object to JSON
+			String jsonInputString = convertObjectToJson(object);
+
+			System.out.println("update anexo");
+
+			System.out.println(jsonInputString);
+
+			// Write JSON to request body
+			try (OutputStream os = connection.getOutputStream();
+					OutputStreamWriter osw = new OutputStreamWriter(os, "UTF-8")) {
+				osw.write(jsonInputString);
+				osw.flush();
+			}
+
+			int responseCode = connection.getResponseCode();
+
+			// System.out.println("update " + jsonInputString);
+
+			String responseBody;
+			if (responseCode == HttpURLConnection.HTTP_OK) {
+
+				try (BufferedReader br = new BufferedReader(
+						new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
+					StringBuilder response = new StringBuilder();
+					String responseLine;
+					while ((responseLine = br.readLine()) != null) {
+						response.append(responseLine);
+					}
+					responseBody = response.toString();
+				}
+			} else {
+				handleErrorResponse(connection);
+				responseBody = readErrorStream(connection);
+			}
+
+			connection.disconnect();
+			return new ServiceResponse<String>(responseCode, responseBody);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null; // Return null if an error occurs
+		}
+	}
+
+	public ServiceResponse<?> deleteById(Long id) {
+		try {
+			URL apiUrl = new URL(urlService + "/attachment/delete-by-id?id=" + id); // Updated URL
+			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
+			connection.setRequestMethod("DELETE");
+
+			int responseCode = connection.getResponseCode();
+
+			// Read the response body if needed
+			InputStream inputStream = connection.getInputStream();
+			String responseBody = new BufferedReader(new InputStreamReader(inputStream)).lines()
+					.collect(Collectors.joining("\n"));
+
+			connection.disconnect();
+
+			return new ServiceResponse<>(responseCode, responseBody); // Change null to the actual response body if
+																		// needed
+		} catch (Exception e) {
+			e.printStackTrace();
+			// Handle the exception if needed
+			return new ServiceResponse<>(-1, null); // You might want to use a different code for errors
 		}
 	}
 
@@ -126,8 +205,11 @@ public class AnexoService {
 	}
 
 	private String readErrorStream(HttpURLConnection connection) throws IOException {
-		try (BufferedReader br = new BufferedReader(
-				new InputStreamReader(connection.getErrorStream(), StandardCharsets.UTF_8))) {
+		InputStream errorStream = connection.getErrorStream();
+		if (errorStream == null) {
+			return "No error response body"; // Retorna uma mensagem padrão
+		}
+		try (BufferedReader br = new BufferedReader(new InputStreamReader(errorStream, StandardCharsets.UTF_8))) {
 			StringBuilder response = new StringBuilder();
 			String responseLine;
 			while ((responseLine = br.readLine()) != null) {

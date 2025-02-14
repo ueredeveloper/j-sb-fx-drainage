@@ -23,9 +23,6 @@ import utilities.URLUtility;
 public class EditAddressController implements Initializable {
 	
 	
-
-	
-	
 	@FXML
 	private AnchorPane apContainer;
 

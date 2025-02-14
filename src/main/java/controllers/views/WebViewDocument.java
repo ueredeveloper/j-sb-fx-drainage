@@ -1,18 +1,30 @@
 package controllers.views;
 
+import java.util.Optional;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import enums.StaticData;
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.concurrent.Worker;
 import javafx.scene.web.HTMLEditor;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import models.Documento;
+import models.HidrogeoFraturado;
+import models.HidrogeoPoroso;
+import models.Interferencia;
+import models.Subterranea;
+import models.TipoPoco;
 import netscape.javascript.JSException;
 import netscape.javascript.JSObject;
+import services.HidrogeoFraturadoService;
+import services.HidrogeoPorosoService;
 import utilities.JsonConverter;
+import utilities.URLUtility;
 
 public class WebViewDocument {
 
@@ -51,37 +63,114 @@ public class WebViewDocument {
 	}
 
 	public void changeContent(Documento selectedDocument) {
-	    // Register error handler for JavaScript errors
-	    webEngine.setOnError(event -> {
-	        System.err.println("JavaScript error: " + event.getMessage());
-	    });
+		// Register error handler for JavaScript errors
+		webEngine.setOnError(event -> {
+			System.err.println("JavaScript error: " + event.getMessage());
+		});
 
-	    // Convert the Documento object to JSON
-	    String strJson = JsonConverter.convertObjectToJson(selectedDocument);
+		// Convert the document to JSON
+		String docJson = JsonConverter.convertObjectToJson(selectedDocument);
 
-	    // Ensure the page is loaded before executing JS and updating HTML
-	    webEngine.getLoadWorker().stateProperty().addListener((obs, oldState, newState) -> {
-	        if (newState == Worker.State.SUCCEEDED) {
-	            try {
-	                // Call JavaScript to update the document with the JSON content
-	                invokeJS("utils.updateHtmlDocument(" + strJson + ");");
+		/*
+		 * Separa a interferência do documento para não haver erro quando for converter
+		 * a interferência para subterrânea e depois para json. Só assim não se perde
+		 * atributos específicos da captação subterrânea.
+		 */
+		StringBuilder interJson = new StringBuilder();
+		
+		System.out.println(interJson);
 
-	                // Limpa o html de scripts
-	                String cleanHtml = clearHtmlContent();
+		selectedDocument.getEndereco().getInterferencias().forEach(interferencia -> {
+			System.out.println("instance of sub " );
+			System.out.println(interferencia instanceof Subterranea);
+			
+			if (interferencia != null) {
 
-	                // Leitura do html limpol no editor html
-	                htmlEditor.setHtmlText(cleanHtml);
+				if (interferencia instanceof Subterranea) {
 
-	                System.out.println("HTML content updated and reloaded successfully.");
-	            } catch (JSException e) {
-	                System.err.println("Error updating HTML content: " + e.getMessage());
-	            }
-	        } else if (newState == Worker.State.FAILED) {
-	            System.err.println("Failed to load the web content.");
-	        }
-	    });
+					Subterranea subterranea = (Subterranea) interferencia; // Cast it first
+
+					Long typeOfWell = subterranea.getTipoPoco().getId();
+					String urlService = URLUtility.getURLService();
+					ObservableList<TipoPoco> obsTypeOfWell = StaticData.INSTANCE.getTypesOfWells();
+
+					if (typeOfWell == 1L || typeOfWell == 2L) {
+						
+						System.out.println("tipo poço " + typeOfWell);
+
+						HidrogeoPorosoService service = new HidrogeoPorosoService(urlService);
+
+						Set<HidrogeoPoroso> set = service.findByPoint(subterranea.getLatitude().toString(),
+								subterranea.getLongitude().toString());
+
+						set.forEach(s -> {
+							subterranea.setSistema(s.getSistema());
+
+						});
+						
+						
+						
+						Optional<TipoPoco> foundTipoPoco = obsTypeOfWell.stream()
+							    .filter(tp -> tp.getId() == typeOfWell) // Assuming getId() returns the ID
+							    .findFirst();
+						foundTipoPoco.ifPresent(subterranea::setTipoPoco);
+
+					} else {
+						
+						System.out.println("tipo poço " + typeOfWell);
+						
+						HidrogeoFraturadoService service = new HidrogeoFraturadoService(urlService);
+
+						Set<HidrogeoFraturado> set = service.findByPoint(subterranea.getLatitude().toString(),
+								subterranea.getLongitude().toString());
+
+						set.forEach(s -> {
+							subterranea.setSistema(s.getSistema());
+							subterranea.setSubsistema(s.getSubsistema());
+
+						});
+						Optional<TipoPoco> foundTipoPoco = obsTypeOfWell.stream()
+							    .filter(tp -> tp.getId() == typeOfWell) // Assuming getId() returns the ID
+							    .findFirst();
+						foundTipoPoco.ifPresent(subterranea::setTipoPoco);
+					}
+					
+					// Atualiza a interferência com estes novos dados
+					interferencia = (Interferencia) subterranea;
+				}
+				
+				
+
+				interJson.append(JsonConverter.convertInterferenciaToJson(interferencia));
+				return; // Exit the loop after processing the first interferencia
+			}
+		});
+
+		System.out.println("webview selected interference");
+		System.out.println(interJson);
+
+		// Verifica se a página já renderizou e adicona o objeto json
+		webEngine.getLoadWorker().stateProperty().addListener((obs, oldState, newState) -> {
+			if (newState == Worker.State.SUCCEEDED) {
+				try {
+					// Call JavaScript to update the document with the JSON content
+					invokeJS("utils.updateHtmlDocument(" + docJson + "," + interJson + ");");
+
+					// Limpa o html de scripts
+					String cleanHtml = clearHtmlContent();
+
+					// Leitura do html limpol no editor html
+					htmlEditor.setHtmlText(cleanHtml);
+
+					System.out.println("HTML content updated and reloaded successfully.");
+				} catch (JSException e) {
+					System.err.println("Error updating HTML content: " + e.getMessage());
+				}
+			} else if (newState == Worker.State.FAILED) {
+				System.err.println("Failed to load the web content.");
+			}
+		});
 	}
-
 
 	public void getHtmlContent(Consumer<String> callback) {
 
@@ -125,35 +214,32 @@ public class WebViewDocument {
 	/**
 	 * Invokes JavaScript code in the WebView, waiting for the content to be ready.
 	 * 
-	 * @param script
-	 *            String with the JavaScript code to be executed.
+	 * script String with the JavaScript code to be executed.
 	 */
 	private void invokeJS(final String script) {
-		
+
 		// Check if `utils` exists in the JavaScript environment
-        Boolean utilsExists = (Boolean) window.eval("typeof utils !== 'undefined';");
-        if (utilsExists) {
-        	if (window != null) {
-    			try {
-    				window.eval(script);
-    			} catch (JSException e) {
-    				System.err.println("Erro ao executar script JavaScript: " + e.getMessage());
-    			}
-    		} else {
-    			// Wait until the content is completely loaded
-    			webEngine.getLoadWorker().stateProperty().addListener((observableValue, oldState, newState) -> {
-    				if (newState == Worker.State.SUCCEEDED) {
-    					window = (JSObject) webEngine.executeScript("window");
-    					window.eval(script);
-    				}
-    			});
-    		}
-        } else {
-            System.err.println("JavaScript 'utils' is not defined in the current HTML context.");
-        }
-        
-        
-		
+		Boolean utilsExists = (Boolean) window.eval("typeof utils !== 'undefined';");
+		if (utilsExists) {
+			if (window != null) {
+				try {
+					window.eval(script);
+				} catch (JSException e) {
+					System.err.println("Erro ao executar script JavaScript: " + e.getMessage());
+				}
+			} else {
+				// Wait until the content is completely loaded
+				webEngine.getLoadWorker().stateProperty().addListener((observableValue, oldState, newState) -> {
+					if (newState == Worker.State.SUCCEEDED) {
+						window = (JSObject) webEngine.executeScript("window");
+						window.eval(script);
+					}
+				});
+			}
+		} else {
+			System.err.println("JavaScript 'utils' is not defined in the current HTML context.");
+		}
+
 	}
 
 	class HtmlString {

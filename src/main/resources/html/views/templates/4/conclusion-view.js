@@ -3,14 +3,9 @@
 * @descricao Conclusão do parecer
 * @diretorio 4
 * @arquivo conclusion-view.js
-* @id 18
- * 
- * 
- * 
- * 
- * 
- * 
-* 
+* @id 
+*
+*
 */
 
 class ConclusionView {
@@ -24,9 +19,9 @@ class ConclusionView {
         let innerHTML = `
 			<p><strong>IV. DA CONCLUSÃO </strong></p>
 			<p>
-			16. Com base nas informações deste processo e análise do mesmo, recomendo o DEFERIMENTO do pedido,  a emissão do 
-			ato de outorga de direito de uso, com prazo de validade de 10 (dez) anos, contados da publicação do extrato no 
-			Diário Oficial do Distrito Federal, conforme as especificações descritas neste Parecer.
+			16. Com base nas informações deste processo e análise do mesmo, recomendo o DEFERIMENTO do pedido, a emissão do ato de outorga de direito de uso, 
+            com prazo de validade de 10 (dez) anos, contados da publicação do extrato no Diário Oficial do Distrito Federal, conforme as especificações 
+            descritas neste Parecer.
 			</p>
 
 		`;

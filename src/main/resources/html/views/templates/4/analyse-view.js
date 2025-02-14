@@ -3,15 +3,9 @@
 * @descricao Análise do parecer
 * @diretorio 4
 * @arquivo analyse-view.js
-* @id 17
- * 
- * 
- * 
- * 
- * 
- * 
-* 
-* 
+* @id 
+*
+*
 */
 
 class AnalyseView {
@@ -30,8 +24,8 @@ class AnalyseView {
 			<p>4. Outorga anterior: Despacho nºou Regularização</p>
 			<p></p>
             <p><br></p>
-			<p>5. O ponto de captação analisado está localizado no subsistema <span class="inter-subsistema"></span>, 
-            Unidade Hidrográfica <span class="inter-uh"></span>, Bacia Hidrográfica do <span class="inter-bh"></span>.
+			<p>5. O ponto de captação analisado está localizado no subsistema <span class="inter-sistema"></span>, 
+            Unidade Hidrográfica do <span class="inter-uh"></span>, Bacia Hidrográfica do <span class="inter-bh"></span>.
             </p>
 			</div><div>
 			<p></p><p><br></p>
@@ -48,7 +42,7 @@ class AnalyseView {
 			<p>Figura 03: Croqui da área com existência de irrigação (Frutífera) em 31/05/2016.</p>
 			<p><br></p><p></p>
 
-			<p>Figura 04: Croqui da área do sistema de abastecimento da Caesb - ( Portal Atlas Caesb).</p>
+			<p>Figura 04: Croqui da área atendida pela CAESB - Sistema de abastecimento da área (Portal Atlas Caesb).</p> 
 			<p></p><p><br></p>
 
 			<!--<p>II. Dados do poço:</p>-->
@@ -84,10 +78,12 @@ class AnalyseView {
             <!-- Finalidades Autorizadas -->
             <div id="tbl-authorized-purpouse-view" style="display:flex; justify-content: center;"></div>
 
-            
-            <div id="exploitable-reserve-view"></div>
+			<p>9. A reserva explotável e balanço hídrico do subsistema subterrâneo apresenta dados favoráveis, 
+			considerando a inclusão das demandas requeridas, conforme tabelas abaixo:
+			</p>
 
-
+			<p>Figura 04: Reserva explotável e balanço hídrico do subsistema <span class="inter-sistema"></span>.</p>
+        
 			<p>10.&nbsp;As demandas poderão ser outorgadas pela Adasa, desde que observados os limites estabelecidos pela 
 			Resolução/ADASA nº 16/2018 e valores da demanda ajustados na tabela 2.</p>
 			<p><br></p>
@@ -107,18 +103,9 @@ class AnalyseView {
 			<p style="margin-left:30.0pt;">&nbsp;</p>
 
 			<p><br></p>
-			<p>11. Considerando que o ponto de captação está localizado no subsistema <span class="inter-subsistema"></span>, o limite a ser outorgado é de 80% da vazão média do subsistema, pois o empreendimento está localizado em área rural. A demanda solicitada pelo usuário, ajustada segundo os valores de referência da Resolução nº 18/2020 é de <listros_dia_abr_tag></listros_dia_abr_tag> L/dia, sendo estimado tempo de captação máximo de&nbsp; <litros_hora_abr_tag></litros_hora_abr_tag> h/dia. O ato de outorga seguirá as seguintes características:<o:p></o:p></p>
-
-			<p>&nbsp;</p>
-
-		
-			<p><br></p><p>I -&nbsp; Dados da captação:</p>
-
-			<div id="geographic-table-view"></div>
-
-			<p>&nbsp;</p>
-
-			<p><br></p><p>II - &nbsp;&nbsp;Demanda a ser outorgada:</p>
+			
+			<!-- Ponto de Captação e Limites Outorgados -->
+			<div id="water-data-view"></div>
 
 			<div id="limits-table-view"></div>
 
@@ -141,15 +128,15 @@ class AnalyseView {
 		if (this.div !== null) this.div.innerHTML = innerHTML;
 
         new PurpouseLegalBasisView();
-        //new PurpouseView();
         new WellInfoView();
+		new WaterDataView();
 		new GeographicTableView();
 		new LimitsTableView();
 
     }
-    update (documento){
+    update (documento, interferencia){
 
-        let finalidades = documento.endereco.interferencias[0].finalidades;
+        let finalidades = interferencia.finalidades;
 		let usuario = documento.usuarios[0];
        
 		let _items = document.getElementsByClassName('inter-finalidades');
@@ -170,12 +157,27 @@ class AnalyseView {
     		element.innerHTML = new UsuarioModel().formatCpfCnpj(usuario.cpfCnpj);
     	});
 
-		let ____items = document.getElementsByClassName('int-tipo-poco');
+		let ____items = document.getElementsByClassName('inter-tipo-poco');
 
-		Array.from(____items).forEach(element => {
-			let innerHTML = documento.endereco.interferencias[0]?.tipoPoco?.descricao || 'XXX';
-			element.innerHTML = innerHTML;
+        Array.from(____items).forEach(element => {
+            element.textContent = new InterferenciaModel().getTipoPoco(interferencia)
+        });
+		
+		let _____items = document.getElementsByClassName('inter-uh');
+		
+		Array.from(_____items).forEach(element => {
+			element.innerHTML = new InterferenciaModel().getUnidadeHidrografica(interferencia) || 'vvv';
 		});
+		
+		 let ______items = document.getElementsByClassName('inter-sistema');
+	
+		// Converte o resultado para array e atualiza
+		Array.from(______items).forEach(__el => {
+			__el.innerHTML = new InterferenciaModel().getSistemaSubsistema(interferencia) || 'XXX';
+			
+		});
+
+		new WaterDataView().update(interferencia)
 
     }
 }

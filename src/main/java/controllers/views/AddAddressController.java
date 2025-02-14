@@ -1,8 +1,9 @@
 package controllers.views;
 
 import java.net.URL;
-import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 import com.google.gson.Gson;
 import com.jfoenix.controls.JFXButton;
@@ -32,7 +33,6 @@ import services.ServiceResponse;
 import utilities.URLUtility;
 
 public class AddAddressController implements Initializable {
-	
 
 	
 	@FXML
@@ -162,6 +162,8 @@ public class AddAddressController implements Initializable {
 			obsList.clear();
 			obsList.add(object);
 			tableView.getSelectionModel().select(object);
+		} else {
+			clearAllComponents();
 		}
 
 	}
@@ -169,8 +171,6 @@ public class AddAddressController implements Initializable {
 	public void save(ActionEvent event) {
 
 		Long id = object != null && object.getId() != null ? object.getId() : null;
-
-		System.out.println(id);
 
 		String logradouro = tfAddress.getText();
 		String bairro = tfNeighborhood.getText();
@@ -264,8 +264,7 @@ public class AddAddressController implements Initializable {
 			// estado);
 
 			Endereco endereco = new Endereco();
-			
-			
+
 			endereco.setId(seletedObject.getId());
 			endereco.setLogradouro(logradouro);
 			endereco.setBairro(bairro);
@@ -318,7 +317,7 @@ public class AddAddressController implements Initializable {
 
 			String keyword = tfSearch.getText();
 
-			List<Endereco> enderecos = service.fetchAddressByKeyword(keyword);
+			Set<Endereco> enderecos = service.fetchAddressByKeyword(keyword);
 
 			// Create a list of Document objects
 			obsList.clear();
@@ -367,14 +366,20 @@ public class AddAddressController implements Initializable {
 	}
 
 	public void clearAllComponents() {
+
 		object = null;
-		
+
 		tfAddress.clear();
 		tfNeighborhood.clear();
 		tfCity.clear();
+		tfCity.setText("Brasília");
 		tfZipCode.clear();
 		tfArea.clear();
 		cbState.getSelectionModel().clearSelection();
+		Optional<Estado> estadoDF = obsListState.stream().filter(estado -> "DF".equals(estado.getDescricao()))
+				.findFirst();
+
+		cbState.getSelectionModel().select(estadoDF.orElse(null));
 	}
 
 }

@@ -3,8 +3,9 @@
  * @descricao Arquivo principal .js
  * @diretorio 3
  * @arquivo script.js
- * @id 16
- * 
+ * @id 
+ *
+ *
  */
 
  function App() {
@@ -18,7 +19,7 @@
 
 			<div align="justify" id="geographic-table-view"></div>
 
-			<p>Art. 2º A reserva de disponibilidade hídrica para cada um dos poços tubulares mencionados no art. 1º é a seguinte:</p>
+			<p>Art. 2º A demanda outorgada mencionada no art. 1º é a seguinte:</p>
 
 			<p>I – Tabela dos limites outorgados.</p>
 

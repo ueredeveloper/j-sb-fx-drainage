@@ -1,0 +1,368 @@
+{
+	"numero": "45678/8523966",
+	"processo": {
+		"id": 26,
+		"numero": "00197-00004285/2024-74",
+		"anexo": {
+			"id": 36,
+			"numero": "00197-00004285/2024-74",
+			"processos": [
+			]
+		},
+		"usuario": {
+			"id": 64,
+			"nome": "Roberto Carlos de Lima",
+			"documentos": [
+			]
+		}
+	},
+	"numeroSei": 98765432185,
+	"tipoDocumento": {
+		"id": 2,
+		"descricao": "Despacho"
+	},
+	"endereco": {
+		"id": 16,
+		"logradouro": "Rua Nevoeiro, 3",
+		"cidade": "",
+		"bairro": "",
+		"cep": "",
+		"documentos": [
+		],
+		"interferencias": [
+			{
+				"caesb": true,
+				"nivelEstatico": "96",
+				"nivelDinamico": "784",
+				"profundidade": "85",
+				"vazaoOutorgavel": 36,
+				"vazaoSistema": 25,
+				"vazaoTeste": 58,
+				"tipoPoco": {
+					"id": 2
+				},
+				"id": 16,
+				"latitude": 45.0,
+				"longitude": 65.0,
+				"endereco": {
+					"id": 33,
+					"logradouro": "djdjoj",
+					"documentos": [
+					],
+					"interferencias": [
+					]
+				},
+				"tipoInterferencia": {
+					"id": 2,
+					"descricao": "Subterrânea"
+				},
+				"tipoOutorga": {
+					"id": 2,
+					"descricao": "Outorga Prévia"
+				},
+				"subtipoOutorga": {
+					"id": 2,
+					"descricao": "Modificação"
+				},
+				"situacaoProcesso": {
+					"id": 2,
+					"descricao": "Em Análise"
+				},
+				"tipoAto": {
+					"id": 2,
+					"descricao": "Portaria"
+				},
+				"finalidades": [
+					{
+						"id": 68,
+						"finalidade": "Criação de Animais",
+						"subfinalidade": "Bovino",
+						"quantidade": 147.0,
+						"consumo": 258.0,
+						"total": 37926.0,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 69,
+						"finalidade": "",
+						"subfinalidade": "",
+						"quantidade": 0.0,
+						"consumo": 0.0,
+						"total": 0.0,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 70,
+						"finalidade": "Criação de Animais",
+						"subfinalidade": "Bovino",
+						"quantidade": 147.0,
+						"consumo": 258.0,
+						"total": 37926.0,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					}
+				],
+				"demandas": [
+					{
+						"id": 313,
+						"vazao": 37926.0,
+						"tempo": 10,
+						"periodo": 31,
+						"mes": 10,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 314,
+						"vazao": 37926.0,
+						"tempo": 10,
+						"periodo": 31,
+						"mes": 12,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 315,
+						"vazao": 37926.0,
+						"tempo": 10,
+						"periodo": 30,
+						"mes": 9,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 316,
+						"vazao": 37926.0,
+						"tempo": 10,
+						"periodo": 31,
+						"mes": 5,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 317,
+						"vazao": 37926.0,
+						"tempo": 10,
+						"periodo": 28,
+						"mes": 2,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 318,
+						"vazao": 0.0,
+						"tempo": 10,
+						"periodo": 31,
+						"mes": 5,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 319,
+						"vazao": 0.0,
+						"tempo": 10,
+						"periodo": 28,
+						"mes": 2,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 320,
+						"vazao": 0.0,
+						"tempo": 10,
+						"periodo": 30,
+						"mes": 9,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 321,
+						"vazao": 0.0,
+						"tempo": 10,
+						"periodo": 31,
+						"mes": 8,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 322,
+						"vazao": 0.0,
+						"tempo": 10,
+						"periodo": 31,
+						"mes": 12,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 323,
+						"vazao": 0.0,
+						"tempo": 10,
+						"periodo": 31,
+						"mes": 7,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 324,
+						"vazao": 37926.0,
+						"tempo": 10,
+						"periodo": 31,
+						"mes": 3,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 325,
+						"vazao": 0.0,
+						"tempo": 10,
+						"periodo": 31,
+						"mes": 10,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 326,
+						"vazao": 37926.0,
+						"tempo": 10,
+						"periodo": 31,
+						"mes": 8,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 327,
+						"vazao": 0.0,
+						"tempo": 10,
+						"periodo": 31,
+						"mes": 1,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 328,
+						"vazao": 37926.0,
+						"tempo": 10,
+						"periodo": 30,
+						"mes": 6,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 329,
+						"vazao": 0.0,
+						"tempo": 10,
+						"periodo": 30,
+						"mes": 6,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 330,
+						"vazao": 0.0,
+						"tempo": 10,
+						"periodo": 31,
+						"mes": 3,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 331,
+						"vazao": 0.0,
+						"tempo": 10,
+						"periodo": 30,
+						"mes": 4,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 332,
+						"vazao": 37926.0,
+						"tempo": 10,
+						"periodo": 31,
+						"mes": 7,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 333,
+						"vazao": 37926.0,
+						"tempo": 10,
+						"periodo": 31,
+						"mes": 1,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 334,
+						"vazao": 37926.0,
+						"tempo": 10,
+						"periodo": 30,
+						"mes": 4,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 335,
+						"vazao": 0.0,
+						"tempo": 10,
+						"periodo": 30,
+						"mes": 11,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 336,
+						"vazao": 37926.0,
+						"tempo": 10,
+						"periodo": 30,
+						"mes": 11,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					}
+				]
+			}
+		],
+		"estado": {
+			"id": 3,
+			"descricao": "BA"
+		}
+	},
+	"usuarios": [
+		{
+			"id": 76,
+			"nome": "Juan",
+			"cpfCnpj": 85211144485,
+			"documentos": [
+			]
+		}
+	]
+}

@@ -5,20 +5,14 @@
 * @descricao Assunto do Parecer
 * @diretorio 2
 * @arquivo subject-view.js
-* @id 12
- * 
- * 
- * 
- * 
- * 
- * 
-* 
-* 
-*/
+* @id
+*
+*
+*/ 
 
 class SubjectView {
 	constructor() {
-		this.div = document.getElementById('subjective-view');
+		this.div = document.getElementById('subject-view');
 		this.render();
 	}
 
@@ -26,25 +20,16 @@ class SubjectView {
 		let innerHTML = `
 				<p style="float:right;width:40rem">Assunto: análise de requerimento de outorga prévia para 
                 reservar o direito de uso de água subterrânea por meio de 01 (um) poço 
-                <span class="int-tipo-poco"></span> para fins de 
+                <span class="inter-tipo-poco"></span> para fins de 
 				<span class="int-finalidades"></span>.
 				</p>
 		`;
 		if (this.div !== null) this.div.innerHTML = innerHTML;
 
 	}
-	update(documento) {
+	update(documento, interferencia) {
 
-		let tipoPoco = documento.endereco.interferencias[0].tipoPoco;
-		let finalidades = documento.endereco.interferencias[0].finalidades;
-
-		let _items = document.getElementsByClassName('int-tipo-poco');
-
-		Array.from(_items).forEach(element => {
-			let innerHTML = tipoPoco?.descricao?.toLowerCase() || 'XXX';
-			element.innerHTML = innerHTML;
-		});
-
+		let finalidades = interferencia.finalidades;
 
 		let __items = document.getElementsByClassName('int-finalidades');
 

@@ -58,7 +58,7 @@ public class WebViewContentLoader {
 		webEngine.getLoadWorker().stateProperty().addListener((observableValue, oldState, newState) -> {
 			if (newState == Worker.State.SUCCEEDED) {
 
-				System.out.println("console suceeded and loaded false");
+				//System.out.println("console suceeded and loaded false");
 				String strJson = JsonConverter.convertObjectToJson(documento);
 				contentLoaded = true;
 				invokeJS("utils.updateHtmlDocument(" + strJson + ");");

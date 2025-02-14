@@ -1,0 +1,364 @@
+{
+	"numero": "456/789456",
+	"processo": {
+		"id": 31,
+		"numero": "123/456/878",
+		"anexo": {
+			"id": 41,
+			"numero": "456/879/215",
+			"processos": [
+			]
+		},
+		"usuario": {
+			"id": 83,
+			"nome": "Vínícius de Moraes",
+			"documentos": [
+			]
+		}
+	},
+	"numeroSei": 3216549874,
+	"tipoDocumento": {
+		"id": 1,
+		"descricao": "Parecer"
+	},
+	"endereco": {
+		"id": 46,
+		"logradouro": "Rua Borges Landeiro, 123456789 ",
+		"cidade": "Taguatinga",
+		"bairro": "78.456-885",
+		"cep": "Brasília",
+		"documentos": [
+		],
+		"interferencias": [
+			{
+				"caesb": true,
+				"nivelEstatico": "120",
+				"nivelDinamico": "140",
+				"profundidade": "50",
+				"vazaoOutorgavel": 6000,
+				"vazaoSistema": 5000,
+				"vazaoTeste": 7000,
+				"tipoPoco": {
+					"id": 2,
+					"descricao": "Tubular Raso"
+				},
+				"id": 22,
+				"latitude": -15.0,
+				"longitude": 45.0,
+				"endereco": {
+					"id": 46,
+					"logradouro": "Rua Borges Landeiro, 123456789 ",
+					"documentos": [
+					],
+					"interferencias": [
+					]
+				},
+				"tipoInterferencia": {
+					"id": 2,
+					"descricao": "Subterrânea"
+				},
+				"tipoOutorga": {
+					"id": 2,
+					"descricao": "Outorga Prévia"
+				},
+				"subtipoOutorga": {
+					"id": 2,
+					"descricao": "Modificação"
+				},
+				"situacaoProcesso": {
+					"id": 2,
+					"descricao": "Em Análise"
+				},
+				"tipoAto": {
+					"id": 1,
+					"descricao": "Despacho"
+				},
+				"finalidades": [
+					{
+						"id": 81,
+						"finalidade": "Indústria",
+						"subfinalidade": "Cim",
+						"quantidade": 1000.0,
+						"consumo": 5000.0,
+						"total": 5000000.0,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 82,
+						"finalidade": "Indústria",
+						"subfinalidade": "Cim",
+						"quantidade": 1000.0,
+						"consumo": 5000.0,
+						"total": 5000000.0,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 80,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					}
+				],
+				"demandas": [
+					{
+						"id": 414,
+						"vazao": 5000000.0,
+						"tempo": 9,
+						"periodo": 28,
+						"mes": 2,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 422,
+						"vazao": 5000000.0,
+						"tempo": 9,
+						"periodo": 30,
+						"mes": 11,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 412,
+						"vazao": 5000000.0,
+						"tempo": 9,
+						"periodo": 31,
+						"mes": 8,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 432,
+						"vazao": 5000000.0,
+						"tempo": 9,
+						"periodo": 31,
+						"mes": 10,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 411,
+						"vazao": 5000000.0,
+						"tempo": 9,
+						"periodo": 30,
+						"mes": 6,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 419,
+						"vazao": 5000000.0,
+						"tempo": 9,
+						"periodo": 30,
+						"mes": 9,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 416,
+						"vazao": 5000000.0,
+						"tempo": 9,
+						"periodo": 31,
+						"mes": 7,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 421,
+						"vazao": 5000000.0,
+						"tempo": 9,
+						"periodo": 30,
+						"mes": 11,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 424,
+						"vazao": 5000000.0,
+						"tempo": 9,
+						"periodo": 31,
+						"mes": 7,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 428,
+						"vazao": 5000000.0,
+						"tempo": 9,
+						"periodo": 31,
+						"mes": 12,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 413,
+						"vazao": 5000000.0,
+						"tempo": 9,
+						"periodo": 31,
+						"mes": 3,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 427,
+						"vazao": 5000000.0,
+						"tempo": 9,
+						"periodo": 31,
+						"mes": 5,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 417,
+						"vazao": 5000000.0,
+						"tempo": 9,
+						"periodo": 31,
+						"mes": 3,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 420,
+						"vazao": 5000000.0,
+						"tempo": 9,
+						"periodo": 31,
+						"mes": 1,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 425,
+						"vazao": 5000000.0,
+						"tempo": 9,
+						"periodo": 31,
+						"mes": 12,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 409,
+						"vazao": 5000000.0,
+						"tempo": 9,
+						"periodo": 31,
+						"mes": 10,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 418,
+						"vazao": 5000000.0,
+						"tempo": 9,
+						"periodo": 30,
+						"mes": 6,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 429,
+						"vazao": 5000000.0,
+						"tempo": 9,
+						"periodo": 30,
+						"mes": 9,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 431,
+						"vazao": 5000000.0,
+						"tempo": 9,
+						"periodo": 31,
+						"mes": 8,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 426,
+						"vazao": 5000000.0,
+						"tempo": 9,
+						"periodo": 31,
+						"mes": 5,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 423,
+						"vazao": 5000000.0,
+						"tempo": 9,
+						"periodo": 30,
+						"mes": 4,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 410,
+						"vazao": 5000000.0,
+						"tempo": 9,
+						"periodo": 30,
+						"mes": 4,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 415,
+						"vazao": 5000000.0,
+						"tempo": 9,
+						"periodo": 28,
+						"mes": 2,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 430,
+						"vazao": 5000000.0,
+						"tempo": 9,
+						"periodo": 31,
+						"mes": 1,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					}
+				]
+			}
+		],
+		"estado": {
+			"id": 1,
+			"descricao": "DF"
+		}
+	},
+	"usuarios": [
+		{
+			"id": 83,
+			"nome": "Vínícius de Moraes",
+			"cpfCnpj": 45685274198,
+			"documentos": [
+			]
+		}
+	]
+}

@@ -11,6 +11,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.google.gson.Gson;
@@ -36,6 +37,9 @@ public class EnderecoService {
 
 			// Convert Documento object to JSON
 			String jsonInputString = convertObjectToJson(endereco);
+			
+			//System.out.println("save address");
+			//System.out.println(jsonInputString);
 
 			// Write JSON to request body
 			try (OutputStream os = connection.getOutputStream();
@@ -85,9 +89,9 @@ public class EnderecoService {
 			// Convert Documento object to JSON
 			String jsonInputString = convertObjectToJson(endereco);
 			
-			System.out.println("edited string return");
+			//System.out.println("edited string return");
 
-			System.out.println(jsonInputString);
+			//System.out.println(jsonInputString);
 
 			// Write JSON to request body
 			try (OutputStream os = connection.getOutputStream();
@@ -98,7 +102,7 @@ public class EnderecoService {
 
 			int responseCode = connection.getResponseCode();
 			
-			System.out.println("edição res code " + responseCode);
+			//System.out.println("edição res code " + responseCode);
 
 			String responseBody;
 			if (responseCode == HttpURLConnection.HTTP_OK) {
@@ -125,7 +129,7 @@ public class EnderecoService {
 		}
 	}
 
-	public List<Endereco> fetchAddressByKeyword (String keyword) {
+	public Set<Endereco> fetchAddressByKeyword (String keyword) {
 
 		try {
 			URL apiUrl = new URL(localUrl + "/address/list-by-keyword?keyword=" + URLEncoder.encode(keyword, "UTF-8"));
@@ -169,20 +173,20 @@ public class EnderecoService {
 
 			connection.disconnect();
 			
-			System.out.println(responseBody);
+			//System.out.println(responseBody);
 
 			return new ServiceResponse<>(responseCode, responseBody); // Change null to the actual response body if
 																		// needed
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println(e.getMessage());
+			//System.out.println(e.getMessage());
 			// Handle the exception if needed
 			return new ServiceResponse<>(-1, e.getMessage()); // You might want to use a different code for errors
 		}
 	}
 	
 	
-	private List<Endereco> handleSuccessResponse(HttpURLConnection connection) throws IOException {
+	private Set<Endereco> handleSuccessResponse(HttpURLConnection connection) throws IOException {
 		BufferedReader reader = new BufferedReader(
 				new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8));
 		StringBuilder response = new StringBuilder();
@@ -194,9 +198,7 @@ public class EnderecoService {
 
 		reader.close();
 		
-		System.out.println(response.toString());
-
-		return new Gson().fromJson(response.toString(), new TypeToken<List<Endereco>>() {
+		return new Gson().fromJson(response.toString(), new TypeToken<Set<Endereco>>() {
 		}.getType());
 	}
 

@@ -1,0 +1,361 @@
+{
+	"id": 88,
+	"numero": "123/456",
+	"processo": {
+		"id": 46,
+		"numero": "123.456.7879",
+		"anexo": {
+			"id": 54,
+			"numero": "654321654987",
+			"processos": [
+			]
+		},
+		"usuario": {
+			"id": 99,
+			"nome": "José Saramago",
+			"documentos": [
+			]
+		}
+	},
+	"numeroSei": 4567899875,
+	"tipoDocumento": {
+		"id": 3,
+		"descricao": "Requerimento"
+	},
+	"endereco": {
+		"id": 86,
+		"logradouro": "Rua de Sobradinho, 0909",
+		"cidade": "",
+		"bairro": "",
+		"cep": "",
+		"documentos": [
+		],
+		"interferencias": [
+			{
+				"caesb": false,
+				"nivelEstatico": "23",
+				"nivelDinamico": "565",
+				"profundidade": "99",
+				"vazaoOutorgavel": 460,
+				"vazaoSistema": 450,
+				"vazaoTeste": 490,
+				"tipoPoco": {
+					"id": 3,
+					"descricao": "Tubular Profundo"
+				},
+				"id": 54,
+				"latitude": -15.509654707910313,
+				"longitude": -47.66192481605105,
+				"endereco": {
+					"id": 86,
+					"logradouro": "Rua de Sobradinho, 0909",
+					"documentos": [
+					],
+					"interferencias": [
+					]
+				},
+				"tipoInterferencia": {
+					"id": 2,
+					"descricao": "Subterrânea"
+				},
+				"tipoOutorga": {
+					"id": 2,
+					"descricao": "Outorga Prévia"
+				},
+				"subtipoOutorga": {
+					"id": 2,
+					"descricao": "Modificação"
+				},
+				"situacaoProcesso": {
+					"id": 2,
+					"descricao": "Em Análise"
+				},
+				"tipoAto": {
+					"id": 2,
+					"descricao": "Portaria"
+				},
+				"finalidades": [
+					{
+						"id": 173,
+						"finalidade": "Irrigação ",
+						"subfinalidade": "bovino",
+						"quantidade": 884.0,
+						"consumo": 65.0,
+						"total": 57460.0,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 175,
+						"finalidade": "Irrigação ",
+						"subfinalidade": "bovino",
+						"quantidade": 884.0,
+						"consumo": 65.0,
+						"total": 57460.0,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 174,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					}
+				],
+				"demandas": [
+					{
+						"id": 988,
+						"vazao": 57460.0,
+						"tempo": 10,
+						"periodo": 31,
+						"mes": 5,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 995,
+						"vazao": 57460.0,
+						"tempo": 10,
+						"periodo": 31,
+						"mes": 1,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 1003,
+						"vazao": 57460.0,
+						"tempo": 10,
+						"periodo": 31,
+						"mes": 8,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 1004,
+						"vazao": 57460.0,
+						"tempo": 10,
+						"periodo": 31,
+						"mes": 1,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 989,
+						"vazao": 57460.0,
+						"tempo": 10,
+						"periodo": 30,
+						"mes": 6,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 1007,
+						"vazao": 57460.0,
+						"tempo": 10,
+						"periodo": 31,
+						"mes": 5,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 999,
+						"vazao": 57460.0,
+						"tempo": 10,
+						"periodo": 30,
+						"mes": 9,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 1005,
+						"vazao": 57460.0,
+						"tempo": 10,
+						"periodo": 31,
+						"mes": 12,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 1001,
+						"vazao": 57460.0,
+						"tempo": 10,
+						"periodo": 31,
+						"mes": 10,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 991,
+						"vazao": 57460.0,
+						"tempo": 10,
+						"periodo": 30,
+						"mes": 4,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 1008,
+						"vazao": 57460.0,
+						"tempo": 10,
+						"periodo": 30,
+						"mes": 9,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 993,
+						"vazao": 57460.0,
+						"tempo": 10,
+						"periodo": 31,
+						"mes": 12,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 996,
+						"vazao": 57460.0,
+						"tempo": 10,
+						"periodo": 30,
+						"mes": 11,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 994,
+						"vazao": 57460.0,
+						"tempo": 10,
+						"periodo": 28,
+						"mes": 2,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 1009,
+						"vazao": 57460.0,
+						"tempo": 10,
+						"periodo": 30,
+						"mes": 4,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 1010,
+						"vazao": 57460.0,
+						"tempo": 10,
+						"periodo": 28,
+						"mes": 2,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 997,
+						"vazao": 57460.0,
+						"tempo": 10,
+						"periodo": 31,
+						"mes": 10,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 1002,
+						"vazao": 57460.0,
+						"tempo": 10,
+						"periodo": 30,
+						"mes": 6,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 1011,
+						"vazao": 57460.0,
+						"tempo": 10,
+						"periodo": 31,
+						"mes": 8,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 998,
+						"vazao": 57460.0,
+						"tempo": 10,
+						"periodo": 31,
+						"mes": 3,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 992,
+						"vazao": 57460.0,
+						"tempo": 10,
+						"periodo": 31,
+						"mes": 7,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 1000,
+						"vazao": 57460.0,
+						"tempo": 10,
+						"periodo": 30,
+						"mes": 11,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 990,
+						"vazao": 57460.0,
+						"tempo": 10,
+						"periodo": 31,
+						"mes": 7,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 1006,
+						"vazao": 57460.0,
+						"tempo": 10,
+						"periodo": 31,
+						"mes": 3,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					}
+				]
+			}
+		]
+	},
+	"usuarios": [
+		{
+			"id": 99,
+			"nome": "José Saramago",
+			"cpfCnpj": 44466699985,
+			"documentos": [
+			]
+		}
+	]
+}

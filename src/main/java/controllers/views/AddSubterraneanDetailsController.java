@@ -2,22 +2,27 @@ package controllers.views;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import enums.StaticData;
 import enums.ToastType;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -27,26 +32,36 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import models.Demanda;
 import models.Finalidade;
+import models.HidrogeoFraturado;
+import models.HidrogeoPoroso;
+import models.Interferencia;
+import models.SubsystemCodeAttributes;
 import models.Subterranea;
 import models.TipoFinalidade;
+import models.TipoInterferencia;
 import models.TipoPoco;
 import services.FinalidadeService;
+import services.HidrogeoFraturadoService;
+import services.HidrogeoPorosoService;
 import services.ServiceResponse;
 import utilities.URLUtility;
 
 public class AddSubterraneanDetailsController implements Initializable {
 
-	private String localUrl;
+	private String urlService;
+
+	AddInterferenceController addInterferenceControler;
 
 	public AddSubterraneanDetailsController() {
-		this.localUrl = URLUtility.getURLService();
+		this.urlService = URLUtility.getURLService();
 	}
 
-	private static AddInterferenceController instance;
-
-	public static AddInterferenceController getInstance() {
-		return instance;
+	public void setAddInterferenceController(AddInterferenceController addInterferenceControler) {
+		this.addInterferenceControler = addInterferenceControler;
 	}
+
+	@FXML
+	private JFXComboBox<Integer> cbReqTimeFlow, cbAuthTimeFlow;
 
 	@FXML
 	private AnchorPane apContainer;
@@ -58,7 +73,7 @@ public class AddSubterraneanDetailsController implements Initializable {
 	private JFXComboBox<String> cbConcessionaire;
 
 	@FXML
-	private JFXComboBox<?> cbSubsystem;
+	private JFXComboBox<String> cbSystem, cbSubsystem;
 
 	@FXML
 	private JFXTextField tfCodeSystem;
@@ -90,12 +105,17 @@ public class AddSubterraneanDetailsController implements Initializable {
 	ObservableList<TipoPoco> obsTypesOfWells;
 
 	@FXML
-	FontAwesomeIconView btnTotalCalculate;
+	private JFXTextField tfTotalRequestedConsumption, tfTotalAuthorizedConsumption;
 
 	@FXML
-	FontAwesomeIconView btnRequestedTotalCalculate, btnAuthorizedTotalCalculate;
+	private JFXButton btnCalculateReqTotalConsumption;
+
 	@FXML
-	private JFXTextField tfTotalRequestedConsumption, tfTotalAuthorizedConsumption;
+	private JFXButton btnFillReqFlow, btnFillReqTime, btnFillReqPeriod, btnCalculateAuthTotalConsumption,
+			btnRefereshSubsystem;
+
+	@FXML
+	private JFXButton btnFillAuthFlow, btnFillAuthTime, btnFillAuthPeriod, btnCopyReqDemand;
 
 	PurpousesWrapper purpousesWrapper = new PurpousesWrapper(new HashSet<>());
 
@@ -107,14 +127,27 @@ public class AddSubterraneanDetailsController implements Initializable {
 		// Tipo de poço, se manual ou tubular
 		obsTypesOfWells = StaticData.INSTANCE.getTypesOfWells();
 		cbWellType.setItems(obsTypesOfWells);
+
+		/*
+		 * Através do tipo de poço captura o subsistema e vazão do subsistema
+		 */
+		cbWellType.setOnAction((event) -> {
+
+			SubsystemCodeAttributes sca = addInterferenceControler.getSubsystemCodeAttributes();
+			TipoPoco tp = cbWellType.getSelectionModel().getSelectedItem();
+
+			fillSystemAndSubsystem(sca.getTypeOfInterference(), tp, sca.getLatitude().toString(),
+					sca.getLongitude().toString());
+		});
+
 		// Se há Caesb ou não
 		cbConcessionaire.getItems().addAll("Sim", "Não");
 
 		// Adiciona cadastro de finalidade
-		addPurpouseRow(0, requestedPurposesGrid, tfTotalRequestedConsumption, btnRequestedTotalCalculate,
-				new TipoFinalidade(1L), new Finalidade());
-		addPurpouseRow(0, authorizedPurposesGrid, tfTotalAuthorizedConsumption, btnAuthorizedTotalCalculate,
-				new TipoFinalidade(2L), new Finalidade());
+		addPurpouseRow(0, requestedPurposesGrid, tfTotalRequestedConsumption, btnCalculateReqTotalConsumption,
+				new TipoFinalidade(1L), new Finalidade(new TipoFinalidade(1L)));
+		addPurpouseRow(0, authorizedPurposesGrid, tfTotalAuthorizedConsumption, btnCalculateAuthTotalConsumption,
+				new TipoFinalidade(2L), new Finalidade(new TipoFinalidade(2L)));
 
 		// Cria lista de demandas requeridas e autorizadas vazias.
 		for (int month = 1; month <= 12; month++) {
@@ -170,6 +203,675 @@ public class AddSubterraneanDetailsController implements Initializable {
 			addDemandPeriodLine(gpAuthorizedDemands, demand.getMes(), demand);
 		});
 
+		// Cria as horas de vazão para o combobox cbReqTimeFlow (1 - 20 horas)
+		ObservableList<Integer> numbers = FXCollections
+				.observableArrayList(IntStream.rangeClosed(1, 20).boxed().collect(Collectors.toList()));
+
+		// Set the items in the ComboBox
+		cbReqTimeFlow.setItems(numbers);
+		cbAuthTimeFlow.setItems(numbers);
+
+		cbReqTimeFlow.setOnAction(event -> {
+
+		});
+
+		/**
+		 * Cria a opção false ou true encarregada por preencher as linhas de vazão
+		 * automaticamente todo os meses ou apenas os meses de chuva.
+		 */
+		ButtonBooleanOption bboBtnFillRequestedFlow = new ButtonBooleanOption(true);
+		/**
+		 * Preenche a linha das vazões automaticamente de acordo com os cálculos de
+		 * finalidade. Busca o valor para preenchimento no textfield
+		 * `tfTotalRequestedConsumption` e preenche de duas formas, todas as linhas ou
+		 * apenas as linhas de período sem chuva (abril a outubro).
+		 */
+
+		btnFillReqFlow.setOnMouseClicked(event -> {
+
+			if (bboBtnFillRequestedFlow.getOption()) {
+
+				if (tfTotalRequestedConsumption.getText() != null) {
+
+					// Lista para filtrar as demandas por tipo, demandas requeridas, e ordenar por
+					// mês (jan,fev,...).
+					Stream<Demanda> rdStream = demandsWrapper.getDemands().stream();
+
+					List<Demanda> rdList = rdStream.filter(d -> d.getTipoFinalidade().getId() == 1L)
+							.sorted(Comparator.comparing(d -> d.getMes())).collect(Collectors.toList());
+					;
+
+					// Preenchimento do GridPane com os textfields por linha, primeiro linha de
+					// vazão.
+
+					rdList.forEach(demand -> {
+
+						demand.setVazao(Double.parseDouble(tfTotalRequestedConsumption.getText()));
+
+						addDemandFlowLine(gpRequestedDemands, demand.getMes(), demand);
+					});
+
+				}
+
+			} else {
+
+				if (tfTotalRequestedConsumption.getText() != null) {
+
+					// Lista para filtrar as demandas por tipo, demandas requeridas, e ordenar por
+					// mês (jan,fev,...).
+					Stream<Demanda> rdStream = demandsWrapper.getDemands().stream();
+
+					List<Demanda> rdList = rdStream.filter(d -> d.getTipoFinalidade().getId() == 1L)
+							.sorted(Comparator.comparing(d -> d.getMes())).collect(Collectors.toList());
+					;
+
+					// Preenchimento do GridPane com os textfields por linha, primeiro linha de
+					// vazão.
+					int[] idx = { 0 };
+
+					rdList.forEach(demand -> {
+
+						// meses jan, fev, mar, nov, e dez vazios
+						if (idx[0] == 0 || idx[0] == 1 || idx[0] == 2 || idx[0] == 10 || idx[0] == 11) {
+
+							demand.setVazao(0.0);
+							addDemandFlowLine(gpRequestedDemands, demand.getMes(), demand);
+
+						} else {
+							demand.setVazao(Double.parseDouble(tfTotalRequestedConsumption.getText()));
+							addDemandFlowLine(gpRequestedDemands, demand.getMes(), demand);
+						}
+						idx[0]++;
+
+					});
+
+				}
+
+			}
+
+			bboBtnFillRequestedFlow.setOption(!bboBtnFillRequestedFlow.getOption());
+
+		});
+
+		/**
+		 * Cria a opção false ou true encarregada por preencher as linhas de vazão
+		 * automaticamente todo os meses ou apenas os meses de chuva.
+		 */
+		ButtonBooleanOption bboBtnFillAuthFlow = new ButtonBooleanOption(true);
+		/**
+		 * Preenche a linha das vazões automaticamente de acordo com os cálculos de
+		 * finalidade. Busca o valor para preenchimento no textfield
+		 * `tfTotalRequestedConsumption` e preenche de duas formas, todas as linhas ou
+		 * apenas as linhas de período sem chuva (abril a outubro).
+		 */
+
+		btnFillAuthFlow.setOnMouseClicked(event -> {
+
+			if (bboBtnFillAuthFlow.getOption()) {
+
+				if (tfTotalAuthorizedConsumption.getText() != null) {
+
+					// Lista para filtrar as demandas por tipo, demandas requeridas, e ordenar por
+					// mês (jan,fev,...).
+					Stream<Demanda> rdStream = demandsWrapper.getDemands().stream();
+
+					List<Demanda> rdList = rdStream.filter(d -> d.getTipoFinalidade().getId() == 2L)
+							.sorted(Comparator.comparing(d -> d.getMes())).collect(Collectors.toList());
+					;
+
+					// Preenchimento do GridPane com os textfields por linha, primeiro linha de
+					// vazão.
+
+					rdList.forEach(demand -> {
+
+						demand.setVazao(Double.parseDouble(tfTotalAuthorizedConsumption.getText()));
+
+						addDemandFlowLine(gpAuthorizedDemands, demand.getMes(), demand);
+					});
+
+				}
+
+			} else {
+
+				if (tfTotalRequestedConsumption.getText() != null) {
+
+					// Lista para filtrar as demandas por tipo, demandas requeridas, e ordenar por
+					// mês (jan,fev,...).
+					Stream<Demanda> rdStream = demandsWrapper.getDemands().stream();
+
+					List<Demanda> rdList = rdStream.filter(d -> d.getTipoFinalidade().getId() == 1L)
+							.sorted(Comparator.comparing(d -> d.getMes())).collect(Collectors.toList());
+					;
+
+					// Preenchimento do GridPane com os textfields por linha, primeiro linha de
+					// vazão.
+					int[] idx = { 0 };
+
+					rdList.forEach(demand -> {
+
+						// meses jan, fev, mar, nov, e dez vazios
+						if (idx[0] == 0 || idx[0] == 1 || idx[0] == 2 || idx[0] == 10 || idx[0] == 11) {
+
+							demand.setVazao(0.0);
+							addDemandFlowLine(gpRequestedDemands, demand.getMes(), demand);
+
+						} else {
+							System.out.println(tfTotalRequestedConsumption.getText());
+							demand.setVazao(Double.parseDouble(tfTotalRequestedConsumption.getText()));
+							addDemandFlowLine(gpRequestedDemands, demand.getMes(), demand);
+						}
+						idx[0]++;
+
+					});
+
+				}
+
+			}
+
+			bboBtnFillAuthFlow.setOption(!bboBtnFillAuthFlow.getOption());
+
+		});
+
+		/**
+		 * Cria as opções false ou true. Assim preenche de duas formas o tempo, todos os
+		 * campos, ou apenas de abril a outubro.
+		 */
+		ButtonBooleanOption bboBtnFillRequestedTime = new ButtonBooleanOption(true);
+
+		/**
+		 * Ação de preenchimento da linha tempo de captação
+		 */
+		btnFillReqTime.setOnMouseClicked(event -> {
+
+			Integer selectedValue = null;
+
+			try {
+				// Get the current value, which could be a String (from user input)
+				String rawValue = cbReqTimeFlow.getEditor().getText();
+
+				// Parse the raw value into an Integer
+				selectedValue = rawValue != null ? Integer.parseInt(rawValue) : null;
+
+				if (selectedValue != null) {
+					System.out.println("Selected Value: " + selectedValue);
+				}
+			} catch (NumberFormatException e) {
+				System.err.println("Invalid input: Please enter a valid number.");
+			}
+
+			if (bboBtnFillRequestedTime.getOption()) {
+
+				if (selectedValue != null) {
+
+					// Lista para filtrar as demandas por tipo, demandas requeridas, e ordenar por
+					// mês (jan,fev,...).
+					Stream<Demanda> rdStream = demandsWrapper.getDemands().stream();
+
+					List<Demanda> rdList = rdStream.filter(d -> d.getTipoFinalidade().getId() == 1L)
+							.sorted(Comparator.comparing(d -> d.getMes())).collect(Collectors.toList());
+					;
+
+					// Preenchimento do GridPane com os textfields por linha, primeiro linha de
+					// vazão.
+
+					rdList.forEach(demand -> {
+
+						// Get the current value, which could be a String (from user input)
+						String rawValue = cbReqTimeFlow.getEditor().getText();
+
+						// Parse the raw value into an Integer
+						Integer selectedTimeValue = rawValue != null ? Integer.parseInt(rawValue) : null;
+
+						demand.setTempo(selectedTimeValue);
+
+						addDemandTimeLine(gpRequestedDemands, demand.getMes(), demand);
+					});
+
+				}
+
+			} else {
+
+				if (selectedValue != null) {
+
+					// Lista para filtrar as demandas por tipo, demandas requeridas, e ordenar por
+					// mês (jan,fev,...).
+					Stream<Demanda> rdStream = demandsWrapper.getDemands().stream();
+
+					List<Demanda> rdList = rdStream.filter(d -> d.getTipoFinalidade().getId() == 1L)
+							.sorted(Comparator.comparing(d -> d.getMes())).collect(Collectors.toList());
+					;
+
+					// Preenchimento do GridPane com os textfields por linha, primeiro linha de
+					// vazão.
+					int[] idx = { 0 };
+
+					rdList.forEach(demand -> {
+
+						// meses jan, fev, mar, nov, e dez vazios
+						if (idx[0] == 0 || idx[0] == 1 || idx[0] == 2 || idx[0] == 10 || idx[0] == 11) {
+
+							demand.setTempo(0);
+							addDemandTimeLine(gpRequestedDemands, demand.getMes(), demand);
+
+						} else {
+
+							// Get the current value, which could be a String (from user input)
+							String rawValue = cbReqTimeFlow.getEditor().getText();
+
+							// Parse the raw value into an Integer
+							Integer selectedTimeValue = rawValue != null ? Integer.parseInt(rawValue) : null;
+
+							demand.setTempo(selectedTimeValue);
+							addDemandFlowLine(gpRequestedDemands, demand.getMes(), demand);
+						}
+						idx[0]++;
+
+					});
+
+				}
+
+			}
+
+			bboBtnFillRequestedTime.setOption(!bboBtnFillRequestedTime.getOption());
+
+		});
+
+		/**
+		 * Cria as opções false ou true. Assim preenche de duas formas o tempo, todos os
+		 * campos, ou apenas de abril a outubro.
+		 */
+		ButtonBooleanOption bboBtnFillAuthTime = new ButtonBooleanOption(true);
+
+		/**
+		 * Ação de preenchimento da linha tempo de captação
+		 */
+		btnFillAuthTime.setOnMouseClicked(event -> {
+
+			Integer selectedValue = null;
+
+			try {
+				// Get the current value, which could be a String (from user input)
+				String rawValue = cbAuthTimeFlow.getEditor().getText();
+
+				// Parse the raw value into an Integer
+				selectedValue = rawValue != null ? Integer.parseInt(rawValue) : null;
+
+				if (selectedValue != null) {
+					System.out.println("Selected Value: " + selectedValue);
+				}
+			} catch (NumberFormatException e) {
+				System.err.println("Invalid input: Please enter a valid number.");
+			}
+
+			if (bboBtnFillAuthTime.getOption()) {
+
+				if (selectedValue != null) {
+
+					// Lista para filtrar as demandas por tipo, demandas requeridas, e ordenar por
+					// mês (jan,fev,...).
+					Stream<Demanda> rdStream = demandsWrapper.getDemands().stream();
+
+					List<Demanda> rdList = rdStream.filter(d -> d.getTipoFinalidade().getId() == 2L)
+							.sorted(Comparator.comparing(d -> d.getMes())).collect(Collectors.toList());
+					;
+
+					// Preenchimento do GridPane com os textfields por linha, primeiro linha de
+					// vazão.
+
+					rdList.forEach(demand -> {
+
+						// Get the current value, which could be a String (from user input)
+						String rawValue = cbAuthTimeFlow.getEditor().getText();
+
+						// Parse the raw value into an Integer
+						Integer selectedTimeValue = rawValue != null ? Integer.parseInt(rawValue) : null;
+
+						demand.setTempo(selectedTimeValue);
+
+						addDemandTimeLine(gpAuthorizedDemands, demand.getMes(), demand);
+					});
+
+				}
+
+			} else {
+
+				if (selectedValue != null) {
+
+					// Lista para filtrar as demandas por tipo, demandas requeridas, e ordenar por
+					// mês (jan,fev,...).
+					Stream<Demanda> rdStream = demandsWrapper.getDemands().stream();
+
+					List<Demanda> rdList = rdStream.filter(d -> d.getTipoFinalidade().getId() == 2L)
+							.sorted(Comparator.comparing(d -> d.getMes())).collect(Collectors.toList());
+					;
+
+					// Preenchimento do GridPane com os textfields por linha, primeiro linha de
+					// vazão.
+					int[] idx = { 0 };
+
+					rdList.forEach(demand -> {
+
+						// meses jan, fev, mar, nov, e dez vazios
+						if (idx[0] == 0 || idx[0] == 1 || idx[0] == 2 || idx[0] == 10 || idx[0] == 11) {
+
+							demand.setTempo(0);
+							addDemandTimeLine(gpAuthorizedDemands, demand.getMes(), demand);
+
+						} else {
+
+							// Get the current value, which could be a String (from user input)
+							String rawValue = cbAuthTimeFlow.getEditor().getText();
+
+							// Parse the raw value into an Integer
+							Integer selectedTimeValue = rawValue != null ? Integer.parseInt(rawValue) : null;
+
+							demand.setTempo(selectedTimeValue);
+							addDemandFlowLine(gpAuthorizedDemands, demand.getMes(), demand);
+						}
+						idx[0]++;
+
+					});
+
+				}
+
+			}
+
+			bboBtnFillAuthTime.setOption(!bboBtnFillAuthTime.getOption());
+
+		});
+
+		/**
+		 * Cria a opção falso ou true de preenchimento completo da linha ou somente de
+		 * abril a outubro, período de seca.
+		 */
+		ButtonBooleanOption bboFillRequestedPeriod = new ButtonBooleanOption(true);
+
+		/**
+		 * Ação de preenchimento automático dos dias de captação mês a mês.
+		 */
+		btnFillReqPeriod.setOnMouseClicked(event -> {
+
+			if (bboFillRequestedPeriod.getOption()) {
+
+				// Preenchimento do GridPane com os textfields por linha, primeiro linha de
+				// vazão.
+
+				List<Integer> daysInMonths = Arrays.asList(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
+				int[] idx = { 0 };
+
+				// Lista para filtrar as demandas por tipo, demandas requeridas, e ordenar por
+				// mês (jan,fev,...).
+				Stream<Demanda> rdStream = demandsWrapper.getDemands().stream();
+
+				List<Demanda> rdList = rdStream.filter(d -> d.getTipoFinalidade().getId() == 1L)
+						.sorted(Comparator.comparing(d -> d.getMes())).collect(Collectors.toList());
+				;
+				rdList.forEach(demand -> {
+
+					demand.setPeriodo(daysInMonths.get(idx[0]));
+					addDemandPeriodLine(gpRequestedDemands, demand.getMes(), demand);
+
+					idx[0]++;
+				});
+
+			} else {
+
+				List<Integer> daysInMonths = Arrays.asList(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
+
+				// Lista para filtrar as demandas por tipo, demandas requeridas, e ordenar por
+				// mês (jan,fev,...).
+				Stream<Demanda> rdStream = demandsWrapper.getDemands().stream();
+
+				List<Demanda> rdList = rdStream.filter(d -> d.getTipoFinalidade().getId() == 1L)
+						.sorted(Comparator.comparing(d -> d.getMes())).collect(Collectors.toList());
+				;
+
+				// Preenchimento do GridPane com os textfields por linha, primeiro linha de
+				// vazão.
+				int[] idx = { 0 };
+
+				rdList.forEach(demand -> {
+
+					// meses jan, fev, mar, nov, e dez vazios
+					if (idx[0] == 0 || idx[0] == 1 || idx[0] == 2 || idx[0] == 10 || idx[0] == 11) {
+
+						demand.setPeriodo(0);
+						addDemandPeriodLine(gpRequestedDemands, demand.getMes(), demand);
+
+					} else {
+						demand.setPeriodo(daysInMonths.get(idx[0]));
+						addDemandPeriodLine(gpRequestedDemands, demand.getMes(), demand);
+					}
+					idx[0]++;
+
+				});
+
+			}
+
+			bboFillRequestedPeriod.setOption(!bboFillRequestedPeriod.getOption());
+
+		});
+
+		/**
+		 * Cria a opção falso ou true de preenchimento completo da linha ou somente de
+		 * abril a outubro, período de seca.
+		 */
+		ButtonBooleanOption bboFillAuthPeriod = new ButtonBooleanOption(true);
+
+		/**
+		 * Ação de preenchimento automático dos dias de captação mês a mês.
+		 */
+		btnFillAuthPeriod.setOnMouseClicked(event -> {
+
+			if (bboFillAuthPeriod.getOption()) {
+
+				// Preenchimento do GridPane com os textfields por linha, primeiro linha de
+				// vazão.
+
+				List<Integer> daysInMonths = Arrays.asList(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
+				int[] idx = { 0 };
+
+				// Lista para filtrar as demandas por tipo, demandas requeridas, e ordenar por
+				// mês (jan,fev,...).
+				Stream<Demanda> rdStream = demandsWrapper.getDemands().stream();
+
+				List<Demanda> rdList = rdStream.filter(d -> d.getTipoFinalidade().getId() == 2L)
+						.sorted(Comparator.comparing(d -> d.getMes())).collect(Collectors.toList());
+				;
+				rdList.forEach(demand -> {
+
+					demand.setPeriodo(daysInMonths.get(idx[0]));
+					addDemandPeriodLine(gpAuthorizedDemands, demand.getMes(), demand);
+
+					idx[0]++;
+				});
+
+			} else {
+
+				List<Integer> daysInMonths = Arrays.asList(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
+
+				// Lista para filtrar as demandas por tipo, demandas requeridas, e ordenar por
+				// mês (jan,fev,...).
+				Stream<Demanda> rdStream = demandsWrapper.getDemands().stream();
+
+				List<Demanda> rdList = rdStream.filter(d -> d.getTipoFinalidade().getId() == 2L)
+						.sorted(Comparator.comparing(d -> d.getMes())).collect(Collectors.toList());
+				;
+
+				// Preenchimento do GridPane com os textfields por linha, primeiro linha de
+				// vazão.
+				int[] idx = { 0 };
+
+				rdList.forEach(demand -> {
+
+					// meses jan, fev, mar, nov, e dez vazios
+					if (idx[0] == 0 || idx[0] == 1 || idx[0] == 2 || idx[0] == 10 || idx[0] == 11) {
+
+						demand.setPeriodo(0);
+						addDemandPeriodLine(gpAuthorizedDemands, demand.getMes(), demand);
+
+					} else {
+						demand.setPeriodo(daysInMonths.get(idx[0]));
+						addDemandPeriodLine(gpAuthorizedDemands, demand.getMes(), demand);
+					}
+					idx[0]++;
+
+				});
+
+			}
+
+			bboFillAuthPeriod.setOption(!bboFillAuthPeriod.getOption());
+
+		});
+
+		/**
+		 * Atualiza dados do subsistema, com sistema, subsistema, código e vazão.
+		 */
+		btnRefereshSubsystem.setOnAction(event -> {
+
+			System.out.println("clicked");
+
+			SubsystemCodeAttributes sca = addInterferenceControler.getSubsystemCodeAttributes();
+
+			if (sca.getLatitude() != null && sca.getLongitude() != null) {
+
+				fillSystemAndSubsystem(sca.getTypeOfInterference(), cbWellType.getSelectionModel().getSelectedItem(),
+						sca.getLatitude().toString(), sca.getLongitude().toString());
+
+			}
+
+		});
+
+		/**
+		 * Copia a finalidades e demandas requeridas para as finalidades e demandas
+		 * autorizadas, igualando as duas.
+		 */
+		btnCopyReqDemand.setOnMouseClicked(event -> {
+
+			Stream<Finalidade> purpouses = purpousesWrapper.getPurpouses().stream();
+
+			List<Finalidade> purListType1 = purpouses.filter(d -> d.getTipoFinalidade().getId() == 1L)
+					// .sorted(Comparator.comparing(d -> d.getMes()))
+					.collect(Collectors.toList());
+			;
+
+			purpouses = purpousesWrapper.getPurpouses().stream();
+
+			List<Finalidade> purListType2 = new ArrayList<Finalidade>();
+			// 07/02/2025 -> removi pois neste caso não me parece necessário captura o que
+			// já existe nas finalidades autorizadas
+
+			// purpouses.filter(d -> d.getTipoFinalidade().getId() == 2L)
+			// .sorted(Comparator.comparing(d -> d.getMes()))
+			// .collect(Collectors.toList());
+
+			int[] idxPur = { 0 };
+			// Limpa todas as finalidades
+			purpousesWrapper.getPurpouses().clear();
+			// Limpa o GridPane de finalidades autorizadas
+			authorizedPurposesGrid.getChildren().clear();
+
+			// Ajusta o tamanho da array de finalidade autorizada para o mesmo tamanho das
+			// finalidades requeridas.
+			// Assim se houver mais finalidades autorizadas que requeridas, será removida
+			// estas finalidades a mais
+			// if (purListType2.size() > purListType1.size()) {
+			// while (purListType2.size() > purListType1.size()) {
+			// purListType2.remove(purListType2.size() - 1); // Remove elements from the end
+			// }
+			// }
+
+			purListType1.forEach(pur -> {
+
+				if (idxPur[0] < purListType2.size()) {
+
+					if (purListType2.get(idxPur[0]).getId() != null) {
+
+						System.out.println("!null id " + purListType2.get(idxPur[0]).getId());
+						// Edita a finalidade autorizada com os valores da finalidade requerida
+						purListType2.get(idxPur[0]).setFinalidade(pur.getFinalidade());
+						purListType2.get(idxPur[0]).setSubfinalidade(pur.getSubfinalidade());
+						purListType2.get(idxPur[0]).setQuantidade(pur.getQuantidade());
+						purListType2.get(idxPur[0]).setConsumo(pur.getConsumo());
+						purListType2.get(idxPur[0]).setTotal(pur.getTotal());
+
+					} else {
+
+						purListType2.add(new Finalidade(pur.getFinalidade(), pur.getSubfinalidade(),
+								pur.getQuantidade(), pur.getConsumo(), pur.getTotal(), pur.getInterferencia(),
+								new TipoFinalidade(2L)));
+					}
+
+				} else {
+
+					purListType2.add(new Finalidade(pur.getFinalidade(), pur.getSubfinalidade(), pur.getQuantidade(),
+							pur.getConsumo(), pur.getTotal(), pur.getInterferencia(), new TipoFinalidade(2L)));
+				}
+
+				// Atualiza o GridPane
+				addPurpouseRow(idxPur[0], authorizedPurposesGrid, tfTotalConsumption, btnCalculateAuthTotalConsumption,
+						new TipoFinalidade(2L), pur);
+
+				idxPur[0]++;
+
+			});
+
+			// Adiciona as finalidades
+			purpousesWrapper.getPurpouses().addAll(purListType1);
+			purpousesWrapper.getPurpouses().addAll(purListType2);
+
+			// demandsStream
+			Stream<Demanda> demands = demandsWrapper.getDemands().stream();
+
+			List<Demanda> demType1List = demands.filter(d -> d.getTipoFinalidade().getId() == 1L)
+					.sorted(Comparator.comparing(d -> d.getMes())).collect(Collectors.toList());
+			;
+
+			demands = demandsWrapper.getDemands().stream();
+
+			List<Demanda> demType2List = demands.filter(d -> d.getTipoFinalidade().getId() == 2L)
+					.sorted(Comparator.comparing(d -> d.getMes())).collect(Collectors.toList());
+			;
+
+			int[] idxDem = { 0 };
+
+			/*
+			 * Copia a demanda requerida para a demanda autorizada
+			 */
+			demType1List.forEach(dem -> {
+
+				demType2List.get(idxDem[0]).setVazao(dem.getVazao());
+				demType2List.get(idxDem[0]).setTempo(dem.getTempo());
+				demType2List.get(idxDem[0]).setPeriodo(dem.getPeriodo());
+				demType2List.get(idxDem[0]).setMes(dem.getMes());
+				demType2List.get(idxDem[0]).setTipoFinalidade(new TipoFinalidade(2L));
+
+				idxDem[0]++;
+
+			});
+
+			// Atualiza a visualização (GridPane)
+			// addDemandFlowLine(gpAuthorizedDemands, dem.getMes(), dem);
+			// addDemandTimeLine(gpAuthorizedDemands, dem.getMes(), dem);
+			// addDemandPeriodLine(gpAuthorizedDemands, dem.getMes(), dem);
+
+			demType2List.forEach(demand -> {
+				addDemandFlowLine(gpAuthorizedDemands, demand.getMes(), demand);
+			});
+
+			demType2List.forEach(demand -> {
+				addDemandTimeLine(gpAuthorizedDemands, demand.getMes(), demand);
+			});
+
+			demType2List.forEach(demand -> {
+				addDemandPeriodLine(gpAuthorizedDemands, demand.getMes(), demand);
+			});
+
+			demandsWrapper.getDemands().addAll(demType1List);
+			demandsWrapper.getDemands().addAll(demType2List);
+
+		});
+
 	}
 
 	public void addDemandFlowLine(GridPane gridPane, int month, Demanda demand) {
@@ -181,11 +883,9 @@ public class AddSubterraneanDetailsController implements Initializable {
 		// Adiciona Textfields por célula
 		gridPane.add(tfFlow, month, 1);
 
-		if (demand.getId() != null) {
-			// Se não, é uma demanda buscada no banco e deve-se preencher os campos
+		// Se a demanda não está vazia, preencher com o valor
+		if (demand.getVazao() != null)
 			tfFlow.setText(demand.getVazao().toString());
-
-		}
 
 		DemandWrapper demandWrapper = new DemandWrapper(demand);
 		// Listeners
@@ -203,7 +903,12 @@ public class AddSubterraneanDetailsController implements Initializable {
 		clearGridCell(gridPane, month, 2);
 		gridPane.add(tfTime, month, 2);
 
-		if (demand.getId() != null) {
+		/*
+		 * if (demand.getId() != null) { // Se não, é uma demanda buscada no banco e
+		 * deve-se preencher os campos
+		 * tfTime.setText(String.valueOf(demand.getTempo())); }
+		 */
+		if (demand.getTempo() != null) {
 			// Se não, é uma demanda buscada no banco e deve-se preencher os campos
 			tfTime.setText(String.valueOf(demand.getTempo()));
 		}
@@ -227,7 +932,7 @@ public class AddSubterraneanDetailsController implements Initializable {
 		clearGridCell(gridPane, month, 3);
 		gridPane.add(tfPeriod, month, 3);
 
-		if (demand.getId() != null) {
+		if (demand.getPeriodo() != null) {
 			// Se não, é uma demanda buscada no banco e deve-se preencher os campos
 
 			tfPeriod.setText(String.valueOf(demand.getPeriodo()));
@@ -309,15 +1014,10 @@ public class AddSubterraneanDetailsController implements Initializable {
 	 * Adiciona linhas de finalidades, cada linha tem uma finalidade, subfinalidade,
 	 * quantidade, consumo e total por finalidade.
 	 * 
-	 * @param index
-	 * @param gridPane
-	 * @param tfTotalConsumption
-	 * @param btnTotalConsumption
-	 * @param typeOfPurpouse
-	 * @param purpouse
+	 * index gridPane tfTotalConsumption btnTotalConsumption typeOfPurpouse purpouse
 	 */
 	public void addPurpouseRow(int index, GridPane gridPane, JFXTextField tfTotalConsumption,
-			FontAwesomeIconView btnTotalConsumption, TipoFinalidade typeOfPurpouse, Finalidade purpouse) {
+			JFXButton btnTotalConsumption, TipoFinalidade typeOfPurpouse, Finalidade purpouse) {
 
 		JFXTextField tfPurpouse = new JFXTextField();
 		JFXTextField tfSubpurpose = new JFXTextField();
@@ -358,9 +1058,18 @@ public class AddSubterraneanDetailsController implements Initializable {
 
 			tfPurpouse.setText(purpouseWrapper.getPurpouse().getFinalidade());
 			tfSubpurpose.setText(purpouseWrapper.getPurpouse().getSubfinalidade());
-			tfQuantity.setText(purpouseWrapper.getPurpouse().getQuantidade().toString());
-			tfConsumption.setText(purpouseWrapper.getPurpouse().getConsumo().toString());
-			tfTotal.setText(purpouseWrapper.getPurpouse().getTotal().toString());
+			if (purpouseWrapper.getPurpouse().getQuantidade() != null) {
+				tfQuantity.setText(purpouseWrapper.getPurpouse().getQuantidade().toString());
+			}
+			if (purpouseWrapper.getPurpouse().getConsumo() != null) {
+				tfConsumption.setText(purpouseWrapper.getPurpouse().getConsumo().toString());
+			}
+
+			// Se o total não foi cadastrado não mostrar
+			if (purpouseWrapper.getPurpouse().getTotal() != null) {
+				tfTotal.setText(purpouseWrapper.getPurpouse().getTotal().toString());
+			}
+
 		}
 
 		tfPurpouse.setPrefHeight(40.0);
@@ -398,7 +1107,7 @@ public class AddSubterraneanDetailsController implements Initializable {
 			purpouseWrapper.getPurpouse().setFinalidade(newValue);
 
 			// You can add custom logic here, for example:
-			if (newValue.length() > 20) {
+			if (newValue.length() > 70) {
 				// Since you don't have access to an Event, just use the tfPurpouse as the
 				// source
 				Node source = tfPurpouse; // The source is tfPurpouse (JFXTextField)
@@ -416,7 +1125,7 @@ public class AddSubterraneanDetailsController implements Initializable {
 			purpouseWrapper.getPurpouse().setSubfinalidade(newValue);
 
 			// You can add custom logic here, for example:
-			if (newValue.length() > 20) {
+			if (newValue.length() > 70) {
 				// Since you don't have access to an Event, just use the tfPurpouse as the
 				// source
 				Node source = tfSubpurpose; // The source is tfPurpouse (JFXTextField)
@@ -434,7 +1143,7 @@ public class AddSubterraneanDetailsController implements Initializable {
 			purpouseWrapper.getPurpouse().setQuantidade(Double.parseDouble(newValue));
 
 			// You can add custom logic here, for example:
-			if (newValue.length() > 20) {
+			if (newValue.length() > 30) {
 				// Since you don't have access to an Event, just use the tfPurpouse as the
 				// source
 				Node source = tfSubpurpose; // The source is tfPurpouse (JFXTextField)
@@ -452,10 +1161,28 @@ public class AddSubterraneanDetailsController implements Initializable {
 			purpouseWrapper.getPurpouse().setConsumo(Double.parseDouble((newValue)));
 
 			// You can add custom logic here, for example:
-			if (newValue.length() > 20) {
+			if (newValue.length() > 30) {
 				// Since you don't have access to an Event, just use the tfPurpouse as the
 				// source
 				Node source = tfSubpurpose; // The source is tfPurpouse (JFXTextField)
+				Stage ownerStage = (Stage) source.getScene().getWindow();
+
+				// Display toast message
+				String toastMsg = "O texto de consumo está muito longo!!!";
+				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+			}
+
+		});
+
+		tfTotal.textProperty().addListener((observable, oldValue, newValue) -> {
+
+			purpouseWrapper.getPurpouse().setTotal(Double.parseDouble((newValue)));
+
+			// You can add custom logic here, for example:
+			if (newValue.length() > 30) {
+				// Since you don't have access to an Event, just use the tfPurpouse as the
+				// source
+				Node source = tfTotal; // The source is tfPurpouse (JFXTextField)
 				Stage ownerStage = (Stage) source.getScene().getWindow();
 
 				// Display toast message
@@ -527,15 +1254,26 @@ public class AddSubterraneanDetailsController implements Initializable {
 		});
 
 		btnTotalConsumption.setOnMouseClicked(event -> {
-			final Double[] total = { 0.0 }; // Usando um array para contornar a limitação de variáveis finais
+			// Usando um array para contornar a limitação de variáveis finais
+			final Double[] total = { 0.0 };
+
 			purpousesWrapper.getPurpouses().forEach(p -> {
-				Double subtotal = p.getTotal();
-				if (subtotal != null) {
-					total[0] += subtotal;
+
+				if (p.getTipoFinalidade().getId() == typeOfPurpouse.getId()) {
+					Double subtotal = p.getTotal();
+					if (subtotal != null) {
+						total[0] += subtotal;
+					}
 				}
+
 			});
 
-			tfTotalConsumption.setText(total[0].toString());
+			// Quando copia as finalidades requeridas para as finalidades autozizadas este
+			// textfild fica nulo e não atualiza o total.
+			if (tfTotalConsumption != null) {
+				tfTotalConsumption.setText(total[0].toString());
+
+			}
 
 		});
 
@@ -605,6 +1343,44 @@ public class AddSubterraneanDetailsController implements Initializable {
 	}
 
 	public void setPurpouses(Set<Finalidade> newPurpouses) {
+
+		/**
+		 * Se não houver finalidades cadastradas, adicione uma requerida e uma
+		 * autorizada com valores vazios
+		 */
+		if (newPurpouses.size() == 0) {
+			newPurpouses.add(new Finalidade("", "", 0.0, 0.0, 0.0, null, new TipoFinalidade(1L)));
+			newPurpouses.add(new Finalidade("", "", 0.0, 0.0, 0.0, null, new TipoFinalidade(2L)));
+		}
+
+		/*
+		 * Se não tiver sido salvo o tipo de finalidade, adicinar como finalidade
+		 * requerida. Assim o usuário pode ver, editar ou apagar se for o caso
+		 */
+		newPurpouses.forEach(item -> {
+			if (item.getTipoFinalidade() == null) {
+				item.setTipoFinalidade(new TipoFinalidade(1L));
+			}
+		});
+
+		// Busca finalidade requerida, se não houver, adiciona. É preciso have ao menos
+		// uma para que o usuário possa manipular.
+		Finalidade finReq = newPurpouses.stream().filter(obj -> obj.getTipoFinalidade().getId() == 1L).findAny()
+				.orElse(null);
+
+		if (finReq == null) {
+			newPurpouses.add(new Finalidade("", "", 0.0, 0.0, 0.0, null, new TipoFinalidade(1L)));
+		}
+
+		// Busca finalidade autorizada, se não houver, adiciona. É preciso have ao menos
+		// uma para que o usuário possa manipular.
+		Finalidade finAuth = newPurpouses.stream().filter(obj -> obj.getTipoFinalidade().getId() == 2L).findAny()
+				.orElse(null);
+
+		if (finAuth == null) {
+			newPurpouses.add(new Finalidade("", "", 0.0, 0.0, 0.0, null, new TipoFinalidade(2L)));
+		}
+
 		purpousesWrapper.setPurpouses(newPurpouses);
 
 		requestedPurposesGrid.getChildren().clear();
@@ -614,15 +1390,14 @@ public class AddSubterraneanDetailsController implements Initializable {
 		AtomicInteger autIndex = new AtomicInteger(0);
 
 		purpousesWrapper.getPurpouses().forEach(item -> {
-			if (item.getTipoFinalidade().getId() == 1) {
-
+			if (item.getTipoFinalidade().getId() == 1L) {
 				addPurpouseRow(reqIndex.getAndIncrement(), requestedPurposesGrid, tfTotalRequestedConsumption,
-						btnRequestedTotalCalculate, item.getTipoFinalidade(), item);
+						btnCalculateReqTotalConsumption, item.getTipoFinalidade(), item);
 			} else {
-
 				addPurpouseRow(autIndex.getAndIncrement(), authorizedPurposesGrid, tfTotalAuthorizedConsumption,
-						btnAuthorizedTotalCalculate, item.getTipoFinalidade(), item);
+						btnCalculateAuthTotalConsumption, item.getTipoFinalidade(), item);
 			}
+
 		});
 	}
 
@@ -667,6 +1442,66 @@ public class AddSubterraneanDetailsController implements Initializable {
 		}
 	}
 
+	public void fillAttributes(Interferencia selectedObject) {
+
+		// Verifica se a interferência é do tipo Subterrânea apenas para teste, sem
+		// necessidade a mais
+		if (selectedObject instanceof Subterranea) {
+			Subterranea subterranea = (Subterranea) selectedObject;
+
+			// Como os valores no banco é true ou false (boolean), verifica se true = "Sim",
+			// false = "não".
+			cbConcessionaire.getSelectionModel().select(subterranea.getCaesb() ? "Sim" : "Não");
+			// Como só recebo o id do tipo do poço, sem a descrição, preciso buscar o tipo
+			// de poço pelo id.
+			Long tipoPocoId = subterranea.getTipoPoco() != null ? subterranea.getTipoPoco().getId() : null;
+
+			if (tipoPocoId != null) {
+				// Busca o item correspondente na ObservableList
+				TipoPoco matchingTipoPoco = obsTypesOfWells.stream()
+						.filter(tipoPoco -> tipoPoco.getId().equals(tipoPocoId)).findFirst().orElse(null);
+
+				if (matchingTipoPoco != null) {
+					// Seleciona o item no ComboBox
+					cbWellType.getSelectionModel().select(matchingTipoPoco);
+
+					fillSystemAndSubsystem(subterranea.getTipoInterferencia(), subterranea.getTipoPoco(),
+							subterranea.getLatitude().toString(), subterranea.getLongitude().toString());
+
+					if (subterranea.getCodPlan() != null && !subterranea.getCodPlan().isEmpty()) {
+						if (matchingTipoPoco.getId() == 1L || matchingTipoPoco.getId() == 2L) {
+							Set<HidrogeoPoroso> set = findPorosoByCodPlan(subterranea.getCodPlan());
+
+							set.forEach(s -> System.out.println("poroso " + s.getCodPlan()));
+
+						} else {
+							Set<HidrogeoFraturado> set = findSubsystemFraturadoByCodPlan(subterranea.getCodPlan());
+
+							set.forEach(s -> System.out.println("fraturado " + s.getCodPlan()));
+						}
+					}
+
+				} else {
+					System.out.println("Nenhum TipoPoco encontrado com o ID: " + tipoPocoId);
+				}
+			} else {
+				System.out.println("TipoPoco ID é nulo.");
+			}
+
+			// Continua os outros preenchimentos
+			tfSystemFlow.setText(subterranea.getVazaoSistema().toString());
+			tfSystemGrant.setText(subterranea.getVazaoOutorgavel().toString());
+			tfSystemTest.setText(subterranea.getVazaoTeste().toString());
+			tfStaticLevel.setText(subterranea.getNivelDinamico());
+			tfDynamicLevel.setText(subterranea.getNivelDinamico().toString());
+			tfWaterDepth.setText(subterranea.getProfundidade());
+
+		} else {
+			System.out.println("A interferência selecionada não é do tipo Subterrânea.");
+		}
+
+	}
+
 	public Set<Demanda> getDemands() {
 		return demandsWrapper.getDemands();
 	}
@@ -699,6 +1534,11 @@ public class AddSubterraneanDetailsController implements Initializable {
 			// Set the selected item if it exists
 			subterraneanAttributes.setTipoPoco(cbWellType.getSelectionModel().getSelectedItem());
 		}
+
+		// Sistema e Subsistema (Hidrogeo Poroso ou Fraturado)
+		subterraneanAttributes.setSistema(cbSystem.getSelectionModel().getSelectedItem());
+		subterraneanAttributes.setSubsistema(cbSubsystem.getSelectionModel().getSelectedItem());
+		subterraneanAttributes.setCodPlan(tfCodeSystem.getText());
 
 		return subterraneanAttributes;
 
@@ -741,6 +1581,7 @@ public class AddSubterraneanDetailsController implements Initializable {
 	}
 
 	public class DemandWrapper {
+
 		private Demanda demand;
 
 		public DemandWrapper() {
@@ -806,10 +1647,38 @@ public class AddSubterraneanDetailsController implements Initializable {
 
 	}
 
+	/**
+	 * Com esta opção, verdadeiro ou falso, posso fazer a mudança de preenchimento
+	 * em que pode ser preenchido todos os meses com a vazão total, ou zerar os
+	 * meses de janeiro, fevereiro, março, novembro e dezembro (período de chuvas e
+	 * sem vazão outorgada) utilizado nas outorgas subterrâneas.
+	 * 
+	 * @author fabricio.barrozo
+	 *
+	 */
+	public class ButtonBooleanOption {
+
+		private Boolean option;
+
+		public ButtonBooleanOption(Boolean option) {
+			super();
+			this.option = option;
+		}
+
+		public Boolean getOption() {
+			return option;
+		}
+
+		public void setOption(Boolean option) {
+			this.option = option;
+		}
+
+	}
+
 	public void deletePurpouse(Node source, Finalidade purpouse) {
 
 		try {
-			FinalidadeService documentService = new FinalidadeService(localUrl);
+			FinalidadeService documentService = new FinalidadeService(urlService);
 
 			ServiceResponse<?> serviceResponse = documentService.deleteById(purpouse.getId());
 
@@ -837,6 +1706,175 @@ public class AddSubterraneanDetailsController implements Initializable {
 			e.printStackTrace();
 		}
 
+	}
+
+	public Set<HidrogeoFraturado> findSubsystemFraturadoByPoint(String lat, String lng) {
+
+		try {
+
+			HidrogeoFraturadoService service = new HidrogeoFraturadoService(urlService);
+
+			Set<HidrogeoFraturado> set = service.findByPoint(lat, lng);
+
+			return set;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+
+	}
+
+	public Set<HidrogeoPoroso> findSubsystemPorosoByPoint(String lat, String lng) {
+
+		try {
+
+			HidrogeoPorosoService service = new HidrogeoPorosoService(urlService);
+
+			Set<HidrogeoPoroso> set = service.findByPoint(lat, lng);
+
+			return set;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+
+	}
+
+	public Set<HidrogeoPoroso> findPorosoByCodPlan(String codPlan) {
+
+		try {
+
+			HidrogeoPorosoService service = new HidrogeoPorosoService(urlService);
+
+			Set<HidrogeoPoroso> set = service.findByCodPlan(codPlan);
+
+			return set;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+
+	}
+
+	public Set<HidrogeoFraturado> findSubsystemFraturadoByCodPlan(String codPlan) {
+
+		try {
+
+			HidrogeoFraturadoService service = new HidrogeoFraturadoService(urlService);
+
+			Set<HidrogeoFraturado> set = service.findByCodPlan(codPlan);
+
+			return set;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+
+	}
+
+	public void fillSystemAndSubsystem(TipoInterferencia typeOfInterference, TipoPoco typeOfWell, String latitude,
+			String longitude) {
+		// Se tipo de interferência subterrânea
+		if (typeOfInterference.getId() == 2L) {
+
+			if (typeOfWell != null) {
+
+				if (typeOfWell.getId() == 1L || typeOfWell.getId() == 2L) {
+
+					// Buscar o sistema poroso e remover apenas os sistema (P1, P2) em formato de
+					// string.
+					ObservableList<HidrogeoPoroso> obsList = StaticData.INSTANCE.fetchAllPoroso();
+					// Cria nova ObservableList<String> para os valores do "sistema", cbSystem.
+
+					ObservableList<String> obsSystem = FXCollections.observableArrayList();
+
+					// Cria uma array em formato set para não repetir os valores
+					Set<String> setSystem = new HashSet<>();
+
+					// Extrai o sistema em formato string e preenche a lista para o comobobx
+					// cbSystem.
+					for (HidrogeoPoroso item : obsList) {
+						setSystem.add(item.getSistema()); // Assuming `getSistema()` is the getter for the `sistema`
+															// attribute
+
+					}
+
+					// Preenche observable list e combobox
+					obsSystem.addAll(setSystem);
+					cbSystem.setItems(obsSystem);
+
+					// Preenchimento do código do subsistema
+					Set<HidrogeoPoroso> set = findSubsystemPorosoByPoint(latitude, longitude);
+					// Como foi solicitado um select no banco, virá uma array com um valor, sendo
+					// necessário
+					// capturar o primeiro valor desta array
+					if (set != null) {
+
+						set.forEach(s -> {
+							cbSystem.getSelectionModel().select(s.getSistema());
+							// Como não há subsistema no poroso, limpe a seleção
+							cbSubsystem.getSelectionModel().clearSelection();
+							tfCodeSystem.setText(s.getCodPlan());
+							tfSystemFlow.setText(String.valueOf((int) (s.getqMedia() * 1000)));
+
+						});
+
+					}
+
+				} else {
+
+					// Buscar o sistema poroso e remover apenas os sistema (P1, P2) em formato de
+					// string.
+					ObservableList<HidrogeoFraturado> obsList = StaticData.INSTANCE.fetchAllFraturado();
+					// Cria nova ObservableList<String> para os valores do "sistema", cbSystem.
+
+					ObservableList<String> obsSystem = FXCollections.observableArrayList();
+					// No caso do subsistema fraturado há o subsistema.
+					ObservableList<String> obsSubsystem = FXCollections.observableArrayList();
+
+					// Cria uma array em formato set para não repetir os valores
+					Set<String> setSystem = new HashSet<>();
+					Set<String> setSubsystem = new HashSet<>();
+
+					// Extrai o sistema em formato string e preenche a lista para o comobobx
+					// cbSystem.
+					for (HidrogeoFraturado item : obsList) {
+						setSystem.add(item.getSistema()); // Assuming `getSistema()` is the getter for the `sistema`
+															// attribute
+						setSubsystem.add(item.getSubsistema());
+					}
+
+					// Preenche observable list e combobox (Systema)
+					obsSystem.addAll(setSystem);
+					cbSystem.setItems(obsSystem);
+					// Preenche o subsistema (cbSubsystem)
+					obsSubsystem.addAll(setSubsystem);
+					cbSubsystem.setItems(obsSubsystem);
+
+					Set<HidrogeoFraturado> set = findSubsystemFraturadoByPoint(latitude, longitude);
+					if (set != null) {
+
+						set.forEach(s -> {
+							// Preenchimento de dados do subsistema
+							cbSystem.getSelectionModel().select(s.getSistema());
+							cbSubsystem.getSelectionModel().select(s.getSubsistema());
+							tfCodeSystem.setText(s.getCodPlan());
+							tfSystemFlow.setText(String.valueOf((int) (s.getVazao() * 1000)));
+						});
+
+					}
+
+				}
+
+			} else {
+
+			}
+
+		}
 	}
 
 }

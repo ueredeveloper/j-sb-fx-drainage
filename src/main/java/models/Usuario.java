@@ -25,6 +25,13 @@ public class Usuario {
 		super();
 		this.nome = nome;
 	}
+	
+	
+	public Usuario(String nome, Long cpfCnpj) {
+		super();
+		this.nome = nome;
+		this.cpfCnpj = cpfCnpj;
+	}
 
 	public Usuario(Long id, String nome, Long cpfCnpj, Set<Documento> documentos) {
 		super();

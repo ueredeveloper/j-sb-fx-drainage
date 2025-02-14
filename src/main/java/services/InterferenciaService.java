@@ -42,6 +42,8 @@ public class InterferenciaService {
 
 			// Convert Documento object to JSON
 			String jsonInputString = convertObjectToJson(obj);
+			
+			System.out.println("salvar int " + jsonInputString);
 
 			// Write JSON to request body
 			try (OutputStream os = connection.getOutputStream();
@@ -90,6 +92,8 @@ public class InterferenciaService {
 
 			// Convert Documento object to JSON
 			String jsonInputString = convertObjectToJson(object);
+			
+			System.out.println("editar int " + jsonInputString);
 
 			// Write JSON to request body
 			try (OutputStream os = connection.getOutputStream();
@@ -111,7 +115,7 @@ public class InterferenciaService {
 						response.append(responseLine);
 					}
 
-				//	System.out.println("edited res to string " + response.toString());
+					// System.out.println("edited res to string " + response.toString());
 					responseBody = response.toString();
 				}
 			} else {
@@ -126,6 +130,7 @@ public class InterferenciaService {
 			return null; // Return null if an error occurs
 		}
 	}
+
 	public Set<Interferencia> fetchByKeyword(String keyword) {
 
 		try {
@@ -204,6 +209,8 @@ public class InterferenciaService {
 
 		// Parse the string as a JsonArray
 		JsonArray jsonArray = JsonParser.parseString(json).getAsJsonArray();
+		
+		System.out.println(jsonArray);
 
 		Gson gson = new GsonBuilder().registerTypeAdapter(Interferencia.class, new InterferenciaTypeAdapter()).create();
 
@@ -211,20 +218,21 @@ public class InterferenciaService {
 			Set<Interferencia> interferencias = gson.fromJson(jsonArray, new TypeToken<Set<Interferencia>>() {
 			}.getType());
 
-			// Optionally, print or work with the interferencias set
-			for (Interferencia interferencia : interferencias) {
-				if (interferencia instanceof Subterranea) {
-					Subterranea subterranea = (Subterranea) interferencia;
-					// Access Subterranea-specific fields
-				//	System.out.println("Subterranea attributes:");
-				//	System.out.println("Caesb: " + subterranea.getCaesb());
-				//	System.out.println("Nivel Estatico: " + subterranea.getNivelEstatico());
-					// Additional fields...
-				} else {
-					// Handle regular Interferencia
-					System.out.println("Regular Interferencia");
-				}
-			}
+			// Post-process the objects if necessary
+		    for (Interferencia interferencia : interferencias) {
+		        if (interferencia instanceof Subterranea) {
+		            Subterranea subterranea = (Subterranea) interferencia;
+		           // System.out.println("Subterranea-specific attributes:");
+		           // System.out.println("Caesb: " + subterranea.getCaesb());
+		           // System.out.println("Nivel Estatico: " + subterranea.getNivelEstatico());
+		           // System.out.println("Nivel Dinamico: " + subterranea.getNivelDinamico());
+		           // System.out.println("Profundidade: " + subterranea.getProfundidade());
+		           System.out.println("Vazão outorgável" + subterranea.getVazaoOutorgavel());
+		            // Access other Subterranea-specific attributes if needed
+		        } else {
+		            System.out.println("Regular Interferencia");
+		        }
+		    }
 
 			return interferencias;
 		}

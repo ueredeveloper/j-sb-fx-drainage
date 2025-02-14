@@ -3,16 +3,9 @@
 * @descricao Base legal do parecer
 * @diretorio 4
 * @arquivo legal-basis-view.js
-* @id 20
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
+* @id 
+*
+*
 */
 
 class LegalBasisView {

@@ -3,9 +3,9 @@
 * @descricao Assunto do Despacho
 * @diretorio 3
 * @arquivo subject-view.js
-* @id 5
- * 
-* 
+* @id 
+*
+*
 */
 
 class SubjectView {
@@ -13,8 +13,6 @@ class SubjectView {
 		this.div = document.getElementById('subject-view');
 		this.render();
 	}
-
-	// classes: int-finalidades int-tipo-poco
 
 	render() {
 		let innerHTML = `
@@ -28,12 +26,12 @@ class SubjectView {
 		this.div.innerHTML = innerHTML;
 
 	}
-	update(documento){
+	update(documento, interferencia){
 
-		let finalidades = documento.endereco.interferencias[0].finalidades;
+		let finalidades = interferencia.finalidades;
 		let usuario = documento.usuarios[0];
 
-		let _items = document.getElementsByClassName('us-name');
+		let _items = document.getElementsByClassName('us-nome');
 
     	Array.from(_items).forEach(element => {
     		let innerHTML = usuario?.nome || 'XXX';

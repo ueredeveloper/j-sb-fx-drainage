@@ -3,16 +3,8 @@
  * @diretorio models
  * @descricao Modelos de Tabelas
  * @arquivo finalidade-model.js
- * @id 30
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
+ * @id 
+ *
  *
  */
  
@@ -29,6 +21,7 @@ class FinalidadeModel {
 	 * @returns 
 	 */
     getPurpouseString(finalidades) {
+		console.log(finalidades)
 		// Filtra as finalidades autorizadas, transforma em string com a apenas o atributo finalidade e converte tudo em minúsculo
 		let arrayToString = finalidades.filter(f => f.tipoFinalidade.id === 2).map(f => f.finalidade).toString().toLowerCase();
 		// Substituir a última vírgula por 'e'

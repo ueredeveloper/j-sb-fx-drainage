@@ -4,15 +4,9 @@
  * @descricao Funções compartilhadas
  * @diretorio utils
  * @arquivo script.js
- * @id 42
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
+ * @id 
+ *
+ *
  */
 
  class Utils {
@@ -20,77 +14,74 @@
 	constructor() {}
 
 	/**
-	 * Atualiza tudo utilizando um exemplo da tabela documento com endereço,
-	 * interferências e usuário
-	 * 
+	 * Atualiza tudo utilizando um exemplo da tabela documento com endereço, interferências e usuário
 	 * @param {*}
-	 *            documento
 	 */
-	updateHtmlDocument(documento) {
-
+	updateHtmlDocument(docJson, interJson) {
+		
+		let documento = docJson;
+		let interferencia = interJson;
+		
+		//console.log('update html doc', interferencia.unidadeHidrografica.uhNome)
+		
 		// Verifica se a classe ObjectView está disponível
 		if (typeof ObjectView !== 'undefined') {
 			// Atualiza ObjectView
-			new ObjectView().update(documento);
+			new ObjectView().update(documento, interferencia);
 		} else {
 			console.error("SubjectView não definida.");
 		}
 
 		// Verifica e atualiza SubjectView se estiver disponível
 		if (typeof SubjectView !== 'undefined') {
-			new SubjectView().update(documento);
+			new SubjectView().update(documento, interferencia);
 		} else {
 			console.error("SubjectView não definida.");
 		}
 
-
 		// Verifica e atualiza AnalyseView se estiver disponível
 		if (typeof AnalyseView !== 'undefined') {
-			new AnalyseView().update(documento);
+			new AnalyseView().update(documento, interferencia);
 		} else {
 			console.error("AnalyseView não definida.");
 		}
 
 		// Verifica e atualiza WellInfoView se estiver disponível
 		if (typeof WellInfoView !== 'undefined') {
-			let interferencia = documento.endereco.interferencias[0];
 			new WellInfoView().update(interferencia);
 		} else {
 			console.error("WellInfoView não definida.");
 		}
 
 		// Verifica e inicializa PurpouseTableView
-		if (typeof PurpouseTableView !== 'undefined') {
-			new PurpouseTableView(documento, 1, 'tbl-request-purpouse-view');
-			new PurpouseTableView(documento, 2, 'tbl-authorized-purpouse-view');
+		if (typeof PurpouseRequestedTableView !== 'undefined') {
+			new PurpouseRequestedTableView(documento, 1, interferencia, 'tbl-request-purpouse-view');
 		} else {
-			console.error("PurpouseTableView não definida.");
+			console.error("Purpouse Requested Table View não definida.");
 		}
 
-		// Verifica e atualiza ExploitableReserveView
-		if (typeof ExploitableReserveView !== 'undefined') {
-			new ExploitableReserveView().update(documento);
+		// Verifica e inicializa PurpouseTableView
+		if (typeof PurpouseAuthorizedTableView !== 'undefined') {
+			new PurpouseAuthorizedTableView(documento, 2, interferencia, 'tbl-authorized-purpouse-view');
 		} else {
-			console.error("ExploitableReserveView não definida.");
+			console.error("Purpouse Authorized Table View não definida.");
 		}
 
 		// Atualiza despachos com as tabelas geográficas
 		if (typeof GeographicTableView !== 'undefined') {
-			new GeographicTableView().update(documento);
+			new GeographicTableView().update(interferencia);
 		} else {
 			console.error("GeographicTableView não definida.");
 		}
 
 		// Atualiza limites autorizados
 		if (typeof LimitsTableView !== 'undefined') {
-			new LimitsTableView().update(documento);
+			new LimitsTableView().update(interferencia);
 		} else {
 			console.error("LimitsTableView não definida.");
 		}
 
-
 	}
-
 
 }
 

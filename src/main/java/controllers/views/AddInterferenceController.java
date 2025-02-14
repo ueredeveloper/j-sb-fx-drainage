@@ -10,6 +10,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 
+import controllers.DocumentController;
 import controllers.MapController;
 import controllers.NavigationController;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
@@ -28,18 +29,23 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import models.BaciaHidrografica;
 import models.Demanda;
 import models.Endereco;
 import models.Finalidade;
 import models.Interferencia;
 import models.SituacaoProcesso;
+import models.SubsystemCodeAttributes;
 import models.Subterranea;
 import models.SubtipoOutorga;
 import models.TipoAto;
 import models.TipoInterferencia;
 import models.TipoOutorga;
+import models.UnidadeHidrografica;
+import services.BaciaHidrograficaService;
 import services.InterferenciaService;
 import services.ServiceResponse;
+import services.UnidadeHidrograficaService;
 import utilities.JsonConverter;
 import utilities.URLUtility;
 
@@ -74,10 +80,10 @@ public class AddInterferenceController implements Initializable {
 	private JFXComboBox<TipoAto> cbTypeOfAct;
 
 	@FXML
-	private JFXComboBox<?> cbWatershedBasin;
+	private JFXComboBox<BaciaHidrografica> cbHydrographicBasin;
 
 	@FXML
-	private JFXComboBox<?> cbHydrographicUnit;
+	private JFXComboBox<UnidadeHidrografica> cbHydrographicUnit;
 
 	@FXML
 	private JFXTextField tfLatitude;
@@ -92,19 +98,7 @@ public class AddInterferenceController implements Initializable {
 	private JFXTextField tfSearch;
 
 	@FXML
-	private JFXButton btnSearch;
-
-	@FXML
-	private JFXButton btnNew;
-
-	@FXML
-	private JFXButton btnSave;
-
-	@FXML
-	private JFXButton btnUpdate;
-
-	@FXML
-	private JFXButton btnDelete;
+	private JFXButton btnSearch, btnNew, btnSave, btnUpdate, btnDelete, btnRefresh;
 
 	@FXML
 	private TableView<Interferencia> tableView;
@@ -131,18 +125,18 @@ public class AddInterferenceController implements Initializable {
 
 	String latitude, longitude;
 	AddressComboBoxController addressCbController;
-	Endereco object;
+	Endereco address;
 	private MapController mapController;
 
-	public AddInterferenceController(String urlService, TranslateTransition ttClose, Endereco object, String latitude,
-			String longitude) {
+	private DocumentController documentController;
 
+	public AddInterferenceController(DocumentController documentController, Endereco address, String urlService,
+			TranslateTransition ttClose) {
+
+		this.documentController = documentController;
+		this.address = address;
 		this.urlService = URLUtility.getURLService();
 		this.ttClose = ttClose;
-		this.latitude = latitude;
-		this.longitude = longitude;
-		this.object = object;
-		this.mapController = MapController.getInstance();
 	}
 
 	ObservableList<TipoInterferencia> obsTypesOfInterferences;// = FXCollections.observableArrayList();
@@ -152,6 +146,9 @@ public class AddInterferenceController implements Initializable {
 	ObservableList<TipoAto> obsTypesOfActs;
 
 	ObservableList<Interferencia> obsInterferences = FXCollections.observableArrayList();
+
+	ObservableList<BaciaHidrografica> obsBasins = FXCollections.observableArrayList();
+	ObservableList<UnidadeHidrografica> obsHidrographicUnits;
 
 	AddSubterraneanDetailsController addSubterraneanDetailsController;
 
@@ -172,6 +169,12 @@ public class AddInterferenceController implements Initializable {
 
 		obsTypesOfActs = StaticData.INSTANCE.getTypesOfActs();
 		cbTypeOfAct.setItems(obsTypesOfActs);
+
+		obsBasins = StaticData.INSTANCE.fetchAllHydrographicBasins();
+		cbHydrographicBasin.setItems(obsBasins);
+
+		obsHidrographicUnits = StaticData.INSTANCE.fetchAllHidrographicUnits();
+		cbHydrographicUnit.setItems(obsHidrographicUnits);
 
 		tfLatitude.setText(latitude);
 		tfLongitude.setText(longitude);
@@ -194,14 +197,12 @@ public class AddInterferenceController implements Initializable {
 				tfLatitude.setText(newValue.getLatitude().toString());
 				tfLongitude.setText(newValue.getLongitude().toString());
 
-				System.out.println(newValue.getEndereco());
-
 				Endereco selecteInterferenceAddres = newValue.getEndereco();
-				// Se houver endereço relacionado com a interferência, preencher o combobox do endereço
-				if (selecteInterferenceAddres!=null) {
+				// Se houver endereço relacionado com a interferência, preencher o combobox do
+				// endereço
+				if (selecteInterferenceAddres != null) {
 					addressCbController.fillAndSelectComboBox(newValue.getEndereco());
 				}
-				
 
 				TipoInterferencia ti = newValue.getTipoInterferencia();
 				cbTypeOfInterference.getSelectionModel().select(ti);
@@ -217,6 +218,38 @@ public class AddInterferenceController implements Initializable {
 
 				TipoAto ta = newValue.getTipoAto();
 				cbTypeOfAct.getSelectionModel().select(ta);
+				// select hydrographic basin
+				BaciaHidrografica hb = newValue.getBaciaHidrografica();
+
+				if (hb != null) {
+					for (BaciaHidrografica obsBasin : obsBasins) {
+						// Comparar os ObjectIds (substitua getId() pelo nome real do método)
+						if (obsBasin.getObjectid().equals(hb.getObjectid())) {
+							// Selecionar o item correspondente no ComboBox
+							cbHydrographicBasin.getSelectionModel().select(obsBasin);
+							break; // Parar após o primeiro item encontrado
+						}
+					}
+
+				} else {
+					cbHydrographicBasin.getSelectionModel().clearSelection();
+				}
+
+				// select hydrographic unit
+				UnidadeHidrografica hu = newValue.getUnidadeHidrografica();
+
+				if (hu != null) {
+					for (UnidadeHidrografica obsUnit : obsHidrographicUnits) {
+						// Comparar os ObjectIds (substitua getId() pelo nome real do método)
+						if (obsUnit.getObjectid().equals(hu.getObjectid())) {
+							// Selecionar o item correspondente no ComboBox
+							cbHydrographicUnit.getSelectionModel().select(obsUnit);
+							break; // Parar após o primeiro item encontrado
+						}
+					}
+				} else {
+					cbHydrographicUnit.getSelectionModel().clearSelection();
+				}
 
 				// Envia as finalidades para o controlador AddSubterraneanDetailsController
 				Set<Finalidade> purpouses = newValue.getFinalidades();
@@ -226,6 +259,8 @@ public class AddInterferenceController implements Initializable {
 				Set<Demanda> demands = newValue.getDemandas();
 
 				addSubterraneanDetailsController.fillDemandsDetails(demands);
+
+				addSubterraneanDetailsController.fillAttributes(newValue);
 
 			} else {
 
@@ -241,16 +276,27 @@ public class AddInterferenceController implements Initializable {
 
 		// Fechar tela
 		btnClose.setOnAction(e -> {
+
 			ttClose.play();
 
-			// updateComboBox(selectedEndereco);
+			Interferencia selectedObject = tableView.getSelectionModel().getSelectedItem();
+
+			if (this.address == null) {
+				// Alerta (Toast) de sucesso na edi��o
+				Node source = (Node) e.getSource();
+				Stage ownerStage = (Stage) source.getScene().getWindow();
+				String toastMsg = "Selecione um endereço !!!";
+				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+			} else {
+				this.documentController.receiveAddressAndInterference(this.address, selectedObject);
+			}
 
 		});
 
 		// Ao abrir, verifica se object enviado é nulo, se não preenche combobox
 		// cbAddress.
-		if (object != null) {
-			addressCbController.fillAndSelectComboBox(object);
+		if (address != null) {
+			addressCbController.fillAndSelectComboBox(address);
 		}
 
 		btnSave.setOnAction(event -> save(event));
@@ -258,6 +304,56 @@ public class AddInterferenceController implements Initializable {
 		btnSearch.setOnAction(event -> fetchByKeyword(event));
 		btnDelete.setOnAction(event -> delete(event));
 		btnNew.setOnAction(event -> clearAllComponents());
+		btnRefresh.setOnAction(event -> {
+
+			String lat = tfLatitude.getText();
+			String lng = tfLongitude.getText();
+
+			if (lat != null && lng != null) {
+				Set<BaciaHidrografica> basis = findBhByPoint(lat, lng);
+
+				// Iterar e no primeiro resultado buscar este valor na observable list e
+				// selecionar.
+
+				if (basis != null) {
+					for (BaciaHidrografica basin : basis) {
+						// Iterar sobre o ObservableList e encontrar o primeiro item correspondente
+						for (BaciaHidrografica obsBasin : obsBasins) {
+							// Comparar os ObjectIds (substitua getId() pelo nome real do método)
+							if (obsBasin.getObjectid().equals(basin.getObjectid())) {
+								// Selecionar o item correspondente no ComboBox
+								cbHydrographicBasin.getSelectionModel().select(obsBasin);
+								break; // Parar após o primeiro item encontrado
+							}
+						}
+					}
+				}
+
+				Set<UnidadeHidrografica> units = findUhByPoint(lat, lng);
+
+				if (units != null) {
+					for (UnidadeHidrografica obj : units) {
+						// Iterar sobre o ObservableList e encontrar o primeiro item correspondente
+						for (UnidadeHidrografica obsUnit : obsHidrographicUnits) {
+							// Comparar os ObjectIds (substitua getId() pelo nome real do método)
+							if (obsUnit.getObjectid().equals(obj.getObjectid())) {
+								// Selecionar o item correspondente no ComboBox
+								cbHydrographicUnit.getSelectionModel().select(obsUnit);
+								break; // Parar após o primeiro item encontrado
+							}
+						}
+					}
+				}
+
+			} else {
+				// Informa sucesso em deletar
+				Node source = (Node) tfLatitude;
+				Stage ownerStage = (Stage) source.getScene().getWindow();
+				String toastMsg = "Preencha as coordenadas para buscar a bacia hidrográfica !!!";
+				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.WARNING);
+			}
+
+		});
 
 		// Adicionar try catch para ver se o usuário digitou algo, se há coordenada, se
 		// é válida...
@@ -283,6 +379,9 @@ public class AddInterferenceController implements Initializable {
 
 		});
 
+		tfLatitude.setText("-15.8722731");
+		tfLongitude.setText("-47.9164122 ");
+
 		cbTypeOfInterference.setOnAction((event) -> {
 			TipoInterferencia item = cbTypeOfInterference.getSelectionModel().getSelectedItem();
 
@@ -296,8 +395,56 @@ public class AddInterferenceController implements Initializable {
 				}
 			}
 
+			String lat = tfLatitude.getText();
+			String lng = tfLongitude.getText();
+
+			if (lat != null && lng != null) {
+				Set<BaciaHidrografica> basis = findBhByPoint(lat, lng);
+
+				// Iterar e no primeiro resultado buscar este valor na observable list e
+				// selecionar.
+
+				if (basis != null) {
+					for (BaciaHidrografica basin : basis) {
+						// Iterar sobre o ObservableList e encontrar o primeiro item correspondente
+						for (BaciaHidrografica obsBasin : obsBasins) {
+							// Comparar os ObjectIds (substitua getId() pelo nome real do método)
+							if (obsBasin.getObjectid().equals(basin.getObjectid())) {
+								// Selecionar o item correspondente no ComboBox
+								cbHydrographicBasin.getSelectionModel().select(obsBasin);
+								break; // Parar após o primeiro item encontrado
+							}
+						}
+					}
+				}
+
+				Set<UnidadeHidrografica> units = findUhByPoint(lat, lng);
+
+				if (units != null) {
+					for (UnidadeHidrografica obj : units) {
+						// Iterar sobre o ObservableList e encontrar o primeiro item correspondente
+						for (UnidadeHidrografica obsUnit : obsHidrographicUnits) {
+							// Comparar os ObjectIds (substitua getId() pelo nome real do método)
+							if (obsUnit.getObjectid().equals(obj.getObjectid())) {
+								// Selecionar o item correspondente no ComboBox
+								cbHydrographicUnit.getSelectionModel().select(obsUnit);
+								break; // Parar após o primeiro item encontrado
+							}
+						}
+					}
+				}
+
+			} else {
+				// Informa sucesso em deletar
+				Node source = (Node) tfLatitude;
+				Stage ownerStage = (Stage) source.getScene().getWindow();
+				String toastMsg = "Preencha as coordenadas para buscar a bacia hidrográfica !!!";
+				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.WARNING);
+			}
+
 			// No action needed for other cases, so the else block is removed
 		});
+
 	}
 
 	public void save(ActionEvent event) {
@@ -317,6 +464,12 @@ public class AddInterferenceController implements Initializable {
 				: cbProcessSituation.getValue();
 
 		TipoAto typeOfAct = cbTypeOfAct.selectionModelProperty().get().isEmpty() ? null : cbTypeOfAct.getValue();
+
+		BaciaHidrografica hydrographicBasin = cbHydrographicBasin.selectionModelProperty().get().isEmpty() ? null
+				: cbHydrographicBasin.getValue();
+
+		UnidadeHidrografica hydrographicUnit = cbHydrographicUnit.selectionModelProperty().get().isEmpty() ? null
+				: cbHydrographicUnit.getValue();
 
 		String latitude = tfLatitude.getText();
 		String longitude = tfLongitude.getText();
@@ -381,11 +534,22 @@ public class AddInterferenceController implements Initializable {
 			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
 
 			// É obrigatório o tipo de poço, então o objeto retornará nulo se não escolher
-		} else if (subterraneanAttributes == null) {
+		} else if (hydrographicBasin == null) {
+			System.out.println(JsonConverter.convertObjectToJson(hydrographicBasin));
+
 			// Alerta (Toast) de sucesso na edi��o
 			Node source = (Node) event.getSource();
 			Stage ownerStage = (Stage) source.getScene().getWindow();
-			String toastMsg = "Selecione o Tipo de Poço!!!";
+			String toastMsg = "Selecione a Bacia Hidrográfica!!!";
+			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+		} else if (hydrographicUnit == null) {
+
+			System.out.println(JsonConverter.convertObjectToJson(hydrographicUnit));
+
+			// Alerta (Toast) de sucesso na edi��o
+			Node source = (Node) event.getSource();
+			Stage ownerStage = (Stage) source.getScene().getWindow();
+			String toastMsg = "Selecione a Unidade Hidrográfica!!!";
 			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
 		}
 
@@ -400,6 +564,10 @@ public class AddInterferenceController implements Initializable {
 				Subterranea newInterference = new Subterranea(Double.parseDouble(latitude),
 						Double.parseDouble(longitude), address, typeOfInterference, typeOfGrant, subtypeOfGrant,
 						processSituation, typeOfAct, purpouses, demands);
+				// Só precisa enviar um atributo, o objectid.
+				newInterference.setBaciaHidrografica(new BaciaHidrografica(hydrographicBasin.getObjectid()));
+				// Só precisa enviar um atributo, o objectid.
+				newInterference.setUnidadeHidrografica(new UnidadeHidrografica(hydrographicUnit.getObjectid()));
 
 				// Atributos da interferência subterrânea
 				newInterference.setCaesb(subterraneanAttributes.getCaesb());
@@ -410,6 +578,9 @@ public class AddInterferenceController implements Initializable {
 				newInterference.setVazaoSistema(subterraneanAttributes.getVazaoSistema());
 				newInterference.setVazaoTeste(subterraneanAttributes.getVazaoTeste());
 				newInterference.setTipoPoco(subterraneanAttributes.getTipoPoco());
+				newInterference.setSistema(subterraneanAttributes.getSistema());
+				newInterference.setSubsistema(subterraneanAttributes.getSubsistema());
+				newInterference.setCodPlan(subterraneanAttributes.getCodPlan());
 
 				ServiceResponse<?> response = service.save(newInterference);
 
@@ -475,6 +646,15 @@ public class AddInterferenceController implements Initializable {
 		String latitude = tfLatitude.getText();
 		String longitude = tfLongitude.getText();
 
+		TipoInterferencia typeOfInterference = cbTypeOfInterference.selectionModelProperty().get().isEmpty() ? null
+				: cbTypeOfInterference.getValue();
+
+		BaciaHidrografica hydrographicBasin = cbHydrographicBasin.selectionModelProperty().get().isEmpty() ? null
+				: cbHydrographicBasin.getValue();
+
+		UnidadeHidrografica hydrographicUnit = cbHydrographicUnit.selectionModelProperty().get().isEmpty() ? null
+				: cbHydrographicUnit.getValue();
+
 		// Edita objeto com novos valores
 		selectedObject.setLatitude(Double.parseDouble(latitude));
 		selectedObject.setLongitude(Double.parseDouble(longitude));
@@ -486,36 +666,134 @@ public class AddInterferenceController implements Initializable {
 		selectedObject.setSituacaoProcesso(processSituation);
 		selectedObject.setTipoAto(typeOfAct);
 
-		try {
-			InterferenciaService service = new InterferenciaService(urlService);
+		Subterranea subterraneanAttributes = null;
 
-			// Requisicao de edicao e reposta
-			ServiceResponse<?> response = service.update(selectedObject);
+		if (addSubterraneanDetailsController != null) {
+			subterraneanAttributes = addSubterraneanDetailsController.getSubterraneanAttributes();
+		}
 
-			if (response.getResponseCode() == 200) {
-				// Alerta (Toast) de sucesso na edi��o
-				Node source = (Node) event.getSource();
-				Stage ownerStage = (Stage) source.getScene().getWindow();
-				String toastMsg = "Sucesso!";
-				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.SUCCESS);
+		// Verifica se o endereço está vazio.
+		if (address == null) {
 
-				tableView.getItems().remove(selectedObject);
-				// Converte objeto editado para Json
-				Interferencia jsonObject = new Gson().fromJson((String) response.getResponseBody(),
-						Interferencia.class);
-				// Adiciona objeto editado como primeiro �tem ma fila na table view
-				tableView.getItems().add(0, jsonObject);
-				// Seleciona o objeto editado na table view
-				tableView.getSelectionModel().select(jsonObject);
+			Node source = (Node) event.getSource();
+			Stage ownerStage = (Stage) source.getScene().getWindow();
+			String toastMsg = "Endereço vazio!";
+			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+		} else if (latitude.isEmpty() || longitude.isEmpty()) {
 
-			} else {
+			Node source = (Node) event.getSource();
+			Stage ownerStage = (Stage) source.getScene().getWindow();
+			String toastMsg = "Preencha a Latitude e Longitude!";
+			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+
+		} // Verifica se o tipo de interferência está vazio.
+		else if (typeOfInterference == null) {
+
+			Node source = (Node) event.getSource();
+			Stage ownerStage = (Stage) source.getScene().getWindow();
+			String toastMsg = "Tipo de Interferencia vazio!";
+			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+
+			// Verifica se o tipo de outorga não foi selecionado
+		} else if (typeOfGrant == null) {
+			Node source = (Node) event.getSource();
+			Stage ownerStage = (Stage) source.getScene().getWindow();
+			String toastMsg = "Selecione o Tipo de Outorga!";
+			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+
+		} else if (subtypeOfGrant == null) {
+			Node source = (Node) event.getSource();
+			Stage ownerStage = (Stage) source.getScene().getWindow();
+			String toastMsg = "Selecione o Subtipo de Outorga!";
+			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+
+		} else if (processSituation == null) {
+			Node source = (Node) event.getSource();
+			Stage ownerStage = (Stage) source.getScene().getWindow();
+			String toastMsg = "Selecione a Situação do Processo!";
+			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+		} else if (typeOfAct == null) {
+			Node source = (Node) event.getSource();
+			Stage ownerStage = (Stage) source.getScene().getWindow();
+			String toastMsg = "Selecione o Tipo de Ato!";
+			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+
+			// É obrigatório o tipo de poço, então o objeto retornará nulo se não escolher
+		} else if (hydrographicBasin == null) {
+
+			// Alerta (Toast) de sucesso na edi��o
+			Node source = (Node) event.getSource();
+			Stage ownerStage = (Stage) source.getScene().getWindow();
+			String toastMsg = "Selecione a Bacia Hidrográfica!!!";
+			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+		} else if (hydrographicUnit == null) {
+
+			// Alerta (Toast) de sucesso na edi��o
+			Node source = (Node) event.getSource();
+			Stage ownerStage = (Stage) source.getScene().getWindow();
+			String toastMsg = "Selecione a Unidade Hidrográfica!!!";
+			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+		}
+
+		// If Subterrâneo
+		else if (selectedObject instanceof Subterranea) {
+			Subterranea subterranea = (Subterranea) selectedObject;
+
+			// Set specific attributes for subterranean interference
+			subterranea.setCaesb(subterraneanAttributes.getCaesb());
+			subterranea.setNivelEstatico(subterraneanAttributes.getNivelEstatico());
+			subterranea.setNivelDinamico(subterraneanAttributes.getNivelDinamico());
+			subterranea.setProfundidade(subterraneanAttributes.getProfundidade());
+			subterranea.setVazaoOutorgavel(subterraneanAttributes.getVazaoOutorgavel());
+			subterranea.setVazaoSistema(subterraneanAttributes.getVazaoSistema());
+			subterranea.setVazaoTeste(subterraneanAttributes.getVazaoTeste());
+			subterranea.setTipoPoco(subterraneanAttributes.getTipoPoco());
+			subterranea.setSistema(subterraneanAttributes.getSistema());
+			subterranea.setSubsistema(subterraneanAttributes.getSubsistema());
+			subterranea.setCodPlan(subterraneanAttributes.getCodPlan());
+
+			// Só precisa enviar um atributo, o objectid.
+			subterranea.setBaciaHidrografica(new BaciaHidrografica(hydrographicBasin.getObjectid()));
+			// Só precisa enviar um atributo, o objectid.
+			subterranea.setUnidadeHidrografica(new UnidadeHidrografica(hydrographicUnit.getObjectid()));
+
+			try {
+				InterferenciaService service = new InterferenciaService(urlService);
+
+				// Requisicao de edicao e reposta
+				ServiceResponse<?> response = service.update(subterranea);
+
+				if (response.getResponseCode() == 200) {
+					// Alerta (Toast) de sucesso na edi��o
+					Node source = (Node) event.getSource();
+					Stage ownerStage = (Stage) source.getScene().getWindow();
+					String toastMsg = "Sucesso!";
+					utilities.Toast.makeText(ownerStage, toastMsg, ToastType.SUCCESS);
+
+					tableView.getItems().remove(selectedObject);
+					// Converte objeto editado para Json
+					Interferencia jsonObject = new Gson().fromJson((String) response.getResponseBody(),
+							Interferencia.class);
+					// Adiciona objeto editado como primeiro �tem ma fila na table view
+					tableView.getItems().add(0, jsonObject);
+					// Seleciona o objeto editado na table view
+					tableView.getSelectionModel().select(jsonObject);
+
+				} else {
+					// Display an error toast or alert
+					// System.out.println(serviceResponse.getResponseCode());
+				}
+
+			} catch (Exception e) {
 				// Display an error toast or alert
-				// System.out.println(serviceResponse.getResponseCode());
+				e.printStackTrace();
 			}
 
-		} catch (Exception e) {
-			// Display an error toast or alert
-			e.printStackTrace();
+		}
+		// If not subterrâneo
+		else {
+			// Handle the case where selectedObject is not a Subterranea instance
+			System.out.println("Selected object is not a Subterranea instance.");
 		}
 	}
 
@@ -542,6 +820,48 @@ public class AddInterferenceController implements Initializable {
 		}
 	}
 
+	/**
+	 * Busca uma bacia de acordo com o ponto indicado.
+	 * 
+	 * @param lat
+	 * @param lng
+	 * @return
+	 */
+	public Set<BaciaHidrografica> findBhByPoint(String lat, String lng) {
+
+		try {
+
+			BaciaHidrograficaService service = new BaciaHidrograficaService(urlService);
+
+			Set<BaciaHidrografica> list = service.findBhByPoint(lat, lng);
+
+			System.out.println(JsonConverter.convertObjectToJson(list));
+			return list;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+
+	}
+
+	public Set<UnidadeHidrografica> findUhByPoint(String lat, String lng) {
+
+		try {
+
+			UnidadeHidrograficaService service = new UnidadeHidrograficaService(urlService);
+
+			Set<UnidadeHidrografica> set = service.findByPoint(lat, lng);
+
+			return set;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+
+	}
+
 	public void delete(ActionEvent event) {
 
 		Interferencia selected = tableView.getSelectionModel().getSelectedItem();
@@ -549,8 +869,6 @@ public class AddInterferenceController implements Initializable {
 		try {
 			InterferenciaService service = new InterferenciaService(urlService);
 
-			System.out.println(
-					selected.getTipoInterferencia().getId() + " desc " + selected.getTipoInterferenciaDescricao());
 			// É preciso informar o tipo de
 			ServiceResponse<?> response = service.deleteById(selected.getId(), selected.getTipoInterferencia().getId());
 
@@ -585,6 +903,7 @@ public class AddInterferenceController implements Initializable {
 		tfLatitude.clear();
 		tfLongitude.clear();
 		cbTypeOfInterference.getSelectionModel().clearSelection();
+		cbHydrographicBasin.getSelectionModel().clearSelection();
 
 	}
 
@@ -605,7 +924,7 @@ public class AddInterferenceController implements Initializable {
 	/**
 	 * Atualiza as coordenadas dos TextFields de acordo com o clique no mapa.
 	 * 
-	 * @param interferencia
+	 * interferencia
 	 */
 	public void updateCoordinates(Interferencia interferencia) {
 
@@ -619,13 +938,20 @@ public class AddInterferenceController implements Initializable {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/components/AddSubterraneanDetails.fxml"));
 			// Setting the custom controller factory for NavigationController
 			loader.setControllerFactory(controllerClass -> {
+
 				if (controllerClass == NavigationController.class) {
+
 					addSubterraneanDetailsController = new AddSubterraneanDetailsController();
+
+					addSubterraneanDetailsController.setAddInterferenceController(this);
+
 					return addSubterraneanDetailsController;
 				} else {
 					try {
 						addSubterraneanDetailsController = (AddSubterraneanDetailsController) controllerClass
 								.getDeclaredConstructor().newInstance();
+
+						addSubterraneanDetailsController.setAddInterferenceController(this);
 						return addSubterraneanDetailsController;
 					} catch (Exception e) {
 						throw new RuntimeException(e);
@@ -646,6 +972,45 @@ public class AddInterferenceController implements Initializable {
 			AnchorPane.setLeftAnchor(anchorPane, 10.0);
 			AnchorPane.setRightAnchor(anchorPane, 10.0);
 		}
+	}
+
+	/**
+	 * Captura variáveis necessárias para obter o sistema (P1, Paranoá ) e
+	 * subsistema (R3/Q3, ...) e o código do sistema.
+	 */
+	public SubsystemCodeAttributes getSubsystemCodeAttributes() {
+		// Retrieve the values from the UI
+		String lat = tfLatitude.getText();
+		String lng = tfLongitude.getText();
+		TipoInterferencia ti = cbTypeOfInterference.getSelectionModel().getSelectedItem();
+
+		// Check if any attribute is null or empty
+		if (lat == null || lat.trim().isEmpty()) {
+			// Informa sucesso em deletar
+			Node source = (Node) tfLatitude;
+			Stage ownerStage = (Stage) source.getScene().getWindow();
+			String toastMsg = "Preencha a latitude !!!";
+			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+			return null;
+		}
+		if (lng == null || lng.trim().isEmpty()) {
+			// Informa sucesso em deletar
+			Node source = (Node) tfLatitude;
+			Stage ownerStage = (Stage) source.getScene().getWindow();
+			String toastMsg = "Preencha a longitude !!!";
+			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+			return null;
+		}
+		if (ti == null) {
+			Node source = (Node) tfLatitude;
+			Stage ownerStage = (Stage) source.getScene().getWindow();
+			String toastMsg = "Preencha o Tipo de Interferência !!!";
+			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+			return null;
+		}
+
+		// If all attributes are valid, return the object
+		return new SubsystemCodeAttributes(lat, lng, ti);
 	}
 
 }

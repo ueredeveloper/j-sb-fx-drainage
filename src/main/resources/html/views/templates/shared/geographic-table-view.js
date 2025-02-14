@@ -3,14 +3,8 @@
  * @descricao Dados geográficos como coordenada, bacia e subbacia
  * @diretorio shared
  * @arquivo geographic-table-view.js
- * @id 36
- * 
- * 
- * 
- * 
- * 
- * 
- * 
+ * @id 
+ *
  *
  */
 
@@ -51,9 +45,7 @@ class GeographicTableView {
 
     }
 
-    update (documento){
-
-        let interferencia = documento.endereco.interferencias[0];
+    update (interferencia){
 
         let ns = document.getElementsByClassName('inter-nome');
 
@@ -64,13 +56,13 @@ class GeographicTableView {
         let bhs = document.getElementsByClassName('inter-bh');
 
     	Array.from(bhs).forEach(element => {
-    		element.textContent = interferencia.baciaHidrografica?.nome || 'XXX';
+    		element.textContent = interferencia.baciaHidrografica?.baciaNome || 'XXX';
     	});
 
         let uhs = document.getElementsByClassName('inter-uh');
 
     	Array.from(uhs).forEach(element => {
-    		element.textContent =  interferencia.unidadeHidrografica?.nome || 'XXX';
+    		element.textContent =  interferencia.unidadeHidrografica?.uhNome || 'XXX';
     	});
 
         let lats = document.getElementsByClassName('inter-latitude');

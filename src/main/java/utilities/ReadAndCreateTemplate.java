@@ -95,7 +95,7 @@ public class ReadAndCreateTemplate {
 	        ClassLoader classLoader = getClass().getClassLoader();
 	        InputStream inputStream = classLoader.getResourceAsStream(fullPath);
 	        
-	        System.out.println(inputStream);
+	       // System.out.println(inputStream);
 	        
 	        if (inputStream == null) {
 	            throw new IllegalArgumentException("File not found: "  + fullPath);

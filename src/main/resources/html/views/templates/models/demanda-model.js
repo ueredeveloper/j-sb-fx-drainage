@@ -3,17 +3,8 @@
  * @diretorio models
  * @descricao Modelos de Tabelas
  * @arquivo demanda-model.js
- * @id 27
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
+ * @id 
+ *
  *
  */
  
@@ -60,13 +51,12 @@ class DemandaModel {
     
     // Função para formatar o número com ponto separador de milhar
 	formatNumber(value) {
-		console.log(value)
 		return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 	}
 	
 	// Muda o ponto do valor double para vígula do float. Ex: 20.00 para 20,00
 	maskDoubleToFloat(value) {
-		return parseFloat(value).toFixed(2).toString().replace('.', ',');
+		return parseFloat(value).toFixed(2)?.toString().replace('.', ',');
 	}
 
 }

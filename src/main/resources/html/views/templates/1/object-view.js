@@ -3,14 +3,7 @@
  * @descricao Objeto do despacho
  * @diretorio 1
  * @arquivo object-view.js
- * @id 3
- * 
- * 
- * 
- * 
- * 
- * 
- *
+ * @id 
  */
 
 class ObjectView {
@@ -35,7 +28,7 @@ class ObjectView {
 			<p>Art. 1º Emitir outorga prévia para reservar o direito de uso de água subterrânea a <b><span class="us-nome"></span>
 			</b>, 
 			CPF/CNPJ n.º <b><span class="us-cpf-cnpj"></span></b>, mediante a perfuração de 01 (um) poço 
-			<span class="int-tipo-poco"></span>, 
+			<span class="inter-tipo-poco"></span>, 
 			para fins de <span class="int-finalidades"></span>, localizado no endereço: <span class="end-logradouro"></span> - 
 			Distrito Federal, 
 			tendo a seguinte característica:</p>
@@ -46,9 +39,10 @@ class ObjectView {
 
 
 	}
-	update(documento) {
-
-		let interferencia = documento.endereco.interferencias[0];
+	update(docJson, interJson) {
+		
+		let documento = docJson;
+		let interferencia = interJson;
 		let finalidades = interferencia.finalidades;
 		let usuario = documento.usuarios[0];
 		let endereco = documento.endereco;
@@ -60,12 +54,12 @@ class ObjectView {
 			element.innerHTML = innerHTML;
 		});
 
-		let __items = document.getElementsByClassName('int-tipo-poco');
+		        // Tipo de Poço
+        let __items = document.getElementsByClassName('inter-tipo-poco');
+        Array.from(__items).forEach(element => {
+            element.textContent = new InterferenciaModel().getTipoPoco(interferencia)
+        });
 
-		Array.from(__items).forEach(element => {
-			let innerHTML = documento.endereco.interferencias[0]?.tipoPoco?.descricao || 'XXX';
-			element.innerHTML = innerHTML;
-		});
 
 		let ___items = document.getElementsByClassName('end-logradouro');
 		// Converte o resultado para array e atualiza
@@ -82,7 +76,6 @@ class ObjectView {
 		let _____items = document.getElementsByClassName('us-nome');
 		// Converte o resultado para array e atualiza
 		Array.from(_____items).forEach(element => {
-			console.log('usuario', usuario)
 			element.innerHTML = new UsuarioModel().getNome(usuario);
 		});
 		let ______items = document.getElementsByClassName('us-cpf-cnpj');

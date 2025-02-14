@@ -1,0 +1,1110 @@
+[
+	{
+		"id": 61,
+		"latitude": -15.8722731,
+		"longitude": -47.9164122,
+		"geometry": null,
+		"endereco": {
+			"id": 81,
+			"logradouro": "Condomínio Flórida, Lote 08",
+			"cidade": null,
+			"bairro": null,
+			"cep": null,
+			"interferencias": [
+			],
+			"estado": null
+		},
+		"tipoInterferencia": {
+			"id": 2,
+			"descricao": "Subterrânea",
+			"interferencias": [
+			]
+		},
+		"tipoOutorga": {
+			"id": 2,
+			"descricao": "Outorga Prévia",
+			"interferencias": [
+			]
+		},
+		"subtipoOutorga": {
+			"id": 6,
+			"descricao": "",
+			"interferencias": [
+			]
+		},
+		"situacaoProcesso": {
+			"id": 4,
+			"descricao": "Vencido",
+			"interferencias": [
+			]
+		},
+		"tipoAto": {
+			"id": 4,
+			"descricao": "Registro",
+			"interferencias": [
+			]
+		},
+		"baciaHidrografica": {
+			"objectid": 7,
+			"shapeLeng": null,
+			"baciaCod": null,
+			"baciaNome": "Rio Paranoá",
+			"gdbGeomattrData": null,
+			"shape": null
+		},
+		"unidadeHidrografica": {
+			"objectid": 23,
+			"idBacia": null,
+			"baciaNome": null,
+			"baciaCodi": null,
+			"subbaciaN": null,
+			"uhNome": "Ribeirão do Gama",
+			"uhLabel": null,
+			"uhCodigo": null,
+			"subbciaCo": null,
+			"shapeLeng": null,
+			"shape": null,
+			"areaKmSq": null,
+			"qmmJan": null,
+			"qmmFev": null,
+			"qmmMar": null,
+			"qmmAbr": null,
+			"qmmMai": null,
+			"qmmJun": null,
+			"qmmJul": null,
+			"qmmAgo": null,
+			"qmmSet": null,
+			"qmmOut": null,
+			"qmmNov": null,
+			"qmmDez": null,
+			"rgHidro": null,
+			"gdbGeomattrData": null,
+			"interferencias": [
+			]
+		},
+		"finalidades": [
+			{
+				"id": 210,
+				"finalidade": "a",
+				"subfinalidade": "s",
+				"quantidade": 1.0,
+				"consumo": 2.0,
+				"total": 2.0,
+				"interferencia": null,
+				"tipoFinalidade": {
+					"id": 2,
+					"descricao": null,
+					"finalidades": [
+					],
+					"demandas": [
+					]
+				}
+			},
+			{
+				"id": 211,
+				"finalidade": "s",
+				"subfinalidade": "d",
+				"quantidade": 12.0,
+				"consumo": 23.0,
+				"total": 276.0,
+				"interferencia": null,
+				"tipoFinalidade": {
+					"id": 1,
+					"descricao": null,
+					"finalidades": [
+					],
+					"demandas": [
+					]
+				}
+			},
+			{
+				"id": 212,
+				"finalidade": "s",
+				"subfinalidade": "d",
+				"quantidade": 12.0,
+				"consumo": 23.0,
+				"total": 276.0,
+				"interferencia": null,
+				"tipoFinalidade": {
+					"id": 2,
+					"descricao": null,
+					"finalidades": [
+					],
+					"demandas": [
+					]
+				}
+			},
+			{
+				"id": 213,
+				"finalidade": "a",
+				"subfinalidade": "s",
+				"quantidade": 1.0,
+				"consumo": 2.0,
+				"total": 2.0,
+				"interferencia": null,
+				"tipoFinalidade": {
+					"id": 1,
+					"descricao": null,
+					"finalidades": [
+					],
+					"demandas": [
+					]
+				}
+			}
+		],
+		"demandas": [
+			{
+				"id": 1156,
+				"vazao": 278.0,
+				"tempo": 10,
+				"periodo": 31,
+				"mes": 3,
+				"tipoFinalidade": {
+					"id": 2,
+					"descricao": null,
+					"finalidades": [
+					],
+					"demandas": [
+					]
+				},
+				"interferencia": null
+			},
+			{
+				"id": 1157,
+				"vazao": 278.0,
+				"tempo": 10,
+				"periodo": 31,
+				"mes": 12,
+				"tipoFinalidade": {
+					"id": 1,
+					"descricao": null,
+					"finalidades": [
+					],
+					"demandas": [
+					]
+				},
+				"interferencia": null
+			},
+			{
+				"id": 1158,
+				"vazao": 278.0,
+				"tempo": 10,
+				"periodo": 30,
+				"mes": 6,
+				"tipoFinalidade": {
+					"id": 2,
+					"descricao": null,
+					"finalidades": [
+					],
+					"demandas": [
+					]
+				},
+				"interferencia": null
+			},
+			{
+				"id": 1159,
+				"vazao": 278.0,
+				"tempo": 10,
+				"periodo": 30,
+				"mes": 6,
+				"tipoFinalidade": {
+					"id": 1,
+					"descricao": null,
+					"finalidades": [
+					],
+					"demandas": [
+					]
+				},
+				"interferencia": null
+			},
+			{
+				"id": 1160,
+				"vazao": 278.0,
+				"tempo": 10,
+				"periodo": 28,
+				"mes": 2,
+				"tipoFinalidade": {
+					"id": 1,
+					"descricao": null,
+					"finalidades": [
+					],
+					"demandas": [
+					]
+				},
+				"interferencia": null
+			},
+			{
+				"id": 1161,
+				"vazao": 278.0,
+				"tempo": 10,
+				"periodo": 31,
+				"mes": 8,
+				"tipoFinalidade": {
+					"id": 2,
+					"descricao": null,
+					"finalidades": [
+					],
+					"demandas": [
+					]
+				},
+				"interferencia": null
+			},
+			{
+				"id": 1162,
+				"vazao": 278.0,
+				"tempo": 10,
+				"periodo": 31,
+				"mes": 10,
+				"tipoFinalidade": {
+					"id": 2,
+					"descricao": null,
+					"finalidades": [
+					],
+					"demandas": [
+					]
+				},
+				"interferencia": null
+			},
+			{
+				"id": 1163,
+				"vazao": 278.0,
+				"tempo": 10,
+				"periodo": 30,
+				"mes": 4,
+				"tipoFinalidade": {
+					"id": 1,
+					"descricao": null,
+					"finalidades": [
+					],
+					"demandas": [
+					]
+				},
+				"interferencia": null
+			},
+			{
+				"id": 1164,
+				"vazao": 278.0,
+				"tempo": 10,
+				"periodo": 30,
+				"mes": 9,
+				"tipoFinalidade": {
+					"id": 1,
+					"descricao": null,
+					"finalidades": [
+					],
+					"demandas": [
+					]
+				},
+				"interferencia": null
+			},
+			{
+				"id": 1165,
+				"vazao": 278.0,
+				"tempo": 10,
+				"periodo": 31,
+				"mes": 7,
+				"tipoFinalidade": {
+					"id": 2,
+					"descricao": null,
+					"finalidades": [
+					],
+					"demandas": [
+					]
+				},
+				"interferencia": null
+			},
+			{
+				"id": 1166,
+				"vazao": 278.0,
+				"tempo": 10,
+				"periodo": 31,
+				"mes": 3,
+				"tipoFinalidade": {
+					"id": 1,
+					"descricao": null,
+					"finalidades": [
+					],
+					"demandas": [
+					]
+				},
+				"interferencia": null
+			},
+			{
+				"id": 1167,
+				"vazao": 278.0,
+				"tempo": 10,
+				"periodo": 31,
+				"mes": 1,
+				"tipoFinalidade": {
+					"id": 2,
+					"descricao": null,
+					"finalidades": [
+					],
+					"demandas": [
+					]
+				},
+				"interferencia": null
+			},
+			{
+				"id": 1168,
+				"vazao": 278.0,
+				"tempo": 10,
+				"periodo": 30,
+				"mes": 4,
+				"tipoFinalidade": {
+					"id": 2,
+					"descricao": null,
+					"finalidades": [
+					],
+					"demandas": [
+					]
+				},
+				"interferencia": null
+			},
+			{
+				"id": 1169,
+				"vazao": 278.0,
+				"tempo": 10,
+				"periodo": 31,
+				"mes": 1,
+				"tipoFinalidade": {
+					"id": 1,
+					"descricao": null,
+					"finalidades": [
+					],
+					"demandas": [
+					]
+				},
+				"interferencia": null
+			},
+			{
+				"id": 1170,
+				"vazao": 278.0,
+				"tempo": 10,
+				"periodo": 31,
+				"mes": 5,
+				"tipoFinalidade": {
+					"id": 2,
+					"descricao": null,
+					"finalidades": [
+					],
+					"demandas": [
+					]
+				},
+				"interferencia": null
+			},
+			{
+				"id": 1171,
+				"vazao": 278.0,
+				"tempo": 10,
+				"periodo": 30,
+				"mes": 11,
+				"tipoFinalidade": {
+					"id": 1,
+					"descricao": null,
+					"finalidades": [
+					],
+					"demandas": [
+					]
+				},
+				"interferencia": null
+			},
+			{
+				"id": 1172,
+				"vazao": 278.0,
+				"tempo": 10,
+				"periodo": 31,
+				"mes": 10,
+				"tipoFinalidade": {
+					"id": 1,
+					"descricao": null,
+					"finalidades": [
+					],
+					"demandas": [
+					]
+				},
+				"interferencia": null
+			},
+			{
+				"id": 1173,
+				"vazao": 278.0,
+				"tempo": 10,
+				"periodo": 30,
+				"mes": 11,
+				"tipoFinalidade": {
+					"id": 2,
+					"descricao": null,
+					"finalidades": [
+					],
+					"demandas": [
+					]
+				},
+				"interferencia": null
+			},
+			{
+				"id": 1174,
+				"vazao": 278.0,
+				"tempo": 10,
+				"periodo": 31,
+				"mes": 12,
+				"tipoFinalidade": {
+					"id": 2,
+					"descricao": null,
+					"finalidades": [
+					],
+					"demandas": [
+					]
+				},
+				"interferencia": null
+			},
+			{
+				"id": 1175,
+				"vazao": 278.0,
+				"tempo": 10,
+				"periodo": 31,
+				"mes": 7,
+				"tipoFinalidade": {
+					"id": 1,
+					"descricao": null,
+					"finalidades": [
+					],
+					"demandas": [
+					]
+				},
+				"interferencia": null
+			},
+			{
+				"id": 1176,
+				"vazao": 278.0,
+				"tempo": 10,
+				"periodo": 31,
+				"mes": 5,
+				"tipoFinalidade": {
+					"id": 1,
+					"descricao": null,
+					"finalidades": [
+					],
+					"demandas": [
+					]
+				},
+				"interferencia": null
+			},
+			{
+				"id": 1177,
+				"vazao": 278.0,
+				"tempo": 10,
+				"periodo": 28,
+				"mes": 2,
+				"tipoFinalidade": {
+					"id": 2,
+					"descricao": null,
+					"finalidades": [
+					],
+					"demandas": [
+					]
+				},
+				"interferencia": null
+			},
+			{
+				"id": 1178,
+				"vazao": 278.0,
+				"tempo": 10,
+				"periodo": 30,
+				"mes": 9,
+				"tipoFinalidade": {
+					"id": 2,
+					"descricao": null,
+					"finalidades": [
+					],
+					"demandas": [
+					]
+				},
+				"interferencia": null
+			},
+			{
+				"id": 1179,
+				"vazao": 278.0,
+				"tempo": 10,
+				"periodo": 31,
+				"mes": 8,
+				"tipoFinalidade": {
+					"id": 1,
+					"descricao": null,
+					"finalidades": [
+					],
+					"demandas": [
+					]
+				},
+				"interferencia": null
+			}
+		],
+		"caesb": false,
+		"nivelEstatico": "5",
+		"nivelDinamico": "6",
+		"profundidade": "8",
+		"vazaoOutorgavel": 1,
+		"vazaoSistema": 800,
+		"vazaoTeste": 32,
+		"sistema": null,
+		"subsistema": null,
+		"codPlan": null,
+		"tipoPoco": {
+			"id": 2,
+			"descricao": null
+		}
+	},
+	{
+		"id": 62,
+		"latitude": -15.8722731,
+		"longitude": -47.9164122,
+		"geometry": null,
+		"endereco": {
+			"id": 81,
+			"logradouro": "Condomínio Flórida, Lote 08",
+			"cidade": null,
+			"bairro": null,
+			"cep": null,
+			"interferencias": [
+			],
+			"estado": null
+		},
+		"tipoInterferencia": {
+			"id": 2,
+			"descricao": "Subterrânea",
+			"interferencias": [
+			]
+		},
+		"tipoOutorga": {
+			"id": 2,
+			"descricao": "Outorga Prévia",
+			"interferencias": [
+			]
+		},
+		"subtipoOutorga": {
+			"id": 6,
+			"descricao": "",
+			"interferencias": [
+			]
+		},
+		"situacaoProcesso": {
+			"id": 1,
+			"descricao": "Arquivado",
+			"interferencias": [
+			]
+		},
+		"tipoAto": {
+			"id": 2,
+			"descricao": "Portaria",
+			"interferencias": [
+			]
+		},
+		"baciaHidrografica": {
+			"objectid": 7,
+			"shapeLeng": null,
+			"baciaCod": null,
+			"baciaNome": "Rio Paranoá",
+			"gdbGeomattrData": null,
+			"shape": null
+		},
+		"unidadeHidrografica": {
+			"objectid": 23,
+			"idBacia": null,
+			"baciaNome": null,
+			"baciaCodi": null,
+			"subbaciaN": null,
+			"uhNome": "Ribeirão do Gama",
+			"uhLabel": null,
+			"uhCodigo": null,
+			"subbciaCo": null,
+			"shapeLeng": null,
+			"shape": null,
+			"areaKmSq": null,
+			"qmmJan": null,
+			"qmmFev": null,
+			"qmmMar": null,
+			"qmmAbr": null,
+			"qmmMai": null,
+			"qmmJun": null,
+			"qmmJul": null,
+			"qmmAgo": null,
+			"qmmSet": null,
+			"qmmOut": null,
+			"qmmNov": null,
+			"qmmDez": null,
+			"rgHidro": null,
+			"gdbGeomattrData": null,
+			"interferencias": [
+			]
+		},
+		"finalidades": [
+			{
+				"id": 231,
+				"finalidade": "Aut fin 1 22 444 66",
+				"subfinalidade": "aut fin sub1 22 444 66 ",
+				"quantidade": 17.0,
+				"consumo": 28.0,
+				"total": 39.0,
+				"interferencia": null,
+				"tipoFinalidade": {
+					"id": 2,
+					"descricao": null,
+					"finalidades": [
+					],
+					"demandas": [
+					]
+				}
+			},
+			{
+				"id": 219,
+				"finalidade": "Req fin 1 33 44",
+				"subfinalidade": "req sub fin 1 33 44",
+				"quantidade": 1.0,
+				"consumo": 2.0,
+				"total": 4.0,
+				"interferencia": null,
+				"tipoFinalidade": {
+					"id": 1,
+					"descricao": null,
+					"finalidades": [
+					],
+					"demandas": [
+					]
+				}
+			},
+			{
+				"id": 232,
+				"finalidade": "Req 2",
+				"subfinalidade": "re s 2",
+				"quantidade": 4.0,
+				"consumo": 4.0,
+				"total": 4.0,
+				"interferencia": null,
+				"tipoFinalidade": {
+					"id": 1,
+					"descricao": null,
+					"finalidades": [
+					],
+					"demandas": [
+					]
+				}
+			},
+			{
+				"id": 233,
+				"finalidade": "Aut 22",
+				"subfinalidade": "Aut sub 22",
+				"quantidade": 45.0,
+				"consumo": 78.0,
+				"total": 456.0,
+				"interferencia": null,
+				"tipoFinalidade": {
+					"id": 2,
+					"descricao": null,
+					"finalidades": [
+					],
+					"demandas": [
+					]
+				}
+			}
+		],
+		"demandas": [
+			{
+				"id": 1191,
+				"vazao": 495.0,
+				"tempo": 3,
+				"periodo": 31,
+				"mes": 10,
+				"tipoFinalidade": {
+					"id": 2,
+					"descricao": null,
+					"finalidades": [
+					],
+					"demandas": [
+					]
+				},
+				"interferencia": null
+			},
+			{
+				"id": 1195,
+				"vazao": 495.0,
+				"tempo": 3,
+				"periodo": 31,
+				"mes": 1,
+				"tipoFinalidade": {
+					"id": 2,
+					"descricao": null,
+					"finalidades": [
+					],
+					"demandas": [
+					]
+				},
+				"interferencia": null
+			},
+			{
+				"id": 1196,
+				"vazao": 495.0,
+				"tempo": 3,
+				"periodo": 31,
+				"mes": 12,
+				"tipoFinalidade": {
+					"id": 2,
+					"descricao": null,
+					"finalidades": [
+					],
+					"demandas": [
+					]
+				},
+				"interferencia": null
+			},
+			{
+				"id": 1201,
+				"vazao": 495.0,
+				"tempo": 3,
+				"periodo": 30,
+				"mes": 11,
+				"tipoFinalidade": {
+					"id": 2,
+					"descricao": null,
+					"finalidades": [
+					],
+					"demandas": [
+					]
+				},
+				"interferencia": null
+			},
+			{
+				"id": 1181,
+				"vazao": 495.0,
+				"tempo": 3,
+				"periodo": 31,
+				"mes": 5,
+				"tipoFinalidade": {
+					"id": 2,
+					"descricao": null,
+					"finalidades": [
+					],
+					"demandas": [
+					]
+				},
+				"interferencia": null
+			},
+			{
+				"id": 1194,
+				"vazao": 495.0,
+				"tempo": 3,
+				"periodo": 30,
+				"mes": 9,
+				"tipoFinalidade": {
+					"id": 2,
+					"descricao": null,
+					"finalidades": [
+					],
+					"demandas": [
+					]
+				},
+				"interferencia": null
+			},
+			{
+				"id": 1197,
+				"vazao": 495.0,
+				"tempo": 3,
+				"periodo": 31,
+				"mes": 8,
+				"tipoFinalidade": {
+					"id": 2,
+					"descricao": null,
+					"finalidades": [
+					],
+					"demandas": [
+					]
+				},
+				"interferencia": null
+			},
+			{
+				"id": 1200,
+				"vazao": 495.0,
+				"tempo": 3,
+				"periodo": 31,
+				"mes": 3,
+				"tipoFinalidade": {
+					"id": 2,
+					"descricao": null,
+					"finalidades": [
+					],
+					"demandas": [
+					]
+				},
+				"interferencia": null
+			},
+			{
+				"id": 1185,
+				"vazao": 8.0,
+				"tempo": 20,
+				"periodo": 30,
+				"mes": 9,
+				"tipoFinalidade": {
+					"id": 1,
+					"descricao": null,
+					"finalidades": [
+					],
+					"demandas": [
+					]
+				},
+				"interferencia": null
+			},
+			{
+				"id": 1186,
+				"vazao": 8.0,
+				"tempo": 20,
+				"periodo": 28,
+				"mes": 2,
+				"tipoFinalidade": {
+					"id": 1,
+					"descricao": null,
+					"finalidades": [
+					],
+					"demandas": [
+					]
+				},
+				"interferencia": null
+			},
+			{
+				"id": 1189,
+				"vazao": 8.0,
+				"tempo": 20,
+				"periodo": 31,
+				"mes": 12,
+				"tipoFinalidade": {
+					"id": 1,
+					"descricao": null,
+					"finalidades": [
+					],
+					"demandas": [
+					]
+				},
+				"interferencia": null
+			},
+			{
+				"id": 1187,
+				"vazao": 495.0,
+				"tempo": 3,
+				"periodo": 30,
+				"mes": 6,
+				"tipoFinalidade": {
+					"id": 2,
+					"descricao": null,
+					"finalidades": [
+					],
+					"demandas": [
+					]
+				},
+				"interferencia": null
+			},
+			{
+				"id": 1188,
+				"vazao": 495.0,
+				"tempo": 3,
+				"periodo": 30,
+				"mes": 4,
+				"tipoFinalidade": {
+					"id": 2,
+					"descricao": null,
+					"finalidades": [
+					],
+					"demandas": [
+					]
+				},
+				"interferencia": null
+			},
+			{
+				"id": 1192,
+				"vazao": 495.0,
+				"tempo": 3,
+				"periodo": 31,
+				"mes": 7,
+				"tipoFinalidade": {
+					"id": 2,
+					"descricao": null,
+					"finalidades": [
+					],
+					"demandas": [
+					]
+				},
+				"interferencia": null
+			},
+			{
+				"id": 1184,
+				"vazao": 8.0,
+				"tempo": 20,
+				"periodo": 31,
+				"mes": 1,
+				"tipoFinalidade": {
+					"id": 1,
+					"descricao": null,
+					"finalidades": [
+					],
+					"demandas": [
+					]
+				},
+				"interferencia": null
+			},
+			{
+				"id": 1190,
+				"vazao": 8.0,
+				"tempo": 20,
+				"periodo": 30,
+				"mes": 4,
+				"tipoFinalidade": {
+					"id": 1,
+					"descricao": null,
+					"finalidades": [
+					],
+					"demandas": [
+					]
+				},
+				"interferencia": null
+			},
+			{
+				"id": 1193,
+				"vazao": 8.0,
+				"tempo": 20,
+				"periodo": 31,
+				"mes": 5,
+				"tipoFinalidade": {
+					"id": 1,
+					"descricao": null,
+					"finalidades": [
+					],
+					"demandas": [
+					]
+				},
+				"interferencia": null
+			},
+			{
+				"id": 1198,
+				"vazao": 8.0,
+				"tempo": 20,
+				"periodo": 30,
+				"mes": 6,
+				"tipoFinalidade": {
+					"id": 1,
+					"descricao": null,
+					"finalidades": [
+					],
+					"demandas": [
+					]
+				},
+				"interferencia": null
+			},
+			{
+				"id": 1199,
+				"vazao": 8.0,
+				"tempo": 20,
+				"periodo": 31,
+				"mes": 8,
+				"tipoFinalidade": {
+					"id": 1,
+					"descricao": null,
+					"finalidades": [
+					],
+					"demandas": [
+					]
+				},
+				"interferencia": null
+			},
+			{
+				"id": 1202,
+				"vazao": 8.0,
+				"tempo": 20,
+				"periodo": 31,
+				"mes": 3,
+				"tipoFinalidade": {
+					"id": 1,
+					"descricao": null,
+					"finalidades": [
+					],
+					"demandas": [
+					]
+				},
+				"interferencia": null
+			},
+			{
+				"id": 1180,
+				"vazao": 8.0,
+				"tempo": 20,
+				"periodo": 31,
+				"mes": 10,
+				"tipoFinalidade": {
+					"id": 1,
+					"descricao": null,
+					"finalidades": [
+					],
+					"demandas": [
+					]
+				},
+				"interferencia": null
+			},
+			{
+				"id": 1182,
+				"vazao": 8.0,
+				"tempo": 20,
+				"periodo": 30,
+				"mes": 11,
+				"tipoFinalidade": {
+					"id": 1,
+					"descricao": null,
+					"finalidades": [
+					],
+					"demandas": [
+					]
+				},
+				"interferencia": null
+			},
+			{
+				"id": 1183,
+				"vazao": 8.0,
+				"tempo": 20,
+				"periodo": 31,
+				"mes": 7,
+				"tipoFinalidade": {
+					"id": 1,
+					"descricao": null,
+					"finalidades": [
+					],
+					"demandas": [
+					]
+				},
+				"interferencia": null
+			},
+			{
+				"id": 1203,
+				"vazao": 495.0,
+				"tempo": 3,
+				"periodo": 28,
+				"mes": 2,
+				"tipoFinalidade": {
+					"id": 2,
+					"descricao": null,
+					"finalidades": [
+					],
+					"demandas": [
+					]
+				},
+				"interferencia": null
+			}
+		],
+		"caesb": false,
+		"nivelEstatico": "6",
+		"nivelDinamico": "6",
+		"profundidade": "6",
+		"vazaoOutorgavel": 900,
+		"vazaoSistema": 800,
+		"vazaoTeste": 880,
+		"sistema": null,
+		"subsistema": null,
+		"codPlan": null,
+		"tipoPoco": {
+			"id": 2,
+			"descricao": null
+		}
+	}
+]

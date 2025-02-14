@@ -4,15 +4,8 @@
  * @descricao Modelos de Tabelas
  * @direitorio models
  * @arquivo usuario-model.js
- * @id 33
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
+ * @id 
+ *
  *
  */
 
@@ -37,7 +30,7 @@ class UsuarioModel {
     */
     formatCpfCnpj(value) {
     	
-        value = value.toString();
+        value = value?.toString();
 
         // Verifica se é CPF (11 dígitos) ou CNPJ (14 dígitos)
         if (value.length === 11) {

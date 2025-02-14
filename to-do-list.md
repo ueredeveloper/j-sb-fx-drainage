@@ -11,6 +11,11 @@
 
 * **[X] Tarefa 1 - DocumentoController - CSS**
     * Adicionar `on focus`, cor secund�ria ao combobox.
+    
+#06/02/2025
+- [] Endereço na Parecer - Não está trazendo endereço no parecer de direito de uso. No de outorga prévia está trazendo.
+- [] Unidade e Bacia - Adicionar no parecer e despachos se necessário.
+- [] Parecer - Tabela 1 - Formatar número de vazão, ex: 38272 para 38.272,00 Demanda (L/dia) e Demanda Total (L/dia)d
 
 * **[X] Tarefa 2 - DocumentoController - CSS**
     * O Combobox est� desalinhado com os textfields.
@@ -161,7 +166,106 @@
 	Adicione nome do ponto, por exemplo, Ponto 1, Ponto 2.
 	
 ## 11 de Outubro de 2024
-- [] - Sele��o de Interfer�ncia e Finalidades
-	Quando seleciona uma interfer�ncia e ela n�o  tem nenhuma finalidade requerida, o espa�o de preencher as finalidades est� ficando vazio. Adicionar
-	possibilidade de inserir finalidade ao selecionar uma interfer�ncia sem finalidade requerida ou autorizada.
+- [] - Sele��o de Interfer�ncia e Finalidades
+	Quando seleciona uma interfer�ncia e ela n�o  tem nenhuma finalidade requerida, o espa�o de preencher as finalidades est� ficando vazio. Adicionar
+	possibilidade de inserir finalidade ao selecionar uma interfer�ncia sem finalidade requerida ou autorizada.
 	
+## 19 de Dezembro de 2024
+- [] - Usuario
+	Adicionar pesquisa por nome com ou sem acento
+
+## 23 de Dezembro de 2024
+- [] - Tela Adicionar Usu�rio
+	Adicionar busca por documentos
+	
+- [X] - Tela Adicionar Usu�rio
+	 - [] - Listar Endere�os
+	 		Foi adicionado lista de documentos relacionados com o usuário
+	 
+- [X] - Finalidade Requerida - Cópia
+	 - [X] Adicionar botão de cópia da finalidade requerida na tela finalidade autorizada.
+
+## 27 de Dezembro de 2024
+- [X] Para compilar sem testes e sem gerar documentação
+	mvn clean install -DskipTests -Dmaven.javadoc.skip=true
+
+- [] Adicioanr conversor de coordenadas
+	 
+- [X] Verificar edição de processo e anexo na tela documento
+
+- [X] Ao salvar o documento não está relacionando o usuário selecionado
+	
+## 20/01/2025
+- [] Preencher o total de vazao solicitada nas finalidades autorizadas.
+	
+- [X] A vazão requerida nas demandas não está sendo copiada para as vazões autorizadas
+	- Resolvido em 21/01/2025
+	
+## 21/01/2025
+- [X] Adicionar na tela de edição de usuário a possíbilidade de editar relacionamentos com documentos, só assim é possível
+deletar um usuário ou documento, deletando o relacionamento usuario_documento
+
+- [] Se possível adicionar procura por processo também pelo nome do usuário
+
+## 05/02/2025
+
+- [X] Endereço - Adicionar DF como seleção inicial no combobox de edição de endereço
+- [X] Endereço - Adicionar todos os estados no banco para mostrá-los no combobox de Estados
+
+- [X] Combobox e Css - Rever para que o prompt text apareça acima de todos os comobox ao selecionar.
+- [X] Adicionar no preenchimento automático de subsistema a vazão do subsistema.
+- [] Adicionar conversor de coordenadas
+- [X] Rever tipo de número nas finalidades, se double ou integer e ao preencher utilizar o padrão do banco de dados.
+		- [] Aqui é melhor colocar máscara, ver depois. Másca para trocar vírgula ao salvar por ponto, ex: 12,2 para 10.2
+- [X] Endereço - aumentar quantidade de caracteres
+	O endereço está com 500 carateres, o suficiente.
+
+## 07/02/2025	
+- 	[] Adicionar lista de região administrativa, lista de finalidades e subfinalidades
+- 	[X] Aumentar quantidade de caracteres nas finalidades e subfinalidades	
+- 	[X] Parecer de Direito
+		Rever assunto, vírgula desnecessária: ... construção civil, e abastecimento humano.
+		-[X] Cnpj desformatado: CPF/CNPJ: 1585584000138
+		-[X] Tipo de Poço: ...de 01 (um) poço (tubular ou manual)
+		-[X] Endereço: está sem endereço
+		-[X] Finalidade: para fins de irrigação paisagística - (0,2 ha - paisagismo) 
+- 	[X] Finalidade
+		Ao copiar as finalidades requeridas para as autorizadas está aumentando uma vazia na autorizada.
+		Resolvido.
+- 	[X] Bacia Hidrográfica e Unidade - Adicionar no parecer
+	Resolvido.
+- 	[X] Processo
+		Ao salvar o processo, adicioanr cnpj no usuário.
+		Resolvido: ao salvar o processo só é preciso o relacionamento com o usuário, sem necessidade
+			de informar o cpf/cnpj.
+			
+-	[X] Finalidades
+		Adicionar quantidade maior de caracteres.
+		Resolvido: aumentei para 70 caracteres na escrita da finalidade e subfinalidade
+-	[X] Planílha de Cálculo de Finalidade
+		Adicionar planilha de cálculo de finalidade
+		10/02/2025 - Não será feito agora. No momento apenas foi aberto o cadastro das finalidades para o técnico
+	colocar os valores que quiser.
+-- 	[X] Parecer
+		Adicionar nível estático e dinâmico, vazão de teste
+	
+## 10 de fevereiro de 2025
+
+* **[X] Domínio
+	Trazer dados do poço e do domínio no parecer
+	
+		
+	
+* **[X] Compile
+	mvn clean package -DskipTests -Dmaven.javadoc.skip=true
+		
+## 11 de fevereiro de 2025
+
+* **[X] Usuário não cadastrado
+	Adicionar aviso de usuário não cadastrado ao cadastrar documento. Ver também de avisar de interferência não cadastrada.
+	
+## 12 de fevereiro de 2025	
+* **[X] Adicionar bairro no endereço dos documentos.
+
+	
+

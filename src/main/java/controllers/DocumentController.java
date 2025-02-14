@@ -53,6 +53,7 @@ import models.Anexo;
 import models.Documento;
 import models.DocumentoTipo;
 import models.Endereco;
+import models.Interferencia;
 import models.Processo;
 import models.Template;
 import models.Usuario;
@@ -60,6 +61,7 @@ import services.DocumentService;
 import services.DocumentoTipoService;
 import services.ServiceResponse;
 import utilities.URLUtility;
+
 
 /**
  * Controlador para lidar com operações relacionadas aos documentos.
@@ -70,10 +72,10 @@ public class DocumentController implements Initializable {
 	@FXML
 	private ComboBox<Documento> cbDocument;
 
-	private String localUrl;
+	private String urlService;
 
 	public DocumentController() {
-		this.localUrl = URLUtility.getURLService();
+		this.urlService = URLUtility.getURLService();
 	}
 
 	@FXML
@@ -269,7 +271,8 @@ public class DocumentController implements Initializable {
 					addressCbController.addItemToDbObjects(endereco);
 
 				}
-				cbAddress.getSelectionModel().select(endereco);
+				//cbAddress.getSelectionModel().select(endereco);
+				addressCbController.fillAndSelectComboBox(endereco);
 
 				// Limpar componentes que não são preenchidos.
 
@@ -312,11 +315,11 @@ public class DocumentController implements Initializable {
 		});
 		tfNumberSei.setTextFormatter(textFormatter);
 
-		addressCbController = new AddressComboBoxController(localUrl, cbAddress);
-		processCbController = new ProcessComboBoxController(localUrl, cbProcess);
-		attachmentCbController = new AttachmentComboBoxController(localUrl, cbAttachment);
-		interferenceTFController = new InterferenceTextFieldsController(localUrl, tfLatitude, tfLongitude);
-		userCbController = new UserComboBoxController(localUrl, cbUser);
+		addressCbController = new AddressComboBoxController(urlService, cbAddress);
+		processCbController = new ProcessComboBoxController(urlService, cbProcess);
+		attachmentCbController = new AttachmentComboBoxController(urlService, cbAttachment);
+		interferenceTFController = new InterferenceTextFieldsController(urlService, tfLatitude, tfLongitude);
+		userCbController = new UserComboBoxController(urlService, cbUser);
 
 		btnNew.setOnAction(e -> clearAllComponents());
 		btnViews.setOnAction(event -> showDocumentView());
@@ -405,26 +408,37 @@ public class DocumentController implements Initializable {
 			apContent.getChildren().remove(apAddInterference);
 		});
 
-		Endereco object = cbAddress.selectionModelProperty().get().isEmpty() ? null : cbAddress.getItems().get(0);
-
 		loader.setRoot(apAddInterference);
-		loader.setController(
-				new AddInterferenceController(localUrl, ttClose, object, tfLatitude.getText(), tfLongitude.getText()));
 
-		try {
-			loader.load();
-		} catch (IOException e) {
-			System.out.println("erro na abertura do pane atendimento");
-			e.printStackTrace();
+		// Captura o endereço selecionado
+		Endereco address = cbAddress.selectionModelProperty().get().isEmpty() ? null : cbAddress.getItems().get(0);
+		
+		if (address == null) {
+			// Alerta (Toast) de sucesso na edi��o
+			Node source = cbAddress; // The source is tfPurpouse (JFXTextField)
+			Stage ownerStage = (Stage) source.getScene().getWindow();
+			String toastMsg = "Selecione um endereço !!!";
+			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+		} else {
+
+			loader.setController(new AddInterferenceController(this, address, this.urlService, ttClose));
+
+			try {
+				loader.load();
+			} catch (IOException e) {
+				System.out.println("erro na abertura do pane atendimento");
+				e.printStackTrace();
+			}
+			// Adiciona o painel de edição ao conteúdo atual
+			apContent.getChildren().add(apAddInterference);
+			// Define a translação inicial para exibir o painel na tela
+			apAddInterference.setTranslateX(400.0);
+			TranslateTransition tt = new TranslateTransition(new Duration(300), apAddInterference);
+
+			tt.setToX(0.0);
+			tt.play();
+
 		}
-		// Adiciona o painel de edição ao conteúdo atual
-		apContent.getChildren().add(apAddInterference);
-		// Define a translação inicial para exibir o painel na tela
-		apAddInterference.setTranslateX(400.0);
-		TranslateTransition tt = new TranslateTransition(new Duration(300), apAddInterference);
-
-		tt.setToX(0.0);
-		tt.play();
 
 	}
 
@@ -448,7 +462,7 @@ public class DocumentController implements Initializable {
 
 		Processo object = cbProcess.selectionModelProperty().get().isEmpty() ? null : cbProcess.getItems().get(0);
 
-		loader.setController(new AddProcessController(this, object, localUrl, ttClose));
+		loader.setController(new AddProcessController(this, object, urlService, ttClose));
 
 		try {
 			// Carrega o FXML e configura o controle
@@ -521,7 +535,7 @@ public class DocumentController implements Initializable {
 
 		Usuario object = cbUser.selectionModelProperty().get().isEmpty() ? null : cbUser.getItems().get(0);
 
-		loader.setController(new AddUserController(this, object, localUrl, ttClose));
+		loader.setController(new AddUserController(this, object, urlService, ttClose));
 
 		try {
 			// Carrega o FXML e configura o controle
@@ -566,7 +580,7 @@ public class DocumentController implements Initializable {
 
 		Endereco object = cbAddress.selectionModelProperty().get().isEmpty() ? null : cbAddress.getItems().get(0);
 
-		loader.setController(new AddAddressController(this, object, localUrl, ttClose));
+		loader.setController(new AddAddressController(this, object, urlService, ttClose));
 
 		try {
 			// Carrega o FXML e configura o controle
@@ -605,6 +619,33 @@ public class DocumentController implements Initializable {
 		cbAddress.getSelectionModel().select(0);
 	}
 
+	public void receiveAddressAndInterference(Endereco address, Interferencia interference) {
+
+		ObservableList<Endereco> newObsList = FXCollections.observableArrayList();
+		cbAddress.setItems(newObsList);
+
+		// Adiciona a interferência no endereço
+		Set<Interferencia> interferencies = new HashSet<>();
+		interferencies.add(interference);
+		address.setInterferencias(interferencies);
+
+		newObsList.add(0, address);
+
+		// Atualizando o ComboBox para refletir a mudança
+		// cbProcess.setItems(null);
+		cbAddress.setItems(newObsList);
+
+		// Seleciona o novo item no ComboBox
+		cbAddress.getSelectionModel().select(0);
+
+		// Preenche os textfields com a interferência enviada
+		if (interference != null) {
+			tfLatitude.setText(interference.getLatitude().toString());
+			tfLongitude.setText(interference.getLongitude().toString());
+		}
+
+	}
+
 	public void fillAndSelectComboBoxUser(Usuario object) {
 		ObservableList<Usuario> newObs = FXCollections.observableArrayList();
 		cbUser.setItems(newObs);
@@ -639,7 +680,7 @@ public class DocumentController implements Initializable {
 
 		Anexo object = cbAttachment.selectionModelProperty().get().isEmpty() ? null : cbAttachment.getItems().get(0);
 
-		loader.setController(new AddAttachmentController(this, object, localUrl, ttClose));
+		loader.setController(new AddAttachmentController(this, object, urlService, ttClose));
 
 		try {
 			// Carrega o FXML e configura o controle
@@ -676,6 +717,9 @@ public class DocumentController implements Initializable {
 		cbProcess.getSelectionModel().clearSelection();
 		cbProcess.setValue(null);
 
+		cbUser.getSelectionModel().clearSelection();
+		cbUser.setValue(null);
+
 		obsAddress.clear();
 		cbAddress.getSelectionModel().clearSelection();
 		cbAddress.setValue(null);
@@ -683,6 +727,9 @@ public class DocumentController implements Initializable {
 		obsAttachment.clear();
 		cbAttachment.getSelectionModel().clearSelection();
 		cbAttachment.setValue(null);
+
+		tfLatitude.clear();
+		tfLongitude.clear();
 
 	}
 
@@ -739,11 +786,11 @@ public class DocumentController implements Initializable {
 
 			clearAllComponents();
 
-			DocumentService documentService = new DocumentService(localUrl);
+			DocumentService documentService = new DocumentService(urlService);
 
 			String keyword = tfSearch.getText();
 
-			List<Documento> documentos = documentService.fetchByParam(keyword);
+			Set<Documento> documentos = documentService.fetchByParam(keyword);
 
 			// Create a list of Document objects
 			obsListDocs.clear();
@@ -763,48 +810,133 @@ public class DocumentController implements Initializable {
 	 */
 	public void saveDocument(ActionEvent event) {
 
-		String text = tfNumberSei.getText();
+		DocumentoTipo updateDocumentoTipo = cbDocType.getValue();
 
-		// verjo que este m�todo � desnecess�rio pois o textfield j� est� aceitando
-		// apenas n�meros
-		Long numberSei = 0L;
+		if (updateDocumentoTipo == null) {
+
+			// Alerta (Toast) de sucesso na edição
+			Node source = (Node) event.getSource();
+			Stage ownerStage = (Stage) source.getScene().getWindow();
+			String toastMsg = "Selecione um tipo de documento!";
+			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+			// Para terminar o processo
+			return;
+		}
+
+		// Retrieve values from text fields
+		String toUpdateNumber = tfNumber.getText();
+		String toUpdateNumberSei = tfNumberSei.getText();
+
+		// converter para integer
+		Long toUpdateNumberSeiLong = 0L;
+
+		if (toUpdateNumber == null || toUpdateNumber.isEmpty()) {
+			// Alerta (Toast) de sucesso na edi��o
+			Node source = (Node) event.getSource();
+			Stage ownerStage = (Stage) source.getScene().getWindow();
+			String toastMsg = "Insira o número do documento!";
+			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+
+			return;
+
+		}
+
+		if (toUpdateNumberSei == null || toUpdateNumberSei.isEmpty()) {
+
+			// Alerta (Toast) de sucesso na edi��o
+			Node source = (Node) event.getSource();
+			Stage ownerStage = (Stage) source.getScene().getWindow();
+			String toastMsg = "Insira o número do documento Sei!";
+			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+
+			return;
+		}
+
 		try {
-			numberSei = Long.parseLong(text);
-			// Use the 'numberSei' integer as needed
+			toUpdateNumberSeiLong = Long.parseLong(toUpdateNumberSei);
 		} catch (NumberFormatException e) {
+
 			// Alerta (Toast) de sucesso na edi��o
 			Node source = (Node) event.getSource();
 			Stage ownerStage = (Stage) source.getScene().getWindow();
 			String toastMsg = "Número do Sei Inválido!";
 			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+
+			// Para terminar o processo
+			return;
 		}
+
+		Endereco selectedAddress = addressCbController.getSelectedObject();
+
+		if (selectedAddress == null) {
+			// Alerta (Toast) de sucesso na edi��o
+			Node source = (Node) event.getSource();
+			Stage ownerStage = (Stage) source.getScene().getWindow();
+			String toastMsg = "Selecione um endereço!";
+			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+
+			// Para terminar o processo
+			return;
+		}
+
+		Processo selectedProcess = processCbController.getSelectedObject();
+
+		if (selectedProcess == null) {
+			// Alerta (Toast) de sucesso na edi��o
+			Node source = (Node) event.getSource();
+			Stage ownerStage = (Stage) source.getScene().getWindow();
+			String toastMsg = "Selecione um processo!";
+			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+
+			// Para terminar o processo
+			return;
+		}
+
+		Anexo selectedAttachment = attachmentCbController.getSelectedObject();
+
+		if (selectedAttachment == null) {
+			// Alerta (Toast) de sucesso na edi��o
+			Node source = (Node) event.getSource();
+			Stage ownerStage = (Stage) source.getScene().getWindow();
+			String toastMsg = "Selecione um processo anexo!";
+			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+
+			// Para terminar o processo
+			return;
+		}
+
+		selectedProcess.setAnexo(selectedAttachment);
+
+		Usuario selectedUser = userCbController.getSelectedObject();
+
+		if (selectedUser == null) {
+			// Alerta (Toast) de sucesso na edi��o
+			Node source = (Node) event.getSource();
+			Stage ownerStage = (Stage) source.getScene().getWindow();
+			String toastMsg = "Selecione um usuário!";
+			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+
+			// Para terminar o processo
+			return;
+		}
+
+		Set<Usuario> usuarios = new HashSet<>();
+		usuarios.add(selectedUser);
 
 		try {
 
-			DocumentService documentService = new DocumentService(localUrl);
-
-			Processo obsProcessList0 = processCbController.getSelectedObject();
-			Anexo obsAttachList0 = attachmentCbController.getSelectedObject();
-
-			// Anexar o processo principal (anexo) ao processo
-			if (obsAttachList0 != null) {
-				obsProcessList0.setAnexo(obsAttachList0);
-			}
-
-			Endereco obsAddressList0 = addressCbController.getSelectedObject();
-
-			Usuario obsUserList0 = userCbController.getSelectedObject();
-			Set<Usuario> usuarios = new HashSet<>();
-			usuarios.add(obsUserList0);
+			DocumentService documentService = new DocumentService(urlService);
 
 			DocumentoTipo docType = cbDocType.getValue();
 
 			Documento newDocument = new Documento();
-			newDocument.setNumero(tfNumber.getText());
-			newDocument.setProcesso(obsProcessList0);
-			newDocument.setNumeroSei(numberSei);
 			newDocument.setTipoDocumento(docType);
-			newDocument.setEndereco(obsAddressList0);
+			newDocument.setNumero(tfNumber.getText());
+			newDocument.setNumeroSei(toUpdateNumberSeiLong);
+			newDocument.setEndereco(selectedAddress);
+			newDocument.setProcesso(selectedProcess);
+
+			System.out.println(usuarios.size());
 			newDocument.setUsuarios(usuarios);
 
 			ServiceResponse<?> documentoServiceResponse = documentService.save(newDocument);
@@ -854,12 +986,10 @@ public class DocumentController implements Initializable {
 			String toastMsg = "Selecione um documento!";
 			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
 
+			// Para terminar o processo
 			return;
-		}
 
-		// Retrieve values from text fields
-		String updatedNumero = tfNumber.getText();
-		String updatedNumeroSEI = tfNumberSei.getText();
+		}
 
 		DocumentoTipo updateDocumentoTipo = cbDocType.getValue();
 
@@ -870,14 +1000,41 @@ public class DocumentController implements Initializable {
 			Stage ownerStage = (Stage) source.getScene().getWindow();
 			String toastMsg = "Selecione um tipo de documento!";
 			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+			// Para terminar o processo
+			return;
+		}
+
+		// Retrieve values from text fields
+		String toUpdateNumber = tfNumber.getText();
+		String toUpdateNumberSei = tfNumberSei.getText();
+
+		// converter para integer
+		Long toUpdateNumberSeiLong = 0L;
+
+		if (toUpdateNumber == null || toUpdateNumber.isEmpty()) {
+			// Alerta (Toast) de sucesso na edi��o
+			Node source = (Node) event.getSource();
+			Stage ownerStage = (Stage) source.getScene().getWindow();
+			String toastMsg = "Insira o número do documento!";
+			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+
+			return;
+
+		}
+
+		if (toUpdateNumberSei == null || toUpdateNumberSei.isEmpty()) {
+
+			// Alerta (Toast) de sucesso na edi��o
+			Node source = (Node) event.getSource();
+			Stage ownerStage = (Stage) source.getScene().getWindow();
+			String toastMsg = "Insira o número do documento Sei!";
+			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
 
 			return;
 		}
 
-		// converter para integer
-		Long updatedSei = 0L;
 		try {
-			updatedSei = Long.parseLong(updatedNumeroSEI);
+			toUpdateNumberSeiLong = Long.parseLong(toUpdateNumberSei);
 		} catch (NumberFormatException e) {
 
 			// Alerta (Toast) de sucesso na edi��o
@@ -886,36 +1043,80 @@ public class DocumentController implements Initializable {
 			String toastMsg = "Número do Sei Inválido!";
 			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
 
-			// You may want to display a toast or alert here
+			// Para terminar o processo
 			return;
 		}
 
-		// Edita objeto com novos valores
-		selectedDocument.setTipoDocumento(updateDocumentoTipo);
-		selectedDocument.setNumero(updatedNumero);
-		selectedDocument.setNumeroSei(updatedSei);
-
 		Endereco selectedAddress = addressCbController.getSelectedObject();
+
+		if (selectedAddress == null) {
+			// Alerta (Toast) de sucesso na edi��o
+			Node source = (Node) event.getSource();
+			Stage ownerStage = (Stage) source.getScene().getWindow();
+			String toastMsg = "Selecione um endereço!";
+			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+
+			// Para terminar o processo
+			return;
+		}
 
 		selectedDocument.setEndereco(selectedAddress);
 
+		// Edita objeto com novos valores
+		selectedDocument.setTipoDocumento(updateDocumentoTipo);
+		selectedDocument.setNumero(toUpdateNumber);
+		selectedDocument.setNumeroSei(toUpdateNumberSeiLong);
+
 		Processo selectedProcess = processCbController.getSelectedObject();
 
-		Anexo anexo = attachmentCbController.getSelectedObject();
+		if (selectedProcess == null) {
+			// Alerta (Toast) de sucesso na edi��o
+			Node source = (Node) event.getSource();
+			Stage ownerStage = (Stage) source.getScene().getWindow();
+			String toastMsg = "Selecione um processo!";
+			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
 
-		if (anexo != null) {
-			selectedProcess.setAnexo(anexo);
+			// Para terminar o processo
+			return;
 		}
 
 		selectedDocument.setProcesso(selectedProcess);
 
-		/*
-		 * selectedDocument.setEndereco(new Endereco(obsAddress.get(0).getEndId(),
-		 * obsAddress.get(0).getEndLogradouro(), tfCity.getText(), tfCEP.getText()));
-		 */
+		Anexo selectedAttachment = attachmentCbController.getSelectedObject();
+
+		if (selectedAttachment == null) {
+			// Alerta (Toast) de sucesso na edi��o
+			Node source = (Node) event.getSource();
+			Stage ownerStage = (Stage) source.getScene().getWindow();
+			String toastMsg = "Selecione um processo anexo!";
+			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+
+			// Para terminar o processo
+			return;
+		}
+
+		selectedProcess.setAnexo(selectedAttachment);
+
+		Usuario selectedUser = userCbController.getSelectedObject();
+
+		if (selectedUser == null) {
+			// Alerta (Toast) de sucesso na edi��o
+			Node source = (Node) event.getSource();
+			Stage ownerStage = (Stage) source.getScene().getWindow();
+			String toastMsg = "Selecione um usuário!";
+			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+
+			// Para terminar o processo
+			return;
+		}
+
+		Set<Usuario> usuarios = new HashSet<>();
+		usuarios.add(selectedUser);
+
+		selectedDocument.setUsuarios(usuarios);
 
 		try {
-			DocumentService service = new DocumentService(localUrl);
+			DocumentService service = new DocumentService(urlService);
 
 			// Requisi��o de resposta de edi��o
 			ServiceResponse<?> serviceResponse = service.update(selectedDocument);
@@ -937,8 +1138,14 @@ public class DocumentController implements Initializable {
 				tvDocs.getSelectionModel().select(responseDocumento);
 
 			} else {
-				// Display an error toast or alert
-				// System.out.println(serviceResponse.getResponseCode());
+				// Alerta (Toast) de sucesso na edi��o
+				Node source = (Node) event.getSource();
+				Stage ownerStage = (Stage) source.getScene().getWindow();
+				String toastMsg = "Erro ao editar objeto!";
+				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+
+				// Para terminar o processo
+				return;
 			}
 
 		} catch (Exception e) {
@@ -962,7 +1169,7 @@ public class DocumentController implements Initializable {
 		Documento selectedDocument = tvDocs.getSelectionModel().getSelectedItem();
 
 		try {
-			DocumentService documentService = new DocumentService(localUrl);
+			DocumentService documentService = new DocumentService(urlService);
 
 			ServiceResponse<?> serviceResponse = documentService.deleteById(selectedDocument.getId());
 
@@ -999,7 +1206,7 @@ public class DocumentController implements Initializable {
 
 		try {
 
-			DocumentoTipoService dtService = new DocumentoTipoService(localUrl);
+			DocumentoTipoService dtService = new DocumentoTipoService(urlService);
 
 			List<DocumentoTipo> docTypes = dtService.fetchDocumentTypes();
 
