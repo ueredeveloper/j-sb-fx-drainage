@@ -267,5 +267,11 @@ deletar um usuário ou documento, deletando o relacionamento usuario_documento
 ## 12 de fevereiro de 2025	
 * **[X] Adicionar bairro no endereço dos documentos.
 
-	
-
+## 12 de fevereiro de 2025
+- [X] Salvar Interferência
+	Colocar advertência de bacia hidrográfica
+- [X] Calculos de Vazão Mês a Mes
+	O preenchimento em meses de chuva não está funcionando
+- [X] Verificar a possiblidade de editar o tipo de poço e subsistemas
+- [] ver process 571/2014, não está saindo o subsistema, só o sitema.
+- [] criar funçãos para outorgas subterraneas, find point inside system (fraturado e poroso)

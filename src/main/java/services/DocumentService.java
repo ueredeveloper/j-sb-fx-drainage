@@ -41,7 +41,6 @@ public class DocumentService {
 			String jsonInputString = convertObjectToJson(documento);
 			
 			//System.out.println("save doc");
-			
 			//System.out.println(jsonInputString);
 			
 			// Write JSON to request body

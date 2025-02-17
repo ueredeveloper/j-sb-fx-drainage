@@ -63,7 +63,7 @@ public class EnderecoService {
 					responseBody = response.toString();
 				}
 			} else {
-				System.out.println("ERROOOROR");
+				System.out.println("ERROR");
 				handleErrorResponse(connection);
 				responseBody = readErrorStream(connection);
 			}

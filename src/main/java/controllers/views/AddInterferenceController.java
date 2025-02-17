@@ -162,6 +162,7 @@ public class AddInterferenceController implements Initializable {
 
 		obsSubtypesOfGrants = StaticData.INSTANCE.getSubtypesOfGrants();
 		cbSubtypeOfGrant.setItems(obsSubtypesOfGrants);
+		cbSubtypeOfGrant.getSelectionModel().select(5);
 
 		obsProcessSituations = StaticData.INSTANCE.getProcessesSituations();
 		cbProcessSituation.setItems(obsProcessSituations);
@@ -476,13 +477,9 @@ public class AddInterferenceController implements Initializable {
 		Set<Finalidade> purpouses = null;
 		Set<Demanda> demands = null;
 
-		Subterranea subterraneanAttributes = null;
-
 		if (addSubterraneanDetailsController != null) {
 			purpouses = addSubterraneanDetailsController.getPurpouses();
 			demands = addSubterraneanDetailsController.getDemands();
-
-			subterraneanAttributes = addSubterraneanDetailsController.getSubterraneanAttributes();
 
 		}
 
@@ -493,12 +490,15 @@ public class AddInterferenceController implements Initializable {
 			Stage ownerStage = (Stage) source.getScene().getWindow();
 			String toastMsg = "Endereço vazio!";
 			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+
+			return;
 		} else if (latitude.isEmpty() || longitude.isEmpty()) {
 
 			Node source = (Node) event.getSource();
 			Stage ownerStage = (Stage) source.getScene().getWindow();
 			String toastMsg = "Preencha a Latitude e Longitude!";
 			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+			return;
 
 		} // Verifica se o tipo de interferência está vazio.
 		else if (typeOfInterference == null) {
@@ -507,6 +507,7 @@ public class AddInterferenceController implements Initializable {
 			Stage ownerStage = (Stage) source.getScene().getWindow();
 			String toastMsg = "Tipo de Interferencia vazio!";
 			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+			return;
 
 			// Verifica se o tipo de outorga não foi selecionado
 		} else if (typeOfGrant == null) {
@@ -514,47 +515,61 @@ public class AddInterferenceController implements Initializable {
 			Stage ownerStage = (Stage) source.getScene().getWindow();
 			String toastMsg = "Selecione o Tipo de Outorga!";
 			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+			return;
 
 		} else if (subtypeOfGrant == null) {
 			Node source = (Node) event.getSource();
 			Stage ownerStage = (Stage) source.getScene().getWindow();
 			String toastMsg = "Selecione o Subtipo de Outorga!";
 			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+			return;
 
 		} else if (processSituation == null) {
 			Node source = (Node) event.getSource();
 			Stage ownerStage = (Stage) source.getScene().getWindow();
 			String toastMsg = "Selecione a Situação do Processo!";
 			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+			return;
 		} else if (typeOfAct == null) {
 			Node source = (Node) event.getSource();
 			Stage ownerStage = (Stage) source.getScene().getWindow();
 			String toastMsg = "Selecione o Tipo de Ato!";
 			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+			return;
 
 			// É obrigatório o tipo de poço, então o objeto retornará nulo se não escolher
 		} else if (hydrographicBasin == null) {
-			System.out.println(JsonConverter.convertObjectToJson(hydrographicBasin));
 
 			// Alerta (Toast) de sucesso na edi��o
 			Node source = (Node) event.getSource();
 			Stage ownerStage = (Stage) source.getScene().getWindow();
 			String toastMsg = "Selecione a Bacia Hidrográfica!!!";
 			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+			return;
 		} else if (hydrographicUnit == null) {
-
-			System.out.println(JsonConverter.convertObjectToJson(hydrographicUnit));
 
 			// Alerta (Toast) de sucesso na edi��o
 			Node source = (Node) event.getSource();
 			Stage ownerStage = (Stage) source.getScene().getWindow();
 			String toastMsg = "Selecione a Unidade Hidrográfica!!!";
 			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+			return;
 		}
 
 		else {
 
 			try {
+
+				Subterranea subterraneanAttributes = addSubterraneanDetailsController.getSubterraneanAttributes();
+
+				if (subterraneanAttributes == null) {
+					// Alerta (Toast) de sucesso na edi��o
+					Node source = (Node) event.getSource();
+					Stage ownerStage = (Stage) source.getScene().getWindow();
+					String toastMsg = "Selecione tipo de poço (se manual ou tubular) e se há Caesb no local!!!";
+					utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+					return;
+				}
 
 				InterferenciaService service = new InterferenciaService(urlService);
 
@@ -569,14 +584,18 @@ public class AddInterferenceController implements Initializable {
 				newInterference.setUnidadeHidrografica(new UnidadeHidrografica(hydrographicUnit.getObjectid()));
 
 				// Atributos da interferência subterrânea
+				
+				newInterference.setTipoPoco(subterraneanAttributes.getTipoPoco());
+
 				newInterference.setCaesb(subterraneanAttributes.getCaesb());
+
 				newInterference.setNivelEstatico(subterraneanAttributes.getNivelEstatico());
 				newInterference.setNivelDinamico(subterraneanAttributes.getNivelDinamico());
 				newInterference.setProfundidade(subterraneanAttributes.getProfundidade());
 				newInterference.setVazaoOutorgavel(subterraneanAttributes.getVazaoOutorgavel());
 				newInterference.setVazaoSistema(subterraneanAttributes.getVazaoSistema());
 				newInterference.setVazaoTeste(subterraneanAttributes.getVazaoTeste());
-				newInterference.setTipoPoco(subterraneanAttributes.getTipoPoco());
+				
 				newInterference.setSistema(subterraneanAttributes.getSistema());
 				newInterference.setSubsistema(subterraneanAttributes.getSubsistema());
 				newInterference.setCodPlan(subterraneanAttributes.getCodPlan());
@@ -678,12 +697,14 @@ public class AddInterferenceController implements Initializable {
 			Stage ownerStage = (Stage) source.getScene().getWindow();
 			String toastMsg = "Endereço vazio!";
 			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+			return;
 		} else if (latitude.isEmpty() || longitude.isEmpty()) {
 
 			Node source = (Node) event.getSource();
 			Stage ownerStage = (Stage) source.getScene().getWindow();
 			String toastMsg = "Preencha a Latitude e Longitude!";
 			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+			return;
 
 		} // Verifica se o tipo de interferência está vazio.
 		else if (typeOfInterference == null) {
@@ -692,6 +713,7 @@ public class AddInterferenceController implements Initializable {
 			Stage ownerStage = (Stage) source.getScene().getWindow();
 			String toastMsg = "Tipo de Interferencia vazio!";
 			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+			return;
 
 			// Verifica se o tipo de outorga não foi selecionado
 		} else if (typeOfGrant == null) {
@@ -699,23 +721,27 @@ public class AddInterferenceController implements Initializable {
 			Stage ownerStage = (Stage) source.getScene().getWindow();
 			String toastMsg = "Selecione o Tipo de Outorga!";
 			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+			return;
 
 		} else if (subtypeOfGrant == null) {
 			Node source = (Node) event.getSource();
 			Stage ownerStage = (Stage) source.getScene().getWindow();
 			String toastMsg = "Selecione o Subtipo de Outorga!";
 			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+			return;
 
 		} else if (processSituation == null) {
 			Node source = (Node) event.getSource();
 			Stage ownerStage = (Stage) source.getScene().getWindow();
 			String toastMsg = "Selecione a Situação do Processo!";
 			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+			return;
 		} else if (typeOfAct == null) {
 			Node source = (Node) event.getSource();
 			Stage ownerStage = (Stage) source.getScene().getWindow();
 			String toastMsg = "Selecione o Tipo de Ato!";
 			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+			return;
 
 			// É obrigatório o tipo de poço, então o objeto retornará nulo se não escolher
 		} else if (hydrographicBasin == null) {
@@ -725,6 +751,8 @@ public class AddInterferenceController implements Initializable {
 			Stage ownerStage = (Stage) source.getScene().getWindow();
 			String toastMsg = "Selecione a Bacia Hidrográfica!!!";
 			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+			return;
+
 		} else if (hydrographicUnit == null) {
 
 			// Alerta (Toast) de sucesso na edi��o
@@ -732,6 +760,7 @@ public class AddInterferenceController implements Initializable {
 			Stage ownerStage = (Stage) source.getScene().getWindow();
 			String toastMsg = "Selecione a Unidade Hidrográfica!!!";
 			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+			return;
 		}
 
 		// If Subterrâneo
@@ -791,8 +820,12 @@ public class AddInterferenceController implements Initializable {
 		}
 		// If not subterrâneo
 		else {
-			// Handle the case where selectedObject is not a Subterranea instance
-			System.out.println("Selected object is not a Subterranea instance.");
+			// Alerta (Toast) de sucesso na edi��o
+			Node source = (Node) event.getSource();
+			Stage ownerStage = (Stage) source.getScene().getWindow();
+			String toastMsg = "A interferência não é subterrânea!!!";
+			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+			return;
 		}
 	}
 
@@ -902,7 +935,16 @@ public class AddInterferenceController implements Initializable {
 		tfLatitude.clear();
 		tfLongitude.clear();
 		cbTypeOfInterference.getSelectionModel().clearSelection();
+
+		cbTypeOfGrant.getSelectionModel().clearSelection();
+		// Selecione o campo em branco na posição cinco (sem subtipo de outorga)
+		cbSubtypeOfGrant.getSelectionModel().select(5);
+
+		cbProcessSituation.getSelectionModel().clearSelection();
+		cbTypeOfAct.getSelectionModel().clearSelection();
+
 		cbHydrographicBasin.getSelectionModel().clearSelection();
+		cbHydrographicUnit.getSelectionModel().clearSelection();
 
 	}
 

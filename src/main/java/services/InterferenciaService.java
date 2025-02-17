@@ -83,6 +83,7 @@ public class InterferenciaService {
 	}
 
 	public ServiceResponse<?> update(Interferencia object) {
+		
 		try {
 			URL apiUrl = new URL(localUrl + "/interference/subterranean/update?id=" + object.getId());
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
@@ -93,7 +94,7 @@ public class InterferenciaService {
 			// Convert Documento object to JSON
 			String jsonInputString = convertObjectToJson(object);
 			
-			System.out.println("editar int " + jsonInputString);
+			//System.out.println("editar int " + jsonInputString);
 
 			// Write JSON to request body
 			try (OutputStream os = connection.getOutputStream();
