@@ -232,8 +232,7 @@ public class AddProcessController implements Initializable {
 				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
 
 				return;
-			}
-			if (obsUsList0 == null) {
+			} else if (obsUsList0 == null) {
 				// this.process.setUsuario(obsUsList0);
 
 				// Informa salvamento com sucesso
@@ -244,7 +243,18 @@ public class AddProcessController implements Initializable {
 
 				return;
 
-			} 
+			} else if (obsUsList0.getCpfCnpj() == null || obsUsList0.getCpfCnpj().isEmpty()) {
+				// Informa salvamento com sucesso
+				Node source = (Node) event.getSource();
+				Stage ownerStage = (Stage) source.getScene().getWindow();
+				String toastMsg = "Selecione um usuário com cpf/cnpj cadastrado!";
+				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+
+				return;
+			}
+
+			this.process.setAnexo(obsAttachList0);
+			this.process.setUsuario(obsUsList0);
 
 			ServiceResponse<?> reponse = service.save(this.process);
 
