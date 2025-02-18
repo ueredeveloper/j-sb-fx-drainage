@@ -523,7 +523,7 @@ class DocumentoModel {
 						"vazaoSistema": 6500,
 						"vazaoTeste": 0,
 						"sistema": 'Paranoá',
-						"subsistema": 'R3Q3',
+						"subsistema": 'R4',
 						"codPlan": null,
 						"tipoPoco": {
 							"id": 3,

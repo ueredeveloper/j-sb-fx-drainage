@@ -26,6 +26,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
@@ -107,14 +108,32 @@ public class AddSubterraneanDetailsController implements Initializable {
 	private JFXTextField tfTotalRequestedConsumption, tfTotalAuthorizedConsumption;
 
 	@FXML
-	private JFXButton btnCalculateReqTotalConsumption;
+    private Button btnRefereshSubsystem;
 
-	@FXML
-	private JFXButton btnFillReqFlow, btnFillReqTime, btnFillReqPeriod, btnCalculateAuthTotalConsumption,
-			btnRefereshSubsystem;
+    @FXML
+    private Button btnFillReqFlow;
 
-	@FXML
-	private JFXButton btnFillAuthFlow, btnFillAuthTime, btnFillAuthPeriod, btnCopyReqDemand;
+    @FXML
+    private Button btnFillReqTime;
+
+    @FXML
+    private Button btnFillReqPeriod;
+
+
+    @FXML
+    private Button btnCalculateAuthTotalConsumption, btnCalculateReqTotalConsumption;	
+
+    @FXML
+    private Button btnCopyReqDemand;
+
+    @FXML
+    private Button btnFillAuthFlow;
+
+    @FXML
+    private Button btnFillAuthTime;
+
+    @FXML
+    private Button btnFillAuthPeriod;
 
 	PurpousesWrapper purpousesWrapper = new PurpousesWrapper(new HashSet<>());
 
@@ -1016,7 +1035,7 @@ public class AddSubterraneanDetailsController implements Initializable {
 	 * index gridPane tfTotalConsumption btnTotalConsumption typeOfPurpouse purpouse
 	 */
 	public void addPurpouseRow(int index, GridPane gridPane, JFXTextField tfTotalConsumption,
-			JFXButton btnTotalConsumption, TipoFinalidade typeOfPurpouse, Finalidade purpouse) {
+			Button btnTotalConsumption, TipoFinalidade typeOfPurpouse, Finalidade purpouse) {
 
 		JFXTextField tfPurpouse = new JFXTextField();
 		JFXTextField tfSubpurpose = new JFXTextField();

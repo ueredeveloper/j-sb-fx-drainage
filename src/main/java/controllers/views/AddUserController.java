@@ -173,7 +173,7 @@ public class AddUserController implements Initializable {
 				// DocumentService documentService = new DocumentService(localUrl);
 				UsuarioService service = new UsuarioService(urlService);
 
-				Usuario toSaveObject = new Usuario(nome, Long.parseLong(cpfCnpj));
+				Usuario toSaveObject = new Usuario(nome, cpfCnpj);
 
 				ServiceResponse<?> response = service.save(toSaveObject);
 
@@ -253,7 +253,7 @@ public class AddUserController implements Initializable {
 				// estado);
 
 				seletedObject.setNome(nome);
-				seletedObject.setCpfCnpj(Long.parseLong(cpfCnpj));
+				seletedObject.setCpfCnpj(cpfCnpj);
 
 				ServiceResponse<?> response = service.update(seletedObject);
 

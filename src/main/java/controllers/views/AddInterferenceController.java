@@ -13,7 +13,6 @@ import com.jfoenix.controls.JFXTextField;
 import controllers.DocumentController;
 import controllers.MapController;
 import controllers.NavigationController;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import enums.StaticData;
 import enums.ToastType;
 import javafx.animation.TranslateTransition;
@@ -24,6 +23,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -91,13 +91,49 @@ public class AddInterferenceController implements Initializable {
 	private JFXTextField tfLongitude;
 
 	@FXML
-	private FontAwesomeIconView iconMarker;
+	private Button btnMarker;
 
 	@FXML
 	private JFXTextField tfSearch;
 
 	@FXML
-	private JFXButton btnSearch, btnNew, btnSave, btnUpdate, btnDelete, btnRefresh;
+	private JFXComboBox<?> cbWellType;
+
+	@FXML
+	private JFXComboBox<?> cbConcessionaire;
+
+	@FXML
+	private JFXComboBox<?> cbSystem;
+
+	@FXML
+	private JFXComboBox<?> cbSubsystem;
+
+	@FXML
+	private JFXTextField tfCodeSystem;
+
+	@FXML
+	private JFXTextField tfSystemFlow;
+
+	@FXML
+	private JFXTextField tfSystemGrant;
+
+	@FXML
+	private JFXTextField tfSystemTest;
+
+	@FXML
+	private JFXTextField tfStaticLevel;
+
+	@FXML
+	private JFXTextField tfDynamicLevel;
+
+	@FXML
+	private JFXTextField tfWaterDepth;
+
+	@FXML
+	private JFXButton btnSearch, btnNew, btnSave, btnUpdate, btnDelete;
+
+	@FXML
+	Button btnRefresh;
 
 	@FXML
 	private TableView<Interferencia> tableView;
@@ -359,7 +395,7 @@ public class AddInterferenceController implements Initializable {
 		// é válida...
 
 		// Mostra a coordenada no mapa.
-		iconMarker.setOnMouseClicked(event -> {
+		btnMarker.setOnMouseClicked(event -> {
 
 			// Verifica se o valor está vazio.
 			if (!tfLatitude.getText().isEmpty() && !tfLongitude.getText().isEmpty()) {
@@ -584,7 +620,7 @@ public class AddInterferenceController implements Initializable {
 				newInterference.setUnidadeHidrografica(new UnidadeHidrografica(hydrographicUnit.getObjectid()));
 
 				// Atributos da interferência subterrânea
-				
+
 				newInterference.setTipoPoco(subterraneanAttributes.getTipoPoco());
 
 				newInterference.setCaesb(subterraneanAttributes.getCaesb());
@@ -595,7 +631,7 @@ public class AddInterferenceController implements Initializable {
 				newInterference.setVazaoOutorgavel(subterraneanAttributes.getVazaoOutorgavel());
 				newInterference.setVazaoSistema(subterraneanAttributes.getVazaoSistema());
 				newInterference.setVazaoTeste(subterraneanAttributes.getVazaoTeste());
-				
+
 				newInterference.setSistema(subterraneanAttributes.getSistema());
 				newInterference.setSubsistema(subterraneanAttributes.getSubsistema());
 				newInterference.setCodPlan(subterraneanAttributes.getCodPlan());

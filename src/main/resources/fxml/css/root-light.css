@@ -236,8 +236,28 @@
 
 .icons {
     -fx-font-family: "FontAwesome";
-    -fx-font-size: 20px;
+    -fx-font-size: 15px;
     -fx-transition: -fx-font-size 0.3s ease;
+}
+
+.icon-button {
+    -fx-background-color: transparent;  /* Remove button background */
+    -fx-border-color: transparent;      /* Remove button border */
+    -fx-padding: 5px;                    /* Reduce padding */
+}
+
+.icon-button .icons {
+    -fx-font-size: 18px;                 /* Default icon size */
+    -fx-transition: -fx-font-size 0.3s ease;  /* Smooth transition */
+}
+
+.icon-button:hover .icons {
+    -fx-font-size: 24px;                 /* Enlarge icon on hover */
+}
+
+.icon-button:pressed .icons {
+    -fx-scale-x: 1.5;
+    -fx-scale-y: 1.5;
 }
 
 .icons:hover {
