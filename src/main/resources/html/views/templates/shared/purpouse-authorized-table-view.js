@@ -55,7 +55,7 @@ class PurpouseAuthorizedTableView {
                 </td>
                 <td style="text-align: center;">${_finalidades.map(_fin => _fin.finalidade || 'Desconhecido').join('<br/><br/>')}</td>
                  <td style="text-align: center;">${_finalidades.map(_fin => _fin.subfinalidade || 'Desconhecido').join('<br/><br/>')}</td>
-                <td style="text-align: center;">${_finalidades.map(_fin => _fin.quantidade || 'N/A').join('<br/><br/>')}</td>
+                <td style="text-align: center;">${_finalidades.map(_fin => _fin.quantidade.toString().replace('.', ',') || 'N/A').join('<br/><br/>')}</td>
                 <td style="text-align: center;">${_finalidades.map(_fin => _fin.total || 'N/A').join('<br/><br/>')}</td>
                 <td style="text-align: center;">XXX</td>
                 <td style="text-align: center;">${_finalidades.reduce((accumulator, currentValue) => accumulator + Number(currentValue.total || 0), 0)}</td>

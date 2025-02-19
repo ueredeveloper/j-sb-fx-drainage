@@ -275,4 +275,10 @@ deletar um usuário ou documento, deletando o relacionamento usuario_documento
 * **[X] ver processo 571/2014, não está saindo o subsistema, só o sitema.
 * **[] criar funçãos para outorgas subterraneas, find point inside system (fraturado e poroso)
 	18/02/2025 - Estas funções estão no banco supabase (njs-drainage). Devem ser passadas para o novo banco.
+	
+## 18 de fevereiro de 2025
+* **[X] Adicionar tela de disponibilidade
+
+
+	
 
