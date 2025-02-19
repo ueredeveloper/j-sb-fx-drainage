@@ -279,6 +279,6 @@ deletar um usuário ou documento, deletando o relacionamento usuario_documento
 ## 18 de fevereiro de 2025
 * **[X] Adicionar tela de disponibilidade
 
-
+mvn clean package -DskipTests -Dmaven.javadoc.skip=true
 	
 
