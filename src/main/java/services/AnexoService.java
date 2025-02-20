@@ -38,9 +38,8 @@ public class AnexoService {
 			// Convert Documento object to JSON
 			String jsonInputString = convertObjectToJson(object);
 
-			System.out.println("save anexo service");
-
-			System.out.println(jsonInputString);
+			//System.out.println("save anexo service");
+			//System.out.println(jsonInputString);
 
 			// Write JSON to request body
 			try (OutputStream os = connection.getOutputStream();
@@ -88,9 +87,8 @@ public class AnexoService {
 			// Convert Documento object to JSON
 			String jsonInputString = convertObjectToJson(object);
 
-			System.out.println("update anexo");
-
-			System.out.println(jsonInputString);
+			//System.out.println("update anexo");
+			//System.out.println(jsonInputString);
 
 			// Write JSON to request body
 			try (OutputStream os = connection.getOutputStream();

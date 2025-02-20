@@ -7,6 +7,7 @@
 <?import java.lang.String?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableColumn?>
@@ -101,33 +102,28 @@
                            </GridPane.margin>
                         </JFXComboBox>
                         <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1">
-                           <children>
-                               <FontAwesomeIconView fx:id="iconMarker" glyphName="MAP_MARKER" textAlignment="CENTER" wrappingWidth="30.0" HBox.hgrow="ALWAYS">
-                                 <styleClass>
-                                    <String fx:value="icon-light-dark" />
-                                    <String fx:value="icons" />
-                                 </styleClass>
-                                 <HBox.margin>
-                                    <Insets left="5.0" right="5.0" />
-                                 </HBox.margin></FontAwesomeIconView>
-                           </children>
                            <GridPane.margin>
                               <Insets left="10.0" right="10.0" />
                            </GridPane.margin>
+                           <children>
+                              <Button fx:id="btnMarker" ellipsisString="" mnemonicParsing="false" styleClass="icon-button">
+                                 <graphic>
+                                    <FontAwesomeIconView glyphName="MAP_MARKER" styleClass="icons" />
+                                 </graphic>
+                                 <tooltip>
+                                    <Tooltip text="Captura coordenada do mapa" />
+                                 </tooltip>
+                              </Button>
+                           </children>
                         </HBox>
-                        <JFXButton fx:id="btnRefresh" ellipsisString="" prefHeight="35.0" prefWidth="33.0" styleClass="icons" GridPane.columnIndex="3" GridPane.rowIndex="3">
+                        <Button fx:id="btnRefresh" ellipsisString="" mnemonicParsing="false" styleClass="icon-button" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="3">
                            <graphic>
-                              <FontAwesomeIconView glyphName="REFRESH">
-                                 <styleClass>
-                                    <String fx:value="icon-light-dark" />
-                                    <String fx:value="icons" />
-                                 </styleClass>
-                              </FontAwesomeIconView>
+                              <FontAwesomeIconView glyphName="REFRESH" styleClass="icons" />
                            </graphic>
                            <tooltip>
-                              <Tooltip text="Atualiza dados automatizados com bacia e unidade hidrográfica" />
+                              <Tooltip text="Atualiza o sistema e subsistema" />
                            </tooltip>
-                        </JFXButton>
+                        </Button>
                      </children>
                   </GridPane>
                   <GridPane layoutY="250.0" prefHeight="50.0" prefWidth="780.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">

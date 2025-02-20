@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Set;
@@ -27,6 +26,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
@@ -108,14 +108,32 @@ public class AddSubterraneanDetailsController implements Initializable {
 	private JFXTextField tfTotalRequestedConsumption, tfTotalAuthorizedConsumption;
 
 	@FXML
-	private JFXButton btnCalculateReqTotalConsumption;
+    private Button btnRefereshSubsystem;
 
-	@FXML
-	private JFXButton btnFillReqFlow, btnFillReqTime, btnFillReqPeriod, btnCalculateAuthTotalConsumption,
-			btnRefereshSubsystem;
+    @FXML
+    private Button btnFillReqFlow;
 
-	@FXML
-	private JFXButton btnFillAuthFlow, btnFillAuthTime, btnFillAuthPeriod, btnCopyReqDemand;
+    @FXML
+    private Button btnFillReqTime;
+
+    @FXML
+    private Button btnFillReqPeriod;
+
+
+    @FXML
+    private Button btnCalculateAuthTotalConsumption, btnCalculateReqTotalConsumption;	
+
+    @FXML
+    private Button btnCopyReqDemand;
+
+    @FXML
+    private Button btnFillAuthFlow;
+
+    @FXML
+    private Button btnFillAuthTime;
+
+    @FXML
+    private Button btnFillAuthPeriod;
 
 	PurpousesWrapper purpousesWrapper = new PurpousesWrapper(new HashSet<>());
 
@@ -333,13 +351,13 @@ public class AddSubterraneanDetailsController implements Initializable {
 
 			} else {
 
-				if (tfTotalRequestedConsumption.getText() != null) {
+				if (tfTotalAuthorizedConsumption.getText() != null) {
 
 					// Lista para filtrar as demandas por tipo, demandas requeridas, e ordenar por
 					// mês (jan,fev,...).
 					Stream<Demanda> rdStream = demandsWrapper.getDemands().stream();
 
-					List<Demanda> rdList = rdStream.filter(d -> d.getTipoFinalidade().getId() == 1L)
+					List<Demanda> rdList = rdStream.filter(d -> d.getTipoFinalidade().getId() == 2L)
 							.sorted(Comparator.comparing(d -> d.getMes())).collect(Collectors.toList());
 					;
 
@@ -353,12 +371,12 @@ public class AddSubterraneanDetailsController implements Initializable {
 						if (idx[0] == 0 || idx[0] == 1 || idx[0] == 2 || idx[0] == 10 || idx[0] == 11) {
 
 							demand.setVazao(0.0);
-							addDemandFlowLine(gpRequestedDemands, demand.getMes(), demand);
+							addDemandFlowLine(gpAuthorizedDemands, demand.getMes(), demand);
 
 						} else {
-							System.out.println(tfTotalRequestedConsumption.getText());
-							demand.setVazao(Double.parseDouble(tfTotalRequestedConsumption.getText()));
-							addDemandFlowLine(gpRequestedDemands, demand.getMes(), demand);
+							//System.out.println(tfTotalRequestedConsumption.getText());
+							demand.setVazao(Double.parseDouble(tfTotalAuthorizedConsumption.getText()));
+							addDemandFlowLine(gpAuthorizedDemands, demand.getMes(), demand);
 						}
 						idx[0]++;
 
@@ -1017,7 +1035,7 @@ public class AddSubterraneanDetailsController implements Initializable {
 	 * index gridPane tfTotalConsumption btnTotalConsumption typeOfPurpouse purpouse
 	 */
 	public void addPurpouseRow(int index, GridPane gridPane, JFXTextField tfTotalConsumption,
-			JFXButton btnTotalConsumption, TipoFinalidade typeOfPurpouse, Finalidade purpouse) {
+			Button btnTotalConsumption, TipoFinalidade typeOfPurpouse, Finalidade purpouse) {
 
 		JFXTextField tfPurpouse = new JFXTextField();
 		JFXTextField tfSubpurpose = new JFXTextField();
@@ -1510,37 +1528,52 @@ public class AddSubterraneanDetailsController implements Initializable {
 
 		Subterranea subterraneanAttributes = new Subterranea();
 
-		// Se não selecionado, selecione falso
-		subterraneanAttributes.setCaesb(cbConcessionaire.getSelectionModel().getSelectedItem() != null
-				? "Sim".equals(cbConcessionaire.getSelectionModel().getSelectedItem()) ? true : false
-				: false);
-
-		subterraneanAttributes.setNivelEstatico(tfStaticLevel.getText());
-		subterraneanAttributes.setNivelDinamico(tfDynamicLevel.getText());
-		subterraneanAttributes.setProfundidade(tfWaterDepth.getText());
-		subterraneanAttributes
-				.setVazaoOutorgavel(tfSystemGrant.getText().isEmpty() ? 0 : Integer.parseInt(tfSystemGrant.getText()));
-		subterraneanAttributes
-				.setVazaoSistema(tfSystemFlow.getText().isEmpty() ? 0 : Integer.parseInt(tfSystemFlow.getText()));
-
-		subterraneanAttributes
-				.setVazaoTeste(tfSystemTest.getText().isEmpty() ? 0 : Integer.parseInt(tfSystemTest.getText()));
-
 		// O tipo de poço é obrigatório, se não selecionar retorna vazio
 		if (cbWellType.getSelectionModel().getSelectedItem() == null) {
-
+			// Alerta (Toast) de sucesso na edi��o
+			Node source = (Node) cbConcessionaire;
+			Stage ownerStage = (Stage) source.getScene().getWindow();
+			String toastMsg = "Selecione o Tipo de Poço, se manual ou tubular!!!";
+			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
 			return null;
+			
+		} else if (cbConcessionaire.getSelectionModel().getSelectedItem() == null) {
+			// Alerta (Toast) de sucesso na edi��o
+			Node source = (Node) cbConcessionaire;
+			Stage ownerStage = (Stage) source.getScene().getWindow();
+			String toastMsg = "Selecione se há uso da Caesb no empreendimento!!!";
+			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+			return null;
+			
 		} else {
+
 			// Set the selected item if it exists
 			subterraneanAttributes.setTipoPoco(cbWellType.getSelectionModel().getSelectedItem());
+
+			// Se não selecionado, selecione falso
+			subterraneanAttributes.setCaesb(cbConcessionaire.getSelectionModel().getSelectedItem() != null
+					? "Sim".equals(cbConcessionaire.getSelectionModel().getSelectedItem()) ? true : false
+					: false);
+
+			subterraneanAttributes.setNivelEstatico(tfStaticLevel.getText());
+			subterraneanAttributes.setNivelDinamico(tfDynamicLevel.getText());
+			subterraneanAttributes.setProfundidade(tfWaterDepth.getText());
+			subterraneanAttributes.setVazaoOutorgavel(
+					tfSystemGrant.getText().isEmpty() ? 0 : Integer.parseInt(tfSystemGrant.getText()));
+			subterraneanAttributes
+					.setVazaoSistema(tfSystemFlow.getText().isEmpty() ? 0 : Integer.parseInt(tfSystemFlow.getText()));
+
+			subterraneanAttributes
+					.setVazaoTeste(tfSystemTest.getText().isEmpty() ? 0 : Integer.parseInt(tfSystemTest.getText()));
+
+			// Sistema e Subsistema (Hidrogeo Poroso ou Fraturado)
+			subterraneanAttributes.setSistema(cbSystem.getSelectionModel().getSelectedItem());
+			subterraneanAttributes.setSubsistema(cbSubsystem.getSelectionModel().getSelectedItem());
+			subterraneanAttributes.setCodPlan(tfCodeSystem.getText());
+
+			return subterraneanAttributes;
+
 		}
-
-		// Sistema e Subsistema (Hidrogeo Poroso ou Fraturado)
-		subterraneanAttributes.setSistema(cbSystem.getSelectionModel().getSelectedItem());
-		subterraneanAttributes.setSubsistema(cbSubsystem.getSelectionModel().getSelectedItem());
-		subterraneanAttributes.setCodPlan(tfCodeSystem.getText());
-
-		return subterraneanAttributes;
 
 	}
 

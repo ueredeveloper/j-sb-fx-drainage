@@ -115,6 +115,8 @@ public class AddAddressController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
+		System.out.println("add addres inicializado");
+
 		obsListState = StaticData.INSTANCE.getStates();
 		cbState.setItems(obsListState);
 
@@ -170,8 +172,7 @@ public class AddAddressController implements Initializable {
 
 	public void save(ActionEvent event) {
 
-		Long id = object != null && object.getId() != null ? object.getId() : null;
-
+		// Long id = seletedObject.getId();
 		String logradouro = tfAddress.getText();
 		String bairro = tfNeighborhood.getText();
 		String cidade = tfCity.getText();
@@ -179,7 +180,7 @@ public class AddAddressController implements Initializable {
 		Estado estado = cbState.getValue();
 
 		// Se o logradouro não estiver preenchido não salvar
-		if (logradouro == null || logradouro.isEmpty()) {
+		if (logradouro.isEmpty() || logradouro == null) {
 
 			// Informa salvamento com sucesso
 			Node source = (Node) event.getSource();
@@ -187,14 +188,40 @@ public class AddAddressController implements Initializable {
 			String toastMsg = "O Logradouro deve estar preenchido !!!";
 			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
 
-		} else {
+			return;
+
+		} else if (estado == null) {
+			// Informa salvamento com sucesso
+			Node source = (Node) event.getSource();
+			Stage ownerStage = (Stage) source.getScene().getWindow();
+			String toastMsg = "Selecione o Estado, ex: DF !!!";
+			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+
+			return;
+		} else if (bairro.isEmpty() || bairro == null) {
+			// Informa salvamento com sucesso
+			Node source = (Node) event.getSource();
+			Stage ownerStage = (Stage) source.getScene().getWindow();
+			String toastMsg = "Adicione o bairro, ex: Taguatinga Norte !!!";
+			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+
+			return;
+		}
+
+		else {
 
 			try {
 
 				// DocumentService documentService = new DocumentService(localUrl);
 				EnderecoService enderecoService = new EnderecoService(urlService);
 
-				Endereco endereco = new Endereco(id, logradouro, bairro, cidade, cep, estado);
+				Endereco endereco = new Endereco();
+				endereco.setLogradouro(logradouro);
+				endereco.setBairro(bairro);
+				endereco.setCidade(cidade);
+				endereco.setCep(cep);
+				endereco.setEstado(estado);
+
 				ServiceResponse<?> service = enderecoService.save(endereco);
 
 				if (service.getResponseCode() == 201) {
