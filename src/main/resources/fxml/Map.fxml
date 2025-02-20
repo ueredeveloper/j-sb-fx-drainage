@@ -70,7 +70,7 @@
                         <FontAwesomeIconView glyphName="COPY" styleClass="icons" />
                      </graphic>
                      <tooltip>
-                        <Tooltip text="Atualiza o sistema e subsistema" />
+                        <Tooltip text="Copia a coordenada, latitude" />
                      </tooltip>
                   </Button>
                   <Label fx:id="lblLongitude" alignment="CENTER" prefHeight="0.0" prefWidth="200.0" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
@@ -79,7 +79,7 @@
                         <FontAwesomeIconView glyphName="COPY" styleClass="icons" />
                      </graphic>
                      <tooltip>
-                        <Tooltip text="Atualiza o sistema e subsistema" />
+                        <Tooltip text="Copia a coordenada, longitude" />
                      </tooltip>
                   </Button>
                </children>

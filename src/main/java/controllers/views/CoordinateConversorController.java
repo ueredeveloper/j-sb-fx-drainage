@@ -1,5 +1,7 @@
 package controllers.views;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -101,8 +103,18 @@ public class CoordinateConversorController implements Initializable {
 
 			ProjCoordinate latLng = cc.convertUtmlToDecimal(x, y, zone, hemisphere);
 
-			String lat = String.valueOf(latLng.y);
-			String lng = String.valueOf(latLng.x);
+			// Padroniza seis números depois da vírgula nas coordenadas
+			BigDecimal bd;
+
+			bd = new BigDecimal(latLng.y).setScale(7, RoundingMode.FLOOR);
+
+			String lat = String.valueOf(bd);
+
+			// Padroniza seis números depois da vírgula nas coordenadas
+			bd = new BigDecimal(latLng.x).setScale(7, RoundingMode.FLOOR);
+
+			String lng = String.valueOf(bd);
+
 			tfLatUtmToDd.setText(lat);
 			tfLngUtmToDd.setText(lng);
 
@@ -140,7 +152,11 @@ public class CoordinateConversorController implements Initializable {
 			// (int degrees, int minutes, double seconds, boolean isNegative)
 			double lat = cc.convertGMSToDecimal(latDegrees, latMinutes, latSeconds, latIsNegative);
 
-			tfLatDmsToDd.setText(String.valueOf(lat));
+			// Padroniza seis números depois da vírgula nas coordenadas
+			BigDecimal bd;
+
+			bd = new BigDecimal(lat).setScale(7, RoundingMode.FLOOR);
+			tfLatDmsToDd.setText(String.valueOf(bd));
 
 			int lngDegrees = Integer.parseInt(tfLngDegree.getText());
 			int lngMinutes = Integer.parseInt(tfLngMinute.getText());
@@ -153,7 +169,8 @@ public class CoordinateConversorController implements Initializable {
 			// (int degrees, int minutes, double seconds, boolean isNegative)
 			double lng = cc.convertGMSToDecimal(lngDegrees, lngMinutes, lngSeconds, lngIsNegative);
 
-			tfLngDmsToDd.setText(String.valueOf(lng));
+			bd = new BigDecimal(lng).setScale(7, RoundingMode.FLOOR);
+			tfLngDmsToDd.setText(String.valueOf(bd));
 
 			mapController.setCoordinates(String.valueOf(lat), String.valueOf(lng));
 

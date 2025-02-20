@@ -153,7 +153,6 @@ public class MapController implements Initializable {
 
 		btnCopyLat.setOnAction(evet -> copyToClipboard("Latitude"));
 		btnCopyLng.setOnAction(evet -> copyToClipboard("Longitude"));
-		
 
 	}
 

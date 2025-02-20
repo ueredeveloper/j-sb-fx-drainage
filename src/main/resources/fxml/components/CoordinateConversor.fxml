@@ -21,7 +21,7 @@
          <children>
             <TabPane maxHeight="150.0" maxWidth="900.0" minHeight="118.0" minWidth="900.0" prefHeight="118.0" prefWidth="900.0" styleClass="secondary-content" tabClosingPolicy="UNAVAILABLE">
                 <tabs>
-                    <Tab text="UTM para Decimal">
+                    <Tab styleClass="secondary-content" text="UTM para Decimal">
                         <content>
                             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="121.0" prefWidth="600.0" styleClass="secondary-content">
                            <children>
@@ -32,7 +32,7 @@
                                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="200.0" />
                                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="200.0" />
                                           <ColumnConstraints hgrow="SOMETIMES" minWidth="80.0" prefWidth="80.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="80.0" prefWidth="100.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="80.0" prefWidth="80.0" />
                                           <ColumnConstraints hgrow="SOMETIMES" minWidth="40.0" prefWidth="40.0" />
                                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="200.0" />
                                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="200.0" />
@@ -50,6 +50,9 @@
                                              <padding>
                                                 <Insets left="5.0" right="5.0" />
                                              </padding>
+                                             <tooltip>
+                                                <Tooltip text="Easting (E) → Mede a posição leste-oeste dentro do fuso UTM." />
+                                             </tooltip>
                                           </JFXTextField>
                                           <JFXTextField fx:id="tfUtmY" prefHeight="30.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.halignment="CENTER">
                                              <GridPane.margin>
@@ -58,14 +61,20 @@
                                              <padding>
                                                 <Insets left="5.0" right="5.0" />
                                              </padding>
+                                             <tooltip>
+                                                <Tooltip text="Northing (N) → Mede a distância ao Equador (Norte-Sul)." />
+                                             </tooltip>
                                           </JFXTextField>
-                                          <JFXComboBox fx:id="cbUtmZone" prefHeight="30.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.halignment="CENTER">
+                                          <JFXComboBox fx:id="cbUtmZone" prefHeight="30.0" prefWidth="200.0" promptText="Zona" GridPane.columnIndex="2" GridPane.halignment="CENTER">
                                              <GridPane.margin>
                                                 <Insets />
                                              </GridPane.margin>
                                              <padding>
                                                 <Insets left="5.0" right="5.0" />
                                              </padding>
+                                             <tooltip>
+                                                <Tooltip text="Zona UTM" />
+                                             </tooltip>
                                           </JFXComboBox>
                                           <JFXTextField fx:id="tfLatUtmToDd" prefHeight="30.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.halignment="CENTER">
                                              <GridPane.margin>
@@ -106,10 +115,13 @@
                                              </GridPane.margin>
                                           </Button>
                                           <Label alignment="TOP_CENTER" prefHeight="30.0" prefWidth="120.0" text="WGS84" GridPane.columnIndex="6" GridPane.rowIndex="1" />
-                                          <JFXComboBox fx:id="cbUtmHemisphere" prefHeight="30.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.halignment="CENTER">
+                                          <JFXComboBox fx:id="cbUtmHemisphere" prefHeight="30.0" prefWidth="200.0" promptText="Hemi." GridPane.columnIndex="3" GridPane.halignment="CENTER">
                                              <padding>
                                                 <Insets left="5.0" right="5.0" />
-                                             </padding></JFXComboBox>
+                                             </padding>
+                                             <tooltip>
+                                                <Tooltip text="Hemisfério Norte ou Sul" />
+                                             </tooltip></JFXComboBox>
                                        </children>
                                     </GridPane>
                                  </children>
@@ -118,7 +130,7 @@
                             </AnchorPane>
                         </content>
                     </Tab>
-                  <Tab text="GMS para Decimal">
+                  <Tab styleClass="secondary-content" text="GMS para Decimal">
                      <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="600.0" styleClass="secondary-content">
                            <children>
@@ -174,7 +186,7 @@
                                           <Insets left="5.0" right="5.0" />
                                        </padding>
                                     </JFXTextField>
-                                    <JFXComboBox fx:id="cbDmsNS" prefHeight="30.0" prefWidth="100.0" GridPane.columnIndex="3" GridPane.halignment="CENTER">
+                                    <JFXComboBox fx:id="cbDmsNS" prefHeight="30.0" prefWidth="80.0" promptText="Hem." GridPane.columnIndex="3" GridPane.halignment="CENTER">
                                        <padding>
                                           <Insets left="5.0" right="5.0" />
                                        </padding>
@@ -194,7 +206,7 @@
                                           <Insets left="5.0" right="5.0" />
                                        </padding>
                                     </JFXTextField>
-                                    <JFXComboBox fx:id="cbDmsWE" prefHeight="30.0" prefWidth="100.0" GridPane.columnIndex="7" GridPane.halignment="CENTER">
+                                    <JFXComboBox fx:id="cbDmsWE" prefHeight="30.0" prefWidth="80.0" promptText="Hem." GridPane.columnIndex="7" GridPane.halignment="CENTER">
                                        <padding>
                                           <Insets left="5.0" right="5.0" />
                                        </padding>
