@@ -1,5 +1,6 @@
 package controllers;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -9,16 +10,24 @@ import com.jfoenix.controls.JFXButton;
 import com.sun.javafx.webkit.WebConsoleListener;
 
 import controllers.views.AddInterferenceController;
+import controllers.views.CoordinateConversorController;
 import controllers.views.InterferenceTextFieldsController;
+import javafx.animation.TranslateTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
+import javafx.util.Duration;
 import models.Interferencia;
 import netscape.javascript.JSException;
 import netscape.javascript.JSObject;
@@ -29,7 +38,7 @@ import netscape.javascript.JSObject;
 public class MapController implements Initializable {
 
 	@FXML
-	private AnchorPane apMap;
+	private AnchorPane apMap, apCoordConversor;
 
 	@FXML
 	WebView wvMap;
@@ -48,6 +57,12 @@ public class MapController implements Initializable {
 
 	@FXML
 	private JFXButton btnZoomMinus;
+
+	@FXML
+	private Button btnCopyLat, btnCopyLng;
+
+	@FXML
+	private Label lblLatitude, lblLongitude;
 
 	private JSObject doc;
 	private WebEngine webEngine;
@@ -136,6 +151,10 @@ public class MapController implements Initializable {
 		btnSatellite.setOnAction(event -> handleSatelliteMap(event));
 		btnHybrid.setOnAction(event -> handleHybridMap(event));
 
+		btnCopyLat.setOnAction(evet -> copyToClipboard("Latitude"));
+		btnCopyLng.setOnAction(evet -> copyToClipboard("Longitude"));
+		
+
 	}
 
 	private void invokeJS(final String str) {
@@ -213,6 +232,74 @@ public class MapController implements Initializable {
 
 	public void handleAddMarker(String json) {
 		invokeJS("addMarker(" + json + ");");
+	}
+
+	CoordinateConversorController coordController;
+	private AnchorPane conversorPane; // Store the pane reference
+
+	public void showCoordConversor() {
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/components/CoordinateConversor.fxml"));
+			conversorPane = loader.load();
+
+			// Get the controller from the loader
+			coordController = loader.getController();
+			coordController.setMapController(this); // Set MapController
+
+			// Set initial position above the visible area
+			conversorPane.setTranslateY(-apCoordConversor.getHeight());
+
+			apCoordConversor.getChildren().setAll(conversorPane);
+			AnchorPane.setLeftAnchor(conversorPane, 0.0);
+			AnchorPane.setRightAnchor(conversorPane, 0.0);
+
+			// Animate from top to bottom
+			TranslateTransition transition = new TranslateTransition(Duration.millis(500), conversorPane);
+			transition.setToY(-25);
+			transition.play();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void hideCoordConversor() {
+		if (conversorPane != null) {
+			TranslateTransition transition = new TranslateTransition(Duration.millis(200), conversorPane);
+			transition.setToY(apCoordConversor.getHeight()); // Move up
+			transition.setOnFinished(event -> apCoordConversor.getChildren().remove(conversorPane)); // Remove after
+																										// animation
+			transition.play();
+		}
+	}
+
+	public void setCoordinates(String lat, String lng) {
+
+		lblLatitude.setText(lat);
+		lblLongitude.setText(lng);
+
+	}
+
+	public void copyToClipboard(String coord) {
+
+		if (coord.equals("Latitude")) {
+
+			if (lblLatitude != null && lblLatitude.getText() != null) {
+				Clipboard clipboard = Clipboard.getSystemClipboard();
+				ClipboardContent content = new ClipboardContent();
+				content.putString(lblLatitude.getText());
+				clipboard.setContent(content);
+			}
+
+		} else {
+			if (lblLongitude != null && lblLongitude.getText() != null) {
+				Clipboard clipboard = Clipboard.getSystemClipboard();
+				ClipboardContent content = new ClipboardContent();
+				content.putString(lblLongitude.getText());
+				clipboard.setContent(content);
+			}
+		}
+
 	}
 
 }

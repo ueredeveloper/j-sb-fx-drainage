@@ -12,18 +12,13 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import utilities.ResizeMap;
 
 public class NavigationController implements Initializable {
 
-	
 	@FXML
 	private AnchorPane apContent;
 
@@ -104,7 +99,12 @@ public class NavigationController implements Initializable {
 
 				ResizeMap rm = new ResizeMap(apMainContent, apMapContent, apManagerContent);
 				rm.resetMapSize();
-
+				
+				mapController.hideCoordConversor();
+				
+				System.out.println("hide");
+				
+			
 			}
 		});
 
@@ -117,6 +117,8 @@ public class NavigationController implements Initializable {
 
 				ResizeMap rm = new ResizeMap(apMainContent, apMapContent, apManagerContent);
 				rm.resizeMapToFullWidth();
+				
+				mapController.showCoordConversor();
 			}
 		});
 
@@ -135,7 +137,5 @@ public class NavigationController implements Initializable {
 			e.printStackTrace();
 		}
 	}
-
-	
 
 }

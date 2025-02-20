@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="900.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="130.0" prefWidth="900.0" stylesheets="@../css/root-light.css" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.views.CoordinateConversorController">
+   <children>
+      <VBox alignment="CENTER" prefHeight="130.0" prefWidth="900.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+         <children>
+            <TabPane maxHeight="150.0" maxWidth="900.0" minHeight="118.0" minWidth="900.0" prefHeight="118.0" prefWidth="900.0" styleClass="secondary-content" tabClosingPolicy="UNAVAILABLE">
+                <tabs>
+                    <Tab text="UTM para Decimal">
+                        <content>
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="121.0" prefWidth="600.0" styleClass="secondary-content">
+                           <children>
+                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="900.0">
+                                 <children>
+                                    <GridPane prefHeight="79.0" prefWidth="890.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">
+                                       <columnConstraints>
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="200.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="200.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="80.0" prefWidth="80.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="80.0" prefWidth="100.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="40.0" prefWidth="40.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="200.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="200.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="40.0" prefWidth="40.0" />
+                                       </columnConstraints>
+                                       <rowConstraints>
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
+                                       </rowConstraints>
+                                       <children>
+                                          <JFXTextField fx:id="tfUtmX" prefHeight="30.0" prefWidth="200.0" GridPane.halignment="CENTER">
+                                             <GridPane.margin>
+                                                <Insets left="5.0" right="5.0" />
+                                             </GridPane.margin>
+                                             <padding>
+                                                <Insets left="5.0" right="5.0" />
+                                             </padding>
+                                          </JFXTextField>
+                                          <JFXTextField fx:id="tfUtmY" prefHeight="30.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.halignment="CENTER">
+                                             <GridPane.margin>
+                                                <Insets left="5.0" right="5.0" />
+                                             </GridPane.margin>
+                                             <padding>
+                                                <Insets left="5.0" right="5.0" />
+                                             </padding>
+                                          </JFXTextField>
+                                          <JFXComboBox fx:id="cbUtmZone" prefHeight="30.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.halignment="CENTER">
+                                             <GridPane.margin>
+                                                <Insets />
+                                             </GridPane.margin>
+                                             <padding>
+                                                <Insets left="5.0" right="5.0" />
+                                             </padding>
+                                          </JFXComboBox>
+                                          <JFXTextField fx:id="tfLatUtmToDd" prefHeight="30.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.halignment="CENTER">
+                                             <GridPane.margin>
+                                                <Insets left="5.0" right="5.0" />
+                                             </GridPane.margin>
+                                             <padding>
+                                                <Insets left="5.0" right="5.0" />
+                                             </padding>
+                                          </JFXTextField>
+                                          <JFXTextField fx:id="tfLngUtmToDd" prefHeight="30.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.halignment="CENTER">
+                                             <GridPane.margin>
+                                                <Insets left="5.0" right="5.0" />
+                                             </GridPane.margin>
+                                             <padding>
+                                                <Insets left="5.0" right="5.0" />
+                                             </padding>
+                                          </JFXTextField>
+                                          <Button fx:id="btnUtmToDd" ellipsisString="" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" styleClass="icon-button" GridPane.columnIndex="4" GridPane.halignment="CENTER">
+                                             <graphic>
+                                                <FontAwesomeIconView glyphName="REFRESH" styleClass="icons" />
+                                             </graphic>
+                                             <tooltip>
+                                                <Tooltip text="Atualiza o sistema e subsistema" />
+                                             </tooltip>
+                                             <GridPane.margin>
+                                                <Insets left="5.0" right="5.0" />
+                                             </GridPane.margin>
+                                          </Button>
+                                          <Button fx:id="btnUtmToDdInMap" ellipsisString="" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" styleClass="icon-button" GridPane.columnIndex="7" GridPane.halignment="CENTER">
+                                             <graphic>
+                                                <FontAwesomeIconView glyphName="MAP_MARKER" styleClass="icons" />
+                                             </graphic>
+                                             <tooltip>
+                                                <Tooltip text="Atualiza o sistema e subsistema" />
+                                             </tooltip>
+                                             <GridPane.margin>
+                                                <Insets left="5.0" right="5.0" />
+                                             </GridPane.margin>
+                                          </Button>
+                                          <Label alignment="TOP_CENTER" prefHeight="30.0" prefWidth="120.0" text="WGS84" GridPane.columnIndex="6" GridPane.rowIndex="1" />
+                                          <JFXComboBox fx:id="cbUtmHemisphere" prefHeight="30.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.halignment="CENTER">
+                                             <padding>
+                                                <Insets left="5.0" right="5.0" />
+                                             </padding></JFXComboBox>
+                                       </children>
+                                    </GridPane>
+                                 </children>
+                              </AnchorPane>
+                           </children>
+                            </AnchorPane>
+                        </content>
+                    </Tab>
+                  <Tab text="GMS para Decimal">
+                     <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="600.0" styleClass="secondary-content">
+                           <children>
+                              <GridPane prefHeight="85.0" prefWidth="900.0">
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="80.0" prefWidth="80.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="80.0" prefWidth="80.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="80.0" prefWidth="80.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="80.0" prefWidth="80.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="40.0" prefWidth="40.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="210.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="210.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="40.0" prefWidth="40.0" />
+                                 </columnConstraints>
+                                 <children>
+                                    <Button fx:id="btnUtmToDDInMap" ellipsisString="" mnemonicParsing="false" styleClass="icon-button" GridPane.columnIndex="11" GridPane.halignment="CENTER">
+                                       <graphic>
+                                          <FontAwesomeIconView glyphName="MAP_MARKER" styleClass="icons" />
+                                       </graphic>
+                                       <tooltip>
+                                          <Tooltip fx:id="btnDmsToDdInMap" text="Atualiza o sistema e subsistema" />
+                                       </tooltip>
+                                    </Button>
+                                    <Button fx:id="btnDmsToDd" ellipsisString="" mnemonicParsing="false" styleClass="icon-button" GridPane.columnIndex="8" GridPane.halignment="CENTER">
+                                       <graphic>
+                                          <FontAwesomeIconView glyphName="REFRESH" styleClass="icons" />
+                                       </graphic>
+                                       <tooltip>
+                                          <Tooltip text="Atualiza o sistema e subsistema" />
+                                       </tooltip>
+                                    </Button>
+                                    <Label alignment="TOP_CENTER" prefHeight="30.0" prefWidth="120.0" text="WGS84" textAlignment="CENTER" GridPane.columnIndex="10" GridPane.rowIndex="1" />
+                                    <JFXTextField fx:id="tfLatDegree" prefHeight="30.0" prefWidth="100.0" GridPane.halignment="CENTER">
+                                       <padding>
+                                          <Insets left="5.0" right="5.0" />
+                                       </padding>
+                                    </JFXTextField>
+                                    <JFXTextField fx:id="tfLatMinute" prefHeight="30.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.halignment="CENTER">
+                                       <padding>
+                                          <Insets left="5.0" right="5.0" />
+                                       </padding>
+                                    </JFXTextField>
+                                    <JFXTextField fx:id="tfLatSecond" prefHeight="30.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.halignment="CENTER">
+                                       <padding>
+                                          <Insets left="5.0" right="5.0" />
+                                       </padding>
+                                    </JFXTextField>
+                                    <JFXComboBox fx:id="cbDmsNS" prefHeight="30.0" prefWidth="100.0" GridPane.columnIndex="3" GridPane.halignment="CENTER">
+                                       <padding>
+                                          <Insets left="5.0" right="5.0" />
+                                       </padding>
+                                    </JFXComboBox>
+                                    <JFXTextField fx:id="tfLngDegree" prefHeight="30.0" prefWidth="100.0" GridPane.columnIndex="4" GridPane.halignment="CENTER">
+                                       <padding>
+                                          <Insets left="5.0" right="5.0" />
+                                       </padding>
+                                    </JFXTextField>
+                                    <JFXTextField fx:id="tfLngMinute" prefHeight="30.0" prefWidth="100.0" GridPane.columnIndex="5" GridPane.halignment="CENTER">
+                                       <padding>
+                                          <Insets left="5.0" right="5.0" />
+                                       </padding>
+                                    </JFXTextField>
+                                    <JFXTextField fx:id="tfLngSecond" prefHeight="30.0" prefWidth="100.0" GridPane.columnIndex="6" GridPane.halignment="CENTER">
+                                       <padding>
+                                          <Insets left="5.0" right="5.0" />
+                                       </padding>
+                                    </JFXTextField>
+                                    <JFXComboBox fx:id="cbDmsWE" prefHeight="30.0" prefWidth="100.0" GridPane.columnIndex="7" GridPane.halignment="CENTER">
+                                       <padding>
+                                          <Insets left="5.0" right="5.0" />
+                                       </padding>
+                                    </JFXComboBox>
+                                    <JFXTextField fx:id="tfLatDmsToDd" prefHeight="30.0" prefWidth="200.0" GridPane.columnIndex="9">
+                                       <GridPane.margin>
+                                          <Insets left="10.0" right="10.0" />
+                                       </GridPane.margin>
+                                       <padding>
+                                          <Insets left="5.0" right="5.0" />
+                                       </padding>
+                                    </JFXTextField>
+                                    <JFXTextField fx:id="tfLngDmsToDd" prefHeight="30.0" prefWidth="200.0" GridPane.columnIndex="10">
+                                       <GridPane.margin>
+                                          <Insets left="10.0" right="10.0" />
+                                       </GridPane.margin>
+                                       <padding>
+                                          <Insets left="5.0" right="5.0" />
+                                       </padding>
+                                    </JFXTextField>
+                                 </children>
+                              </GridPane>
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </Tab>
+                </tabs>
+            </TabPane>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
