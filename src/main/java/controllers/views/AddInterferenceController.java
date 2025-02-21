@@ -212,6 +212,9 @@ public class AddInterferenceController implements Initializable {
 		obsHidrographicUnits = StaticData.INSTANCE.fetchAllHidrographicUnits();
 		cbHydrographicUnit.setItems(obsHidrographicUnits);
 
+		latitude = documentController.getLatitude();
+		longitude = documentController.getLongitude();
+		
 		tfLatitude.setText(latitude);
 		tfLongitude.setText(longitude);
 
@@ -414,9 +417,6 @@ public class AddInterferenceController implements Initializable {
 			}
 
 		});
-
-		tfLatitude.setText("-15.8722731");
-		tfLongitude.setText("-47.9164122 ");
 
 		cbTypeOfInterference.setOnAction((event) -> {
 			TipoInterferencia item = cbTypeOfInterference.getSelectionModel().getSelectedItem();

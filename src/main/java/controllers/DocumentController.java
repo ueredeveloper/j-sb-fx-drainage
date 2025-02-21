@@ -440,6 +440,22 @@ public class DocumentController implements Initializable {
 		}
 
 	}
+	/**
+	 * Captura a latitude para envio para a tela AddInterferenceControler
+	 * @return String
+	 */
+	public String getLatitude() {
+	    Double latitude = interferenceTFController.getLatLng().getLatitude();
+	    return latitude != null ? String.valueOf(latitude) : "";
+	}
+	/**
+	 * Captura a longitude para envio para a tela AddInterferenceControler
+	 * @return String
+	 */
+	public String getLongitude() {
+	    Double longitude = interferenceTFController.getLatLng().getLongitude();
+	    return longitude != null ? String.valueOf(longitude) : "";
+	}
 
 	public void openAddProcess() {
 		// Cria um novo AnchorPane

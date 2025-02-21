@@ -21,7 +21,7 @@
          <children>
             <TabPane maxHeight="150.0" maxWidth="900.0" minHeight="118.0" minWidth="900.0" prefHeight="118.0" prefWidth="900.0" styleClass="secondary-content" tabClosingPolicy="UNAVAILABLE">
                 <tabs>
-                    <Tab styleClass="secondary-content" text="UTM para Decimal">
+                    <Tab text="UTM para Decimal">
                         <content>
                             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="121.0" prefWidth="600.0" styleClass="secondary-content">
                            <children>
@@ -103,7 +103,7 @@
                                                 <Insets left="5.0" right="5.0" />
                                              </GridPane.margin>
                                           </Button>
-                                          <Button fx:id="btnUtmToDdInMap" ellipsisString="" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" styleClass="icon-button" GridPane.columnIndex="7" GridPane.halignment="CENTER">
+                                          <Button fx:id="btnUtmAddMarker" ellipsisString="" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" styleClass="icon-button" GridPane.columnIndex="7" GridPane.halignment="CENTER">
                                              <graphic>
                                                 <FontAwesomeIconView glyphName="MAP_MARKER" styleClass="icons" />
                                              </graphic>
@@ -130,7 +130,7 @@
                             </AnchorPane>
                         </content>
                     </Tab>
-                  <Tab styleClass="secondary-content" text="GMS para Decimal">
+                  <Tab text="GMS para Decimal">
                      <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="600.0" styleClass="secondary-content">
                            <children>
@@ -154,7 +154,7 @@
                                     <ColumnConstraints hgrow="SOMETIMES" minWidth="40.0" prefWidth="40.0" />
                                  </columnConstraints>
                                  <children>
-                                    <Button fx:id="btnUtmToDDInMap" ellipsisString="" mnemonicParsing="false" styleClass="icon-button" GridPane.columnIndex="11" GridPane.halignment="CENTER">
+                                    <Button fx:id="btnDmsAddMarker" ellipsisString="" mnemonicParsing="false" styleClass="icon-button" GridPane.columnIndex="11" GridPane.halignment="CENTER">
                                        <graphic>
                                           <FontAwesomeIconView glyphName="MAP_MARKER" styleClass="icons" />
                                        </graphic>

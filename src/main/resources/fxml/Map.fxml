@@ -30,19 +30,19 @@
                   <URL value="@css/map.css" />
                </stylesheets>
             </JFXButton>
-            <JFXButton fx:id="btnStreet" layoutX="12.0" layoutY="128.0" prefWidth="80.0" styleClass="button-secondary-content" text="Ruas">
+            <JFXButton fx:id="btnRoadMap" layoutX="12.0" layoutY="128.0" prefWidth="80.0" styleClass="button-secondary-content" text="Ruas">
                <stylesheets>
                   <URL value="@css/root.css" />
                   <URL value="@css/map.css" />
                </stylesheets>
             </JFXButton>
-            <JFXButton fx:id="btnSatellite" layoutX="12.0" layoutY="168.0" prefWidth="80.0" styleClass="button-secondary-content" text="Satélite">
+            <JFXButton fx:id="btnSatelliteMap" layoutX="12.0" layoutY="168.0" prefWidth="80.0" styleClass="button-secondary-content" text="Satélite">
                <stylesheets>
                   <URL value="@css/root.css" />
                   <URL value="@css/map.css" />
                </stylesheets>
             </JFXButton>
-            <JFXButton fx:id="btnHybrid" layoutX="12.0" layoutY="211.0" prefWidth="80.0" styleClass="button-secondary-content" text="Híbrido">
+            <JFXButton fx:id="btnTerrain" layoutX="12.0" layoutY="211.0" prefWidth="80.0" styleClass="button-secondary-content" text="Terreno">
                <stylesheets>
                   <URL value="@css/root.css" />
                   <URL value="@css/map.css" />

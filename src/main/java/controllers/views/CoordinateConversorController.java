@@ -11,10 +11,13 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 
 import controllers.MapController;
+import enums.ToastType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tooltip;
+import javafx.stage.Stage;
 import utilities.CoordinateConverter;
 
 public class CoordinateConversorController implements Initializable {
@@ -38,10 +41,7 @@ public class CoordinateConversorController implements Initializable {
 	private Button btnUtmToDd;
 
 	@FXML
-	private Button btnUtmToDdInMap;
-
-	@FXML
-	private Button btnUtmToDDInMap;
+	private Button btnUtmAddMarker, btnDmsAddMarker;
 
 	@FXML
 	private Tooltip btnDmsToDdInMap;
@@ -174,6 +174,40 @@ public class CoordinateConversorController implements Initializable {
 
 			mapController.setCoordinates(String.valueOf(lat), String.valueOf(lng));
 
+		});
+
+		btnUtmAddMarker.setOnAction(evet -> {
+
+			if (tfLatUtmToDd.getText().isEmpty() || tfLngUtmToDd.getText().isEmpty()) {
+				// Informa salvamento com sucesso
+				Node source = (Node) tfLatUtmToDd;
+				Stage ownerStage = (Stage) source.getScene().getWindow();
+				String toastMsg = "Pesquise uma coordenada primeiro, valores de coordenadas vazios !!!";
+				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+				return;
+			}
+
+			String lat = tfLatUtmToDd.getText();
+			String lng = tfLngUtmToDd.getText();
+
+			mapController.handleAddMarker("{lat:" + lat + "," + "lng:" + lng + "}");
+		});
+
+		btnDmsAddMarker.setOnAction(evet -> {
+
+			if (tfLatDmsToDd.getText().isEmpty() || tfLngDmsToDd.getText().isEmpty()) {
+				// Informa salvamento com sucesso
+				Node source = (Node) tfLatDmsToDd;
+				Stage ownerStage = (Stage) source.getScene().getWindow();
+				String toastMsg = "Pesquise uma coordenada primeiro, valores de coordenadas vazios !!!";
+				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+				return;
+			}
+
+			String lat = tfLatDmsToDd.getText();
+			String lng = tfLngDmsToDd.getText();
+
+			mapController.handleAddMarker("{lat:" + lat + "," + "lng:" + lng + "}");
 		});
 
 	}

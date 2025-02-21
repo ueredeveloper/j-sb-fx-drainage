@@ -9,7 +9,6 @@ import com.google.gson.JsonObject;
 import com.jfoenix.controls.JFXButton;
 import com.sun.javafx.webkit.WebConsoleListener;
 
-import controllers.views.AddInterferenceController;
 import controllers.views.CoordinateConversorController;
 import controllers.views.InterferenceTextFieldsController;
 import javafx.animation.TranslateTransition;
@@ -47,13 +46,13 @@ public class MapController implements Initializable {
 	private JFXButton btnZoomPlus;
 
 	@FXML
-	private JFXButton btnStreet;
+	private JFXButton btnRoadMap;
 
 	@FXML
-	private JFXButton btnSatellite;
+	private JFXButton btnSatelliteMap;
 
 	@FXML
-	private JFXButton btnHybrid;
+	private JFXButton btnTerrain;
 
 	@FXML
 	private JFXButton btnZoomMinus;
@@ -100,7 +99,7 @@ public class MapController implements Initializable {
 
 		webEngine = wvMap.getEngine();
 
-		webEngine.load(getClass().getResource("/html/map/index.html").toExternalForm());
+		webEngine.load(getClass().getResource("/html/map/open-layers-map/index.html").toExternalForm());
 
 		ready = false;
 
@@ -147,9 +146,9 @@ public class MapController implements Initializable {
 
 		btnZoomPlus.setOnAction(event -> handleZoomPlus(event));
 		btnZoomMinus.setOnAction(event -> handleZoomMinus(event));
-		btnStreet.setOnAction(event -> handleStreetMap(event));
-		btnSatellite.setOnAction(event -> handleSatelliteMap(event));
-		btnHybrid.setOnAction(event -> handleHybridMap(event));
+		btnRoadMap.setOnAction(event -> handleRoadMap(event));
+		btnSatelliteMap.setOnAction(event -> handleSatelliteMap(event));
+		btnTerrain.setOnAction(event -> handleTerrainMap(event));
 
 		btnCopyLat.setOnAction(evet -> copyToClipboard("Latitude"));
 		btnCopyLng.setOnAction(evet -> copyToClipboard("Longitude"));
@@ -183,29 +182,29 @@ public class MapController implements Initializable {
 	}
 
 	private void handleZoomPlus(ActionEvent event) {
-		invokeJS("setMapZoomPlus()");
+		invokeJS("zoomIn();");
 	}
 
 	private void handleZoomMinus(ActionEvent event) {
-		invokeJS("setMapZoomMinus()");
+		invokeJS("zoomOut();");
 	}
 
-	private void handleStreetMap(ActionEvent event) {
-		invokeJS("setMapLayer(streetLayer);");
+	private void handleRoadMap(ActionEvent event) {
+		invokeJS("setMapType('road');");
 
 	}
 
 	private void handleSatelliteMap(ActionEvent event) {
-		invokeJS("setMapLayer(satelliteLayer);");
+		invokeJS("setMapType('satellite');");
 
 	}
 
-	private void handleHybridMap(ActionEvent event) {
-		invokeJS("setMapLayer(hybridLayer);");
+	private void handleTerrainMap(ActionEvent event) {
+		invokeJS("setMapType('terrain');");
 
 	}
 
-	public void printCoords(String coords) {
+	public void sendCoordinates(String coords) {
 
 		Gson gson = new Gson();
 		JsonObject jsonObject = gson.fromJson(coords, JsonObject.class);
@@ -216,16 +215,24 @@ public class MapController implements Initializable {
 
 		InterferenceTextFieldsController interferenceController = InterferenceTextFieldsController.getInstance();
 		if (interferenceController != null) {
-			interferenceController.updateCoordinates(interferencia);
+
+			if (interferencia != null) {
+				if (interferencia.getLatitude() != null && interferencia.getLongitude() != null) {
+					interferenceController.updateCoordinates(interferencia);
+				}
+
+			}
+
 		} else {
 			System.out.println("InterferenceTextFieldsController instance is null!");
 		}
-		AddInterferenceController addInterController = AddInterferenceController.getInstance();
-		if (addInterController != null) {
-			addInterController.updateCoordinates(interferencia);
-		} else {
-			System.out.println("Add Interference Controller instance is null!");
-		}
+
+		/*
+		 * AddInterferenceController addInterController =
+		 * AddInterferenceController.getInstance(); if (addInterController != null) {
+		 * addInterController.updateCoordinates(interferencia); } else {
+		 * System.out.println("Add Interference Controller instance is null!"); }
+		 */
 
 	}
 

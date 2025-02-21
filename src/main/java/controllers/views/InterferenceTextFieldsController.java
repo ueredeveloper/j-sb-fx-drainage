@@ -21,8 +21,7 @@ public class InterferenceTextFieldsController {
 	private JFXTextField tfLatitude;
 	private JFXTextField tfLongitude;
 	private MapController mapController;
-	
-	
+
 	String urlService;
 
 	public InterferenceTextFieldsController(String urlService, JFXTextField tfLatitude, JFXTextField tfLongitude) {
@@ -74,14 +73,14 @@ public class InterferenceTextFieldsController {
 			interferencia.setLongitude(null); // Set null if input cannot be parsed
 		}
 
-		if (interferencia.getLatitude() != null && interferencia.getLongitude() != null) {
+		if (!Double.isNaN(interferencia.getLatitude()) && !Double.isNaN(interferencia.getLatitude())) {
 
 			mapController.handleAddMarker(JsonConverter.convertObjectToJson(interferencia));
 		}
 	}
 
 	// Método para obter a instância de Interferencia com latitude e longitude
-	public Interferencia getLatitudeLongitude() {
+	public Interferencia getLatLng() {
 		return interferencia;
 	}
 
