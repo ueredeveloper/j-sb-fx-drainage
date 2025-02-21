@@ -32,22 +32,24 @@ var vectorLayer = new ol.layer.Vector({
 });
 map.addLayer(vectorLayer);
 
-// Base layers
+// Satellite Layer (Using Carto)
 var satelliteLayer = new ol.layer.Tile({
-	source: new ol.source.XYZ({
-		url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
-	})
+    source: new ol.source.XYZ({
+        url: 'https://basemaps.cartocdn.com/rastertiles/satellite/{z}/{x}/{y}{r}.png'
+    })
 });
 
+// Road Map Layer (Using OpenStreetMap)
 var roadLayer = new ol.layer.Tile({
-	source: new ol.source.OSM()
+    source: new ol.source.OSM()
 });
 
+// Terrain Layer (Using Stamen Terrain)
 var terrainLayer = new ol.layer.Tile({
-	source: new ol.source.XYZ({
-		url: 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
-		attributions: '&copy; <a href="https://opentopomap.org">OpenTopoMap</a> contributors'
-	})
+    source: new ol.source.XYZ({
+        url: 'https://stamen-tiles.a.ssl.fastly.net/terrain/{z}/{x}/{y}.jpg',
+        attributions: '&copy; <a href="http://maps.stamen.com">Stamen Design</a>'
+    })
 });
 
 function setMapType(type) {
@@ -71,11 +73,8 @@ function zoomIn() {
 }
 function addMarker(latLng) {
 	
-	console.log(latLng.lat)
-
 	let latitude = latLng.lat;
 	let longitude = latLng.lng;
-
 
 	var marker = new ol.Feature({
 		geometry: new ol.geom.Point(ol.proj.fromLonLat([longitude, latitude]))

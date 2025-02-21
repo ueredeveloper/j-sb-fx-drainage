@@ -2,6 +2,7 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import java.lang.String?>
 <?import java.net.URL?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -10,12 +11,13 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.web.WebView?>
 
 <AnchorPane fx:id="apMap" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="900.0" style="-fx-background-color: yellow;" stylesheets="@css/root-light.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MapController">
    <children>
       <WebView fx:id="wvMap" layoutX="50.0" layoutY="-100.0" prefHeight="500.0" prefWidth="500.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-      <AnchorPane layoutX="496.0" prefHeight="400.0" prefWidth="104.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <AnchorPane layoutX="496.0" prefHeight="700.0" prefWidth="122.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
          
             <JFXButton fx:id="btnZoomPlus" layoutX="37.0" layoutY="22.0" prefHeight="30.0" prefWidth="30.0" styleClass="button-secondary-content" text="+">
@@ -30,24 +32,64 @@
                   <URL value="@css/map.css" />
                </stylesheets>
             </JFXButton>
-            <JFXButton fx:id="btnRoadMap" layoutX="12.0" layoutY="128.0" prefWidth="80.0" styleClass="button-secondary-content" text="Ruas">
+            <JFXButton fx:id="btnRoadMap" layoutX="24.0" layoutY="117.0" prefHeight="30.0" prefWidth="75.0" styleClass="button-secondary-content" text="Ruas">
                <stylesheets>
                   <URL value="@css/root.css" />
                   <URL value="@css/map.css" />
                </stylesheets>
             </JFXButton>
-            <JFXButton fx:id="btnSatelliteMap" layoutX="12.0" layoutY="168.0" prefWidth="80.0" styleClass="button-secondary-content" text="Satélite">
+            <JFXButton fx:id="btnSatelliteMap" layoutX="24.0" layoutY="157.0" prefHeight="30.0" prefWidth="75.0" styleClass="button-secondary-content" text="Satélite">
                <stylesheets>
                   <URL value="@css/root.css" />
                   <URL value="@css/map.css" />
                </stylesheets>
             </JFXButton>
-            <JFXButton fx:id="btnTerrain" layoutX="12.0" layoutY="211.0" prefWidth="80.0" styleClass="button-secondary-content" text="Terreno">
+            <JFXButton fx:id="btnTerrain" layoutX="24.0" layoutY="200.0" prefHeight="30.0" prefWidth="75.0" styleClass="button-secondary-content" text="Terreno">
                <stylesheets>
                   <URL value="@css/root.css" />
                   <URL value="@css/map.css" />
                </stylesheets>
             </JFXButton>
+            <VBox layoutX="41.0" layoutY="438.0" prefHeight="181.0" prefWidth="40.0" AnchorPane.bottomAnchor="81.0">
+               <children>
+                  <Button fx:id="btnLeaflet" mnemonicParsing="false" text="Button">
+                     <styleClass>
+                        <String fx:value="btn-map-icons" />
+                        <String fx:value="btn-leaflet" />
+                     </styleClass>
+                     <tooltip>
+                        <Tooltip text="Abre o mapa Leaflet" />
+                     </tooltip>
+                  </Button>
+                  <Button fx:id="btnMapBox" mnemonicParsing="false" text="Button">
+                     <styleClass>
+                        <String fx:value="btn-map-icons" />
+                        <String fx:value="btn-map-box" />
+                     </styleClass>
+                     <tooltip>
+                        <Tooltip text="Abre o mapa MapBox" />
+                     </tooltip>
+                  </Button>
+                  <Button fx:id="btnOPenLayers" mnemonicParsing="false" text="Button">
+                     <styleClass>
+                        <String fx:value="btn-map-icons" />
+                        <String fx:value="btn-open-layers" />
+                     </styleClass>
+                     <tooltip>
+                        <Tooltip text="Abre o mapa Open Layers" />
+                     </tooltip>
+                  </Button>
+                  <Button fx:id="btnOpenStreet" mnemonicParsing="false" text="Button">
+                     <styleClass>
+                        <String fx:value="btn-map-icons" />
+                        <String fx:value="btn-open-layers" />
+                     </styleClass>
+                     <tooltip>
+                        <Tooltip text="Abre o mapa OpenStreet" />
+                     </tooltip>
+                  </Button>
+               </children>
+            </VBox>
          </children>
       </AnchorPane>
       <AnchorPane fx:id="apCoordConversor" layoutY="300.0" prefHeight="100.0" prefWidth="600.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" />

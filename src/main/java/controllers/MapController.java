@@ -30,6 +30,7 @@ import javafx.util.Duration;
 import models.Interferencia;
 import netscape.javascript.JSException;
 import netscape.javascript.JSObject;
+import utilities.SVGIconLoader;
 
 /**
  * Controlador para a interface de mapa.
@@ -62,6 +63,9 @@ public class MapController implements Initializable {
 
 	@FXML
 	private Label lblLatitude, lblLongitude;
+
+	@FXML
+	private Button btnLeaflet, btnMapBox, btnOPenLayers, btnOpenStreet;
 
 	private JSObject doc;
 	private WebEngine webEngine;
@@ -99,7 +103,10 @@ public class MapController implements Initializable {
 
 		webEngine = wvMap.getEngine();
 
-		webEngine.load(getClass().getResource("/html/map/open-layers-map/index.html").toExternalForm());
+		// webEngine.load(getClass().getResource("/html/map/open-layers-map/index.html").toExternalForm());
+		// webEngine.load(getClass().getResource("/html/map/map-box/index.html").toExternalForm());
+
+		loadMap("open-layers");
 
 		ready = false;
 
@@ -153,6 +160,16 @@ public class MapController implements Initializable {
 		btnCopyLat.setOnAction(evet -> copyToClipboard("Latitude"));
 		btnCopyLng.setOnAction(evet -> copyToClipboard("Longitude"));
 
+		// Set SVG icons
+		btnOPenLayers.setGraphic(SVGIconLoader.getOpenLayersIcon(24));
+		btnLeaflet.setGraphic(SVGIconLoader.getLeafletIcon(24));
+		btnMapBox.setGraphic(SVGIconLoader.getMapBoxIcon(24));
+
+		btnLeaflet.setOnAction(evet -> loadMap("leaflet-map"));
+		btnMapBox.setOnAction(evet -> loadMap("map-box"));
+		btnOPenLayers.setOnAction(evet -> loadMap("open-layers"));
+		btnOpenStreet.setOnAction(evet -> loadMap("open-street"));
+
 	}
 
 	private void invokeJS(final String str) {
@@ -174,7 +191,7 @@ public class MapController implements Initializable {
 
 					}
 
-					// System.out.println(" invokeJS funcionando");
+					System.out.println(" invokeJS funcionando");
 				}
 			});
 
@@ -237,6 +254,7 @@ public class MapController implements Initializable {
 	}
 
 	public void handleAddMarker(String json) {
+
 		invokeJS("addMarker(" + json + ");");
 	}
 
@@ -306,6 +324,58 @@ public class MapController implements Initializable {
 			}
 		}
 
+	}
+
+	private void loadMap(String type) {
+		
+		System.out.println(type);
+
+		String mapFile;
+
+		if (type.equalsIgnoreCase("leaflet-map")) {
+			mapFile = "/html/map/leaflet/index.html";
+		} else if (type.equalsIgnoreCase("map-box")) {
+			mapFile = "/html/map/map-box/index.html";
+		} else if (type.equalsIgnoreCase("open-layers")) {
+			mapFile = "/html/map/open-layers/index.html";
+		} else {
+			mapFile = "/html/map/open-street/index.html";
+		}
+
+		URL mapUrl = getClass().getResource(mapFile);
+		if (mapUrl != null) {
+			
+			webEngine.load(mapUrl.toExternalForm());
+
+			// ready = false;
+
+			webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<Worker.State>() {
+				public void changed(final ObservableValue<? extends Worker.State> observableValue,
+						final Worker.State oldState, final Worker.State newState) {
+
+					if (newState == Worker.State.SUCCEEDED) {
+						ready = true;
+					}
+				}
+			});
+
+			webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<Worker.State>() {
+				public void changed(final ObservableValue<? extends Worker.State> observableValue,
+						final Worker.State oldState, final Worker.State newState) {
+					if (newState == Worker.State.SUCCEEDED) {
+						doc = (JSObject) webEngine.executeScript("window");
+
+						doc.setMember("app", MapController.this);
+
+						// doc.setMember("appShapeEndereco", GoogleMap.this);
+					}
+
+				}
+			});
+
+		} else {
+			System.err.println("Map file not found: " + mapFile);
+		}
 	}
 
 }

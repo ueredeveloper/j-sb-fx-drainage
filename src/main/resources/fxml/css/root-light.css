@@ -286,3 +286,26 @@
 .scroll-pane .scroll-bar:vertical {
     -fx-pref-width: 15px;   
 }
+.btn-map-icons {
+    -fx-background-radius: 50%;  /* Makes the button circular */
+    -fx-min-width: 40px;
+    -fx-min-height: 40px;
+    -fx-max-width: 40px;
+    -fx-max-height: 40px;
+    -fx-border-radius: 50%;
+    -fx-border-width: 2px;
+    -fx-border-color: white;
+    -fx-padding: 5px;
+}
+
+.btn-open-layers {
+    -fx-background-color: #35BBCE; /* OpenLayers color */
+}
+
+.btn-leaflet {
+    -fx-background-color: #4CAF50; /* Leaflet green */
+}
+
+.btn-map-box {
+    -fx-background-color: #4264FB; /* Mapbox blue */
+}
