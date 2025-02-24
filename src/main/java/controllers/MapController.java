@@ -47,13 +47,7 @@ public class MapController implements Initializable {
 	private JFXButton btnZoomPlus;
 
 	@FXML
-	private JFXButton btnRoadMap;
-
-	@FXML
-	private JFXButton btnSatelliteMap;
-
-	@FXML
-	private JFXButton btnTerrain;
+	private JFXButton btnRoadMap, btnSatelliteMap, btnTerrain, btnHybridMap;
 
 	@FXML
 	private JFXButton btnZoomMinus;
@@ -106,7 +100,7 @@ public class MapController implements Initializable {
 		// webEngine.load(getClass().getResource("/html/map/open-layers-map/index.html").toExternalForm());
 		// webEngine.load(getClass().getResource("/html/map/map-box/index.html").toExternalForm());
 
-		loadMap("open-layers");
+		loadMap("leaflet-map");
 
 		ready = false;
 
@@ -156,14 +150,16 @@ public class MapController implements Initializable {
 		btnRoadMap.setOnAction(event -> handleRoadMap(event));
 		btnSatelliteMap.setOnAction(event -> handleSatelliteMap(event));
 		btnTerrain.setOnAction(event -> handleTerrainMap(event));
+		btnHybridMap.setOnAction(event -> handleHybridMap(event));
 
 		btnCopyLat.setOnAction(evet -> copyToClipboard("Latitude"));
 		btnCopyLng.setOnAction(evet -> copyToClipboard("Longitude"));
 
 		// Set SVG icons
-		btnOPenLayers.setGraphic(SVGIconLoader.getOpenLayersIcon(24));
-		btnLeaflet.setGraphic(SVGIconLoader.getLeafletIcon(24));
-		btnMapBox.setGraphic(SVGIconLoader.getMapBoxIcon(24));
+		btnLeaflet.setGraphic(SVGIconLoader.getLeafletIcon(84));
+		btnMapBox.setGraphic(SVGIconLoader.getMapBoxIcon(5));
+		btnOPenLayers.setGraphic(SVGIconLoader.getOpenLayersIcon(10));
+		btnOpenStreet.setGraphic(SVGIconLoader.getOpenStreetIcon(10));
 
 		btnLeaflet.setOnAction(evet -> loadMap("leaflet-map"));
 		btnMapBox.setOnAction(evet -> loadMap("map-box"));
@@ -221,6 +217,11 @@ public class MapController implements Initializable {
 
 	}
 
+	private void handleHybridMap(ActionEvent event) {
+		invokeJS("setMapType('hybrid');");
+
+	}
+
 	public void sendCoordinates(String coords) {
 
 		Gson gson = new Gson();
@@ -254,7 +255,7 @@ public class MapController implements Initializable {
 	}
 
 	public void handleAddMarker(String json) {
-
+		System.out.println("addMarker(" + json + ");");
 		invokeJS("addMarker(" + json + ");");
 	}
 
@@ -327,8 +328,6 @@ public class MapController implements Initializable {
 	}
 
 	private void loadMap(String type) {
-		
-		System.out.println(type);
 
 		String mapFile;
 
@@ -344,10 +343,10 @@ public class MapController implements Initializable {
 
 		URL mapUrl = getClass().getResource(mapFile);
 		if (mapUrl != null) {
-			
+
 			webEngine.load(mapUrl.toExternalForm());
 
-			// ready = false;
+			ready = false;
 
 			webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<Worker.State>() {
 				public void changed(final ObservableValue<? extends Worker.State> observableValue,
@@ -366,8 +365,6 @@ public class MapController implements Initializable {
 						doc = (JSObject) webEngine.executeScript("window");
 
 						doc.setMember("app", MapController.this);
-
-						// doc.setMember("appShapeEndereco", GoogleMap.this);
 					}
 
 				}

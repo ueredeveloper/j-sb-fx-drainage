@@ -4,17 +4,17 @@ const accessToken = "pk.eyJ1IjoidWVyZWRldmVsb3BlciIsImEiOiJjbTdldm9vYjUwaHh2MnZv
 let currentMarker = null; // To store the last marker
 
 const mapStyles = {
-    road: "mapbox/streets-v12",
-    satellite: "mapbox/satellite-streets-v12",
-    terrain: "mapbox/outdoors-v12"
+	road: "mapbox/streets-v12",
+	satellite: "mapbox/satellite-streets-v12",
+	terrain: "mapbox/outdoors-v12"
 };
 
 // Create the Leaflet map
-const map = L.map("map").setView([40.7128, -74.006], 12);
+const map = L.map("map").setView([-15.710520042184267, -47.76868726015565], 12);
 
 // Function to get tile layer URL
 function getTileLayer(type) {
-    return `https://api.mapbox.com/styles/v1/${mapStyles[type]}/tiles/256/{z}/{x}/{y}?access_token=${accessToken}`;
+	return `https://api.mapbox.com/styles/v1/${mapStyles[type]}/tiles/256/{z}/{x}/{y}?access_token=${accessToken}`;
 }
 
 let currentLayer = L.tileLayer(getTileLayer("road")).addTo(map); // Default road map
@@ -26,43 +26,39 @@ L.tileLayer(`https://api.mapbox.com/styles/v1/mapbox/satellite-streets-v12/tiles
 }).addTo(map);
 
 // Add an initial marker
-L.marker([40.7128, -74.006])
+L.marker([-15.710520042184267, -47.76868726015565])
 	.addTo(map)
-	.bindPopup("<h3>New York City</h3>")
+	.bindPopup("<h4>Adasa</h4>")
 	.openPopup();
 
 // Handle map click
-map.on('click', function (event) {
-    var lat = event.latlng.lat.toFixed(6);
-    var lng = event.latlng.lng.toFixed(6);
-    
-    let latLng = { lat: parseFloat(lat), lng: parseFloat(lng) };
+map.on('click', function(event) {
+	var lat = event.latlng.lat.toFixed(6);
+	var lng = event.latlng.lng.toFixed(6);
 
-    // Remove existing marker
-    if (currentMarker) {
-        map.removeLayer(currentMarker);
-    }
+	let latLng = { lat: parseFloat(lat), lng: parseFloat(lng) };
 
-    // Add new marker in Leaflet
-    currentMarker = L.marker([lat, lng]).addTo(map);
+	// Remove existing marker
+	if (currentMarker) {
+		map.removeLayer(currentMarker);
+	}
 
-    // Send coordinates to JavaFX WebView
-    if (window.app) {
-        window.app.sendCoordinates(JSON.stringify(latLng));
-    }
+	// Add new marker in Leaflet
+	currentMarker = L.marker([lat, lng]).addTo(map);
 
-    console.log("Coordinates sent:", latLng);
+	app.sendCoordinates(JSON.stringify(latLng));
+
 });
 
 
 // Function to change map type
 function setMapType(type) {
-    if (mapStyles[type]) {
-        map.removeLayer(currentLayer); // Remove current layer
-        currentLayer = L.tileLayer(getTileLayer(type)).addTo(map);
-    } else {
-        console.error("Invalid map type:", type);
-    }
+	if (mapStyles[type]) {
+		map.removeLayer(currentLayer); // Remove current layer
+		currentLayer = L.tileLayer(getTileLayer(type)).addTo(map);
+	} else {
+		console.error("Invalid map type:", type);
+	}
 }
 
 // Function to zoom out
@@ -76,23 +72,23 @@ function zoomIn() {
 }
 
 function addMarker(latLng) {
-    let latitude = latLng.lat;
-    let longitude = latLng.lng;
+	let latitude = latLng.lat;
+	let longitude = latLng.lng;
 
-    // Remove existing marker if it exists
-    if (currentMarker) {
-        map.removeLayer(currentMarker);
-    }
+	// Remove existing marker if it exists
+	if (currentMarker) {
+		map.removeLayer(currentMarker);
+	}
 
-    // Create a new marker and add to map
-    currentMarker = L.marker([latitude, longitude], {
-        icon: L.icon({
-            iconUrl: "https://maps.google.com/mapfiles/ms/icons/blue-dot.png",
-            iconSize: [32, 32], // Adjust size if needed
-            iconAnchor: [16, 32]
-        })
-    }).addTo(map);
+	// Create a new marker and add to map
+	currentMarker = L.marker([latitude, longitude], {
+		icon: L.icon({
+			iconUrl: "https://maps.google.com/mapfiles/ms/icons/blue-dot.png",
+			iconSize: [32, 32], // Adjust size if needed
+			iconAnchor: [16, 32]
+		})
+	}).addTo(map);
 
-    // Center map on the new marker
-    map.setView([latitude, longitude], 12);
+	// Center map on the new marker
+	map.setView([latitude, longitude], 12);
 }

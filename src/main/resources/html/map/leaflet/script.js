@@ -1,15 +1,11 @@
-// create a red polygon from an array of LatLng points
-/*var latlngs = [[37, -109.05],[41, -109.03],[41, -102.05],[37, -102.04]];
-
-var polygon = L.polygon(latlngs, {color: 'red'}).addTo(map);
-
-// zoom the map to the polygon
-map.fitBounds(polygon.getBounds());*/
-
-
 
 map.on('click', function(e) {
-	app.printCoords(JSON.stringify(e.latlng))
+	const latlng = e.latlng;
+
+	var lat = latlng.lat.toFixed(6);
+	var lng = latlng.lng.toFixed(6);
+
+	app.sendCoordinates(JSON.stringify({ lat: lat, lng: lng }));
 });
 
 
@@ -92,16 +88,18 @@ function zoomOut() {
 let currentMarker = null;
 
 function addMarker(json) {
+	
+	console.log('leaflet add marker')
 
-    // Remove existing marker if present
-    if (currentMarker) {
-        map.removeLayer(currentMarker);
-    }
+	// Remove existing marker if present
+	if (currentMarker) {
+		map.removeLayer(currentMarker);
+	}
 
-    // Add new marker
-    currentMarker = L.marker([json.lat, json.lng]).addTo(map);
+	// Add new marker
+	currentMarker = L.marker([json.lat, json.lng]).addTo(map);
 
-    // Center the map on the new marker
-    map.setView([json.lat, json.lng], 11);
+	// Center the map on the new marker
+	map.setView([json.lat, json.lng], 11);
 }
 

@@ -4,6 +4,7 @@
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import java.lang.String?>
 <?import java.net.URL?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tooltip?>
@@ -20,13 +21,13 @@
       <AnchorPane layoutX="496.0" prefHeight="700.0" prefWidth="122.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
          
-            <JFXButton fx:id="btnZoomPlus" layoutX="37.0" layoutY="22.0" prefHeight="30.0" prefWidth="30.0" styleClass="button-secondary-content" text="+">
+            <JFXButton fx:id="btnZoomPlus" layoutX="47.0" layoutY="26.0" prefHeight="30.0" prefWidth="30.0" styleClass="button-secondary-content" text="+">
                <stylesheets>
                   <URL value="@css/root.css" />
                   <URL value="@css/map.css" />
                </stylesheets>
             </JFXButton>
-            <JFXButton fx:id="btnZoomMinus" layoutX="37.0" layoutY="61.0" prefHeight="30.0" prefWidth="30.0" styleClass="button-secondary-content" text="-">
+            <JFXButton fx:id="btnZoomMinus" layoutX="47.0" layoutY="65.0" prefHeight="30.0" prefWidth="30.0" styleClass="button-secondary-content" text="-">
                <stylesheets>
                   <URL value="@css/root.css" />
                   <URL value="@css/map.css" />
@@ -50,9 +51,9 @@
                   <URL value="@css/map.css" />
                </stylesheets>
             </JFXButton>
-            <VBox layoutX="41.0" layoutY="438.0" prefHeight="181.0" prefWidth="40.0" AnchorPane.bottomAnchor="81.0">
+            <VBox layoutX="42.0" layoutY="425.0" prefHeight="181.0" prefWidth="40.0" AnchorPane.bottomAnchor="94.0">
                <children>
-                  <Button fx:id="btnLeaflet" mnemonicParsing="false" text="Button">
+                  <Button fx:id="btnLeaflet" mnemonicParsing="false">
                      <styleClass>
                         <String fx:value="btn-map-icons" />
                         <String fx:value="btn-leaflet" />
@@ -60,8 +61,11 @@
                      <tooltip>
                         <Tooltip text="Abre o mapa Leaflet" />
                      </tooltip>
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </VBox.margin>
                   </Button>
-                  <Button fx:id="btnMapBox" mnemonicParsing="false" text="Button">
+                  <Button fx:id="btnMapBox" mnemonicParsing="false">
                      <styleClass>
                         <String fx:value="btn-map-icons" />
                         <String fx:value="btn-map-box" />
@@ -69,8 +73,11 @@
                      <tooltip>
                         <Tooltip text="Abre o mapa MapBox" />
                      </tooltip>
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </VBox.margin>
                   </Button>
-                  <Button fx:id="btnOPenLayers" mnemonicParsing="false" text="Button">
+                  <Button fx:id="btnOPenLayers" mnemonicParsing="false">
                      <styleClass>
                         <String fx:value="btn-map-icons" />
                         <String fx:value="btn-open-layers" />
@@ -78,8 +85,11 @@
                      <tooltip>
                         <Tooltip text="Abre o mapa Open Layers" />
                      </tooltip>
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </VBox.margin>
                   </Button>
-                  <Button fx:id="btnOpenStreet" mnemonicParsing="false" text="Button">
+                  <Button fx:id="btnOpenStreet" mnemonicParsing="false">
                      <styleClass>
                         <String fx:value="btn-map-icons" />
                         <String fx:value="btn-open-layers" />
@@ -87,9 +97,18 @@
                      <tooltip>
                         <Tooltip text="Abre o mapa OpenStreet" />
                      </tooltip>
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </VBox.margin>
                   </Button>
                </children>
             </VBox>
+            <JFXButton fx:id="btnHybridMap" layoutX="24.0" layoutY="240.0" prefHeight="30.0" prefWidth="75.0" styleClass="button-secondary-content" text="Híbrido">
+               <stylesheets>
+                  <URL value="@css/root.css" />
+                  <URL value="@css/map.css" />
+               </stylesheets>
+            </JFXButton>
          </children>
       </AnchorPane>
       <AnchorPane fx:id="apCoordConversor" layoutY="300.0" prefHeight="100.0" prefWidth="600.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" />
