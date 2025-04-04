@@ -3,7 +3,9 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import java.lang.String?>
+<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
@@ -16,9 +18,9 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<fx:root prefHeight="740.0" prefWidth="900.0" styleClass="secondary-content" stylesheets="@../css/root-light.css" type="AnchorPane" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root prefHeight="740.0" prefWidth="900.0" styleClass="secondary-content" type="AnchorPane" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <AnchorPane layoutX="14.0" layoutY="14.0" prefHeight="147.0" prefWidth="699.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+      <AnchorPane layoutX="14.0" layoutY="14.0" prefHeight="130.0" prefWidth="890.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
          <children>
             <Label alignment="TOP_CENTER" contentDisplay="TOP" layoutX="10.0" layoutY="23.0" text="Usuário" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
                <styleClass>
@@ -26,9 +28,70 @@
                   <String fx:value="text-color" />
                </styleClass>
             </Label>
-            <JFXButton fx:id="btnClose" layoutX="643.0" layoutY="19.0" styleClass="sec-main-buttons" text="Fechar" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0" />
+            <JFXButton fx:id="btnClose" layoutX="820.0" layoutY="21.0" prefWidth="50.0" text="" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+               <graphic>
+                  <FontAwesomeIconView glyphName="ARROW_LEFT">
+                     <styleClass>
+                        <String fx:value="icons" />
+                        <String fx:value="main-icons" />
+                     </styleClass>
+                  </FontAwesomeIconView>
+               </graphic>
+               <styleClass>
+                  <String fx:value="buttons" />
+                  <String fx:value="btn-acc" />
+               </styleClass>
+               <tooltip>
+                  <Tooltip text="Voltar" />
+               </tooltip>
+            </JFXButton>
          </children>
       </AnchorPane>
+      <GridPane layoutY="150.0" prefHeight="60.0" prefWidth="847.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <JFXButton fx:id="btnNew" maxWidth="1.7976931348623157E308" prefHeight="20.0" prefWidth="100.0" styleClass="btn-persist" text="Novo" GridPane.hgrow="ALWAYS">
+               <tooltip>
+                  <Tooltip text="Criar novo documento" />
+               </tooltip>
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" />
+               </GridPane.margin>
+            </JFXButton>
+            <JFXButton fx:id="btnSave" maxWidth="1.7976931348623157E308" prefHeight="20.0" prefWidth="100.0" styleClass="btn-persist" text="Salvar" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+               <tooltip>
+                  <Tooltip text="Salvar documento" />
+               </tooltip>
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" />
+               </GridPane.margin>
+            </JFXButton>
+            <JFXButton fx:id="btnEdit" maxWidth="1.7976931348623157E308" prefHeight="20.0" prefWidth="100.0" styleClass="btn-persist" text="Editar" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+               <tooltip>
+                  <Tooltip text="Editar documento" />
+               </tooltip>
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" />
+               </GridPane.margin>
+            </JFXButton>
+            <JFXButton fx:id="btnDelete" maxWidth="1.7976931348623157E308" prefHeight="20.0" prefWidth="100.0" styleClass="btn-persist" text="Deletar" GridPane.columnIndex="3" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+               <tooltip>
+                  <Tooltip text="Deletar documento" />
+               </tooltip>
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" />
+               </GridPane.margin>
+            </JFXButton>
+         </children>
+      </GridPane>
       <GridPane layoutX="32.0" layoutY="80.0" prefHeight="50.0" prefWidth="870.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="200.0" />
@@ -44,12 +107,8 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <JFXTextField fx:id="tfName" labelFloat="true" promptText="Nome" GridPane.columnSpan="4" />
-            <JFXComboBox fx:id="cbCpfCnpj" labelFloat="true" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="280.0" promptText="Cpf/Cnpj" GridPane.columnIndex="4" GridPane.columnSpan="4" GridPane.halignment="CENTER">
-               <styleClass>
-                  <String fx:value="jfx-combo-box" />
-                  <String fx:value="jfx-text-field-custom" />
-               </styleClass>
+            <JFXTextField fx:id="tfName" labelFloat="true" promptText="Nome" styleClass="text-field" GridPane.columnSpan="4" />
+            <JFXComboBox fx:id="cbCpfCnpj" labelFloat="true" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="280.0" promptText="Cpf/Cnpj" styleClass="text-field" GridPane.columnIndex="4" GridPane.columnSpan="4" GridPane.halignment="CENTER">
                <tooltip>
                   <Tooltip text="Processo em que o documento se econtra" />
                </tooltip>
@@ -59,23 +118,19 @@
             </JFXComboBox>
          </children>
       </GridPane>
-      <HBox layoutX="5.0" layoutY="140.0" prefHeight="50.0" prefWidth="800.0" styleClass="hbox-search" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">
+      <HBox layoutY="218.0" prefHeight="50.0" prefWidth="800.0" styleClass="hbox-search" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="10.0">
          <children>
             <Pane prefWidth="100.0" HBox.hgrow="ALWAYS" />
             <Pane prefWidth="100.0" HBox.hgrow="ALWAYS" />
-            <JFXTextField fx:id="tfSearch" alignment="TOP_LEFT" labelFloat="true" prefHeight="30.0" prefWidth="300.0" promptText="Pesquisar número, sei, processo e endereço" HBox.hgrow="ALWAYS">
+            <JFXTextField fx:id="tfSearch" alignment="TOP_LEFT" labelFloat="true" prefHeight="30.0" prefWidth="300.0" promptText="Pesquisar número, sei, processo e endereço" styleClass="text-field" HBox.hgrow="ALWAYS">
                <HBox.margin>
                   <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
                </HBox.margin>
-               <styleClass>
-                  <String fx:value="text-field" />
-                  <String fx:value="jfx-text-field-custom" />
-               </styleClass>
                <tooltip>
                   <Tooltip text="Digite uma busca. Pode ser pesquisado número, sei, processo e endereço relacionado." />
                </tooltip>
             </JFXTextField>
-            <JFXButton fx:id="btnSearch" minWidth="100.0" prefHeight="30.0" styleClass="sec-main-buttons" text="Buscar" HBox.hgrow="ALWAYS">
+            <JFXButton fx:id="btnSearch" minWidth="100.0" prefHeight="30.0" styleClass="btn-acc" text="Buscar" HBox.hgrow="ALWAYS">
                <HBox.margin>
                   <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
                </HBox.margin>
@@ -85,51 +140,6 @@
             </JFXButton>
          </children>
       </HBox>
-      <GridPane layoutX="20.0" layoutY="220.0" prefHeight="50.0" prefWidth="780.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
-         <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-         </columnConstraints>
-         <rowConstraints>
-            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-         </rowConstraints>
-         <children>
-            <JFXButton fx:id="btnNew" maxWidth="1.7976931348623157E308" prefHeight="20.0" prefWidth="100.0" styleClass="sec-main-buttons" text="Novo" GridPane.hgrow="ALWAYS">
-               <tooltip>
-                  <Tooltip text="Criar novo documento" />
-               </tooltip>
-               <GridPane.margin>
-                  <Insets left="10.0" right="10.0" />
-               </GridPane.margin>
-            </JFXButton>
-            <JFXButton fx:id="btnSave" maxWidth="1.7976931348623157E308" prefHeight="20.0" prefWidth="100.0" styleClass="sec-main-buttons" text="Salvar" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
-               <tooltip>
-                  <Tooltip text="Salvar documento" />
-               </tooltip>
-               <GridPane.margin>
-                  <Insets left="10.0" right="10.0" />
-               </GridPane.margin>
-            </JFXButton>
-            <JFXButton fx:id="btnEdit" maxWidth="1.7976931348623157E308" prefHeight="20.0" prefWidth="100.0" styleClass="sec-main-buttons" text="Editar" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
-               <tooltip>
-                  <Tooltip text="Editar documento" />
-               </tooltip>
-               <GridPane.margin>
-                  <Insets left="10.0" right="10.0" />
-               </GridPane.margin>
-            </JFXButton>
-            <JFXButton fx:id="btnDelete" maxWidth="1.7976931348623157E308" prefHeight="20.0" prefWidth="100.0" styleClass="sec-main-buttons" text="Deletar" GridPane.columnIndex="3" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
-               <tooltip>
-                  <Tooltip text="Deletar documento" />
-               </tooltip>
-               <GridPane.margin>
-                  <Insets left="10.0" right="10.0" />
-               </GridPane.margin>
-            </JFXButton>
-         </children>
-      </GridPane>
       <AnchorPane layoutX="14.0" layoutY="300.0" prefHeight="324.0" prefWidth="890.0" AnchorPane.bottomAnchor="160.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="260.0">
          <children>
             <TableView fx:id="tableView" layoutX="14.0" layoutY="79.0" prefHeight="169.0" prefWidth="870.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="15.0">
@@ -145,4 +155,8 @@
       </AnchorPane>
       <AnchorPane fx:id="apUserDocuments" layoutX="14.0" layoutY="587.0" prefHeight="160.0" prefWidth="890.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" />
    </children>
+   <stylesheets>
+      <URL value="@../css/root-style.css" />
+      <URL value="@../css/secondary-style.css" />
+   </stylesheets>
    </fx:root>

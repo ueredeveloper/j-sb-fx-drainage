@@ -38,8 +38,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextFormatter;
@@ -47,7 +47,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 import javafx.util.Duration;
 import models.Anexo;
 import models.Documento;
@@ -60,6 +59,7 @@ import models.Usuario;
 import services.DocumentService;
 import services.DocumentoTipoService;
 import services.ServiceResponse;
+import utilities.MapListener;
 import utilities.URLUtility;
 
 
@@ -147,14 +147,12 @@ public class DocumentController implements Initializable {
 	@FXML
 	private TableColumn<Documento, String> tcAddress;
 
-	@FXML
-	private TableColumn<Documento, String> tcActions;
 
 	@FXML
 	private JFXButton btnViews;
 
 	@FXML
-	private FontAwesomeIconView btnAddress, btnInterference, btnProcess, btnAttachment, btnUser;
+	private Button btnInterference, btnAddress, btnProcess, btnAttachment, btnUser;
 
 	@FXML
 	private MainController mainController;
@@ -199,38 +197,7 @@ public class DocumentController implements Initializable {
 		tcProc.setCellValueFactory(cellData -> cellData.getValue().getProperty(Documento::getProcessoNumero));
 		tcAddress.setCellValueFactory(cellData -> cellData.getValue().getProperty(Documento::getEnderecoLogradouro));
 
-		Callback<TableColumn<Documento, String>, TableCell<Documento, String>> cellFactory = new Callback<TableColumn<Documento, String>, TableCell<Documento, String>>() {
-			@Override
-			public TableCell<Documento, String> call(final TableColumn<Documento, String> param) {
-				final TableCell<Documento, String> cell = new TableCell<Documento, String>() {
-
-					JFXComboBox<String> cbDocsAttributes = new JFXComboBox<>(
-							FXCollections.observableArrayList("Tipo", "Documento", "Processo", "Endereço"));
-
-					@Override
-					public void updateItem(String item, boolean empty) {
-						super.updateItem(item, empty);
-						if (empty) {
-							setGraphic(null);
-							setText(null);
-						} else {
-
-							// Id utilizado para os testes JUnit
-							cbDocsAttributes.setId("cbDocsAttributes");
-							// Action
-							cbDocsAttributes.setOnAction(e -> openApEditAddress());
-
-							setGraphic(cbDocsAttributes);
-							setText(null);
-						}
-					}
-				};
-				return cell;
-			}
-		};
-
-		tcActions.setCellFactory(cellFactory);
-
+		
 		AnchorPane.setRightAnchor(apContent, 0.0);
 		AnchorPane.setLeftAnchor(apContent, 50.0);
 
@@ -289,7 +256,7 @@ public class DocumentController implements Initializable {
 		tfNumber.textProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-				// System.out.println("TextField changed from: " + oldValue + " to: " +
+				// /System.out.println("TextField changed from: " + oldValue + " to: " +
 				// newValue);
 			}
 		});
@@ -297,7 +264,7 @@ public class DocumentController implements Initializable {
 		tfNumberSei.textProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-				// System.out.println("TextField changed from: " + oldValue + " to: " +
+				// /System.out.println("TextField changed from: " + oldValue + " to: " +
 				// newValue);
 			}
 		});
@@ -951,7 +918,6 @@ public class DocumentController implements Initializable {
 			newDocument.setEndereco(selectedAddress);
 			newDocument.setProcesso(selectedProcess);
 
-			System.out.println(usuarios.size());
 			newDocument.setUsuarios(usuarios);
 
 			ServiceResponse<?> documentoServiceResponse = documentService.save(newDocument);
@@ -973,7 +939,7 @@ public class DocumentController implements Initializable {
 
 			} else {
 				// adiconar alerta (Toast) de erro
-				// System.out.println(serviceResponse.getResponseCode());
+				// /System.out.println(serviceResponse.getResponseCode());
 			}
 
 		} catch (Exception e) {
@@ -1231,6 +1197,11 @@ public class DocumentController implements Initializable {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public MapListener getLatLngController() {
+		
+		return this.interferenceTFController;
 	}
 
 }

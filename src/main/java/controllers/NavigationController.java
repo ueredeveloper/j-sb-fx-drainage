@@ -12,27 +12,33 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Hyperlink;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.shape.SVGPath;
+import javafx.scene.text.Font;
 import utilities.ResizeMap;
+import utilities.SVGIconLoader;
 
 public class NavigationController implements Initializable {
 
 	@FXML
 	private AnchorPane apContent;
 
+    @FXML
+    private StackPane stackLogo;
+
 	@FXML
 	private HBox hbNavigation;
 
-	@FXML
-	private JFXButton btnRegistration;
+    @FXML
+    private Hyperlink hlRegistry;
 
-	@FXML
-	private JFXButton btnModels;
-
-	@FXML
-	private JFXButton btnMap;
+    @FXML
+    private Hyperlink hlMap;
 
 	@FXML
 	private FontAwesomeIconView iconLightDark;
@@ -55,7 +61,6 @@ public class NavigationController implements Initializable {
 
 		isDarkMode = !isDarkMode; // Toggle mode
 
-		System.out.println(isDarkMode);
 
 		if (isDarkMode) {
 			// mainController.applyDarkMode();
@@ -85,11 +90,31 @@ public class NavigationController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+
+		SVGPath logo = SVGIconLoader.getNavbarLogo(12);
+		
+		stackLogo.getChildren().add(logo);
+
+        Font customFont = Font.loadFont(getClass().getResourceAsStream("/fonts/glacial-indifference.bold.otf"), 30);
+
+        Label logoLabel = new Label("R E G G +");
+        
+        
+        if (customFont != null) {
+        	logoLabel.setFont(customFont);
+        } else {
+            System.out.println("Font not loaded!");
+        }
+	
+        logoLabel.setStyle("-fx-font-size: 40px;-fx-text-fill: primary-color; -fx-padding: 40px 0 10px 0;");
+
+		stackLogo.getChildren().add(logoLabel);
+
 		// Retira o link com a stilização light ou dark, assim fica a estilização do
 		// componente pai (MainController)
 		apContent.getStylesheets().clear();
 
-		btnRegistration.setOnAction(new EventHandler<ActionEvent>() {
+		hlRegistry.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 
@@ -100,15 +125,15 @@ public class NavigationController implements Initializable {
 				ResizeMap rm = new ResizeMap(apMainContent, apMapContent, apManagerContent);
 				rm.resetMapSize();
 				
+				
+
 				mapController.hideCoordConversor();
-				
-				System.out.println("hide");
-				
-			
+
+
 			}
 		});
 
-		btnMap.setOnAction(new EventHandler<ActionEvent>() {
+		hlMap.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				AnchorPane apMainContent = (AnchorPane) mainController.getAnchorPaneContent();
@@ -117,7 +142,7 @@ public class NavigationController implements Initializable {
 
 				ResizeMap rm = new ResizeMap(apMainContent, apMapContent, apManagerContent);
 				rm.resizeMapToFullWidth();
-				
+
 				mapController.showCoordConversor();
 			}
 		});

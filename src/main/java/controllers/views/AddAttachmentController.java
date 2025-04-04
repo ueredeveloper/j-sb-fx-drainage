@@ -268,11 +268,9 @@ public class AddAttachmentController implements Initializable {
 			AnexoService service = new AnexoService(urlService);
 
 			ServiceResponse<?> response = service.save(this.attachment);
-			System.out.println(response.getResponseCode());
-
+		
 			if (response.getResponseCode() == 200) {
 
-				System.out.println(response.getResponseBody());
 
 				// Adiciona resposta na tabela
 				Anexo responseObject = new Gson().fromJson((String) response.getResponseBody(), Anexo.class);
@@ -408,7 +406,7 @@ public class AddAttachmentController implements Initializable {
 
 			ServiceResponse<?> response = service.update(this.attachment);
 
-			System.out.println("update anexo " + response.getResponseCode());
+			//System.out.println("update anexo " + response.getResponseCode());
 
 			if (response.getResponseCode() == 200) {
 

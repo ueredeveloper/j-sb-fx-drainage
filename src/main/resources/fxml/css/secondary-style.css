@@ -1,0 +1,187 @@
+
+.secondary-content {
+	-fx-background-color: white-color;
+	
+}
+
+.primary-content {
+	-fx-background-color: white-color;
+}
+/* Abre a visualização das telas de edição, como a tela AddInterference */
+.btn-view {
+	-fx-background-color: accent-color;
+	-fx-text-fill: white-color;
+	-fx-font-weight: BOLD;
+}
+.btn-view:hover {
+	-fx-scale-x: 1.3; 
+	-fx-scale-y: 1.3;
+}
+
+.btn-view:pressed {
+	-fx-scale-x: 1.5; 
+	-fx-scale-y: 1.5;
+}
+
+/* Botões de persistência */
+.btn-persist {
+	-fx-background-color: accent-color;
+	-fx-text-fill: white-color;
+	-fx-font-weight: BOLD;
+}
+.btn-persist:hover {
+	-fx-scale-x: 1.1; 
+	-fx-scale-y: 1.1;
+}
+
+.btn-persist:pressed {
+	-fx-scale-x: 1.15; 
+	-fx-scale-y: 1.15;
+}
+/* Botões Acessórios */
+
+.btn-acc {
+	-fx-background-color: primary-color;
+	-fx-text-fill: white-color;
+	-fx-font-weight: BOLD;
+}
+.btn-acc:hover {
+	-fx-scale-x: 1.1; 
+	-fx-scale-y: 1.1;
+}
+
+.btn-acc:pressed {
+	-fx-scale-x: 1.15; 
+	-fx-scale-y: 1.15;
+}
+.btn-conversor {
+	-fx-background-color: primary-color;
+	-fx-text-fill: white-color;
+	-fx-font-weight: BOLD;
+}
+.btn-conversor:hover {
+	-fx-scale-x: 1.1; 
+	-fx-scale-y: 1.1;
+}
+
+.btn-conversor:pressed {
+	-fx-scale-x: 1.4; 
+	-fx-scale-y: 1.4;
+}
+
+.icons {
+	-fx-font-family: "FontAwesome";
+	-fx-fill: white-color;
+}
+.navbar-icons {
+	-fx-font-family: "FontAwesome";
+	-fx-fill: accent-color;
+}
+.hyperlink {
+	-fx-text-fill: primary-color;
+}
+
+.combo-box .list-cell {
+	-fx-text-fill: -fx-text-inner-color; /* texto na lista do combobox */
+}
+
+/** Text Fields  */
+.text-field {
+	-fx-text-fill: black-color; /*cor da escrita */
+	-jfx-unfocus-color: accent-color; /* cor da borda inferior */
+	-fx-prompt-text-fill: accent-color; /* cor do prompt  */
+	-jfx-focus-color: accent-color;
+	/* cor do prompt text ao subir no text field */
+}
+
+.title{
+        -fx-font: normal bold 22px 'serif';
+        -fx-text-fill: primary-color;
+}
+
+.accessory-buttons {
+	-fx-background-color: primary-color;
+	-fx-text-fill: white-color;
+	-fx-font-weight: BOLD;
+}
+
+.combo-box {
+	-jfx-unfocus-color: accent-color;
+	/* cor da borda inferior ao clicar (un focus) */
+	-fx-text-fill: accent-color; /*cor da escrita */
+	-jfx-focus-color: accent-color; /* cor do prompt  */
+	-jfx-focus-color: accent-color;
+	/* cor do prompt text ao subir no text field */
+
+}
+
+.combo-box .list-cell {
+	-fx-text-fill: -fx-text-inner-color; /* texto na lista do combobox */
+}
+
+.text-field {
+	-fx-text-fill: black-color; /*cor da escrita */
+	-jfx-unfocus-color: primary-color; /* cor da borda inferior */
+	-fx-prompt-text-fill: primary-color; /* cor do prompt  */
+	-jfx-focus-color: primary-color;
+	/* cor do prompt text ao subir no text field */
+}
+.label-logo {
+	-fx-font-size: 35px;
+	-fx-min-width: 30px;
+	-fx-text-fill: primary-color;
+}
+.icon-logo {
+	-fx-padding: 5px; 
+	-fx-max-width: 30px; 
+	-fx-max-height: 30px;
+}
+
+/* tabela */
+
+.table-view{
+    -fx-border-width: 1;
+    border-width: 1;
+    -fx-border-radius: 0;
+    border-radius: 0;
+    -fx-border-color: primary-color; /* borda da tabela */
+    -fx-background-radius: 0;
+   
+}
+
+/* Default tab color */
+.tab-pane .tab {
+    -fx-text-fill: white-color; /* Text color */
+}
+
+/* Selected tab color */
+.tab-pane .tab:selected {
+    -fx-background-color: primary-color; /* Change this to the color you want */
+    -fx-fill: white; /* Change text color if needed */
+}
+.tab-pane .tab:selected .text {
+    -fx-background-color: primary-color; /* Change this to the color you want */
+    -fx-fill: white; /* Change text color if needed */
+}
+
+/* Selected tab underline (if exists) */
+.tab-pane .tab-header-area .tab-selected-line {
+    -fx-background-color: primary-color;
+}
+
+
+.navbar {
+	 -fx-border-color: black-color; 
+    -fx-border-width: 0px 0px 1px 0px; /* Top, Right, Bottom, Left */
+}
+.tf-demands {
+    -fx-padding: 5px; /* Top/Bottom 0px, Left/Right 20px padding */
+}
+
+.text-field-subpurpose {
+    -fx-padding: 0 5px 0 5px; /* Padding */
+    -fx-pref-height: 30px;   /* Preferred height */
+    -fx-pref-width: 200px;   /* Preferred width */
+    /* Add any other styles as needed */
+}
+

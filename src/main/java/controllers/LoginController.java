@@ -80,16 +80,6 @@ public class LoginController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
-		// Configurando o ícone do Google
-		/*
-		 * iconGoogle.setSize("2em"); iconGoogle.setId("icon-google");
-		 * 
-		 * Label lblGoogle = new Label("Google"); lblGoogle.setId("lbl-google"); HBox
-		 * hbox = new HBox(10); hbox.getChildren().addAll(iconGoogle, lblGoogle);
-		 * hbox.setAlignment(Pos.CENTER);
-		 */
-
-		// btnSignUpGoogle.setGraphic(hbox);
 
 		// Configurando a ação do botão de SignUp
 		btnSignUp.setOnAction(new EventHandler<ActionEvent>() {
@@ -118,7 +108,7 @@ public class LoginController implements Initializable {
 					stage.setWidth(1920);
 
 					// Configurando o título da janela
-					stage.setTitle("SAD/DF - Geo - Cadastro");
+					stage.setTitle("Registro e Criação de Documentos");
 
 					// Definindo a cena no stage
 					stage.setScene(scene);

@@ -159,8 +159,6 @@ public class AddProcessController implements Initializable {
 				ProcessoService service = new ProcessoService(urlService);
 				Set<Processo> objects = service.fetchByKeyword(keyword);
 
-				System.out.println(objects.size());
-
 				tableViewObsList.clear();
 				tableViewObsList.addAll(objects);
 

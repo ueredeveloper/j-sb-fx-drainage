@@ -41,7 +41,7 @@ public class ToastController implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 
 		TranslateTransition tt = new TranslateTransition(new Duration(400.0), spContainer);
-		System.out.println(spContainer.getTranslateY());
+
 		tt.setToY(40.0);
 		tt.play();
 

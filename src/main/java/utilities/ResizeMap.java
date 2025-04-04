@@ -50,7 +50,7 @@ public class ResizeMap {
 	 */
 	public void resetMapSize() {
 		 // A tela é divida em três partes, duas para o cadastro e uma para o mapa. Esta parte é a do mapa.
-        double newWidth = apContent.getWidth() / 2.99;
+        double newWidth = apContent.getWidth() / 4.99;
 
         // Create a timeline for the animation
         Timeline timeline = new Timeline();

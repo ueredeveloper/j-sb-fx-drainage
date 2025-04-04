@@ -1042,19 +1042,31 @@ public class AddSubterraneanDetailsController implements Initializable {
 		JFXTextField tfQuantity = new JFXTextField();
 		JFXTextField tfConsumption = new JFXTextField();
 		JFXTextField tfTotal = new JFXTextField();
-		// Criando o ícone FontAwesome
-		FontAwesomeIconView btnCalculate = new FontAwesomeIconView();
-		FontAwesomeIconView btnPlus = new FontAwesomeIconView();
-		FontAwesomeIconView btnMinus = new FontAwesomeIconView();
+		
+		Button btnCalculate = new Button();
+		btnCalculate.getStyleClass().addAll("btn-acc");
+		btnCalculate.setStyle("-fx-padding: 0 5 0 5");
+		FontAwesomeIconView calculateIcon = new FontAwesomeIconView();
+		calculateIcon.setGlyphName("CALCULATOR");
+		calculateIcon.getStyleClass().addAll("icons");
+		btnCalculate.setGraphic(calculateIcon);
+		
+		Button btnPlus = new Button();
+		btnPlus.getStyleClass().addAll("btn-acc");
+		btnPlus.setStyle("-fx-padding: 0 5 0 5");
+		FontAwesomeIconView plusIcon = new FontAwesomeIconView();
+		plusIcon.setGlyphName("PLUS");
+		plusIcon.getStyleClass().addAll("icons");
+		btnPlus.setGraphic(plusIcon);
+		
+		Button btnMinus = new Button();
+		btnMinus.getStyleClass().addAll("btn-acc");
+		btnMinus.setStyle("-fx-padding: 0 5 0 5");
+		FontAwesomeIconView minusIcon = new FontAwesomeIconView();
+		minusIcon.setGlyphName("MINUS");
+		minusIcon.getStyleClass().addAll("icons");
+		btnMinus.setGraphic(minusIcon);
 
-		btnCalculate.setGlyphName("EDIT");
-		btnCalculate.getStyleClass().addAll("icon-light-dark", "icons");
-
-		btnPlus.setGlyphName("PLUS");
-		btnPlus.getStyleClass().addAll("icon-light-dark", "icons");
-
-		btnMinus.setGlyphName("MINUS");
-		btnMinus.getStyleClass().addAll("icon-light-dark", "icons");
 
 		PurpouseWrapper purpouseWrapper = new PurpouseWrapper();
 

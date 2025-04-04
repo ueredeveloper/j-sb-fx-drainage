@@ -4,7 +4,9 @@
 <?import com.jfoenix.controls.JFXTextField?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import java.lang.String?>
+<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
@@ -16,9 +18,9 @@
 <?import javafx.scene.web.HTMLEditor?>
 <?import javafx.scene.web.WebView?>
 
-<AnchorPane fx:id="apContainer" prefHeight="600.0" prefWidth="1000.0" styleClass="secondary-content" stylesheets="@css/root-light.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="apContainer" prefHeight="600.0" prefWidth="1000.0" styleClass="secondary-content" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-        <BorderPane prefHeight="597.0" prefWidth="922.0" styleClass="secondary-content" stylesheets="@css/root-light.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <BorderPane prefHeight="597.0" prefWidth="922.0" styleClass="secondary-content" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <center>
                 <TabPane fx:id="tabPane" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" BorderPane.alignment="CENTER">
                     <tabs>
@@ -38,36 +40,37 @@
                               </rowConstraints>
                               <children>
                                           <!-- TextField e ComboBox fora do ScrollPane -->
-                                          <JFXTextField fx:id="tfDocument" labelFloat="true" prefHeight="30.0" prefWidth="300.0" promptText="Documento">
+                                          <JFXTextField fx:id="tfDocument" labelFloat="true" prefHeight="30.0" prefWidth="300.0" promptText="Documento" styleClass="text-field">
                                     <GridPane.margin>
                                        <Insets left="5.0" right="5.0" />
                                     </GridPane.margin>
                                  </JFXTextField>
-                                          <JFXComboBox fx:id="cbInterferencies" labelFloat="true" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="300.0" promptText="Interferência" styleClass="sec-combo-box" GridPane.rowIndex="1">
+                                          <JFXComboBox fx:id="cbInterferencies" labelFloat="true" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="300.0" promptText="Interferência" styleClass="text-field" GridPane.rowIndex="1">
                                     <GridPane.margin>
                                        <Insets left="5.0" right="5.0" />
                                     </GridPane.margin>
                                  </JFXComboBox>
-                                 <FontAwesomeIconView fx:id="iconCopyDocument" glyphName="COPY" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-                                    <GridPane.margin>
-                                       <Insets left="5.0" right="5.0" />
-                                    </GridPane.margin>
-                                    <styleClass>
-                                       <String fx:value="icons" />
-                                       <String fx:value="icon" />
-                                    </styleClass>
-                                 </FontAwesomeIconView>
-                                 <JFXComboBox fx:id="cbTemplates" labelFloat="true" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="500.0" promptText="Modelos" GridPane.columnIndex="2" GridPane.rowIndex="1">
-                                    <GridPane.margin>
-                                       <Insets left="5.0" right="5.0" />
-                                    </GridPane.margin>
-                                 </JFXComboBox>
-                                 <JFXComboBox fx:id="cbUsers" labelFloat="true" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="300.0" promptText="Usuário" styleClass="sec-combo-box" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                 <Button fx:id="btnCopyDocument" mnemonicParsing="false" styleClass="btn-acc" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                                    <graphic>
+                                       <FontAwesomeIconView glyphName="COPY">
+                                          <styleClass>
+                                             <String fx:value="icons" />
+                                             <String fx:value="btn-acc" />
+                                          </styleClass>
+                                       </FontAwesomeIconView>
+                                    </graphic>
+                                 </Button>
+                                 <JFXComboBox fx:id="cbTemplates" labelFloat="true" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="500.0" promptText="Modelos" styleClass="text-field" GridPane.columnIndex="2" GridPane.rowIndex="1">
                                     <GridPane.margin>
                                        <Insets left="5.0" right="5.0" />
                                     </GridPane.margin>
                                  </JFXComboBox>
-                                 <JFXTextField fx:id="tfAddress" labelFloat="true" prefHeight="30.0" prefWidth="300.0" promptText="Endereço" GridPane.columnIndex="1" GridPane.columnSpan="2" />
+                                 <JFXComboBox fx:id="cbUsers" labelFloat="true" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="300.0" promptText="Usuário" styleClass="text-field" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                    <GridPane.margin>
+                                       <Insets left="5.0" right="5.0" />
+                                    </GridPane.margin>
+                                 </JFXComboBox>
+                                 <JFXTextField fx:id="tfAddress" labelFloat="true" prefHeight="30.0" prefWidth="300.0" promptText="Endereço" styleClass="text-field" GridPane.columnIndex="1" GridPane.columnSpan="2" />
                               </children>
                            </GridPane>
                                     
@@ -105,4 +108,8 @@
             </center>
         </BorderPane>
     </children>
+   <stylesheets>
+      <URL value="@css/root-style.css" />
+      <URL value="@css/secondary-style.css" />
+   </stylesheets>
 </AnchorPane>

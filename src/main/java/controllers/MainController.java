@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import controllers.views.InterferenceTextFieldsController;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -81,7 +82,7 @@ public class MainController implements Initializable {
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Map.fxml"));
 			fxmlLoader.setControllerFactory(controllerClass -> {
 				if (controllerClass == MapController.class) {
-					mapController = new MapController(apContent);
+					mapController = new MapController(apContent, apManager);
 					return mapController;
 				} else {
 					try {
@@ -114,6 +115,12 @@ public class MainController implements Initializable {
 
 				documentController = loader.getController();
 				documentController.setMainController (this);
+				
+				// Listener para preenchimento das coordenadas ao clicar no mapa
+				InterferenceTextFieldsController tfControler = (InterferenceTextFieldsController) documentController.getLatLngController();
+				
+				mapController.setMapClickListener(tfControler);
+				tfControler.setTextFieldsListener(mapController);
 
 				apManager.getChildren().add(apDocument);
 				AnchorPane.setLeftAnchor(apDocument, 0.0);
@@ -134,7 +141,9 @@ public class MainController implements Initializable {
 					// cadastro. O cadastro deve
 					// ser então newWidth/3 mais newWidth/3, com um pequeno ajuste, newWidth/2.75 em
 					// um dos cálculos.
-					apManager.setPrefWidth(newWidth * 2 / 3);
+					//apManager.setPrefWidth(newWidth * 2 / 3);
+					// aumenta mais a área de cadastro
+					apManager.setPrefWidth(newWidth * 2 / 2.5);
 				});
 	}
 }

@@ -282,6 +282,9 @@ deletar um usuário ou documento, deletando o relacionamento usuario_documento
 ## 20 de fevereiro de 2025
 * **[X] Conversor de coordenadas adicionado
 
-mvn clean package -DskipTests -Dmaven.javadoc.skip=true
 
+## 31/03/2025
+* ** [] Http Server e Mapa
+	Testar se melhora a velociadade de leitura do mapa se for utilizado o httpserver.
 
+mvn clean package -DskipTests -Dmaven.javadoc.skip=truecd 

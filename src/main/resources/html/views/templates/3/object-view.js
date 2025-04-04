@@ -30,7 +30,7 @@ class ObjectView {
     	<p>
         Art. 1º Outorgar a <b><span class="us-nome"></span></b>, 
         CPF/CNPJ n.º <b><span class="us-cpf-cnpj"></span></b>, o direito de uso de água subterrânea, por meio de 01 (um) poço 
-        <span class="inter-tipo-poco"></span>, para fins de <span class="int-finalidades"></span>, localizado no endereço: 
+        <span class="inter-tipo-poco"></span>, para fins de <span class="inter-finalidades"></span>, localizado no endereço: 
         <span class="end-logradouro"></span> - Distrito Federal, tendo a seguinte característica:
     	</p>
 		</div>

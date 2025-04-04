@@ -3,7 +3,9 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import java.lang.String?>
+<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
@@ -16,7 +18,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<fx:root prefHeight="740.0" prefWidth="900.0" styleClass="secondary-content" stylesheets="@../css/root-light.css" type="AnchorPane" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root prefHeight="740.0" prefWidth="900.0" styleClass="secondary-content" type="AnchorPane" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <AnchorPane layoutX="5.0" layoutY="8.0" prefHeight="80.0" prefWidth="690.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
          <children>
@@ -26,7 +28,19 @@
                   <String fx:value="text-color" />
                </styleClass>
             </Label>
-            <JFXButton fx:id="btnClose" layoutX="643.0" layoutY="19.0" styleClass="sec-main-buttons" text="Fechar" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0" />
+            <JFXButton fx:id="btnClose" layoutX="826.0" layoutY="26.0" prefWidth="50.0" styleClass="btn-acc" text="" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+               <graphic>
+                  <FontAwesomeIconView glyphName="ARROW_LEFT">
+                     <styleClass>
+                        <String fx:value="icons" />
+                        <String fx:value="main-icons" />
+                     </styleClass>
+                  </FontAwesomeIconView>
+               </graphic>
+               <tooltip>
+                  <Tooltip text="Voltar" />
+               </tooltip>
+            </JFXButton>
          </children>
       </AnchorPane>
       <GridPane layoutX="32.0" layoutY="90.0" prefHeight="50.0" prefWidth="870.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">
@@ -41,18 +55,14 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <JFXTextField fx:id="tfAttachment" labelFloat="true" promptText="Processo Principal">
+            <JFXTextField fx:id="tfAttachment" labelFloat="true" promptText="Processo Principal" styleClass="text-field">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
                <GridPane.margin>
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin></JFXTextField>
-            <JFXComboBox fx:id="cbProcess" labelFloat="true" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="280.0" promptText="Processo" GridPane.columnIndex="1" GridPane.halignment="CENTER">
-               <styleClass>
-                  <String fx:value="jfx-combo-box" />
-                  <String fx:value="jfx-text-field-custom" />
-               </styleClass>
+            <JFXComboBox fx:id="cbProcess" labelFloat="true" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="280.0" promptText="Processo" styleClass="text-field" GridPane.columnIndex="1" GridPane.halignment="CENTER">
                <tooltip>
                   <Tooltip text="Processo em que o documento se econtra" />
                </tooltip>
@@ -63,7 +73,7 @@
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
             </JFXComboBox>
-            <JFXComboBox fx:id="cbUser" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="400.0" promptText="Usuário" GridPane.columnIndex="2" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS">
+            <JFXComboBox fx:id="cbUser" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="400.0" promptText="Usuário" styleClass="text-field" GridPane.columnIndex="2" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS">
                <GridPane.margin>
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
@@ -77,19 +87,15 @@
          <children>
             <Pane prefWidth="100.0" HBox.hgrow="ALWAYS" />
             <Pane prefWidth="100.0" HBox.hgrow="ALWAYS" />
-            <JFXTextField fx:id="tfSearch" alignment="TOP_LEFT" labelFloat="true" prefHeight="30.0" prefWidth="300.0" promptText="Pesquisar número, sei, processo e endereço" HBox.hgrow="ALWAYS">
+            <JFXTextField fx:id="tfSearch" alignment="TOP_LEFT" labelFloat="true" prefHeight="30.0" prefWidth="300.0" promptText="Pesquisar número, sei, processo e endereço" styleClass="text-field" HBox.hgrow="ALWAYS">
                <HBox.margin>
                   <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
                </HBox.margin>
-               <styleClass>
-                  <String fx:value="text-field" />
-                  <String fx:value="jfx-text-field-custom" />
-               </styleClass>
                <tooltip>
                   <Tooltip text="Digite uma busca. Pode ser pesquisado número, sei, processo e endereço relacionado." />
                </tooltip>
             </JFXTextField>
-            <JFXButton fx:id="btnSearch" minWidth="100.0" prefHeight="30.0" styleClass="sec-main-buttons" text="Buscar" HBox.hgrow="ALWAYS">
+            <JFXButton fx:id="btnSearch" minWidth="100.0" prefHeight="30.0" styleClass="btn-acc" text="Buscar" HBox.hgrow="ALWAYS">
                <HBox.margin>
                   <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
                </HBox.margin>
@@ -110,7 +116,7 @@
             <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <JFXButton fx:id="btnNew" maxWidth="1.7976931348623157E308" prefHeight="20.0" prefWidth="100.0" styleClass="sec-main-buttons" text="Novo" GridPane.hgrow="ALWAYS">
+            <JFXButton fx:id="btnNew" maxWidth="1.7976931348623157E308" prefHeight="20.0" prefWidth="100.0" styleClass="btn-persist" text="Novo" GridPane.hgrow="ALWAYS">
                <tooltip>
                   <Tooltip text="Criar novo documento" />
                </tooltip>
@@ -118,7 +124,7 @@
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
             </JFXButton>
-            <JFXButton fx:id="btnSave" maxWidth="1.7976931348623157E308" prefHeight="20.0" prefWidth="100.0" styleClass="sec-main-buttons" text="Salvar" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+            <JFXButton fx:id="btnSave" maxWidth="1.7976931348623157E308" prefHeight="20.0" prefWidth="100.0" styleClass="btn-persist" text="Salvar" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
                <tooltip>
                   <Tooltip text="Salvar documento" />
                </tooltip>
@@ -126,7 +132,7 @@
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
             </JFXButton>
-            <JFXButton fx:id="btnEdit" maxWidth="1.7976931348623157E308" prefHeight="20.0" prefWidth="100.0" styleClass="sec-main-buttons" text="Editar" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+            <JFXButton fx:id="btnEdit" maxWidth="1.7976931348623157E308" prefHeight="20.0" prefWidth="100.0" styleClass="btn-persist" text="Editar" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
                <tooltip>
                   <Tooltip text="Editar documento" />
                </tooltip>
@@ -134,7 +140,7 @@
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
             </JFXButton>
-            <JFXButton fx:id="btnDelete" maxWidth="1.7976931348623157E308" prefHeight="20.0" prefWidth="100.0" styleClass="sec-main-buttons" text="Deletar" GridPane.columnIndex="3" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+            <JFXButton fx:id="btnDelete" maxWidth="1.7976931348623157E308" prefHeight="20.0" prefWidth="100.0" styleClass="btn-persist" text="Deletar" GridPane.columnIndex="3" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
                <tooltip>
                   <Tooltip text="Deletar documento" />
                </tooltip>
@@ -159,4 +165,8 @@
          </children>
       </AnchorPane>
    </children>
+   <stylesheets>
+      <URL value="@../css/root-style.css" />
+      <URL value="@../css/secondary-style.css" />
+   </stylesheets>
    </fx:root>

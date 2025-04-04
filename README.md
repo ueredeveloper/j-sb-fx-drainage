@@ -58,3 +58,11 @@ Antes de come�ar, certifique-se de ter os seguintes pr�-requisitos instalado
 
 ## Conclus�o
 Desenvolver um software t�o abrangente requer dedica��o e conhecimento em v�rias tecnologias. Siga os passos acima e consulte a documenta��o relevante para cada tecnologia. Boa sorte com o seu projeto!
+
+
+## Versão atual
+
+Versão: 2.0.1  
+Melhorias no CSS e novo template HTML adicionado.
+
+Para mais detalhes, veja o [CHANGELOG](./CHANGELOG.md).

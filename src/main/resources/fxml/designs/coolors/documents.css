@@ -1,0 +1,57 @@
+/* Define color variables
+
+* CVS */
+
+
+/* CVS with # */
+
+#06283b,#7c9f24,#6598c7,#d2ced1,#326229
+
+
+ */
+.root {
+	/*06283b,7c9f24,6598c7,d2ced1,326229*/
+    primary-color: #06283b; /* Example primary color */
+    secondary-color: #d2ced1; /* Example secondary color */
+    accent-color: #7c9f24; /* Example accent color */
+    
+    text-color: #FFFFFF;
+    -fx-background-color: #F5F5F5;
+}
+
+/* Apply primary color */
+.buttons {
+    -fx-background-color: primary-color;
+    -fx-text-fill: text-color;
+    -fx-font-weight: bold;
+}
+.buttons-accent {
+	-fx-background-color: accent-color;
+    -fx-text-fill: text-color;
+    -fx-font-weight: bold;
+}
+
+.buttons:hover {
+    -fx-background-color: derive(primary-color, -10%);
+}
+
+.combobox {
+    -fx-background-color: secondary-color;
+    -fx-text-fill: text-color;
+    -jfx-focus-color: accent-color;
+}
+
+.inputs {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: secondary-color;
+    -fx-text-fill: secondary-color;
+    -jfx-focus-color: primary-color;
+}
+
+.icons {
+    -fx-fill: secondary-color;
+}
+
+.content {
+    -fx-background-color: background-color;
+}

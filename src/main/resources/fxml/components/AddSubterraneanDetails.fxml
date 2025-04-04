@@ -33,68 +33,72 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <JFXComboBox fx:id="cbWellType" labelFloat="true" prefHeight="30.0" prefWidth="200.0" promptText="Tipo de Poço">
+            <JFXComboBox fx:id="cbWellType" labelFloat="true" prefHeight="30.0" prefWidth="200.0" promptText="Tipo de Poço" styleClass="text-field">
                <padding>
                   <Insets left="10.0" right="10.0" />
                </padding>
             </JFXComboBox>
-            <JFXComboBox fx:id="cbConcessionaire" labelFloat="true" prefHeight="30.0" prefWidth="200.0" promptText="Caesb" GridPane.columnIndex="1">
+            <JFXComboBox fx:id="cbConcessionaire" labelFloat="true" prefHeight="30.0" prefWidth="200.0" promptText="Caesb" styleClass="text-field" GridPane.columnIndex="1">
                <padding>
                   <Insets left="10.0" right="10.0" />
                </padding>
             </JFXComboBox>
-            <JFXComboBox fx:id="cbSystem" labelFloat="true" prefHeight="30.0" prefWidth="200.0" promptText="Subsistema" GridPane.columnIndex="2">
+            <JFXComboBox fx:id="cbSystem" labelFloat="true" prefHeight="30.0" prefWidth="200.0" promptText="Subsistema" styleClass="text-field" GridPane.columnIndex="2">
                <padding>
                   <Insets left="10.0" right="10.0" />
                </padding>
             </JFXComboBox>
-            <JFXComboBox fx:id="cbSubsystem" labelFloat="true" prefHeight="30.0" prefWidth="200.0" promptText="Subsistema" GridPane.columnIndex="3">
+            <JFXComboBox fx:id="cbSubsystem" labelFloat="true" prefHeight="30.0" prefWidth="200.0" promptText="Subsistema" styleClass="text-field" GridPane.columnIndex="3">
                <padding>
                   <Insets left="10.0" right="10.0" />
                </padding>
             </JFXComboBox>
-            <JFXTextField fx:id="tfCodeSystem" labelFloat="true" prefHeight="30.0" prefWidth="166.0" promptText="Código do Subsistema" GridPane.columnIndex="4">
+            <JFXTextField fx:id="tfCodeSystem" labelFloat="true" prefHeight="30.0" prefWidth="166.0" promptText="Código do Subsistema" styleClass="text-field" GridPane.columnIndex="4">
                <padding>
                   <Insets left="10.0" right="10.0" />
                </padding>
             </JFXTextField>
-            <JFXTextField fx:id="tfSystemFlow" labelFloat="true" prefHeight="30.0" prefWidth="200.0" promptText="Vazão do Subsistema" GridPane.columnIndex="5">
+            <JFXTextField fx:id="tfSystemFlow" labelFloat="true" prefHeight="30.0" prefWidth="200.0" promptText="Vazão do Subsistema" styleClass="text-field" GridPane.columnIndex="5">
                <padding>
                   <Insets left="10.0" right="10.0" />
                </padding>
             </JFXTextField>
-            <JFXTextField fx:id="tfSystemGrant" labelFloat="true" prefHeight="30.0" prefWidth="200.0" promptText="Vazão Outorgável" GridPane.rowIndex="1">
+            <JFXTextField fx:id="tfSystemGrant" labelFloat="true" prefHeight="30.0" prefWidth="200.0" promptText="Vazão Outorgável" styleClass="text-field" GridPane.rowIndex="1">
                <padding>
                   <Insets left="10.0" right="10.0" />
                </padding>
             </JFXTextField>
-            <JFXTextField fx:id="tfSystemTest" labelFloat="true" prefHeight="30.0" prefWidth="200.0" promptText="Vazão de Teste" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <JFXTextField fx:id="tfSystemTest" labelFloat="true" prefHeight="30.0" prefWidth="200.0" promptText="Vazão de Teste" styleClass="text-field" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <padding>
                   <Insets left="10.0" right="10.0" />
                </padding>
             </JFXTextField>
-            <JFXTextField fx:id="tfStaticLevel" labelFloat="true" prefHeight="30.0" prefWidth="200.0" promptText="Nível Estático" GridPane.columnIndex="2" GridPane.rowIndex="1">
+            <JFXTextField fx:id="tfStaticLevel" labelFloat="true" prefHeight="30.0" prefWidth="200.0" promptText="Nível Estático" styleClass="text-field" GridPane.columnIndex="2" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
             </JFXTextField>
-            <JFXTextField fx:id="tfDynamicLevel" labelFloat="true" prefHeight="30.0" prefWidth="200.0" promptText="Nível Dinâmico" GridPane.columnIndex="3" GridPane.rowIndex="1">
+            <JFXTextField fx:id="tfDynamicLevel" labelFloat="true" prefHeight="30.0" prefWidth="200.0" promptText="Nível Dinâmico" styleClass="text-field" GridPane.columnIndex="3" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
             </JFXTextField>
-            <JFXTextField fx:id="tfWaterDepth" labelFloat="true" prefHeight="30.0" prefWidth="200.0" promptText="Profundidade do Poço" GridPane.columnIndex="4" GridPane.rowIndex="1">
+            <JFXTextField fx:id="tfWaterDepth" labelFloat="true" prefHeight="30.0" prefWidth="200.0" promptText="Profundidade do Poço" styleClass="text-field" GridPane.columnIndex="4" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
             </JFXTextField>
-            <Button fx:id="btnRefereshSubsystem" ellipsisString="" mnemonicParsing="false" styleClass="icon-button" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+            <Button fx:id="btnRefereshSubsystem" ellipsisString="" mnemonicParsing="false" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                <graphic>
                   <FontAwesomeIconView glyphName="REFRESH" styleClass="icons" />
                </graphic>
                <tooltip>
                   <Tooltip text="Atualiza o sistema e subsistema" />
                </tooltip>
+               <styleClass>
+                  <String fx:value="btn-acc" />
+                  <String fx:value="b" />
+               </styleClass>
             </Button>
          </children>
       </GridPane>
@@ -104,7 +108,7 @@
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="330.0" prefWidth="890.0">
                      <children>
-                        <ScrollPane fitToWidth="true" layoutX="-10.0" prefHeight="180.0" prefWidth="890.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0">
+                        <ScrollPane fitToWidth="true" layoutX="-10.0" prefHeight="180.0" prefWidth="890.0" styleClass="table-view" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0">
                            <content>
                               <GridPane fx:id="requestedPurposesGrid" alignment="CENTER" prefHeight="40.0" prefWidth="880.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
                                 <columnConstraints>
@@ -138,10 +142,10 @@
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
-                              <JFXTextField fx:id="tfTotalRequestedConsumption" prefHeight="30.0" prefWidth="200.0" promptText="DEMANDA TOTAL (l/dia)" GridPane.columnIndex="4" />
-                              <Button fx:id="btnCalculateReqTotalConsumption" ellipsisString="" mnemonicParsing="false" styleClass="icon-button" GridPane.columnIndex="7">
+                              <JFXTextField fx:id="tfTotalRequestedConsumption" prefHeight="30.0" prefWidth="200.0" promptText="DEMANDA TOTAL (l/dia)" styleClass="text-field" GridPane.columnIndex="4" />
+                              <Button fx:id="btnCalculateReqTotalConsumption" ellipsisString="" mnemonicParsing="false" styleClass="btn-acc" GridPane.columnIndex="7">
                                  <graphic>
-                                    <FontAwesomeIconView glyphName="EDIT" styleClass="icons" />
+                                    <FontAwesomeIconView glyphName="CALCULATOR" styleClass="icons" />
                                  </graphic>
                                  <tooltip>
                                     <Tooltip text="Calcula total das finalidades requeridas" />
@@ -196,25 +200,25 @@
                   					<Insets left="5.0" right="5.0" />
                					 </padding>
                               </JFXComboBox>
-                              <Button fx:id="btnFillReqFlow" ellipsisString="" mnemonicParsing="false" styleClass="icon-button" GridPane.columnIndex="14" GridPane.rowIndex="1">
+                              <Button fx:id="btnFillReqFlow" ellipsisString="" mnemonicParsing="false" styleClass="btn-acc" GridPane.columnIndex="14" GridPane.rowIndex="1">
                                  <graphic>
-                                    <FontAwesomeIconView glyphName="EDIT" styleClass="icons" />
+                                    <FontAwesomeIconView glyphName="CALCULATOR" styleClass="icons" />
                                  </graphic>
                                  <tooltip>
                                     <Tooltip text="Preenche vazões mês a mês" />
                                  </tooltip>
                               </Button>
-                              <Button fx:id="btnFillReqTime" ellipsisString="" mnemonicParsing="false" styleClass="icon-button" GridPane.columnIndex="14" GridPane.rowIndex="2">
+                              <Button fx:id="btnFillReqTime" ellipsisString="" mnemonicParsing="false" styleClass="btn-acc" GridPane.columnIndex="14" GridPane.rowIndex="2">
                                  <graphic>
-                                    <FontAwesomeIconView glyphName="EDIT" styleClass="icons" />
+                                    <FontAwesomeIconView glyphName="CALCULATOR" styleClass="icons" />
                                  </graphic>
                                  <tooltip>
                                     <Tooltip text="Preenche tempo mês a mês" />
                                  </tooltip>
                               </Button>
-                              <Button fx:id="btnFillReqPeriod" ellipsisString="" mnemonicParsing="false" styleClass="icon-button" GridPane.columnIndex="14" GridPane.rowIndex="3">
+                              <Button fx:id="btnFillReqPeriod" ellipsisString="" mnemonicParsing="false" styleClass="btn-acc" GridPane.columnIndex="14" GridPane.rowIndex="3">
                                  <graphic>
-                                    <FontAwesomeIconView glyphName="EDIT" styleClass="icons" />
+                                    <FontAwesomeIconView glyphName="CALCULATOR" styleClass="icons" />
                                  </graphic>
                                  <tooltip>
                                     <Tooltip text="Preenche período mês a mês" />
@@ -266,9 +270,9 @@
                            </rowConstraints>
                            <children>
                               <JFXTextField fx:id="tfTotalAuthorizedConsumption" prefHeight="30.0" prefWidth="200.0" promptText="DEMANDA TOTAL (l/dia)" GridPane.columnIndex="4" />
-                              <Button fx:id="btnCalculateAuthTotalConsumption" ellipsisString="" mnemonicParsing="false" styleClass="icon-button" GridPane.columnIndex="8" GridPane.halignment="CENTER">
+                              <Button fx:id="btnCalculateAuthTotalConsumption" ellipsisString="" mnemonicParsing="false" styleClass="btn-acc" GridPane.columnIndex="8" GridPane.halignment="CENTER">
                                  <graphic>
-                                    <FontAwesomeIconView glyphName="EDIT" styleClass="icons" />
+                                    <FontAwesomeIconView glyphName="CALCULATOR" styleClass="icons" />
                                  </graphic>
                                  <tooltip>
                                     <Tooltip text="Calcula a vazão total das finalidades autorizadas" />
@@ -326,7 +330,7 @@
                                     <Insets left="5.0" right="5.0" />
                                  </padding>
                               </JFXComboBox>
-                              <Button fx:id="btnCopyReqDemand" ellipsisString="" mnemonicParsing="false" styleClass="icon-button" GridPane.columnIndex="14" GridPane.halignment="CENTER">
+                              <Button fx:id="btnCopyReqDemand" ellipsisString="" mnemonicParsing="false" styleClass="btn-acc" GridPane.columnIndex="14" GridPane.halignment="CENTER">
                                  <graphic>
                                     <FontAwesomeIconView glyphName="CLONE" styleClass="icons" />
                                  </graphic>
@@ -334,25 +338,25 @@
                                     <Tooltip text="Copia as finalidades requeridas" />
                                  </tooltip>
                               </Button>
-                              <Button fx:id="btnFillAuthFlow" ellipsisString="" mnemonicParsing="false" styleClass="icon-button" GridPane.columnIndex="14" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                              <Button fx:id="btnFillAuthFlow" ellipsisString="" mnemonicParsing="false" styleClass="btn-acc" GridPane.columnIndex="14" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                                  <graphic>
-                                    <FontAwesomeIconView glyphName="EDIT" styleClass="icons" />
+                                    <FontAwesomeIconView glyphName="CALCULATOR" styleClass="icons" />
                                  </graphic>
                                  <tooltip>
                                     <Tooltip text="Preenche as vazões mês a mês" />
                                  </tooltip>
                               </Button>
-                              <Button fx:id="btnFillAuthTime" ellipsisString="" mnemonicParsing="false" styleClass="icon-button" GridPane.columnIndex="14" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+                              <Button fx:id="btnFillAuthTime" ellipsisString="" mnemonicParsing="false" styleClass="btn-acc" GridPane.columnIndex="14" GridPane.halignment="CENTER" GridPane.rowIndex="2">
                                  <graphic>
-                                    <FontAwesomeIconView glyphName="EDIT" styleClass="icons" />
+                                    <FontAwesomeIconView glyphName="CALCULATOR" styleClass="icons" />
                                  </graphic>
                                  <tooltip>
                                     <Tooltip text="Preenche o tempo mês a mês" />
                                  </tooltip>
                               </Button>
-                              <Button fx:id="btnFillAuthPeriod" ellipsisString="" mnemonicParsing="false" styleClass="icon-button" GridPane.columnIndex="14" GridPane.halignment="CENTER" GridPane.rowIndex="3">
+                              <Button fx:id="btnFillAuthPeriod" ellipsisString="" mnemonicParsing="false" styleClass="btn-acc" GridPane.columnIndex="14" GridPane.halignment="CENTER" GridPane.rowIndex="3">
                                  <graphic>
-                                    <FontAwesomeIconView glyphName="EDIT" styleClass="icons" />
+                                    <FontAwesomeIconView glyphName="CALCULATOR" styleClass="icons" />
                                  </graphic>
                                  <tooltip>
                                     <Tooltip text="Preenche o período mês a mês" />
@@ -373,7 +377,7 @@
       </Label>
    </children>
    <stylesheets>
-      <URL value="@../css/root-light.css" />
-      <URL value="@../css/root.css" />
+      <URL value="@../css/root-style.css" />
+      <URL value="@../css/secondary-style.css" />
    </stylesheets>
 </AnchorPane>

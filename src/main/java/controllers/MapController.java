@@ -24,33 +24,36 @@ import javafx.scene.control.Label;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.util.Duration;
 import models.Interferencia;
 import netscape.javascript.JSException;
 import netscape.javascript.JSObject;
+import services.MyHttpServer;
+import utilities.JsonConverter;
+import utilities.MapListener;
 import utilities.SVGIconLoader;
+import utilities.SimpleWebServer;
+import utilities.TextFieldsListener;
 
 /**
  * Controlador para a interface de mapa.
  */
-public class MapController implements Initializable {
+public class MapController implements Initializable, TextFieldsListener {
 
 	@FXML
-	private AnchorPane apMap, apCoordConversor;
+	private AnchorPane apMap, apCopyCoords;
+
+    @FXML
+    private BorderPane bpCoordsConversor;
 
 	@FXML
 	WebView wvMap;
 
 	@FXML
-	private JFXButton btnZoomPlus;
-
-	@FXML
 	private JFXButton btnRoadMap, btnSatelliteMap, btnTerrain, btnHybridMap;
-
-	@FXML
-	private JFXButton btnZoomMinus;
 
 	@FXML
 	private Button btnCopyLat, btnCopyLng;
@@ -61,19 +64,27 @@ public class MapController implements Initializable {
 	@FXML
 	private Button btnLeaflet, btnMapBox, btnOPenLayers, btnOpenStreet;
 
+
 	private JSObject doc;
 	private WebEngine webEngine;
 	public boolean ready;
-	private AnchorPane apContent;
+	private AnchorPane apContent, apManager;
 
 	private static MapController instance;
+	
+	MapListener listener;
+	
+	public void setMapClickListener(MapListener listener) {
+		this.listener = listener;
+	}
 
 	public static MapController getInstance() {
 		return instance;
 	}
 
-	public MapController(AnchorPane apContent) {
+	public MapController(AnchorPane apContent, AnchorPane apManager) {
 		this.apContent = apContent;
+		this.apManager = apManager;
 		instance = this; // Define a instância no construtor
 	}
 
@@ -90,20 +101,35 @@ public class MapController implements Initializable {
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 				double newWidth = newValue.doubleValue();
-				apMap.setPrefWidth(newWidth / 2.99);
-				// apManager.setPrefWidth(newWidth / 2);
+				if (apManager.isVisible()) {
+					apMap.setPrefWidth(newWidth / 4.99);
+				}
+				//apManager.setPrefWidth(newWidth * 2 / 2.5);
 			}
 		});
-
+		
 		webEngine = wvMap.getEngine();
+		
+		webEngine.setJavaScriptEnabled(true);
+		webEngine.setOnAlert(event -> System.out.println("Alert: " + event.getData()));
+		webEngine.setOnError(event -> System.err.println("Error: " + event.getMessage()));
 
-		// webEngine.load(getClass().getResource("/html/map/open-layers-map/index.html").toExternalForm());
-		// webEngine.load(getClass().getResource("/html/map/map-box/index.html").toExternalForm());
+        // Set User-Agent to mimic a modern browser
+		webEngine.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36");
 
-		loadMap("leaflet-map");
+		/*try {
+			new SimpleWebServer();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}*/
+		
+		//webEngine.load("http://localhost:3000");
+		
+		loadMap("open-layers");
 
 		ready = false;
-
+		
 		webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<Worker.State>() {
 			public void changed(final ObservableValue<? extends Worker.State> observableValue,
 					final Worker.State oldState, final Worker.State newState) {
@@ -143,10 +169,6 @@ public class MapController implements Initializable {
 			wvMap.setPrefHeight(newValue.doubleValue());
 		});
 
-		/* apMap.getChildren().add(btnZoom); */
-
-		btnZoomPlus.setOnAction(event -> handleZoomPlus(event));
-		btnZoomMinus.setOnAction(event -> handleZoomMinus(event));
 		btnRoadMap.setOnAction(event -> handleRoadMap(event));
 		btnSatelliteMap.setOnAction(event -> handleSatelliteMap(event));
 		btnTerrain.setOnAction(event -> handleTerrainMap(event));
@@ -166,6 +188,10 @@ public class MapController implements Initializable {
 		btnOPenLayers.setOnAction(evet -> loadMap("open-layers"));
 		btnOpenStreet.setOnAction(evet -> loadMap("open-street"));
 
+	}
+	
+	public void setLatLng () {
+		System.out.println("set lat lng");
 	}
 
 	private void invokeJS(final String str) {
@@ -194,14 +220,6 @@ public class MapController implements Initializable {
 		}
 	}
 
-	private void handleZoomPlus(ActionEvent event) {
-		invokeJS("zoomIn();");
-	}
-
-	private void handleZoomMinus(ActionEvent event) {
-		invokeJS("zoomOut();");
-	}
-
 	private void handleRoadMap(ActionEvent event) {
 		invokeJS("setMapType('road');");
 
@@ -223,15 +241,21 @@ public class MapController implements Initializable {
 	}
 
 	public void sendCoordinates(String coords) {
+		
+		System.out.println("map set coordinates");
 
 		Gson gson = new Gson();
 		JsonObject jsonObject = gson.fromJson(coords, JsonObject.class);
-		Double interLatitude = jsonObject.get("lat").getAsDouble();
-		Double interLongitude = jsonObject.get("lng").getAsDouble();
+		Double latitude = jsonObject.get("lat").getAsDouble();
+		Double longitude = jsonObject.get("lng").getAsDouble();
 
-		Interferencia interferencia = new Interferencia(interLatitude, interLongitude);
+		//Interferencia interferencia = new Interferencia(interLatitude, interLongitude);
+		if (listener!=null) {
+			listener.setOnTextFieldsLatLng(latitude, longitude);
+		}
+		
 
-		InterferenceTextFieldsController interferenceController = InterferenceTextFieldsController.getInstance();
+		/*InterferenceTextFieldsController interferenceController = InterferenceTextFieldsController.getInstance();
 		if (interferenceController != null) {
 
 			if (interferencia != null) {
@@ -243,7 +267,7 @@ public class MapController implements Initializable {
 
 		} else {
 			System.out.println("InterferenceTextFieldsController instance is null!");
-		}
+		}*/
 
 		/*
 		 * AddInterferenceController addInterController =
@@ -272,9 +296,9 @@ public class MapController implements Initializable {
 			coordController.setMapController(this); // Set MapController
 
 			// Set initial position above the visible area
-			conversorPane.setTranslateY(-apCoordConversor.getHeight());
+			conversorPane.setTranslateY(-bpCoordsConversor.getHeight());
 
-			apCoordConversor.getChildren().setAll(conversorPane);
+			bpCoordsConversor.setCenter(conversorPane);
 			AnchorPane.setLeftAnchor(conversorPane, 0.0);
 			AnchorPane.setRightAnchor(conversorPane, 0.0);
 
@@ -282,6 +306,8 @@ public class MapController implements Initializable {
 			TranslateTransition transition = new TranslateTransition(Duration.millis(500), conversorPane);
 			transition.setToY(-25);
 			transition.play();
+			
+			apCopyCoords.setVisible(false);
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -291,10 +317,12 @@ public class MapController implements Initializable {
 	public void hideCoordConversor() {
 		if (conversorPane != null) {
 			TranslateTransition transition = new TranslateTransition(Duration.millis(200), conversorPane);
-			transition.setToY(apCoordConversor.getHeight()); // Move up
-			transition.setOnFinished(event -> apCoordConversor.getChildren().remove(conversorPane)); // Remove after
+			transition.setToY(bpCoordsConversor.getHeight()); // Move up
+			transition.setOnFinished(event -> bpCoordsConversor.getChildren().remove(conversorPane)); // Remove after
 																										// animation
 			transition.play();
+			
+			apCopyCoords.setVisible(true);
 		}
 	}
 
@@ -337,6 +365,8 @@ public class MapController implements Initializable {
 			mapFile = "/html/map/map-box/index.html";
 		} else if (type.equalsIgnoreCase("open-layers")) {
 			mapFile = "/html/map/open-layers/index.html";
+		} else if (type.equalsIgnoreCase("gmaps-api")) {
+			mapFile = "/html/map/gmaps/index.html";
 		} else {
 			mapFile = "/html/map/open-street/index.html";
 		}
@@ -373,6 +403,17 @@ public class MapController implements Initializable {
 		} else {
 			System.err.println("Map file not found: " + mapFile);
 		}
+	}
+
+	@Override
+	public void setOnMapCoords(double latitude, double longitude) {
+		
+		String json = "{lat:"+latitude+",lng:"+longitude+"}";
+		
+		System.out.println(json);
+		
+		invokeJS("addMarker(" + json + ");");
+		
 	}
 
 }

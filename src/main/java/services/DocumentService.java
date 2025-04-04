@@ -40,8 +40,8 @@ public class DocumentService {
 			// Convert Documento object to JSON
 			String jsonInputString = convertObjectToJson(documento);
 			
-			//System.out.println("save doc");
-			//System.out.println(jsonInputString);
+			///System.out.println("save doc");
+			///System.out.println(jsonInputString);
 			
 			// Write JSON to request body
 			try (OutputStream os = connection.getOutputStream();
@@ -52,7 +52,7 @@ public class DocumentService {
 
 			int responseCode = connection.getResponseCode();
 			
-			//System.out.println(responseCode);
+			///System.out.println(responseCode);
 
 			String responseBody;
 			if (responseCode == HttpURLConnection.HTTP_CREATED) {
@@ -72,8 +72,8 @@ public class DocumentService {
 			}
 
 			connection.disconnect();
-			//System.out.println("json resp salva doc");
-			//System.out.println(responseBody);
+			///System.out.println("json resp salva doc");
+			///System.out.println(responseBody);
 			return new ServiceResponse<>(responseCode, responseBody);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -93,9 +93,9 @@ public class DocumentService {
 			// Convert Documento object to JSON
 			String jsonInputString = convertObjectToJson(documento);
 			
-			System.out.println("update doc");
+			///System.out.println("update doc");
 			
-			System.out.println(jsonInputString);
+			///System.out.println(jsonInputString);
 
 			// Write JSON to request body
 			try (OutputStream os = connection.getOutputStream();
@@ -106,7 +106,7 @@ public class DocumentService {
 
 			int responseCode = connection.getResponseCode();
 			
-			//System.out.println("update " + jsonInputString);
+			///System.out.println("update " + jsonInputString);
 
 			String responseBody;
 			if (responseCode == HttpURLConnection.HTTP_OK) {
@@ -144,10 +144,10 @@ public class DocumentService {
 			int responseCode = connection.getResponseCode();
 
 			if (responseCode == HttpURLConnection.HTTP_OK) {
-				// System.out.println("HTTP OK");
+				// /System.out.println("HTTP OK");
 				return handleSuccessResponse(connection);
 			} else if (responseCode == HttpURLConnection.HTTP_CREATED) {
-				// System.out.println("HTTP Created");
+				// /System.out.println("HTTP Created");
 				return handleSuccessResponse(connection);
 			} else {
 				handleErrorResponse(connection);
@@ -156,7 +156,7 @@ public class DocumentService {
 			connection.disconnect();
 		} catch (Exception e) {
 			e.printStackTrace();
-			// System.out.println("serv save e print ");
+			// /System.out.println("serv save e print ");
 
 			// showAlert("Erro na busca de algum documento", AlertType.ERROR);
 		}
@@ -173,10 +173,10 @@ public class DocumentService {
 			int responseCode = connection.getResponseCode();
 
 			if (responseCode == HttpURLConnection.HTTP_OK) {
-				// System.out.println("HTTP OK");
+				// /System.out.println("HTTP OK");
 				return handleSuccessResponse(connection);
 			} else if (responseCode == HttpURLConnection.HTTP_CREATED) {
-				// System.out.println("HTTP Created");
+				// /System.out.println("HTTP Created");
 				return handleSuccessResponse(connection);
 			} else {
 				handleErrorResponse(connection);
@@ -185,7 +185,7 @@ public class DocumentService {
 			connection.disconnect();
 		} catch (Exception e) {
 			e.printStackTrace();
-			// System.out.println("serv save e print ");
+			// /System.out.println("serv save e print ");
 
 			// showAlert("Erro na busca de algum documento", AlertType.ERROR);
 		}
@@ -258,8 +258,6 @@ public class DocumentService {
 
 		reader.close();
 		
-		System.out.println(response.toString());
-
 		return new Gson().fromJson(response.toString(), new TypeToken<Set<Documento>>() {
 		}.getType());
 	}

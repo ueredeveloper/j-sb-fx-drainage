@@ -207,6 +207,7 @@ public class AddInterferenceController implements Initializable {
 		cbTypeOfAct.setItems(obsTypesOfActs);
 
 		obsBasins = StaticData.INSTANCE.fetchAllHydrographicBasins();
+		
 		cbHydrographicBasin.setItems(obsBasins);
 
 		obsHidrographicUnits = StaticData.INSTANCE.fetchAllHidrographicUnits();
@@ -903,7 +904,6 @@ public class AddInterferenceController implements Initializable {
 
 			Set<BaciaHidrografica> list = service.findBhByPoint(lat, lng);
 
-			System.out.println(JsonConverter.convertObjectToJson(list));
 			return list;
 
 		} catch (Exception e) {

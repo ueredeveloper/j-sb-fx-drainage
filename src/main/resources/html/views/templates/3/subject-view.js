@@ -19,7 +19,7 @@ class SubjectView {
 			<div style="float:right;width:40rem">
 				<p class="outorga-uso">
 				Emite outorga de direito de uso de água subterrânea a <span class="us-nome"></span>, 
-				para fins de <span class="int-finalidades"></span>.
+				para fins de <span class="inter-finalidades"></span>.
 				</p>
 			</div>
 		`;
@@ -38,7 +38,7 @@ class SubjectView {
     		element.innerHTML = innerHTML
     	});
 		
-		let __items = document.getElementsByClassName('int-finalidades');
+		let __items = document.getElementsByClassName('inter-finalidades');
 
     	Array.from(__items).forEach(element => {
     		let innerHTML = new FinalidadeModel().getPurpouseString(finalidades);
