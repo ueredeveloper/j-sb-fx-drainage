@@ -495,7 +495,7 @@ public class AddInterferenceController implements Initializable, MapListener {
 		tfLatitude.textProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-				System.out.println("tf lat ");
+				
 				addMarker();
 
 			}
@@ -504,8 +504,7 @@ public class AddInterferenceController implements Initializable, MapListener {
 		tfLongitude.textProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-				System.out.println("tf lon ");
-
+				
 				addMarker();
 			}
 		});
@@ -932,11 +931,11 @@ public class AddInterferenceController implements Initializable, MapListener {
 	}
 
 	/**
-	 * Busca uma bacia de acordo com o ponto indicado.
+	 * Busca bacia hidrográfica de acordo com o ponto indicado.
 	 * 
-	 * @param lat
-	 * @param lng
-	 * @return
+	 * @param lat Latitude do ponto
+	 * @param lng Longitude do ponto
+	 * @return Retorna informações da bacia hidrográfica do ponto solicitado.
 	 */
 	public Set<BaciaHidrografica> findBhByPoint(String lat, String lng) {
 

@@ -287,4 +287,5 @@ deletar um usuário ou documento, deletando o relacionamento usuario_documento
 * ** [] Http Server e Mapa
 	Testar se melhora a velociadade de leitura do mapa se for utilizado o httpserver.
 
-mvn clean package -DskipTests -Dmaven.javadoc.skip=truecd 
+mvn clean package -DskipTests -Dmaven.javadoc.skip=true
+ 

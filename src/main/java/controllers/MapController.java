@@ -204,7 +204,6 @@ public class MapController implements Initializable, TextFieldsListener {
 
 					}
 
-					System.out.println(" invokeJS funcionando");
 				}
 			});
 
@@ -245,7 +244,6 @@ public class MapController implements Initializable, TextFieldsListener {
 	}
 
 	public void handleAddMarker(String json) {
-		System.out.println("addMarker(" + json + ");");
 		invokeJS("addMarker(" + json + ");");
 	}
 
@@ -375,9 +373,6 @@ public class MapController implements Initializable, TextFieldsListener {
 	public void addMarker(double latitude, double longitude) {
 
 		String json = "{lat:" + latitude + ",lng:" + longitude + "}";
-
-		System.out.println("map controller, addMarker, json:" + json);
-
 		invokeJS("addMarker(" + json + ");");
 
 	}
