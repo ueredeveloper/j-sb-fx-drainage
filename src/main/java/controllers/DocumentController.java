@@ -24,7 +24,6 @@ import controllers.views.EditAddressController;
 import controllers.views.InterferenceTextFieldsController;
 import controllers.views.ProcessComboBoxController;
 import controllers.views.UserComboBoxController;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import enums.ToastType;
 import javafx.animation.TranslateTransition;
 import javafx.beans.value.ChangeListener;
@@ -365,7 +364,7 @@ public class DocumentController implements Initializable {
 
 		// Carrega o arquivo FXML para o painel de edição
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/components/AddInterference.fxml"));
-
+		
 		TranslateTransition ttClose = new TranslateTransition(Duration.millis(300), apAddInterference);
 
 		ttClose.setToX(400.0);
@@ -386,8 +385,15 @@ public class DocumentController implements Initializable {
 			String toastMsg = "Selecione um endereço !!!";
 			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
 		} else {
+			
+			MapController mapController = this.mainController.getMapController();
+			
+			AddInterferenceController addInterferenceController = new AddInterferenceController(this, address, this.urlService, ttClose);
+			
+			mapController.addMapClickListener(addInterferenceController);
+			addInterferenceController.setTextFieldsListener(mapController);
 
-			loader.setController(new AddInterferenceController(this, address, this.urlService, ttClose));
+			loader.setController(addInterferenceController);
 
 			try {
 				loader.load();
@@ -1200,7 +1206,6 @@ public class DocumentController implements Initializable {
 	}
 
 	public MapListener getLatLngController() {
-		
 		return this.interferenceTFController;
 	}
 

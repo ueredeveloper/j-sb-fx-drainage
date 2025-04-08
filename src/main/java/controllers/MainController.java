@@ -119,7 +119,7 @@ public class MainController implements Initializable {
 				// Listener para preenchimento das coordenadas ao clicar no mapa
 				InterferenceTextFieldsController tfControler = (InterferenceTextFieldsController) documentController.getLatLngController();
 				
-				mapController.setMapClickListener(tfControler);
+				mapController.addMapClickListener(tfControler);
 				tfControler.setTextFieldsListener(mapController);
 
 				apManager.getChildren().add(apDocument);
@@ -145,5 +145,9 @@ public class MainController implements Initializable {
 					// aumenta mais a área de cadastro
 					apManager.setPrefWidth(newWidth * 2 / 2.5);
 				});
+	}
+	
+	public MapController getMapController () {
+		return this.mapController;
 	}
 }

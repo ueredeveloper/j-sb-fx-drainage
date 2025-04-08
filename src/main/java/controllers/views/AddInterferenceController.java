@@ -16,6 +16,8 @@ import controllers.NavigationController;
 import enums.StaticData;
 import enums.ToastType;
 import javafx.animation.TranslateTransition;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -47,9 +49,11 @@ import services.InterferenciaService;
 import services.ServiceResponse;
 import services.UnidadeHidrograficaService;
 import utilities.JsonConverter;
+import utilities.MapListener;
+import utilities.TextFieldsListener;
 import utilities.URLUtility;
 
-public class AddInterferenceController implements Initializable {
+public class AddInterferenceController implements Initializable, MapListener {
 
 	private static AddInterferenceController instance;
 
@@ -164,6 +168,12 @@ public class AddInterferenceController implements Initializable {
 	private MapController mapController;
 
 	private DocumentController documentController;
+	
+	private TextFieldsListener textFieldsListener;
+
+	public void setTextFieldsListener(TextFieldsListener listener) {
+		this.textFieldsListener = listener;
+	}
 
 	public AddInterferenceController(DocumentController documentController, Endereco address, String urlService,
 			TranslateTransition ttClose) {
@@ -481,7 +491,39 @@ public class AddInterferenceController implements Initializable {
 
 			// No action needed for other cases, so the else block is removed
 		});
+		
+		tfLatitude.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				System.out.println("tf lat ");
+				addMarker();
 
+			}
+		});
+
+		tfLongitude.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				System.out.println("tf lon ");
+
+				addMarker();
+			}
+		});
+
+	}
+	
+	public void addMarker() {
+		try {
+			double lat = Double.parseDouble(tfLatitude.getText());
+			double lng = Double.parseDouble(tfLongitude.getText());
+
+			if (textFieldsListener != null) {
+				textFieldsListener.addMarker(lat, lng);
+			}
+
+		} catch (NumberFormatException e) {
+			System.out.println("Coordenadas inválidas");
+		}
 	}
 
 	public void save(ActionEvent event) {
@@ -1088,6 +1130,12 @@ public class AddInterferenceController implements Initializable {
 
 		// If all attributes are valid, return the object
 		return new SubsystemCodeAttributes(lat, lng, ti);
+	}
+
+	@Override
+	public void setOnTextFieldsLatLng(Double latitude, Double longitude) {
+		tfLatitude.setText(String.valueOf(latitude));
+		tfLongitude.setText(String.valueOf(longitude));
 	}
 
 }

@@ -2,7 +2,9 @@ package controllers;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashSet;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -10,7 +12,6 @@ import com.jfoenix.controls.JFXButton;
 import com.sun.javafx.webkit.WebConsoleListener;
 
 import controllers.views.CoordinateConversorController;
-import controllers.views.InterferenceTextFieldsController;
 import javafx.animation.TranslateTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -28,14 +29,10 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.util.Duration;
-import models.Interferencia;
 import netscape.javascript.JSException;
 import netscape.javascript.JSObject;
-import services.MyHttpServer;
-import utilities.JsonConverter;
 import utilities.MapListener;
 import utilities.SVGIconLoader;
-import utilities.SimpleWebServer;
 import utilities.TextFieldsListener;
 
 /**
@@ -46,8 +43,8 @@ public class MapController implements Initializable, TextFieldsListener {
 	@FXML
 	private AnchorPane apMap, apCopyCoords;
 
-    @FXML
-    private BorderPane bpCoordsConversor;
+	@FXML
+	private BorderPane bpCoordsConversor;
 
 	@FXML
 	WebView wvMap;
@@ -64,28 +61,23 @@ public class MapController implements Initializable, TextFieldsListener {
 	@FXML
 	private Button btnLeaflet, btnMapBox, btnOPenLayers, btnOpenStreet;
 
-
 	private JSObject doc;
 	private WebEngine webEngine;
 	public boolean ready;
 	private AnchorPane apContent, apManager;
 
-	private static MapController instance;
-	
-	MapListener listener;
-	
-	public void setMapClickListener(MapListener listener) {
-		this.listener = listener;
-	}
+	// private static MapController instance;
 
-	public static MapController getInstance() {
-		return instance;
+	private final Set<MapListener> listeners = new HashSet<>();
+
+	public void addMapClickListener(MapListener listener) {
+		listeners.add(listener);
 	}
 
 	public MapController(AnchorPane apContent, AnchorPane apManager) {
 		this.apContent = apContent;
 		this.apManager = apManager;
-		instance = this; // Define a instância no construtor
+		// instance = this; // Define a instância no construtor
 	}
 
 	public AnchorPane getAnchorPaneMap() {
@@ -104,32 +96,31 @@ public class MapController implements Initializable, TextFieldsListener {
 				if (apManager.isVisible()) {
 					apMap.setPrefWidth(newWidth / 4.99);
 				}
-				//apManager.setPrefWidth(newWidth * 2 / 2.5);
+				// apManager.setPrefWidth(newWidth * 2 / 2.5);
 			}
 		});
-		
+
 		webEngine = wvMap.getEngine();
-		
+
 		webEngine.setJavaScriptEnabled(true);
 		webEngine.setOnAlert(event -> System.out.println("Alert: " + event.getData()));
 		webEngine.setOnError(event -> System.err.println("Error: " + event.getMessage()));
 
-        // Set User-Agent to mimic a modern browser
-		webEngine.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36");
+		// Set User-Agent to mimic a modern browser
+		webEngine.setUserAgent(
+				"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36");
 
-		/*try {
-			new SimpleWebServer();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
-		
-		//webEngine.load("http://localhost:3000");
-		
+		/*
+		 * try { new SimpleWebServer(); } catch (IOException e) { // TODO Auto-generated
+		 * catch block e.printStackTrace(); }
+		 */
+
+		// webEngine.load("http://localhost:3000");
+
 		loadMap("open-layers");
 
 		ready = false;
-		
+
 		webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<Worker.State>() {
 			public void changed(final ObservableValue<? extends Worker.State> observableValue,
 					final Worker.State oldState, final Worker.State newState) {
@@ -189,8 +180,8 @@ public class MapController implements Initializable, TextFieldsListener {
 		btnOpenStreet.setOnAction(evet -> loadMap("open-street"));
 
 	}
-	
-	public void setLatLng () {
+
+	public void setLatLng() {
 		System.out.println("set lat lng");
 	}
 
@@ -241,40 +232,15 @@ public class MapController implements Initializable, TextFieldsListener {
 	}
 
 	public void sendCoordinates(String coords) {
-		
-		System.out.println("map set coordinates");
 
 		Gson gson = new Gson();
 		JsonObject jsonObject = gson.fromJson(coords, JsonObject.class);
 		Double latitude = jsonObject.get("lat").getAsDouble();
 		Double longitude = jsonObject.get("lng").getAsDouble();
 
-		//Interferencia interferencia = new Interferencia(interLatitude, interLongitude);
-		if (listener!=null) {
+		for (MapListener listener : listeners) {
 			listener.setOnTextFieldsLatLng(latitude, longitude);
 		}
-		
-
-		/*InterferenceTextFieldsController interferenceController = InterferenceTextFieldsController.getInstance();
-		if (interferenceController != null) {
-
-			if (interferencia != null) {
-				if (interferencia.getLatitude() != null && interferencia.getLongitude() != null) {
-					interferenceController.updateCoordinates(interferencia);
-				}
-
-			}
-
-		} else {
-			System.out.println("InterferenceTextFieldsController instance is null!");
-		}*/
-
-		/*
-		 * AddInterferenceController addInterController =
-		 * AddInterferenceController.getInstance(); if (addInterController != null) {
-		 * addInterController.updateCoordinates(interferencia); } else {
-		 * System.out.println("Add Interference Controller instance is null!"); }
-		 */
 
 	}
 
@@ -306,7 +272,7 @@ public class MapController implements Initializable, TextFieldsListener {
 			TranslateTransition transition = new TranslateTransition(Duration.millis(500), conversorPane);
 			transition.setToY(-25);
 			transition.play();
-			
+
 			apCopyCoords.setVisible(false);
 
 		} catch (IOException e) {
@@ -321,7 +287,7 @@ public class MapController implements Initializable, TextFieldsListener {
 			transition.setOnFinished(event -> bpCoordsConversor.getChildren().remove(conversorPane)); // Remove after
 																										// animation
 			transition.play();
-			
+
 			apCopyCoords.setVisible(true);
 		}
 	}
@@ -406,14 +372,14 @@ public class MapController implements Initializable, TextFieldsListener {
 	}
 
 	@Override
-	public void setOnMapCoords(double latitude, double longitude) {
-		
-		String json = "{lat:"+latitude+",lng:"+longitude+"}";
-		
-		System.out.println(json);
-		
+	public void addMarker(double latitude, double longitude) {
+
+		String json = "{lat:" + latitude + ",lng:" + longitude + "}";
+
+		System.out.println("map controller, addMarker, json:" + json);
+
 		invokeJS("addMarker(" + json + ");");
-		
+
 	}
 
 }

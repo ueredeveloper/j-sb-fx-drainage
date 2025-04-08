@@ -2,12 +2,10 @@ package controllers.views;
 
 import com.jfoenix.controls.JFXTextField;
 
-import controllers.MapController;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import models.Interferencia;
-import utilities.JsonConverter;
 import utilities.MapListener;
 import utilities.TextFieldsListener;
 
@@ -25,29 +23,42 @@ public class InterferenceTextFieldsController implements MapListener {
 	private JFXTextField tfLatitude;
 	@FXML
 	private JFXTextField tfLongitude;
-	
-	private MapController mapController;
 
 	String urlService;
-	
+
 	MapListener listener;
-	
+
 	private TextFieldsListener textFieldsListener;
 
-    public void setTextFieldsListener(TextFieldsListener listener) {
-        this.textFieldsListener = listener;
-    }
-	
-	
+	public void setTextFieldsListener(TextFieldsListener listener) {
+		this.textFieldsListener = listener;
+	}
+
 	public InterferenceTextFieldsController(String urlService, JFXTextField tfLatitude, JFXTextField tfLongitude) {
 		this.urlService = urlService;
-		this.mapController = MapController.getInstance();
 		this.tfLatitude = tfLatitude;
 		this.tfLongitude = tfLongitude;
 		instance = this;
 
-		//init();
+		initialize();
 
+	}
+
+	public void initialize() {
+		tfLatitude.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				addMarker();
+
+			}
+		});
+
+		tfLongitude.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				addMarker();
+			}
+		});
 	}
 
 	// Método para obter a instância de Interferencia com latitude e longitude
@@ -62,46 +73,24 @@ public class InterferenceTextFieldsController implements MapListener {
 
 	}
 
-	@FXML
-	public void initialize() {
-		
-		tfLatitude.textProperty().addListener(new ChangeListener<String>() {
-			@Override
-			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-				setCoordOnMap();
-				
-			}
-		});
-
-		tfLongitude.textProperty().addListener(new ChangeListener<String>() {
-			@Override
-			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-				setCoordOnMap();
-			}
-		});
-		
-	}
-
 	@Override
-	public void setOnTextFieldsLatLng (Double latitude, Double longitude) {
+	public void setOnTextFieldsLatLng(Double latitude, Double longitude) {
 		tfLatitude.setText(String.valueOf(latitude));
-		tfLongitude.setText(String.valueOf(longitude));	
+		tfLongitude.setText(String.valueOf(longitude));
 	}
 
-    public void setCoordOnMap () {
-		System.out.println("Interference text on send " + tfLatitude.getText() + tfLongitude.getText());
-        try {
-            double lat = Double.parseDouble(tfLatitude.getText());
-            double lng = Double.parseDouble(tfLongitude.getText());
+	public void addMarker() {
+		try {
+			double lat = Double.parseDouble(tfLatitude.getText());
+			double lng = Double.parseDouble(tfLongitude.getText());
 
-            if (textFieldsListener != null) {
-                textFieldsListener.setOnMapCoords(lat, lng);
-            }
+			if (textFieldsListener != null) {
+				textFieldsListener.addMarker(lat, lng);
+			}
 
-        } catch (NumberFormatException e) {
-            System.out.println("Coordenadas inválidas");
-        }
-    }
-
+		} catch (NumberFormatException e) {
+			System.out.println("Coordenadas inválidas");
+		}
+	}
 
 }
