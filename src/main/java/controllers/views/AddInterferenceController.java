@@ -9,6 +9,7 @@ import com.google.gson.Gson;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
+import com.sothawo.mapjfx.Coordinate;
 
 import controllers.DocumentController;
 import controllers.MapController;
@@ -48,7 +49,6 @@ import services.BaciaHidrograficaService;
 import services.InterferenciaService;
 import services.ServiceResponse;
 import services.UnidadeHidrograficaService;
-import utilities.JsonConverter;
 import utilities.MapListener;
 import utilities.TextFieldsListener;
 import utilities.URLUtility;
@@ -165,10 +165,11 @@ public class AddInterferenceController implements Initializable, MapListener {
 	String latitude, longitude;
 	AddressComboBoxController addressCbController;
 	Endereco address;
+
 	private MapController mapController;
 
 	private DocumentController documentController;
-	
+
 	private TextFieldsListener textFieldsListener;
 
 	public void setTextFieldsListener(TextFieldsListener listener) {
@@ -217,7 +218,7 @@ public class AddInterferenceController implements Initializable, MapListener {
 		cbTypeOfAct.setItems(obsTypesOfActs);
 
 		obsBasins = StaticData.INSTANCE.fetchAllHydrographicBasins();
-		
+
 		cbHydrographicBasin.setItems(obsBasins);
 
 		obsHidrographicUnits = StaticData.INSTANCE.fetchAllHidrographicUnits();
@@ -225,7 +226,7 @@ public class AddInterferenceController implements Initializable, MapListener {
 
 		latitude = documentController.getLatitude();
 		longitude = documentController.getLongitude();
-		
+
 		tfLatitude.setText(latitude);
 		tfLongitude.setText(longitude);
 
@@ -414,11 +415,8 @@ public class AddInterferenceController implements Initializable, MapListener {
 			// Verifica se o valor está vazio.
 			if (!tfLatitude.getText().isEmpty() && !tfLongitude.getText().isEmpty()) {
 
-				// ALERTA!! Adicionar verificação se o valor é mesmo double ou float,
-				// representando uma coordenada.
+				addMarker();
 
-				mapController.handleAddMarker(JsonConverter.convertObjectToJson(new Interferencia(
-						Double.parseDouble(tfLatitude.getText()), Double.parseDouble(tfLongitude.getText()))));
 			} else {
 				// Alerta (Toast) de sucesso na edi��o
 				Node source = (Node) event.getSource();
@@ -491,11 +489,11 @@ public class AddInterferenceController implements Initializable, MapListener {
 
 			// No action needed for other cases, so the else block is removed
 		});
-		
+
 		tfLatitude.textProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-				
+
 				addMarker();
 
 			}
@@ -504,20 +502,20 @@ public class AddInterferenceController implements Initializable, MapListener {
 		tfLongitude.textProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-				
+
 				addMarker();
 			}
 		});
 
 	}
-	
+
 	public void addMarker() {
 		try {
 			double lat = Double.parseDouble(tfLatitude.getText());
 			double lng = Double.parseDouble(tfLongitude.getText());
 
 			if (textFieldsListener != null) {
-				textFieldsListener.addMarker(lat, lng);
+				textFieldsListener.addMarkerAt(new Coordinate(lat, lng));
 			}
 
 		} catch (NumberFormatException e) {
@@ -1132,9 +1130,9 @@ public class AddInterferenceController implements Initializable, MapListener {
 	}
 
 	@Override
-	public void setOnTextFieldsLatLng(Double latitude, Double longitude) {
-		tfLatitude.setText(String.valueOf(latitude));
-		tfLongitude.setText(String.valueOf(longitude));
+	public void setOnTextFieldsLatLng(String latitude, String longitude) {
+		tfLatitude.setText(latitude);
+		tfLongitude.setText(longitude);
 	}
 
 }

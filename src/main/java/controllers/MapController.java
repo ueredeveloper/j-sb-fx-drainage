@@ -3,20 +3,21 @@ package controllers;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.Set;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.jfoenix.controls.JFXButton;
-import com.sun.javafx.webkit.WebConsoleListener;
+import com.sothawo.mapjfx.Configuration;
+import com.sothawo.mapjfx.Coordinate;
+import com.sothawo.mapjfx.MapType;
+import com.sothawo.mapjfx.MapView;
+import com.sothawo.mapjfx.Marker;
+import com.sothawo.mapjfx.event.MapViewEvent;
 
 import controllers.views.CoordinateConversorController;
 import javafx.animation.TranslateTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.concurrent.Worker;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -26,13 +27,8 @@ import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.web.WebEngine;
-import javafx.scene.web.WebView;
 import javafx.util.Duration;
-import netscape.javascript.JSException;
-import netscape.javascript.JSObject;
 import utilities.MapListener;
-import utilities.SVGIconLoader;
 import utilities.TextFieldsListener;
 
 /**
@@ -47,26 +43,19 @@ public class MapController implements Initializable, TextFieldsListener {
 	private BorderPane bpCoordsConversor;
 
 	@FXML
-	WebView wvMap;
-
-	@FXML
-	private JFXButton btnRoadMap, btnSatelliteMap, btnTerrain, btnHybridMap;
-
-	@FXML
 	private Button btnCopyLat, btnCopyLng;
 
 	@FXML
 	private Label lblLatitude, lblLongitude;
 
-	@FXML
-	private Button btnLeaflet, btnMapBox, btnOPenLayers, btnOpenStreet;
-
-	private JSObject doc;
-	private WebEngine webEngine;
-	public boolean ready;
 	private AnchorPane apContent, apManager;
 
-	// private static MapController instance;
+	@FXML
+	private BorderPane bpMap;
+	// Coordenada inical - Adasa
+	private final Coordinate BONN = new Coordinate(-15.775024, -47.940286);
+
+	private MapView mapView;
 
 	private final Set<MapListener> listeners = new HashSet<>();
 
@@ -84,9 +73,39 @@ public class MapController implements Initializable, TextFieldsListener {
 		return this.apMap;
 	}
 
-	@SuppressWarnings("restriction")
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+
+		mapView = new MapView();
+
+		mapView.initialize(Configuration.builder().showZoomControls(true).build());
+
+		// Wait until map is ready
+		mapView.initializedProperty().addListener((obs, oldVal, newVal) -> {
+			if (newVal) {
+				// Adiciona tipo de mapa, zoom e centraliza
+				mapView.setMapType(MapType.OSM);
+				mapView.setZoom(12);
+				mapView.setCenter(BONN);
+
+				// Adiciona marcador inicial
+				addMarkerAt(BONN);
+
+				mapView.addEventHandler(MapViewEvent.MAP_CLICKED, event -> {
+					Coordinate clickedCoord = event.getCoordinate().normalize();
+					// Adiciona marcador no ponto clicado
+					addMarkerAt(clickedCoord);
+
+					Double lat = clickedCoord.getLatitude();
+					Double lng = clickedCoord.getLongitude();
+					// Envia coordenada para os textfields
+					sendCoordinates(lat, lng);
+
+				});
+			}
+		});
+
+		bpMap.setCenter(mapView);
 
 		// Add a listener to the width property of the AnchorPane
 		apContent.widthProperty().addListener(new ChangeListener<Number>() {
@@ -100,152 +119,40 @@ public class MapController implements Initializable, TextFieldsListener {
 			}
 		});
 
-		webEngine = wvMap.getEngine();
-
-		webEngine.setJavaScriptEnabled(true);
-		webEngine.setOnAlert(event -> System.out.println("Alert: " + event.getData()));
-		webEngine.setOnError(event -> System.err.println("Error: " + event.getMessage()));
-
-		// Set User-Agent to mimic a modern browser
-		webEngine.setUserAgent(
-				"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36");
-
-		/*
-		 * try { new SimpleWebServer(); } catch (IOException e) { // TODO Auto-generated
-		 * catch block e.printStackTrace(); }
-		 */
-
-		// webEngine.load("http://localhost:3000");
-
-		loadMap("leaflet-maps");
-
-		ready = false;
-
-		webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<Worker.State>() {
-			public void changed(final ObservableValue<? extends Worker.State> observableValue,
-					final Worker.State oldState, final Worker.State newState) {
-
-				if (newState == Worker.State.SUCCEEDED) {
-					ready = true;
-				}
-			}
-		});
-
-		webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<Worker.State>() {
-			public void changed(final ObservableValue<? extends Worker.State> observableValue,
-					final Worker.State oldState, final Worker.State newState) {
-				if (newState == Worker.State.SUCCEEDED) {
-					doc = (JSObject) webEngine.executeScript("window");
-
-					doc.setMember("app", MapController.this);
-
-					// doc.setMember("appShapeEndereco", GoogleMap.this);
-				}
-
-			}
-		});
-
-		// mostrar erros no console
-		WebConsoleListener.setDefaultListener((webView, message, lineNumber, sourceId) -> {
-			System.out.println(message + "[at " + lineNumber + "]");
-		});
-
-		// Torna as dimens�es do WebView (wvMap) semelhantes ao do pai (aapMap)
-		apMap.widthProperty().addListener((observable, oldValue, newValue) -> {
-			// setar prefwidth no mapa
-			wvMap.setPrefWidth(newValue.doubleValue());
-		});
-
-		apMap.heightProperty().addListener((observable, oldValue, newValue) -> {
-			wvMap.setPrefHeight(newValue.doubleValue());
-		});
-
-		btnRoadMap.setOnAction(event -> handleRoadMap(event));
-		btnSatelliteMap.setOnAction(event -> handleSatelliteMap(event));
-		btnTerrain.setOnAction(event -> handleTerrainMap(event));
-		btnHybridMap.setOnAction(event -> handleHybridMap(event));
-
-		btnCopyLat.setOnAction(evet -> copyToClipboard("Latitude"));
-		btnCopyLng.setOnAction(evet -> copyToClipboard("Longitude"));
-
-		// Set SVG icons
-		btnLeaflet.setGraphic(SVGIconLoader.getLeafletIcon(84));
-		btnMapBox.setGraphic(SVGIconLoader.getMapBoxIcon(5));
-		btnOPenLayers.setGraphic(SVGIconLoader.getOpenLayersIcon(10));
-		btnOpenStreet.setGraphic(SVGIconLoader.getOpenStreetIcon(10));
-
-		btnLeaflet.setOnAction(evet -> loadMap("leaflet-map"));
-		btnMapBox.setOnAction(evet -> loadMap("map-box"));
-		btnOPenLayers.setOnAction(evet -> loadMap("open-layers"));
-		btnOpenStreet.setOnAction(evet -> loadMap("open-street"));
-
 	}
 
-	public void setLatLng() {
-		System.out.println("set lat lng");
+	// Captura todos marcadores para remover quando preciso
+	Set<Marker> markers = new HashSet<Marker>();
+	
+	@Override
+	public void addMarkerAt(Coordinate coordinate) {
+
+		Marker marker = Marker.createProvided(Marker.Provided.BLUE).setPosition(coordinate).setVisible(true);
+		
+		markers.add(marker);
+		
+		markers.forEach((m)-> mapView.removeMarker(m));
+		// Adiciona marcador
+		mapView.addMarker(marker);
+		// Centraliza o mapa de acordo com o marcador
+		mapView.setCenter(marker.getPosition());
 	}
 
-	private void invokeJS(final String str) {
-
-		if (ready) {
-			try {
-				doc.eval(str);
-			} catch (JSException js) {
-				System.out.println("nao ready execao de leitura javascript " + js);
-			}
-		} else {
-
-			webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<Worker.State>() {
-				@Override
-				public void changed(final ObservableValue<? extends Worker.State> observableValue,
-						final Worker.State oldState, final Worker.State newState) {
-					if (newState == Worker.State.SUCCEEDED) {
-						doc.eval(str);
-
-					}
-
-				}
-			});
-
-		}
-	}
-
-	private void handleRoadMap(ActionEvent event) {
-		invokeJS("setMapType('road');");
-
-	}
-
-	private void handleSatelliteMap(ActionEvent event) {
-		invokeJS("setMapType('satellite');");
-
-	}
-
-	private void handleTerrainMap(ActionEvent event) {
-		invokeJS("setMapType('terrain');");
-
-	}
-
-	private void handleHybridMap(ActionEvent event) {
-		invokeJS("setMapType('hybrid');");
-
-	}
-
-	public void sendCoordinates(String coords) {
-
-		Gson gson = new Gson();
-		JsonObject jsonObject = gson.fromJson(coords, JsonObject.class);
-		Double latitude = jsonObject.get("lat").getAsDouble();
-		Double longitude = jsonObject.get("lng").getAsDouble();
+	public void sendCoordinates(Double lat, Double lng) {
+		// Formata as coordenadas para ter 6 números depois do ponto
+		String latFormatted = String.format(Locale.US, "%.6f", lat);
+		String lngFormatted = String.format(Locale.US, "%.6f", lng);
 
 		for (MapListener listener : listeners) {
-			listener.setOnTextFieldsLatLng(latitude, longitude);
+			listener.setOnTextFieldsLatLng(latFormatted, lngFormatted);
 		}
 
 	}
 
-	public void handleAddMarker(String json) {
-		invokeJS("addMarker(" + json + ");");
-	}
+	/*
+	 * public void handleAddMarker(String json) { // invokeJS("addMarker(" + json +
+	 * ");"); }
+	 */
 
 	CoordinateConversorController coordController;
 	private AnchorPane conversorPane; // Store the pane reference
@@ -316,64 +223,6 @@ public class MapController implements Initializable, TextFieldsListener {
 				clipboard.setContent(content);
 			}
 		}
-
-	}
-
-	private void loadMap(String type) {
-
-		String mapFile;
-
-		if (type.equalsIgnoreCase("leaflet-map")) {
-			mapFile = "/html/map/leaflet/index.html";
-		} else if (type.equalsIgnoreCase("map-box")) {
-			mapFile = "/html/map/map-box/index.html";
-		} else if (type.equalsIgnoreCase("open-layers")) {
-			mapFile = "/html/map/open-layers/index.html";
-		} else if (type.equalsIgnoreCase("gmaps-api")) {
-			mapFile = "/html/map/gmaps/index.html";
-		} else {
-			mapFile = "/html/map/open-street/index.html";
-		}
-
-		URL mapUrl = getClass().getResource(mapFile);
-		if (mapUrl != null) {
-
-			webEngine.load(mapUrl.toExternalForm());
-
-			ready = false;
-
-			webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<Worker.State>() {
-				public void changed(final ObservableValue<? extends Worker.State> observableValue,
-						final Worker.State oldState, final Worker.State newState) {
-
-					if (newState == Worker.State.SUCCEEDED) {
-						ready = true;
-					}
-				}
-			});
-
-			webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<Worker.State>() {
-				public void changed(final ObservableValue<? extends Worker.State> observableValue,
-						final Worker.State oldState, final Worker.State newState) {
-					if (newState == Worker.State.SUCCEEDED) {
-						doc = (JSObject) webEngine.executeScript("window");
-
-						doc.setMember("app", MapController.this);
-					}
-
-				}
-			});
-
-		} else {
-			System.err.println("Map file not found: " + mapFile);
-		}
-	}
-
-	@Override
-	public void addMarker(double latitude, double longitude) {
-
-		String json = "{lat:" + latitude + ",lng:" + longitude + "}";
-		invokeJS("addMarker(" + json + ");");
 
 	}
 

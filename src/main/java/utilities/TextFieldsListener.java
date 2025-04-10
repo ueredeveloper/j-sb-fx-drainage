@@ -1,6 +1,8 @@
 package utilities;
 
+import com.sothawo.mapjfx.Coordinate;
+
 public interface TextFieldsListener {
-    void addMarker (double latitude, double longitude);
+    void addMarkerAt (Coordinate coordinate);
 }
 

@@ -20,9 +20,7 @@ public class Main extends Application {
 	 * @param args.
 	 */
 	public static void main(String[] args) {
-		// Aceleração para o mapa, verificar se dá resultado
-		System.setProperty("prism.order", "es2");  // Usa OpenGL (hardware)
-		System.setProperty("prism.verbose", "true");  // Log
+	
 
 		launch(args);
 	} 

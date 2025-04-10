@@ -1,6 +1,7 @@
 package controllers.views;
 
 import com.jfoenix.controls.JFXTextField;
+import com.sothawo.mapjfx.Coordinate;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -74,9 +75,9 @@ public class InterferenceTextFieldsController implements MapListener {
 	}
 
 	@Override
-	public void setOnTextFieldsLatLng(Double latitude, Double longitude) {
-		tfLatitude.setText(String.valueOf(latitude));
-		tfLongitude.setText(String.valueOf(longitude));
+	public void setOnTextFieldsLatLng(String latitude, String longitude) {
+		tfLatitude.setText(latitude);
+		tfLongitude.setText(longitude);
 	}
 
 	public void addMarker() {
@@ -85,7 +86,7 @@ public class InterferenceTextFieldsController implements MapListener {
 			double lng = Double.parseDouble(tfLongitude.getText());
 
 			if (textFieldsListener != null) {
-				textFieldsListener.addMarker(lat, lng);
+				textFieldsListener.addMarkerAt(new Coordinate(lat, lng));
 			}
 
 		} catch (NumberFormatException e) {

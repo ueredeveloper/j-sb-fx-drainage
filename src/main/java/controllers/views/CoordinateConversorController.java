@@ -9,6 +9,7 @@ import org.locationtech.proj4j.ProjCoordinate;
 
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
+import com.sothawo.mapjfx.Coordinate;
 
 import controllers.MapController;
 import enums.ToastType;
@@ -19,8 +20,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Tooltip;
 import javafx.stage.Stage;
 import utilities.CoordinateConverter;
+import utilities.MapListener;
 
-public class CoordinateConversorController implements Initializable {
+public class CoordinateConversorController implements Initializable, MapListener {
 
 	@FXML
 	private JFXTextField tfUtmX;
@@ -187,10 +189,10 @@ public class CoordinateConversorController implements Initializable {
 				return;
 			}
 
-			String lat = tfLatUtmToDd.getText();
-			String lng = tfLngUtmToDd.getText();
+			String tfLatitude = tfLatUtmToDd.getText();
+			String tfLongitude = tfLngUtmToDd.getText();
 
-			mapController.handleAddMarker("{lat:" + lat + "," + "lng:" + lng + "}");
+			mapController.addMarkerAt(new Coordinate(Double.parseDouble(tfLatitude), Double.parseDouble(tfLongitude)));
 		});
 
 		btnDmsAddMarker.setOnAction(evet -> {
@@ -204,11 +206,17 @@ public class CoordinateConversorController implements Initializable {
 				return;
 			}
 
-			String lat = tfLatDmsToDd.getText();
-			String lng = tfLngDmsToDd.getText();
+			String tfLatitude = tfLatDmsToDd.getText();
+			String tfLongitude = tfLngDmsToDd.getText();
 
-			mapController.handleAddMarker("{lat:" + lat + "," + "lng:" + lng + "}");
+			mapController.addMarkerAt(new Coordinate(Double.parseDouble(tfLatitude), Double.parseDouble(tfLongitude)));
 		});
+
+	}
+
+	@Override
+	public void setOnTextFieldsLatLng(String latFormatted, String lngFormatted) {
+		// TODO Auto-generated method stub
 
 	}
 
