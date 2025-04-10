@@ -117,7 +117,7 @@ public class MapController implements Initializable, TextFieldsListener {
 
 		// webEngine.load("http://localhost:3000");
 
-		loadMap("open-layers");
+		loadMap("leaflet-maps");
 
 		ready = false;
 
