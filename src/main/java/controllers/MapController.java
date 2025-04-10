@@ -43,7 +43,7 @@ public class MapController implements Initializable, TextFieldsListener {
 	private BorderPane bpCoordsConversor;
 
 	@FXML
-	private Button btnCopyLat, btnCopyLng;
+	private Button btnCopyLat, btnCopyLng, btnSendCoords;
 
 	@FXML
 	private Label lblLatitude, lblLongitude;
@@ -117,6 +117,16 @@ public class MapController implements Initializable, TextFieldsListener {
 				}
 				// apManager.setPrefWidth(newWidth * 2 / 2.5);
 			}
+		});
+		
+		btnCopyLat.setOnAction(e-> {
+			copyToClipboard("Latitude");
+		});
+		btnCopyLng.setOnAction(e-> {
+			copyToClipboard("Longitude");
+		});
+		btnSendCoords.setOnAction(e-> {
+			sendCoordinates(Double.parseDouble(lblLatitude.getText()), Double.parseDouble(lblLongitude.getText()));
 		});
 
 	}

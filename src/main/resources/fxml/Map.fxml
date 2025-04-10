@@ -24,6 +24,7 @@
                   <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="10.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="80.0" />
                   <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="10.0" />
+                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="10.0" />
                </columnConstraints>
                <rowConstraints>
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -59,6 +60,19 @@
                      </graphic>
                      <tooltip>
                         <Tooltip text="Copia a coordenada, longitude" />
+                     </tooltip>
+                  </Button>
+                  <Button fx:id="btnSendCoords" ellipsisString="" mnemonicParsing="false" styleClass="btn-conversor" GridPane.columnIndex="4">
+                     <graphic>
+                        <FontAwesomeIconView glyphName="PAPER_PLANE">
+                           <styleClass>
+                              <String fx:value="icons" />
+                              <String fx:value="accessory-icons" />
+                           </styleClass>
+                        </FontAwesomeIconView>
+                     </graphic>
+                     <tooltip>
+                        <Tooltip text="Envia as coordenadas convertidas para a tela de cadastro" />
                      </tooltip>
                   </Button>
                </children>
