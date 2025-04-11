@@ -104,8 +104,8 @@ public class LoginController implements Initializable {
 					stage.setHeight(primaryScreenBounds.getHeight());
 
 					// Configurando o tamanho mínimo do stage
-					stage.setHeight(1080);
-					stage.setWidth(1920);
+					//stage.setHeight(1080);
+					//stage.setWidth(1920);
 
 					// Configurando o título da janela
 					stage.setTitle("Registro e Criação de Documentos");
