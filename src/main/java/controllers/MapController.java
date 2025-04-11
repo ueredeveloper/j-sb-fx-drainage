@@ -118,14 +118,14 @@ public class MapController implements Initializable, TextFieldsListener {
 				// apManager.setPrefWidth(newWidth * 2 / 2.5);
 			}
 		});
-		
-		btnCopyLat.setOnAction(e-> {
+
+		btnCopyLat.setOnAction(e -> {
 			copyToClipboard("Latitude");
 		});
-		btnCopyLng.setOnAction(e-> {
+		btnCopyLng.setOnAction(e -> {
 			copyToClipboard("Longitude");
 		});
-		btnSendCoords.setOnAction(e-> {
+		btnSendCoords.setOnAction(e -> {
 			sendCoordinates(Double.parseDouble(lblLatitude.getText()), Double.parseDouble(lblLongitude.getText()));
 		});
 
@@ -133,15 +133,15 @@ public class MapController implements Initializable, TextFieldsListener {
 
 	// Captura todos marcadores para remover quando preciso
 	Set<Marker> markers = new HashSet<Marker>();
-	
+
 	@Override
 	public void addMarkerAt(Coordinate coordinate) {
 
 		Marker marker = Marker.createProvided(Marker.Provided.BLUE).setPosition(coordinate).setVisible(true);
-		
+
 		markers.add(marker);
-		
-		markers.forEach((m)-> mapView.removeMarker(m));
+
+		markers.forEach((m) -> mapView.removeMarker(m));
 		// Adiciona marcador
 		mapView.addMarker(marker);
 		// Centraliza o mapa de acordo com o marcador
@@ -208,9 +208,13 @@ public class MapController implements Initializable, TextFieldsListener {
 	}
 
 	public void setCoordinates(String lat, String lng) {
+		
+		// Formata as coordenadas para ter 6 números depois do ponto
+		String latFormatted = String.format(Locale.US, "%.6f", Double.parseDouble(lat));
+		String lngFormatted = String.format(Locale.US, "%.6f", Double.parseDouble(lng));
 
-		lblLatitude.setText(lat);
-		lblLongitude.setText(lng);
+		lblLatitude.setText(latFormatted);
+		lblLongitude.setText(lngFormatted);
 
 	}
 
