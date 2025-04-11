@@ -76,9 +76,10 @@ public class MapController implements Initializable, TextFieldsListener {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
+		
 		mapView = new MapView();
 		
-		 // Inicialização assíncrona
+		// Inicialização assíncrona
         mapView.initialize();
 
 		// Wait until map is ready
