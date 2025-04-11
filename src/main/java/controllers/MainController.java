@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import controllers.views.InterferenceTextFieldsController;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,9 +15,6 @@ import javafx.scene.layout.Pane;
 
 //@SuppressWarnings("restriction")
 public class MainController implements Initializable {
-	
-	
-	
 	@FXML
 	private AnchorPane apMain;
 
@@ -83,7 +81,7 @@ public class MainController implements Initializable {
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Map.fxml"));
 			fxmlLoader.setControllerFactory(controllerClass -> {
 				if (controllerClass == MapController.class) {
-					mapController = new MapController(apContent);
+					mapController = new MapController(apContent, apManager);
 					return mapController;
 				} else {
 					try {
@@ -115,7 +113,14 @@ public class MainController implements Initializable {
 			if (mapController != null) {
 
 				documentController = loader.getController();
-				documentController.setMainController (this);
+				documentController.setMainController(this);
+
+				// Listener para preenchimento das coordenadas ao clicar no mapa
+				InterferenceTextFieldsController tfControler = (InterferenceTextFieldsController) documentController
+						.getLatLngController();
+
+				mapController.addMapClickListener(tfControler);
+				tfControler.setTextFieldsListener(mapController);
 
 				apManager.getChildren().add(apDocument);
 				AnchorPane.setLeftAnchor(apDocument, 0.0);
@@ -132,11 +137,17 @@ public class MainController implements Initializable {
 		apContent.widthProperty()
 				.addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
 					double newWidth = newValue.doubleValue();
-					// A tela é dividida em três partes, uma para o mapa e as outras duas para o
-					// cadastro. O cadastro deve
-					// ser então newWidth/3 mais newWidth/3, com um pequeno ajuste, newWidth/2.75 em
-					// um dos cálculos.
-					apManager.setPrefWidth(newWidth * 2 / 3);
+					/*
+					 * A tela é dividida em três partes, uma para o mapa e as outras duas para o
+					 * cadastro. O cadastro deve ser então newWidth/3 mais newWidth/3, com um
+					 * pequeno ajuste, newWidth/2.75 em um dos cálculos. aumenta mais a área de
+					 * cadastro
+					 */
+					apManager.setPrefWidth(newWidth * 2 / 2.5);
 				});
+	}
+
+	public MapController getMapController() {
+		return this.mapController;
 	}
 }

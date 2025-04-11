@@ -3,44 +3,51 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import java.net.URL?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="900.0" styleClass="login" stylesheets="@css/root-light.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.LoginController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="900.0" styleClass="login" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.LoginController">
    <children>
       <Pane id="pLogin" prefHeight="450.0" prefWidth="395.0">
          <children>
-            <Label id="lblSignIn" layoutX="163.0" layoutY="50.0" text="Login">
+            <Label id="lblSignIn" alignment="CENTER" layoutX="9.0" layoutY="37.0" prefHeight="20.0" prefWidth="377.0" text="Login" textAlignment="CENTER">
                <font>
                   <Font size="28.0" />
                </font>
             </Label>
-            <Label id="lblSignInEmail" layoutX="39.0" layoutY="125.0" text="E-mail" />
-            <JFXTextField id="tfSignInEmail" fx:id="tfSignInEmail" layoutX="39.0" layoutY="152.0" prefHeight="40.0" prefWidth="317.0" />
-            <Label id="lblSignInPassword" layoutX="39.0" layoutY="212.0" text="Password" />
-            <JFXTextField id="tfSignInPassword" fx:id="tfSignInPassword" layoutX="39.0" layoutY="239.0" prefHeight="40.0" prefWidth="317.0" />
-            <JFXButton id="btnSignIn" fx:id="btnSignIn" layoutX="39.0" layoutY="307.0" prefHeight="63.0" prefWidth="317.0" text="Login" />
+            <Label id="lblSignInEmail" layoutX="39.0" layoutY="123.0" prefWidth="320.0" text="E-mail" />
+            <JFXTextField fx:id="tfSignInEmail" layoutX="39.0" layoutY="150.0" prefHeight="40.0" prefWidth="320.0" styleClass="tf-prim" />
+            <Label id="lblSignInPassword" layoutX="39.0" layoutY="210.0" prefWidth="320.0" text="Password" />
+            <JFXTextField fx:id="tfSignInPassword" layoutX="39.0" layoutY="237.0" prefHeight="40.0" prefWidth="320.0" styleClass="tf-prim" />
+            <JFXButton id="btnSignIn" fx:id="btnSignIn" layoutX="39.0" layoutY="305.0" prefHeight="63.0" prefWidth="320.0" styleClass="btn-view" text="Login" />
          </children>
       </Pane>
       <Pane layoutX="394.0" prefHeight="450.0" prefWidth="505.0">
          <children>
-            <Label id="lblSignUp" layoutX="205.0" layoutY="30.0" text="Create Account">
+            <Label id="lblSignUp" alignment="CENTER" contentDisplay="CENTER" layoutX="23.0" layoutY="24.0" prefHeight="20.0" prefWidth="460.0" text="Criar Conta" textAlignment="CENTER">
                <font>
                   <Font size="28.0" />
                </font>
             </Label>
-            <Label id="lblSignUpEmail" layoutX="94.0" layoutY="97.0" text="E-mail" />
-            <JFXTextField id="tfSignUpEmail" fx:id="tfSignUpEmail" layoutX="95.0" layoutY="127.0" prefHeight="40.0" prefWidth="317.0" />
-            <Label id="lblSignUpPassword" layoutX="95.0" layoutY="183.0" text="Password" />
-            <JFXTextField id="tfSignInPassword" fx:id="tfSignInPassword" layoutX="95.0" layoutY="215.0" prefHeight="40.0" prefWidth="317.0">
+            <Label id="lblSignUpEmail" layoutX="92.0" layoutY="95.0" text="E-mail" />
+            <JFXTextField fx:id="tfSignUpEmail" layoutX="93.0" layoutY="125.0" prefHeight="40.0" prefWidth="320.0" styleClass="tf-acc" />
+            <Label id="lblSignUpPassword" layoutX="93.0" layoutY="181.0" text="Password" />
+            <JFXTextField id="tfSignInPassword" fx:id="tfSignInPassword" layoutX="93.0" layoutY="213.0" prefHeight="40.0" prefWidth="320.0" styleClass="tf-acc">
                
                </JFXTextField>
-            <JFXButton id="btnSignUp" fx:id="btnSignUp" layoutX="95.0" layoutY="275.0" prefHeight="63.0" prefWidth="317.0" text="Create account" />
-            <JFXButton id="btnSignUpGoogle" fx:id="btnSignUpGoogle" layoutX="95.0" layoutY="355.0" prefHeight="63.0" prefWidth="317.0" text="Google" />
-            <FontAwesomeIconView id="icon-google" glyphName="GOOGLE_PLUS" layoutX="182.0" layoutY="394.0" />
+            <JFXButton id="btnSignUp" fx:id="btnSignUp" layoutX="93.0" layoutY="273.0" prefHeight="63.0" prefWidth="320.0" styleClass="btn-acc" text="Create account" />
+            <JFXButton fx:id="btnSignUpGoogle" layoutX="93.0" layoutY="353.0" prefHeight="63.0" prefWidth="320.0" styleClass="google-button" text="Google">
+               <graphic>
+                  <FontAwesomeIconView glyphName="GOOGLE_PLUS" styleClass="icons" />
+               </graphic></JFXButton>
          </children>
       </Pane>
    </children>
+   <stylesheets>
+      <URL value="@css/root-style.css" />
+      <URL value="@css/primary-style.css" />
+   </stylesheets>
 </AnchorPane>

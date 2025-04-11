@@ -1,0 +1,104 @@
+* {
+	
+	primary-color: #2dcd7c;
+	secondary-color: #9cb7bd;
+	secondary-color-rgba: rgba(156.0, 183.0, 189.0, 0.1);
+	dark-color: #01313c;
+  
+    white-color: #ffffff;
+    gray-color: #838e91;
+    red-color: #D32F2F;
+	google-color: #FF3B00;
+	-fx-font-size: 14.0px;
+	
+	
+	/* Semantic colors for buttons */
+	-fx-new-color: #4CAF50;        /* Green for New (e.g., new license) */
+	-fx-save-color: #D82221;       /* Red for Save */
+	-fx-edit-color: #FFC107;       /* Amber for Edit */
+	-fx-delete-color: #D32F2F;     /* Red for Delete */
+	-fx-generic-color: #051A53;    /* Dark blue for generic buttons */
+	
+}
+.content {
+	-fx-background-color: white-color;
+}
+
+.secondary-content {
+	-fx-background-color: secondary-color-rgba;
+}
+
+.secondary-content .buttons {
+	-fx-background-color: dark-color;
+	-fx-text-fill: white-color;
+	-fx-font-weight: BOLD;
+	-fx-cursor: hand;
+}
+.secondary-content .radius-buttons {
+	-fx-background-radius: 20.0;
+}
+
+.secondary-content .inputs {
+	-fx-text-fill: dark-color; /* text ao digitar */
+	-fx-prompt-text-fill: gray-color; /* cor do placeholder */
+	-jfx-unfocus-color: secondary-color; /* cor da borda inferior ao clicar (un focus) */
+	-jfx-focus-color: dark-color; /* cor do prompt text ao subir no text field */
+}
+
+.secondary-content .icons {
+	-fx-font-family: "FontAwesome";
+	-fx-fill: primary-color;
+}
+.secondary-content .icons-buttons {
+	-fx-font-family: "FontAwesome";
+	-fx-fill: white-color;
+}
+.secondary-content .icons:hover {
+	-fx-scale-x: 1.5; /* Reduz ligeiramente para feedback */
+    -fx-scale-y: 1.5;
+    
+}
+.secondary-content .icons:pressed {
+	-fx-scale-x: 1.8; /* Reduz ligeiramente para feedback */
+    -fx-scale-y: 1.8;
+}
+.secondary-content .buttons:hover {
+	-fx-scale-x: 1.1; /* Reduz ligeiramente para feedback */
+    -fx-scale-y: 1.1;
+}
+.secondary-content .buttons:pressed {
+	-fx-scale-x: 1.2; /* Reduz ligeiramente para feedback */
+    -fx-scale-y: 1.2;
+}
+.secondary-content .combobox {
+	-fx-text-fill: -fx-text-inner-color; /* texto na lista do combobox */
+	-jfx-unfocus-color: secondary-color; /* cor da borda inferior ao clicar (un focus) */
+	-jfx-focus-color: dark-color; /* cor do prompt text ao subir no text field */
+	-fx-prompt-text-fill: gray-color; /* cor do placeholder */
+}
+.secondary-content .title {
+	-fx-font: normal bold 22.0px 'serif';
+    -fx-text-fill: primary-color;
+}
+
+/* botão secundário, ex: btnViews (Atos)*/
+.content.icons {
+	-fx-font-family: "FontAwesome";
+    -fx-transition: -fx-font-size 0.3s ease;
+    -fx-fill: white;
+}
+.content.buttons {
+	-fx-background-color: primary-color;
+	-fx-font-weight: BOLD;
+	-fx-text-fill: white-color;
+	-fx-font-weight: BOLD;
+}
+
+.content.buttons:hover {
+	-fx-scale-x: 1.1; /* Reduz ligeiramente para feedback */
+    -fx-scale-y: 1.1;
+}
+.content.buttons:pressed {
+	-fx-scale-x: 1.2; /* Reduz ligeiramente para feedback */
+    -fx-scale-y: 1.2;
+}

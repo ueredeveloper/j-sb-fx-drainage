@@ -1,14 +1,16 @@
 package controllers.views;
 
 import com.jfoenix.controls.JFXTextField;
+import com.sothawo.mapjfx.Coordinate;
 
-import controllers.MapController;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.fxml.FXML;
 import models.Interferencia;
-import utilities.JsonConverter;
+import utilities.MapListener;
+import utilities.TextFieldsListener;
 
-public class InterferenceTextFieldsController {
+public class InterferenceTextFieldsController implements MapListener {
 
 	
 	private static InterferenceTextFieldsController instance;
@@ -19,70 +21,50 @@ public class InterferenceTextFieldsController {
 
 	private Interferencia interferencia = new Interferencia();
 
+	@FXML
 	private JFXTextField tfLatitude;
+	@FXML
 	private JFXTextField tfLongitude;
-	private MapController mapController;
-	
-	
+
 	String urlService;
+
+	MapListener listener;
+
+	private TextFieldsListener textFieldsListener;
+
+	public void setTextFieldsListener(TextFieldsListener listener) {
+		this.textFieldsListener = listener;
+	}
 
 	public InterferenceTextFieldsController(String urlService, JFXTextField tfLatitude, JFXTextField tfLongitude) {
 		this.urlService = urlService;
-		this.mapController = MapController.getInstance();
 		this.tfLatitude = tfLatitude;
 		this.tfLongitude = tfLongitude;
 		instance = this;
 
-		init();
+		initialize();
 
 	}
 
-	// Adicione os campos existentes e o construtor
+	public void initialize() {
+		tfLatitude.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				addMarker();
 
-	// Método privado para atualizar a latitude
-	private void updateLatitude(String newValue) {
-
-		try {
-			if (newValue != null && !newValue.trim().isEmpty()) {
-				Double latitude = Double.parseDouble(newValue);
-				interferencia.setLatitude(latitude);
-			} else {
-				interferencia.setLatitude(null); // Set null if empty or null input
 			}
-		} catch (NumberFormatException e) {
-			// Handle invalid number format
-			interferencia.setLatitude(null); // Set null if input cannot be parsed
-		}
-		if (interferencia.getLatitude() != null && interferencia.getLongitude() != null) {
+		});
 
-			mapController.handleAddMarker(JsonConverter.convertObjectToJson(interferencia));
-		}
-
-	}
-
-	// Método privado para atualizar a longitude
-	private void updateLongitude(String newValue) {
-
-		try {
-			if (newValue != null && !newValue.trim().isEmpty()) {
-				Double longitude = Double.parseDouble(newValue);
-				interferencia.setLongitude(longitude);
-			} else {
-				interferencia.setLongitude(null); // Set null if empty or null input
+		tfLongitude.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				addMarker();
 			}
-		} catch (NumberFormatException e) {
-			// Handle invalid number format
-			interferencia.setLongitude(null); // Set null if input cannot be parsed
-		}
-
-		if (interferencia.getLatitude() != null && interferencia.getLongitude() != null) {
-
-			mapController.handleAddMarker(JsonConverter.convertObjectToJson(interferencia));
-		}
+		});
 	}
 
 	// Método para obter a instância de Interferencia com latitude e longitude
-	public Interferencia getLatitudeLongitude() {
+	public Interferencia getLatLng() {
 		return interferencia;
 	}
 
@@ -93,20 +75,24 @@ public class InterferenceTextFieldsController {
 
 	}
 
-	public void init() {
-		tfLatitude.textProperty().addListener(new ChangeListener<String>() {
-			@Override
-			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-				updateLatitude(newValue);
-			}
-		});
-
-		tfLongitude.textProperty().addListener(new ChangeListener<String>() {
-			@Override
-			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-				updateLongitude(newValue);
-			}
-		});
-
+	@Override
+	public void setOnTextFieldsLatLng(String latitude, String longitude) {
+		tfLatitude.setText(latitude);
+		tfLongitude.setText(longitude);
 	}
+
+	public void addMarker() {
+		try {
+			double lat = Double.parseDouble(tfLatitude.getText());
+			double lng = Double.parseDouble(tfLongitude.getText());
+
+			if (textFieldsListener != null) {
+				textFieldsListener.addMarkerAt(new Coordinate(lat, lng));
+			}
+
+		} catch (NumberFormatException e) {
+			System.out.println("Coordenadas inválidas");
+		}
+	}
+
 }

@@ -38,7 +38,7 @@ class SubjectView {
     		element.innerHTML = innerHTML;
     	});
 
-		let __items = document.getElementsByClassName('int-finalidades');
+		let __items = document.getElementsByClassName('inter-finalidades');
 
     	Array.from(__items).forEach(element => {
     		let innerHTML = new FinalidadeModel().getPurpouseString(finalidades);

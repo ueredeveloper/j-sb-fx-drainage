@@ -50,7 +50,7 @@ public class WebViewDocument {
 		// Load initial HTML content
 		webEngine.getLoadWorker().stateProperty().addListener((obs, oldState, newState) -> {
 			if (newState == Worker.State.SUCCEEDED) {
-				System.out.println("Web content loaded successfully.");
+				///System.out.println("Web content loaded successfully.");
 				// Initialize the window reference when the content is fully loaded
 				window = (JSObject) webEngine.executeScript("window");
 			}
@@ -78,11 +78,9 @@ public class WebViewDocument {
 		 */
 		StringBuilder interJson = new StringBuilder();
 		
-		System.out.println(interJson);
 
 		selectedDocument.getEndereco().getInterferencias().forEach(interferencia -> {
-			System.out.println("instance of sub " );
-			System.out.println(interferencia instanceof Subterranea);
+		
 			
 			if (interferencia != null) {
 
@@ -96,7 +94,6 @@ public class WebViewDocument {
 
 					if (typeOfWell == 1L || typeOfWell == 2L) {
 						
-						System.out.println("tipo poço " + typeOfWell);
 
 						HidrogeoPorosoService service = new HidrogeoPorosoService(urlService);
 
@@ -117,7 +114,6 @@ public class WebViewDocument {
 
 					} else {
 						
-						System.out.println("tipo poço " + typeOfWell);
 						
 						HidrogeoFraturadoService service = new HidrogeoFraturadoService(urlService);
 
@@ -146,8 +142,6 @@ public class WebViewDocument {
 			}
 		});
 
-		System.out.println("webview selected interference");
-		System.out.println(interJson);
 
 		// Verifica se a página já renderizou e adicona o objeto json
 		webEngine.getLoadWorker().stateProperty().addListener((obs, oldState, newState) -> {

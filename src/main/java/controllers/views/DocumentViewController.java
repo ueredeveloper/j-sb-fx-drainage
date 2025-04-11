@@ -31,6 +31,7 @@ import models.Usuario;
 import services.InterferenciaService;
 import services.TemplateService;
 import services.UsuarioService;
+import utilities.JsonConverter;
 import utilities.ReadAndCreateSetOfTemplates;
 import utilities.URLUtility;
 import utilities.WebViewContentLoader;
@@ -53,9 +54,7 @@ public class DocumentViewController implements Initializable {
 		instance = this; // Setting the static instance
 	}
 
-	@FXML
-	private Button btnSelectAndCopy;
-
+	
 	@FXML
 	private WebView webViewChart, webViewDocument;
 
@@ -81,7 +80,7 @@ public class DocumentViewController implements Initializable {
 	private HTMLEditor htmlEditor;
 
 	@FXML
-	private FontAwesomeIconView iconCopyDocument;
+	Button btnCopyDocument;
 
 	@FXML
 	private TabPane tabPane;
@@ -101,9 +100,9 @@ public class DocumentViewController implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 
 		new WebViewChart(webViewChart, selectedDocument);
-
-		iconCopyDocument.setOnMouseClicked(event -> {
-
+		
+		btnCopyDocument.setOnAction(event -> {
+			
 			// Initialize WebViewDocument with the WebView component
 			WebViewDocument webViewDocumentInstance = new WebViewDocument(webViewDocument, htmlEditor);
 

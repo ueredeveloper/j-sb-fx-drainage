@@ -115,8 +115,6 @@ public class AddAddressController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
-		System.out.println("add addres inicializado");
-
 		obsListState = StaticData.INSTANCE.getStates();
 		cbState.setItems(obsListState);
 

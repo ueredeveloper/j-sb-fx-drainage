@@ -1,220 +1,245 @@
 package controllers;
 
+import java.io.IOException;
 import java.net.URL;
+import java.util.HashSet;
+import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.Set;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.jfoenix.controls.JFXButton;
-import com.sun.javafx.webkit.WebConsoleListener;
+import com.sothawo.mapjfx.Configuration;
+import com.sothawo.mapjfx.Coordinate;
+import com.sothawo.mapjfx.MapType;
+import com.sothawo.mapjfx.MapView;
+import com.sothawo.mapjfx.Marker;
+import com.sothawo.mapjfx.event.MapViewEvent;
 
-import controllers.views.AddInterferenceController;
-import controllers.views.InterferenceTextFieldsController;
+import controllers.views.CoordinateConversorController;
+import javafx.animation.TranslateTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.concurrent.Worker;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.web.WebEngine;
-import javafx.scene.web.WebView;
-import models.Interferencia;
-import netscape.javascript.JSException;
-import netscape.javascript.JSObject;
+import javafx.scene.layout.BorderPane;
+import javafx.util.Duration;
+import utilities.MapListener;
+import utilities.TextFieldsListener;
 
 /**
  * Controlador para a interface de mapa.
  */
-public class MapController implements Initializable {
+public class MapController implements Initializable, TextFieldsListener {
 
 	@FXML
-	private AnchorPane apMap;
+	private AnchorPane apMap, apCopyCoords;
 
 	@FXML
-	WebView wvMap;
+	private BorderPane bpCoordsConversor;
 
 	@FXML
-	private JFXButton btnZoomPlus;
+	private Button btnCopyLat, btnCopyLng, btnSendCoords;
 
 	@FXML
-	private JFXButton btnStreet;
+	private Label lblLatitude, lblLongitude;
+
+	private AnchorPane apContent, apManager;
 
 	@FXML
-	private JFXButton btnSatellite;
+	private BorderPane bpMap;
+	// Coordenada inical - Adasa
+	private final Coordinate BONN = new Coordinate(-15.775024, -47.940286);
 
-	@FXML
-	private JFXButton btnHybrid;
+	private MapView mapView;
 
-	@FXML
-	private JFXButton btnZoomMinus;
+	private final Set<MapListener> listeners = new HashSet<>();
 
-	private JSObject doc;
-	private WebEngine webEngine;
-	public boolean ready;
-	private AnchorPane apContent;
-
-	private static MapController instance;
-
-	public static MapController getInstance() {
-		return instance;
+	public void addMapClickListener(MapListener listener) {
+		listeners.add(listener);
 	}
 
-	public MapController(AnchorPane apContent) {
+	public MapController(AnchorPane apContent, AnchorPane apManager) {
 		this.apContent = apContent;
-		instance = this; // Define a instância no construtor
+		this.apManager = apManager;
+		// instance = this; // Define a instância no construtor
 	}
 
 	public AnchorPane getAnchorPaneMap() {
 		return this.apMap;
 	}
 
-	@SuppressWarnings("restriction")
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+
+		mapView = new MapView();
+		
+		 // Inicialização assíncrona
+        mapView.initialize();
+
+		// Wait until map is ready
+		mapView.initializedProperty().addListener((obs, oldVal, newVal) -> {
+			if (newVal) {
+				// Adiciona tipo de mapa, zoom e centraliza
+				//mapView.setMapType(MapType.OSM);
+				mapView.setZoom(12);
+				mapView.setCenter(BONN);
+
+				// Adiciona marcador inicial
+				addMarkerAt(BONN);
+
+				mapView.addEventHandler(MapViewEvent.MAP_CLICKED, event -> {
+					Coordinate clickedCoord = event.getCoordinate().normalize();
+					// Adiciona marcador no ponto clicado
+					addMarkerAt(clickedCoord);
+
+					Double lat = clickedCoord.getLatitude();
+					Double lng = clickedCoord.getLongitude();
+					// Envia coordenada para os textfields
+					sendCoordinates(lat, lng);
+
+				});
+			}
+		});
+
+		bpMap.setCenter(mapView);
 
 		// Add a listener to the width property of the AnchorPane
 		apContent.widthProperty().addListener(new ChangeListener<Number>() {
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 				double newWidth = newValue.doubleValue();
-				apMap.setPrefWidth(newWidth / 2.99);
-				// apManager.setPrefWidth(newWidth / 2);
+				if (apManager.isVisible()) {
+					apMap.setPrefWidth(newWidth / 4.99);
+				}
+				// apManager.setPrefWidth(newWidth * 2 / 2.5);
 			}
 		});
 
-		webEngine = wvMap.getEngine();
+		btnCopyLat.setOnAction(e -> {
+			copyToClipboard("Latitude");
+		});
+		btnCopyLng.setOnAction(e -> {
+			copyToClipboard("Longitude");
+		});
+		btnSendCoords.setOnAction(e -> {
+			sendCoordinates(Double.parseDouble(lblLatitude.getText()), Double.parseDouble(lblLongitude.getText()));
+		});
+
+	}
+
+	// Captura todos marcadores para remover quando preciso
+	Set<Marker> markers = new HashSet<Marker>();
+
+	
+	@Override
+	public void addMarkerAt(Coordinate coordinate) {
+
+		Marker marker = Marker.createProvided(Marker.Provided.BLUE).setPosition(coordinate).setVisible(true);
+
+		markers.add(marker);
+
+		markers.forEach((m) -> mapView.removeMarker(m));
+		// Adiciona marcador
+		mapView.addMarker(marker);
+		// Centraliza o mapa de acordo com o marcador
+		mapView.setCenter(marker.getPosition());
+	}
+
+	public void sendCoordinates(Double lat, Double lng) {
+		// Formata as coordenadas para ter 6 números depois do ponto
+		String latFormatted = String.format(Locale.US, "%.6f", lat);
+		String lngFormatted = String.format(Locale.US, "%.6f", lng);
+
+		for (MapListener listener : listeners) {
+			listener.setOnTextFieldsLatLng(latFormatted, lngFormatted);
+		}
+
+	}
+
+	/*
+	 * public void handleAddMarker(String json) { // invokeJS("addMarker(" + json +
+	 * ");"); }
+	 */
+
+	CoordinateConversorController coordController;
+	private AnchorPane conversorPane; // Store the pane reference
+
+	public void showCoordConversor() {
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/components/CoordinateConversor.fxml"));
+			conversorPane = loader.load();
+
+			// Get the controller from the loader
+			coordController = loader.getController();
+			coordController.setMapController(this); // Set MapController
+
+			// Set initial position above the visible area
+			conversorPane.setTranslateY(-bpCoordsConversor.getHeight());
+
+			bpCoordsConversor.setCenter(conversorPane);
+			AnchorPane.setLeftAnchor(conversorPane, 0.0);
+			AnchorPane.setRightAnchor(conversorPane, 0.0);
+
+			// Animate from top to bottom
+			TranslateTransition transition = new TranslateTransition(Duration.millis(500), conversorPane);
+			transition.setToY(-25);
+			transition.play();
+
+			apCopyCoords.setVisible(false);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void hideCoordConversor() {
+		if (conversorPane != null) {
+			TranslateTransition transition = new TranslateTransition(Duration.millis(200), conversorPane);
+			transition.setToY(bpCoordsConversor.getHeight()); // Move up
+			transition.setOnFinished(event -> bpCoordsConversor.getChildren().remove(conversorPane)); // Remove after
+																										// animation
+			transition.play();
+
+			apCopyCoords.setVisible(true);
+		}
+	}
+
+	public void setCoordinates(String lat, String lng) {
 		
-		System.out.println(getClass().getResource("/html/map/index.html").toExternalForm());
+		// Formata as coordenadas para ter 6 números depois do ponto
+		String latFormatted = String.format(Locale.US, "%.6f", Double.parseDouble(lat));
+		String lngFormatted = String.format(Locale.US, "%.6f", Double.parseDouble(lng));
 
-		webEngine.load(getClass().getResource("/html/map/index.html").toExternalForm());
+		lblLatitude.setText(latFormatted);
+		lblLongitude.setText(lngFormatted);
 
-		ready = false;
+	}
 
-		webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<Worker.State>() {
-			public void changed(final ObservableValue<? extends Worker.State> observableValue,
-					final Worker.State oldState, final Worker.State newState) {
+	public void copyToClipboard(String coord) {
 
-				if (newState == Worker.State.SUCCEEDED) {
-					ready = true;
-				}
+		if (coord.equals("Latitude")) {
+
+			if (lblLatitude != null && lblLatitude.getText() != null) {
+				Clipboard clipboard = Clipboard.getSystemClipboard();
+				ClipboardContent content = new ClipboardContent();
+				content.putString(lblLatitude.getText());
+				clipboard.setContent(content);
 			}
-		});
 
-		webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<Worker.State>() {
-			public void changed(final ObservableValue<? extends Worker.State> observableValue,
-					final Worker.State oldState, final Worker.State newState) {
-				if (newState == Worker.State.SUCCEEDED) {
-					doc = (JSObject) webEngine.executeScript("window");
-
-					doc.setMember("app", MapController.this);
-
-					// doc.setMember("appShapeEndereco", GoogleMap.this);
-				}
-
+		} else {
+			if (lblLongitude != null && lblLongitude.getText() != null) {
+				Clipboard clipboard = Clipboard.getSystemClipboard();
+				ClipboardContent content = new ClipboardContent();
+				content.putString(lblLongitude.getText());
+				clipboard.setContent(content);
 			}
-		});
-
-		// mostrar erros no console
-		WebConsoleListener.setDefaultListener((webView, message, lineNumber, sourceId) -> {
-			System.out.println(message + "[at " + lineNumber + "]");
-		});
-
-		// Torna as dimens�es do WebView (wvMap) semelhantes ao do pai (aapMap)
-		apMap.widthProperty().addListener((observable, oldValue, newValue) -> {
-			// setar prefwidth no mapa
-			wvMap.setPrefWidth(newValue.doubleValue());
-		});
-
-		apMap.heightProperty().addListener((observable, oldValue, newValue) -> {
-			wvMap.setPrefHeight(newValue.doubleValue());
-		});
-
-		/* apMap.getChildren().add(btnZoom); */
-
-		btnZoomPlus.setOnAction(event -> handleZoomPlus(event));
-		btnZoomMinus.setOnAction(event -> handleZoomMinus(event));
-		btnStreet.setOnAction(event -> handleStreetMap(event));
-		btnSatellite.setOnAction(event -> handleSatelliteMap(event));
-		btnHybrid.setOnAction(event -> handleHybridMap(event));
-
-	}
-
-	private void invokeJS(final String str) {
-
-		if (ready) {
-			try {
-				doc.eval(str);
-			} catch (JSException js) {
-				System.out.println("nao ready execao de leitura javascript " + js);
-			}
-		} else {
-
-			webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<Worker.State>() {
-				@Override
-				public void changed(final ObservableValue<? extends Worker.State> observableValue,
-						final Worker.State oldState, final Worker.State newState) {
-					if (newState == Worker.State.SUCCEEDED) {
-						doc.eval(str);
-
-					}
-
-					// System.out.println(" invokeJS funcionando");
-				}
-			});
-
-		}
-	}
-
-	private void handleZoomPlus(ActionEvent event) {
-		invokeJS("setMapZoomPlus()");
-	}
-
-	private void handleZoomMinus(ActionEvent event) {
-		invokeJS("setMapZoomMinus()");
-	}
-
-	private void handleStreetMap(ActionEvent event) {
-		invokeJS("setMapLayer(streetLayer);");
-
-	}
-
-	private void handleSatelliteMap(ActionEvent event) {
-		invokeJS("setMapLayer(satelliteLayer);");
-
-	}
-
-	private void handleHybridMap(ActionEvent event) {
-		invokeJS("setMapLayer(hybridLayer);");
-
-	}
-
-	public void printCoords(String coords) {
-
-		Gson gson = new Gson();
-		JsonObject jsonObject = gson.fromJson(coords, JsonObject.class);
-		Double interLatitude = jsonObject.get("lat").getAsDouble();
-		Double interLongitude = jsonObject.get("lng").getAsDouble();
-
-		Interferencia interferencia = new Interferencia(interLatitude, interLongitude);
-
-		InterferenceTextFieldsController interferenceController = InterferenceTextFieldsController.getInstance();
-		if (interferenceController != null) {
-			interferenceController.updateCoordinates(interferencia);
-		} else {
-			System.out.println("InterferenceTextFieldsController instance is null!");
-		}
-		AddInterferenceController addInterController = AddInterferenceController.getInstance();
-		if (addInterController != null) {
-			addInterController.updateCoordinates(interferencia);
-		} else {
-			System.out.println("Add Interference Controller instance is null!");
 		}
 
-	}
-
-	public void handleAddMarker(String json) {
-		invokeJS("addMarker(" + json + ");");
 	}
 
 }

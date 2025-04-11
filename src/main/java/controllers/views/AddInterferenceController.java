@@ -9,6 +9,7 @@ import com.google.gson.Gson;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
+import com.sothawo.mapjfx.Coordinate;
 
 import controllers.DocumentController;
 import controllers.MapController;
@@ -16,6 +17,8 @@ import controllers.NavigationController;
 import enums.StaticData;
 import enums.ToastType;
 import javafx.animation.TranslateTransition;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -46,10 +49,11 @@ import services.BaciaHidrograficaService;
 import services.InterferenciaService;
 import services.ServiceResponse;
 import services.UnidadeHidrograficaService;
-import utilities.JsonConverter;
+import utilities.MapListener;
+import utilities.TextFieldsListener;
 import utilities.URLUtility;
 
-public class AddInterferenceController implements Initializable {
+public class AddInterferenceController implements Initializable, MapListener {
 
 	
 	private static AddInterferenceController instance;
@@ -162,9 +166,16 @@ public class AddInterferenceController implements Initializable {
 	String latitude, longitude;
 	AddressComboBoxController addressCbController;
 	Endereco address;
+
 	private MapController mapController;
 
 	private DocumentController documentController;
+
+	private TextFieldsListener textFieldsListener;
+
+	public void setTextFieldsListener(TextFieldsListener listener) {
+		this.textFieldsListener = listener;
+	}
 
 	public AddInterferenceController(DocumentController documentController, Endereco address, String urlService,
 			TranslateTransition ttClose) {
@@ -208,10 +219,14 @@ public class AddInterferenceController implements Initializable {
 		cbTypeOfAct.setItems(obsTypesOfActs);
 
 		obsBasins = StaticData.INSTANCE.fetchAllHydrographicBasins();
+
 		cbHydrographicBasin.setItems(obsBasins);
 
 		obsHidrographicUnits = StaticData.INSTANCE.fetchAllHidrographicUnits();
 		cbHydrographicUnit.setItems(obsHidrographicUnits);
+
+		latitude = documentController.getLatitude();
+		longitude = documentController.getLongitude();
 
 		tfLatitude.setText(latitude);
 		tfLongitude.setText(longitude);
@@ -401,11 +416,8 @@ public class AddInterferenceController implements Initializable {
 			// Verifica se o valor está vazio.
 			if (!tfLatitude.getText().isEmpty() && !tfLongitude.getText().isEmpty()) {
 
-				// ALERTA!! Adicionar verificação se o valor é mesmo double ou float,
-				// representando uma coordenada.
+				addMarker();
 
-				mapController.handleAddMarker(JsonConverter.convertObjectToJson(new Interferencia(
-						Double.parseDouble(tfLatitude.getText()), Double.parseDouble(tfLongitude.getText()))));
 			} else {
 				// Alerta (Toast) de sucesso na edi��o
 				Node source = (Node) event.getSource();
@@ -415,9 +427,6 @@ public class AddInterferenceController implements Initializable {
 			}
 
 		});
-
-		tfLatitude.setText("-15.8722731");
-		tfLongitude.setText("-47.9164122 ");
 
 		cbTypeOfInterference.setOnAction((event) -> {
 			TipoInterferencia item = cbTypeOfInterference.getSelectionModel().getSelectedItem();
@@ -482,6 +491,37 @@ public class AddInterferenceController implements Initializable {
 			// No action needed for other cases, so the else block is removed
 		});
 
+		tfLatitude.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+
+				addMarker();
+
+			}
+		});
+
+		tfLongitude.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+
+				addMarker();
+			}
+		});
+
+	}
+
+	public void addMarker() {
+		try {
+			double lat = Double.parseDouble(tfLatitude.getText());
+			double lng = Double.parseDouble(tfLongitude.getText());
+
+			if (textFieldsListener != null) {
+				textFieldsListener.addMarkerAt(new Coordinate(lat, lng));
+			}
+
+		} catch (NumberFormatException e) {
+			System.out.println("Coordenadas inválidas");
+		}
 	}
 
 	public void save(ActionEvent event) {
@@ -890,11 +930,11 @@ public class AddInterferenceController implements Initializable {
 	}
 
 	/**
-	 * Busca uma bacia de acordo com o ponto indicado.
+	 * Busca bacia hidrográfica de acordo com o ponto indicado.
 	 * 
-	 * @param lat
-	 * @param lng
-	 * @return
+	 * @param lat Latitude do ponto
+	 * @param lng Longitude do ponto
+	 * @return Retorna informações da bacia hidrográfica do ponto solicitado.
 	 */
 	public Set<BaciaHidrografica> findBhByPoint(String lat, String lng) {
 
@@ -904,7 +944,6 @@ public class AddInterferenceController implements Initializable {
 
 			Set<BaciaHidrografica> list = service.findBhByPoint(lat, lng);
 
-			System.out.println(JsonConverter.convertObjectToJson(list));
 			return list;
 
 		} catch (Exception e) {
@@ -1089,6 +1128,12 @@ public class AddInterferenceController implements Initializable {
 
 		// If all attributes are valid, return the object
 		return new SubsystemCodeAttributes(lat, lng, ti);
+	}
+
+	@Override
+	public void setOnTextFieldsLatLng(String latitude, String longitude) {
+		tfLatitude.setText(latitude);
+		tfLongitude.setText(longitude);
 	}
 
 }

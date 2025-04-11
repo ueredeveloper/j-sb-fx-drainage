@@ -1,0 +1,297 @@
+{
+	"caesb": true,
+	"nivelEstatico": "",
+	"nivelDinamico": "",
+	"profundidade": "",
+	"vazaoOutorgavel": 9000,
+	"vazaoSistema": 12500,
+	"vazaoTeste": 0,
+	"tipoPoco": {
+		"id": 3,
+		"descricao": "Tubular Profundo"
+	},
+	"sistema": "Paranoá",
+	"subsistema": "R3/Q3",
+	"codPlan": "023_09_R3/Q3",
+	"latitude": -15.7141025,
+	"longitude": -47.8300446,
+	"endereco": {
+		"id": 88,
+		"logradouro": "Condomínio Mansões Entre Lagos, Chácara Santa Rita, Paranoá",
+		"cidade": "Brasília",
+		"bairro": "Paranoá",
+		"cep": "",
+		"documentos": [],
+		"interferencias": [],
+		"estado": {
+			"id": 1,
+			"descricao": "DF"
+		}
+	},
+	"tipoInterferencia": {
+		"id": 2,
+		"descricao": "Subterrânea"
+	},
+	"tipoOutorga": {
+		"id": 1,
+		"descricao": "Outorga"
+	},
+	"subtipoOutorga": {
+		"id": 1,
+		"descricao": "Renovação"
+	},
+	"situacaoProcesso": {
+		"id": 1,
+		"descricao": "Arquivado"
+	},
+	"tipoAto": {
+		"id": 1,
+		"descricao": "Despacho"
+	},
+	"baciaHidrografica": {
+		"objectid": 7
+	},
+	"unidadeHidrografica": {
+		"objectid": 33
+	},
+	"finalidades": [
+		{
+			"finalidade": "a",
+			"subfinalidade": "s",
+			"quantidade": 41.0,
+			"consumo": 56.0,
+			"total": 454.0,
+			"tipoFinalidade": {
+				"id": 1
+			}
+		},
+		{
+			"finalidade": "a",
+			"subfinalidade": "s",
+			"quantidade": 41.0,
+			"consumo": 56.0,
+			"total": 454.0,
+			"tipoFinalidade": {
+				"id": 2
+			}
+		}
+	],
+	"demandas": [
+		{
+			"vazao": 454.0,
+			"tempo": 10,
+			"periodo": 30,
+			"mes": 4,
+			"tipoFinalidade": {
+				"id": 2
+			}
+		},
+		{
+			"vazao": 454.0,
+			"tempo": 10,
+			"periodo": 31,
+			"mes": 10,
+			"tipoFinalidade": {
+				"id": 1
+			}
+		},
+		{
+			"vazao": 454.0,
+			"tempo": 10,
+			"periodo": 31,
+			"mes": 8,
+			"tipoFinalidade": {
+				"id": 2
+			}
+		},
+		{
+			"vazao": 454.0,
+			"tempo": 10,
+			"periodo": 31,
+			"mes": 10,
+			"tipoFinalidade": {
+				"id": 2
+			}
+		},
+		{
+			"vazao": 454.0,
+			"tempo": 10,
+			"periodo": 28,
+			"mes": 2,
+			"tipoFinalidade": {
+				"id": 2
+			}
+		},
+		{
+			"vazao": 454.0,
+			"tempo": 10,
+			"periodo": 30,
+			"mes": 6,
+			"tipoFinalidade": {
+				"id": 1
+			}
+		},
+		{
+			"vazao": 454.0,
+			"tempo": 10,
+			"periodo": 31,
+			"mes": 5,
+			"tipoFinalidade": {
+				"id": 2
+			}
+		},
+		{
+			"vazao": 454.0,
+			"tempo": 10,
+			"periodo": 31,
+			"mes": 1,
+			"tipoFinalidade": {
+				"id": 2
+			}
+		},
+		{
+			"vazao": 454.0,
+			"tempo": 10,
+			"periodo": 31,
+			"mes": 3,
+			"tipoFinalidade": {
+				"id": 1
+			}
+		},
+		{
+			"vazao": 454.0,
+			"tempo": 10,
+			"periodo": 30,
+			"mes": 9,
+			"tipoFinalidade": {
+				"id": 1
+			}
+		},
+		{
+			"vazao": 454.0,
+			"tempo": 10,
+			"periodo": 31,
+			"mes": 12,
+			"tipoFinalidade": {
+				"id": 2
+			}
+		},
+		{
+			"vazao": 454.0,
+			"tempo": 10,
+			"periodo": 30,
+			"mes": 11,
+			"tipoFinalidade": {
+				"id": 2
+			}
+		},
+		{
+			"vazao": 454.0,
+			"tempo": 10,
+			"periodo": 31,
+			"mes": 8,
+			"tipoFinalidade": {
+				"id": 1
+			}
+		},
+		{
+			"vazao": 454.0,
+			"tempo": 10,
+			"periodo": 31,
+			"mes": 7,
+			"tipoFinalidade": {
+				"id": 2
+			}
+		},
+		{
+			"vazao": 454.0,
+			"tempo": 10,
+			"periodo": 30,
+			"mes": 9,
+			"tipoFinalidade": {
+				"id": 2
+			}
+		},
+		{
+			"vazao": 454.0,
+			"tempo": 10,
+			"periodo": 31,
+			"mes": 1,
+			"tipoFinalidade": {
+				"id": 1
+			}
+		},
+		{
+			"vazao": 454.0,
+			"tempo": 10,
+			"periodo": 31,
+			"mes": 12,
+			"tipoFinalidade": {
+				"id": 1
+			}
+		},
+		{
+			"vazao": 454.0,
+			"tempo": 10,
+			"periodo": 30,
+			"mes": 4,
+			"tipoFinalidade": {
+				"id": 1
+			}
+		},
+		{
+			"vazao": 454.0,
+			"tempo": 10,
+			"periodo": 31,
+			"mes": 7,
+			"tipoFinalidade": {
+				"id": 1
+			}
+		},
+		{
+			"vazao": 454.0,
+			"tempo": 10,
+			"periodo": 30,
+			"mes": 11,
+			"tipoFinalidade": {
+				"id": 1
+			}
+		},
+		{
+			"vazao": 454.0,
+			"tempo": 10,
+			"periodo": 30,
+			"mes": 6,
+			"tipoFinalidade": {
+				"id": 2
+			}
+		},
+		{
+			"vazao": 454.0,
+			"tempo": 10,
+			"periodo": 28,
+			"mes": 2,
+			"tipoFinalidade": {
+				"id": 1
+			}
+		},
+		{
+			"vazao": 454.0,
+			"tempo": 10,
+			"periodo": 31,
+			"mes": 5,
+			"tipoFinalidade": {
+				"id": 1
+			}
+		},
+		{
+			"vazao": 454.0,
+			"tempo": 10,
+			"periodo": 31,
+			"mes": 3,
+			"tipoFinalidade": {
+				"id": 2
+			}
+		}
+	]
+}

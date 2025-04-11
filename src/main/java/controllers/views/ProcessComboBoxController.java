@@ -52,8 +52,6 @@ public class ProcessComboBoxController {
 			@Override
 			public void changed(ObservableValue<?> observable, Object oldValue, Object newValue) {
 				
-				System.out.println(newValue);
-
 				// Remover os items repetidos na lista
 				List<Processo> filteredList = filterAndMaintainLastNullId(obsList);
 

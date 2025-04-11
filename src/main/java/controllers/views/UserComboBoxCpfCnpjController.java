@@ -155,7 +155,7 @@ public class UserComboBoxCpfCnpjController {
 		 * Usuario object = comboBox.selectionModelProperty().get().isEmpty() ? null :
 		 * comboBox.getItems().get(0);
 		 * 
-		 * System.out.println(object.getNome()); return object;
+		 * /System.out.println(object.getNome()); return object;
 		 */
 		return null;
 	}

@@ -42,9 +42,10 @@ class PurpouseAuthorizedTableView {
                 <td style="text-align: center;"><p>Subfinalidades</p></td>
                 <td style="text-align: center;"><p>Quantidade</p></td>
                 <td style="text-align: center;"><p>Demanda Solicitada (L/dia)</p></td>
+                <td style="text-align: center;"><p>Demanda Total Solicitada (L/dia)</p></td>
                 <td style="text-align: center;"><p>Valor de referência Resolução nº 18/2020 (L/dia)</p></td>
-                <td style="text-align: center;"><p>Demanda Resolução nº 18/2020 (L/dia)</p></td>
-                <td style="text-align: center;"><p>Demanda Total ajustada Resolução nº 18/2020 (L/dia)</p></td>
+                <td style="text-align: center;"><p>Demanda Total Resolução nº 18/2020 (L/dia)</p></td>
+                <td style="text-align: center;"><p>Demanda Total ajustada (L/dia)</p></td>
               </tr>
               <tr style="text-align: center;">
                 <td style="text-align: center;">${anexo?.numero ?? 'N/A'}</td>
@@ -56,10 +57,12 @@ class PurpouseAuthorizedTableView {
                 <td style="text-align: center;">${_finalidades.map(_fin => _fin.finalidade || 'Desconhecido').join('<br/><br/>')}</td>
                  <td style="text-align: center;">${_finalidades.map(_fin => _fin.subfinalidade || 'Desconhecido').join('<br/><br/>')}</td>
                 <td style="text-align: center;">${_finalidades.map(_fin => _fin.quantidade.toString().replace('.', ',') || 'N/A').join('<br/><br/>')}</td>
-                <td style="text-align: center;">${_finalidades.map(_fin => _fin.total || 'N/A').join('<br/><br/>')}</td>
-                <td style="text-align: center;">XXX</td>
+                <td style="text-align: center;">${_finalidades.map(_fin => _fin.consumo || 'N/A').join('<br/><br/>')}</td>
                 <td style="text-align: center;">${_finalidades.reduce((accumulator, currentValue) => accumulator + Number(currentValue.total || 0), 0)}</td>
-                <td style="text-align: center;"><b>${_finalidades.reduce((accumulator, currentValue) => accumulator + Number(currentValue.total || 0), 0)}</b></td>
+                <td style="text-align: center;">XXX</td>
+                <td style="text-align: center;">XXX</td>
+                <td style="text-align: center;">XXX</td>
+                
               </tr>
             </tbody>
           </table>

@@ -279,6 +279,20 @@ deletar um usuário ou documento, deletando o relacionamento usuario_documento
 ## 18 de fevereiro de 2025
 * **[X] Adicionar tela de disponibilidade
 
-mvn clean package -DskipTests -Dmaven.javadoc.skip=true
+## 20 de fevereiro de 2025
+* **[X] Conversor de coordenadas adicionado
+
+
+## 31/03/2025
+* ** [] Http Server e Mapa
+	Testar se melhora a velociadade de leitura do mapa se for utilizado o httpserver.
+	Não vou utilizar
+	
+## 10/04/2025
+* ** [X] Mapa 
+	Mudança para MapJFX
 	
 
+
+mvn clean package -DskipTests -Dmaven.javadoc.skip=true
+ 

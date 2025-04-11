@@ -143,7 +143,6 @@ public class AddUserController implements Initializable {
 
 		Long id = object != null && object.getId() != null ? object.getId() : null;
 
-		System.out.println(id);
 
 		String nome = tfName.getText();
 

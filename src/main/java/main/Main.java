@@ -12,6 +12,7 @@ import javafx.stage.Stage;
  * Classe principal que inicia a aplica��o JavaFX.
  */
 public class Main extends Application {
+	
 
 	/**
 	 * Método principal que inicia a aplicação  
@@ -19,7 +20,6 @@ public class Main extends Application {
 	 * @param args.
 	 */
 	public static void main(String[] args) {
-
 		launch(args);
 	} 
 
@@ -29,6 +29,7 @@ public class Main extends Application {
 	 * @param stage
 	 *            O palco principal da aplicação.
 	 */
+	
 	@Override
 	public void start(Stage stage) {
 

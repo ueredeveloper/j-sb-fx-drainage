@@ -13,13 +13,13 @@ class SubjectView {
 		this.render();
 	}
 
-	// classes: int-finalidades int-tipo-poco
+	// classes: inter-finalidades int-tipo-poco
 
 	render() {
 		let innerHTML = `
 			<div style="float:right;width:40rem">
 				<p>Emite outorga prévia para reservar o direito de uso de água subterrânea a <b><span class="us-nome"></span>
-				</b>, para fins de <span class="int-finalidades"></span>.
+				</b>, para fins de <span class="inter-finalidades"></span>.
 			</div>
 		`;
 		this.div.innerHTML = innerHTML;
@@ -37,7 +37,7 @@ class SubjectView {
     		element.innerHTML = innerHTML
     	});
 		
-		let __items = document.getElementsByClassName('int-finalidades');
+		let __items = document.getElementsByClassName('inter-finalidades');
 
     	Array.from(__items).forEach(element => {
     		let innerHTML = new FinalidadeModel().getPurpouseString(finalidades);
