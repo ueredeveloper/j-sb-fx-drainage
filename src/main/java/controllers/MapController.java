@@ -134,6 +134,7 @@ public class MapController implements Initializable, TextFieldsListener {
 	// Captura todos marcadores para remover quando preciso
 	Set<Marker> markers = new HashSet<Marker>();
 
+	
 	@Override
 	public void addMarkerAt(Coordinate coordinate) {
 

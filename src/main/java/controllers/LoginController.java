@@ -27,6 +27,7 @@ import javafx.stage.Stage;
 public class LoginController implements Initializable {
 	
 	
+	
 	// Injetando elementos do arquivo FXML
 	@FXML
 	private AnchorPane anchorPane;
@@ -103,6 +104,7 @@ public class LoginController implements Initializable {
 					stage.setWidth(primaryScreenBounds.getWidth());
 					stage.setHeight(primaryScreenBounds.getHeight());
 
+					
 					// Configurando o tamanho mínimo do stage
 					//stage.setHeight(1080);
 					//stage.setWidth(1920);

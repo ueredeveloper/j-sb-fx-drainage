@@ -55,6 +55,7 @@ import utilities.URLUtility;
 
 public class AddInterferenceController implements Initializable, MapListener {
 
+	
 	private static AddInterferenceController instance;
 
 	public static AddInterferenceController getInstance() {

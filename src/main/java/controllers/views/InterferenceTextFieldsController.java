@@ -12,6 +12,7 @@ import utilities.TextFieldsListener;
 
 public class InterferenceTextFieldsController implements MapListener {
 
+	
 	private static InterferenceTextFieldsController instance;
 
 	public static InterferenceTextFieldsController getInstance() {
