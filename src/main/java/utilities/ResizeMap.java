@@ -34,7 +34,8 @@ public class ResizeMap {
 		timeline.setOnFinished(event -> this.apManager.setVisible(false));
 
 		// Define os keyframes para a anima��o
-		KeyFrame keyFrame = new KeyFrame(Duration.seconds(0.1), new KeyValue(this.apMap.prefWidthProperty(), newWidth));
+		KeyFrame keyFrame = new KeyFrame(Duration.seconds(0.1), 
+				new KeyValue(this.apMap.prefWidthProperty(), newWidth));
 		timeline.getKeyFrames().add(keyFrame);
 	
 		// Define a visibilidade do painel de gerenciador como falso no final da
@@ -56,7 +57,8 @@ public class ResizeMap {
         Timeline timeline = new Timeline();
 
         // Define the keyframes for the animation
-        KeyFrame keyFrame = new KeyFrame(Duration.seconds(0.1), new KeyValue(apMap.prefWidthProperty(), newWidth));
+        KeyFrame keyFrame = new KeyFrame(Duration.seconds(0.1), 
+        		new KeyValue(apMap.prefWidthProperty(), newWidth));
         timeline.getKeyFrames().add(keyFrame);
 
         // Show apManager and adjust the width of apMap at the end of the animation

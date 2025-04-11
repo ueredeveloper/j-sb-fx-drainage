@@ -84,6 +84,8 @@ public class MapController implements Initializable {
 		});
 
 		webEngine = wvMap.getEngine();
+		
+		System.out.println(getClass().getResource("/html/map/index.html").toExternalForm());
 
 		webEngine.load(getClass().getResource("/html/map/index.html").toExternalForm());
 
