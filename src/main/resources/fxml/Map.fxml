@@ -3,6 +3,7 @@
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import java.lang.String?>
 <?import java.net.URL?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tooltip?>
@@ -16,24 +17,27 @@
    <children>
       <BorderPane fx:id="bpMap" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
       <BorderPane fx:id="bpCoordsConversor" layoutX="40.0" layoutY="530.0" prefHeight="140.0" prefWidth="800.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" />
-      <AnchorPane fx:id="apCopyCoords" layoutX="380.0" layoutY="725.0" prefHeight="40.0" prefWidth="350.0" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="10.0">
+      <AnchorPane fx:id="apCopyCoords" layoutX="380.0" layoutY="725.0" prefHeight="40.0" prefWidth="350.0" style="-fx-background-color: red;" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
          <children>
-            <GridPane prefHeight="36.0" prefWidth="350.0" styleClass="secondary-content" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+            <GridPane prefHeight="40.0" prefWidth="350.0" styleClass="secondary-content" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="80.0" />
-                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="10.0" />
+                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="40.0" minWidth="10.0" prefWidth="40.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="80.0" />
-                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="10.0" />
-                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="10.0" />
+                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="40.0" minWidth="10.0" prefWidth="40.0" />
+                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="40.0" minWidth="10.0" prefWidth="40.0" />
                </columnConstraints>
                <rowConstraints>
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <Label fx:id="lblLatitude" alignment="CENTER" prefHeight="0.0" prefWidth="200.0" textAlignment="CENTER" GridPane.halignment="CENTER">
+                  <Label fx:id="lblLatitude" alignment="CENTER" prefHeight="0.0" prefWidth="200.0" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS">
                      <tooltip>
                         <Tooltip text="Latitude" />
-                     </tooltip></Label>
+                     </tooltip>
+                     <GridPane.margin>
+                        <Insets left="10.0" right="10.0" />
+                     </GridPane.margin></Label>
                   <Button fx:id="btnCopyLat" ellipsisString="" mnemonicParsing="false" styleClass="btn-conversor" GridPane.columnIndex="1">
                      <graphic>
                         <FontAwesomeIconView glyphName="COPY">
@@ -46,10 +50,13 @@
                         <Tooltip text="Copia a coordenada, latitude" />
                      </tooltip>
                   </Button>
-                  <Label fx:id="lblLongitude" alignment="CENTER" prefHeight="0.0" prefWidth="200.0" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="CENTER">
+                  <Label fx:id="lblLongitude" alignment="CENTER" prefHeight="0.0" prefWidth="200.0" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS">
                      <tooltip>
                         <Tooltip text="Longitude " />
-                     </tooltip></Label>
+                     </tooltip>
+                     <GridPane.margin>
+                        <Insets left="10.0" right="10.0" />
+                     </GridPane.margin></Label>
                   <Button fx:id="btnCopyLng" ellipsisString="" mnemonicParsing="false" styleClass="btn-conversor" GridPane.columnIndex="3">
                      <graphic>
                         <FontAwesomeIconView glyphName="COPY">

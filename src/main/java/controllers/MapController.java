@@ -7,7 +7,6 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.Set;
 
-import com.sothawo.mapjfx.Configuration;
 import com.sothawo.mapjfx.Coordinate;
 import com.sothawo.mapjfx.MapType;
 import com.sothawo.mapjfx.MapView;
@@ -78,7 +77,10 @@ public class MapController implements Initializable, TextFieldsListener {
 
 		mapView = new MapView();
 
-		mapView.initialize(Configuration.builder().showZoomControls(true).build());
+		// Inicialização assíncrona
+		mapView.initialize();
+
+		// mapView.initialize(Configuration.builder().showZoomControls(true).build());
 
 		// Wait until map is ready
 		mapView.initializedProperty().addListener((obs, oldVal, newVal) -> {
@@ -115,7 +117,6 @@ public class MapController implements Initializable, TextFieldsListener {
 				if (apManager.isVisible()) {
 					apMap.setPrefWidth(newWidth / 4.99);
 				}
-				// apManager.setPrefWidth(newWidth * 2 / 2.5);
 			}
 		});
 
@@ -134,7 +135,6 @@ public class MapController implements Initializable, TextFieldsListener {
 	// Captura todos marcadores para remover quando preciso
 	Set<Marker> markers = new HashSet<Marker>();
 
-	
 	@Override
 	public void addMarkerAt(Coordinate coordinate) {
 
@@ -159,11 +159,6 @@ public class MapController implements Initializable, TextFieldsListener {
 		}
 
 	}
-
-	/*
-	 * public void handleAddMarker(String json) { // invokeJS("addMarker(" + json +
-	 * ");"); }
-	 */
 
 	CoordinateConversorController coordController;
 	private AnchorPane conversorPane; // Store the pane reference
@@ -209,7 +204,7 @@ public class MapController implements Initializable, TextFieldsListener {
 	}
 
 	public void setCoordinates(String lat, String lng) {
-		
+
 		// Formata as coordenadas para ter 6 números depois do ponto
 		String latFormatted = String.format(Locale.US, "%.6f", Double.parseDouble(lat));
 		String lngFormatted = String.format(Locale.US, "%.6f", Double.parseDouble(lng));
