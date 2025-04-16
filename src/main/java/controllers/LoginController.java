@@ -74,10 +74,6 @@ public class LoginController implements Initializable {
 	@FXML
 	private JFXButton btnSignUpGoogle;
 
-	// Ícone do Google para login
-	// FontAwesomeIconView iconGoogle = new
-	// FontAwesomeIconView(FontAwesomeIcon.GOOGLE_PLUS);
-
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 

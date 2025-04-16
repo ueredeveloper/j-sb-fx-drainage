@@ -284,7 +284,7 @@ deletar um usuário ou documento, deletando o relacionamento usuario_documento
 
 
 ## 31/03/2025
-* ** [] Http Server e Mapa
+* ** [X] Http Server e Mapa
 	Testar se melhora a velociadade de leitura do mapa se for utilizado o httpserver.
 	Não vou utilizar
 	

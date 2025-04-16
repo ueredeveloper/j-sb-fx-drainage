@@ -17,7 +17,7 @@
    <children>
       <BorderPane fx:id="bpMap" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
       <BorderPane fx:id="bpCoordsConversor" layoutX="40.0" layoutY="530.0" prefHeight="140.0" prefWidth="800.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" />
-      <AnchorPane fx:id="apCopyCoords" layoutX="380.0" layoutY="725.0" prefHeight="40.0" prefWidth="350.0" style="-fx-background-color: red;" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+      <AnchorPane fx:id="apCopyCoords" layoutX="380.0" layoutY="725.0" prefHeight="40.0" prefWidth="350.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
          <children>
             <GridPane prefHeight="40.0" prefWidth="350.0" styleClass="secondary-content" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                <columnConstraints>
