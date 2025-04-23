@@ -83,9 +83,8 @@ class PurpouseLegalBasisView {
             outorga em áreas atendidas pela concessionária de abastecimento público, poderão ser agrupadas áreas 
             permeáveis contíguas, obrigando-se os usuários deste agrupamento a construírem rede de distribuição 
             dissociada da rede de abastecimento da concessionária, que atenda a todas as propriedades, com a 
-            finalidade exclusiva de irrigação.</p>
-
-            <p style="margin-left:30.0pt;">&nbsp;</p>
+            finalidade exclusiva de irrigação.
+            </p>
         </div>
 
         `;

@@ -84,6 +84,7 @@ class AnalyseView {
 
 			<p>Figura 04: Reserva explotável e balanço hídrico do subsistema <span class="inter-sistema"></span>.</p>
         
+        	</br>
 			<p>10.&nbsp;As demandas poderão ser outorgadas pela Adasa, desde que observados os limites estabelecidos pela 
 			Resolução/ADASA nº 16/2018 e valores da demanda ajustados na tabela 2.</p>
 			<p><br></p>
@@ -112,13 +113,16 @@ class AnalyseView {
 			<p>12. As solicitações de renovação de outorga protocoladas fora do prazo previsto no parágrafo único, art. 27 
 			da Resolução/Adasa n° 350/2006 foram consideradas neste parecer como novas outorgas.</p>
 
+			</br>
  			<p>13. Cabe ressaltar que conforme o art. 39 da Resolução Adasa n° 350/2006, o outorgado deverá se 
 			responsabilizar pelo padrão de qualidade e potabilidade da água a partir da retirada do aquífero subterrâneo.</p>
 
- 			<p>Com base no perfil construtivo e geológico do poço, bem como na perfilagem ótica obtida por inspeção de vídeo, 
+			</br>
+ 			<p>14. Com base no perfil construtivo e geológico do poço, bem como na perfilagem ótica obtida por inspeção de vídeo, 
  			indica que a captação da água ocorre no domínio freático/poroso. Essas características estão em conformidade com 
  			a Resolução nº 16, de 03 de fevereiro de 2023.</p>
 
+			</br>
 			<p>15. A documentação solicitada foi atendida e sustenta a solicitação de outorga de direito de uso  de água 
 			subterrânea.</p>
 

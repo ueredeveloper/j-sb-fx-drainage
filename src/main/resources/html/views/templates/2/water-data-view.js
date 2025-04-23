@@ -10,13 +10,13 @@
  */
 
 class WaterDataView {
-  constructor() {
-    this.div = document.getElementById('water-data-view');
-    this.render();
-  }
+	constructor() {
+		this.div = document.getElementById('water-data-view');
+		this.render();
+	}
 
-  render() {
-    const innerHTML = `
+	render() {
+		const innerHTML = `
         <div>
           <p>10. Considerando que o ponto de captação está localizado no subsistema <span class="inter-sistema"></span>, o limite a ser outorgado é de 80% da 
           vazão média do subsistema, pois o empreendimento está localizado em área rural. A demanda solicitada pelo usuário, 
@@ -32,41 +32,55 @@ class WaterDataView {
           <p>II - Demanda a ser outorgada:</p>
 
           <div id="limits-table-view"></div>
+          </br>
         </div>
         
       `;
-    if (this.div !== null) this.div.innerHTML = innerHTML;
+		if (this.div !== null) this.div.innerHTML = innerHTML;
 
-  }
+	}
 
-  update(interferencia) {
+	update(interferencia) {
 
-	// Captura a demanda de abril, que sempre está preenchida. As vazões de jan, fev, mar, nov, dez podem
-	//não estar preenchidas
-    let aprilFlow4 = interferencia?.demandas.find(dem => dem.mes = 4);
+		// Demanda de abril, que está sempre preenchida
+		let aprilDem = interferencia?.demandas.find(dem => dem.tipoFinalidade.id === 2 && dem.mes === 4);
+		
+		let _items = document.getElementsByClassName('dem-l-dia');
+		// Vazão (Litro/Hora)
+		Array.from(_items).forEach(item => {
+			item.innerHTML = new DemandaModel().formatNumber(aprilDem?.vazao) || 'XXX';
+		});
 
-    let _items = document.getElementsByClassName('dem-l-dia');
-    // Converte o resultado para array e atualiza
-    Array.from(_items).forEach(item => {
-      item.innerHTML = aprilFlow4?.vazao || 'XXX';
+		let __items = document.getElementsByClassName('dem-h-dia');
+		// Tempo (Horas/Dia)
+		Array.from(__items).forEach(item => {
+			item.innerHTML = aprilDem?.tempo || 'XXX';
+		});
 
-    });
+		let ___items = document.getElementsByClassName('dem-p-dia');
+		// Periodo (Dias/Mês)
+		Array.from(___items).forEach(item => {
+			item.innerHTML = aprilDem?.periodo || 'XXX';
 
-    let vazaoOutorgavel = interferencia?.vazaoOutorgavel || 'XXX'
+		});
 
-    let __items = document.getElementsByClassName('inter-vazao-outorgavel');
-    // Converte o resultado para array e atualiza
-    Array.from(__items).forEach(item => {
-      item.innerHTML = vazaoOutorgavel;
+		let vazaoOutorgavel = interferencia?.vazaoOutorgavel || 'XXX'
 
-    });
+		let ____items = document.getElementsByClassName('inter-vazao-outorgavel');
+		// Converte o resultado para array e atualiza
+		Array.from(____items).forEach(item => {
+			console.log('vazão outorgavel ', typeof vazaoOutorgavel)
+			item.innerHTML = new DemandaModel().formatNumber(vazaoOutorgavel) || 'XXX';
 
-    let ___items = document.getElementsByClassName('dem-h-dia');
-    // Converte o resultado para array e atualiza
-    Array.from(___items).forEach(item => {
-      item.innerHTML = aprilFlow4?.tempo || 'XXX';
+		});
 
-    });
+		let _____items = document.getElementsByClassName('inter-sistema');
 
-  }
+		// Converte o resultado para array e atualiza
+		Array.from(_____items).forEach(__el => {
+			__el.innerHTML = new InterferenciaModel().getSistemaSubsistema(interferencia) || 'XXX';
+
+		});
+
+	}
 }

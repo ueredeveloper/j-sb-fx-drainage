@@ -20,6 +20,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import utilities.VersionUtil;
 
 /**
  * Controlador para a interface de login.
@@ -104,9 +105,11 @@ public class LoginController implements Initializable {
 					// Configurando o tamanho mínimo do stage
 					//stage.setHeight(1080);
 					//stage.setWidth(1920);
-
+					
+					String version = VersionUtil.getVersion();
+					 
 					// Configurando o título da janela
-					stage.setTitle("Registro e Criação de Documentos");
+					stage.setTitle("REGG+ - Registro e Criação de Documentos | Versão: " + version);
 
 					// Definindo a cena no stage
 					stage.setScene(scene);

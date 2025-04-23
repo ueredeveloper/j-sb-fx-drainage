@@ -20,7 +20,8 @@ class ObjectView {
 			<p>O SUPERINTENDENTE DE RECURSOS HÍDRICOS DA AGÊNCIA REGULADORA DE ÁGUAS, ENERGIA E SANEAMENTO BÁSICO DO DISTRITO FEDERAL – ADASA, no uso de suas 
 			atribuições regimentais e com base na competência que lhe foi delegada pela Diretoria Colegiada, nos termos da Resolução nº 02, de 25 de janeiro 
 			de 2019, c/c Portaria nº 49, de 02 de maio de 2019 e com base no art. 12 da Lei nº 2.725, de 13 de junho de 2001, e inciso VII do art. 23 da 
-			Lei nº 4.285, de 26 de dezembro de 2008, tendo em vista o que consta do Processo SEI n° 00197-00004118/2024-23​, resolve:</p>
+			Lei nº 4.285, de 26 de dezembro de 2008, tendo em vista o que consta do Processo SEI n° <b>
+			<span class="proc-anexo"></span></b>, resolve:</p>
 
 			<p>
 			Art. 1º. Registrar, no cadastro da Adasa, o uso de água subterrânea, considerado insignificante, em nome de <b><span class="us-nome"></span>

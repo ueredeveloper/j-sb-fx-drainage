@@ -39,42 +39,45 @@ class WaterDataView {
 
 	update(interferencia) {
 
-		// Captura a demanda de abril, que sempre está preenchida. As vazões de jan, fev, mar, nov, dez podem
-		//não estar preenchidas
-		let aprilFlow4 = interferencia?.demandas.find(dem => dem.mes = 4);
-
+		// Demanda de abril, que está sempre preenchida
+		let aprilDem = interferencia?.demandas.find(dem => dem.tipoFinalidade.id === 2 && dem.mes === 4);
+		
 		let _items = document.getElementsByClassName('dem-l-dia');
-		// Converte o resultado para array e atualiza
+		// Vazão (Litro/Hora)
 		Array.from(_items).forEach(item => {
-			item.innerHTML = aprilFlow4?.vazao || 'XXX';
+			
+			item.innerHTML = new DemandaModel().formatNumber(aprilDem?.vazao) || 'XXX';
+		});
+
+		let __items = document.getElementsByClassName('dem-h-dia');
+		// Tempo (Horas/Dia)
+		Array.from(__items).forEach(item => {
+			item.innerHTML = aprilDem?.tempo || 'XXX';
+
+		});
+
+		let ___items = document.getElementsByClassName('dem-p-dia');
+		// Periodo (Dias/Mês)
+		Array.from(___items).forEach(item => {
+			item.innerHTML = aprilDem?.periodo || 'XXX';
 
 		});
 
 		let vazaoOutorgavel = interferencia?.vazaoOutorgavel || 'XXX'
 
-		let __items = document.getElementsByClassName('inter-vazao-outorgavel');
+		let _____items = document.getElementsByClassName('inter-vazao-outorgavel');
 		// Converte o resultado para array e atualiza
-		Array.from(__items).forEach(item => {
-			item.innerHTML = vazaoOutorgavel;
+		Array.from(_____items).forEach(item => {
+			item.innerHTML = new DemandaModel().formatNumber(vazaoOutorgavel) || 'XXX';
 
 		});
 
-		let ___items = document.getElementsByClassName('dem-h-dia');
-		// Converte o resultado para array e atualiza
-		Array.from(___items).forEach(item => {
-			item.innerHTML = aprilFlow4?.tempo || 'XXX';
-
-		});
-
-		let ____items = document.getElementsByClassName('inter-sistema');
+		let ______items = document.getElementsByClassName('inter-sistema');
 
 		// Converte o resultado para array e atualiza
-		Array.from(____items).forEach(__el => {
+		Array.from(______items).forEach(__el => {
 			__el.innerHTML = new InterferenciaModel().getSistemaSubsistema(interferencia) || 'XXX';
-
 		});
-
-
 
 	}
 }

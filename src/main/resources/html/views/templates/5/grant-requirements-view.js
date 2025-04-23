@@ -35,33 +35,38 @@ class GrantRequirementsView {
 
             </div>
         <div>
+        <br/>
 
          <p> Art. 4º Fica o registrado sujeito à fiscalização da Adasa, por intermédio de seus agentes ou prepostos indicados, devendo franquear-lhes o acesso 
          ao empreendimento e à documentação respectiva, como projetos, contratos, relatórios, registros e quaisquer outros documentos referentes ao presente 
          registro. </p>
+         <br/>
 
          <p> Art. 5º Fica o registrado sujeito às penalidades previstas na legislação em vigor em caso de descumprimento das disposições legais e 
          regulamentares decorrentes da reserva do direito de uso da água subterrânea e pelo não atendimento das solicitações, recomendações e determinações 
          da fiscalização.
          </p>
-
+		 <br/>
          <p> Art. 6º. A transferência do direito previsto neste ato, bem como qualquer alteração nas características do empreendimento sujeito à este registro,
           deverá ser precedida de anuência formal da Adasa.
          </p>
-
+         
+		 <br/>
          <p> Art. 7º. O presente registro não dispensa ou substitui a obtenção, pelo registrado, de certidões, alvarás ou licenças de qualquer natureza, 
          exigidos pela legislação vigente.
          </p>
 
+		 <div style="margin-left: 2%">	
          <p> Parágrafo único. O registrado deverá respeitar a legislação ambiental e articular-se com o órgão competente, com vistas à obtenção de licenças 
          ambientais, quando couber, cumprir as exigências nelas contidas e responder pelas consequências do descumprimento das leis, regulamentos e 
          licenças.
          </p>
- 
+         </div>
+         <br/>
          <p> Art. 8º. O registrado responderá civil, penal e administrativamente, por danos causados à vida, à saúde, ao meio ambiente, bem como a terceiros, 
          pelo uso inadequado que vier a fazer do presente registro, na forma da Lei.
          </p>
-
+		 <br/>
          <p> Art. 9º. Este registro entra em vigor na data de sua assinatura.</p>
 
          </div>

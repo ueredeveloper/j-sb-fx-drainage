@@ -292,7 +292,15 @@ deletar um usuário ou documento, deletando o relacionamento usuario_documento
 * ** [X] Mapa 
 	Mudança para MapJFX
 	
+## 22/04/2025
+* ** [X] Adicionar Versão Maven no state (setTitle)
+	
+* ** [X] Rever ordem de ítems no parecer de outorga prévia.
 
+* ** [X] Adicionar no parecer a vazão de abril, para não ficar vazia
+	Tempo de captação máximo de...
+	
+	
 
 mvn clean package -DskipTests -Dmaven.javadoc.skip=true
  

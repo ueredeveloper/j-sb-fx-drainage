@@ -26,42 +26,49 @@ class AnalyseView {
 	        <span class="inter-bh" class="highlight"></span>.</p>
 	        <h3>I. Localização da propriedade e do poço:</h3>
 	        <p>Figura 01: croqui de localização da propriedade.</p>
+	        </br>
 	        <p>Figura 02: croqui de localização do poço.</p>
+	        </br>
 	        <p>Figura 03: Croqui da área com existência de irrigação (Frutífera) em 31/05/2016.</p>
+	        </br>
 	        <p>Figura 04: Croqui da área atendida pela CAESB - Sistema de abastecimento da área (Portal Atlas Caesb).</p> 
-			
+			</br>
 			
             <!-- Informações do poço -->
 			<div id="well-info-view"></div>
 
 
-			<p>4. As finalidades de uso e respectivas demandas solicitadas estão dispostos na tabela abaixo, organizadas por tipo de processo:</p>
-
-			<p>&nbsp;</p>
+			<p>5. As finalidades de uso e respectivas demandas solicitadas estão dispostos na tabela abaixo, organizadas por tipo de processo:</p>
 
 			<p><br></p><p>Tabela 01: Finalidades e demandas requeridas.</p>
 			<!-- Finalidades Requeridas -->
 			<div style="display:flex; justify-content: center;" id="tbl-request-purpouse-view"></div>
-
-			<div style="align:center" id="purpouse-legal-basis-view"></div>
-
-			<p>7. As demandas solicitadas e devidamente justificadas para cada finalidade de uso foram analisadas 
+			</br>
+			<p>6. As demandas solicitadas e devidamente justificadas para cada finalidade de uso foram analisadas 
 			considerando a disponibilidade hídrica da reserva explotável dos subsistemas subterrâneos. As demandas 
 			que apresentaram ausência de justificativas para as estimativas de uso, foram ajustadas às recomendações 
 			da Resolução nº 18/2020:
 			</p>
+			
+			<p>&nbsp;</p>
+
+			
+
+			<div style="align:center" id="purpouse-legal-basis-view"></div>
 
 			<p><br></p><p>Tabela 02: Finalidades e demandas ajustadas, conforme a Resolução nº 18/2020:</p>
 
 			<!-- Finalidades Autorizadas -->
             <div id="tbl-authorized-purpouse-view" style="display:flex; justify-content: center;"></div>
 
+			</br>
 			<p>8. A reserva explotável e balanço hídrico do subsistema subterrâneo apresenta dados favoráveis, 
         	considerando a inclusão das demandas requeridas, conforme tabelas abaixo:
         	</p>
+        	</br>
 
         	<p>Figura 04: Reserva explotável e balanço hídrico do subsistema <span class="inter-sistema"></span>.</p>
-
+			<br>
 			<!-- Demanda --> 
 			 <div id="water-demand-view"></div>
 

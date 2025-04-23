@@ -22,7 +22,7 @@ class LimitsTableView {
                 <tbody>
                     <tr>
                         <td colspan="2" style="text-align:center;">
-                        <span style="background-color:rgb(255, 255, 255);">Limites outorgados</span></td>
+                        <span style="background-color:rgb(255, 255, 255);" id="limit-type"></span></td>
                         <td style="text-align:center;">Jan</td>
                         <td style="text-align:center;">Fev</td>
                         <td style="text-align:center;">Mar</td>
@@ -148,6 +148,8 @@ class LimitsTableView {
 
 	}
 	update(interferencia) {
+		
+		document.getElementById('limit-type').innerHTML = new InterferenciaModel().getLimitType(interferencia);
 
 		// Atualizar vazão (l/h)
 		const months = [
@@ -170,7 +172,7 @@ class LimitsTableView {
 			} else {
 				vazaoOutorgavel = interferencia.vazaoOutorgavel;
 			}
-
+	
 			// Atualização
 			document.getElementById(`q-litros-hora-${month}`).innerText = new DemandaModel().formatNumber(vazaoOutorgavel);
 			document.getElementById(`q-m3-hora-${month}`).innerText = new DemandaModel().maskDoubleToFloat(new DemandaModel().convertLitersToCubicMeters(vazaoOutorgavel));
