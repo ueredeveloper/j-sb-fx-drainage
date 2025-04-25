@@ -217,8 +217,6 @@ public class UsuarioService {
 
 	public Set<Usuario> listUsersByDocumentId(Long id) {
 		
-		System.out.println("list users by documento id " + id);
-
 		try {
 			URL apiUrl = new URL(urlService + "/user/list-by-document-id?id=" + id);
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();

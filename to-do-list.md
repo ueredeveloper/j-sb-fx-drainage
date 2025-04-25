@@ -300,7 +300,8 @@ deletar um usuário ou documento, deletando o relacionamento usuario_documento
 * ** [X] Adicionar no parecer a vazão de abril, para não ficar vazia
 	Tempo de captação máximo de...
 	
-	
+## 23/04/2025
+* ** [] Adicionar pesquisa de interferência por coordenada em string. Assim dá pra encontar uma interferência com endereço errado.	
 
 mvn clean package -DskipTests -Dmaven.javadoc.skip=true
  
