@@ -20,9 +20,9 @@ class WaterDemandView {
         <div>
           <p>9. As demandas poderão ser outorgadas pela Adasa, desde que observados os limites estabelecidos pela 
           Resolução/ADASA nº 16/2018 e valores da demanda ajustados na tabela 2.</p>
-          <p>Resolução/ADASA nº 16/2018</p>
+          <p style="margin-left:30.0pt;">Resolução/ADASA nº 16/2018</p>
           <p>Art. 5º. Ficam estabelecidos os seguintes limites a serem outorgados para as captações de água subterrânea:</p>
-          <ul>
+          <ul style="list-style-type: none;">
             <li>I - Até 80% da vazão do teste de bombeamento nas porções dos aquíferos localizadas em áreas rurais, com tempo 
             de captação máximo de 20 h por dia;</li>
             <li>II - Até 50% da vazão do teste de bombeamento nas porções dos aquíferos localizados em áreas urbanas, com tempo 
@@ -33,6 +33,7 @@ class WaterDemandView {
             máximo de captação de 20 (vinte) horas por dia.
             </li>
           </ul>
+          </br>
         </div>
       `;
 

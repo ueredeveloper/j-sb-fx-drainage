@@ -18,8 +18,8 @@ class SubjectView {
 	render() {
 		let innerHTML = `
 			<div style="float:right;width:40rem">
-				<p>Emite outorga prévia para reservar o direito de uso de água subterrânea a <b><span class="us-nome"></span>
-				</b>, para fins de <span class="inter-finalidades"></span>.
+				<p>Emite outorga prévia para reservar o direito de uso de água subterrânea a <span class="us-nome"></span>, 
+				para fins de <span class="inter-finalidades"></span>.
 			</div>
 		`;
 		this.div.innerHTML = innerHTML;

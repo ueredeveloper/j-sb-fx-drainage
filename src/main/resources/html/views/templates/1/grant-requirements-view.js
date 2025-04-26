@@ -18,12 +18,11 @@ class GrantRequirementsView {
         <p>Art. 3&ordm; Ao t&eacute;rmino da perfura&ccedil;&atilde;o do po&ccedil;o e previamente &agrave; capta&ccedil;&atilde;o definitiva de &aacute;gua, o outorgado dever&aacute; requerer &agrave; Adasa a respectiva outorga de direito de uso de &aacute;gua subterr&acirc;nea, em formul&aacute;rio pr&oacute;prio, quando apresentar&aacute;:</p>
 
         <div style="margin-left: 2%">
-        <p>a) ensaio de bombeamento (contendo planilhas, gr&aacute;ficos e relat&oacute;rios);</p>
-
-        <p>b) perfil construtivo litol&oacute;gico do po&ccedil;o; e</p>
-
-        <p>c) registro fotogr&aacute;fico que comprove o cumprimento do disposto no art. 7&ordm;, incisos II, IV, V, VI e VII, desta outorga pr&eacute;via.</p>
-
+        <p>a) Ensaio de bombeamento (contendo planilhas, gráficos e relatórios);</p>
+		<p>b) Perfil construtivo litológico do poço;</p>
+		<p>c) Registro fotográfico que comprove o cumprimento do disposto no art. 7º, incisos II, IV, V, VI e VII, desta outorga prévia;</p>
+		<p>d) Anotação de responsabilidade técnica (ART); e</p>
+		<p>e) Os dados do agente perfurador que executou as obras de perfuração do poço.</p>
         </div>
         <p>&nbsp;</p>
 

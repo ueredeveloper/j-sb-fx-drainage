@@ -284,7 +284,7 @@ deletar um usuário ou documento, deletando o relacionamento usuario_documento
 
 
 ## 31/03/2025
-* ** [] Http Server e Mapa
+* ** [X] Http Server e Mapa
 	Testar se melhora a velociadade de leitura do mapa se for utilizado o httpserver.
 	Não vou utilizar
 	
@@ -292,7 +292,16 @@ deletar um usuário ou documento, deletando o relacionamento usuario_documento
 * ** [X] Mapa 
 	Mudança para MapJFX
 	
+## 22/04/2025
+* ** [X] Adicionar Versão Maven no state (setTitle)
+	
+* ** [X] Rever ordem de ítems no parecer de outorga prévia.
 
+* ** [X] Adicionar no parecer a vazão de abril, para não ficar vazia
+	Tempo de captação máximo de...
+	
+## 23/04/2025
+* ** [] Adicionar pesquisa de interferência por coordenada em string. Assim dá pra encontar uma interferência com endereço errado.	
 
 mvn clean package -DskipTests -Dmaven.javadoc.skip=true
  

@@ -43,7 +43,7 @@ public class InterferenciaService {
 			// Convert Documento object to JSON
 			String jsonInputString = convertObjectToJson(obj);
 			
-			System.out.println("salvar int " + jsonInputString);
+			//System.out.println("salvar int " + jsonInputString);
 
 			// Write JSON to request body
 			try (OutputStream os = connection.getOutputStream();
@@ -211,7 +211,7 @@ public class InterferenciaService {
 		// Parse the string as a JsonArray
 		JsonArray jsonArray = JsonParser.parseString(json).getAsJsonArray();
 		
-		System.out.println(jsonArray);
+		//System.out.println(jsonArray);
 
 		Gson gson = new GsonBuilder().registerTypeAdapter(Interferencia.class, new InterferenciaTypeAdapter()).create();
 

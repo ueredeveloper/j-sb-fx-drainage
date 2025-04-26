@@ -39,4 +39,9 @@ class InterferenciaModel {
 		let _value = Number(value);
 		return isNaN(_value) || _value === 0 ? 'Não informado' : _value;
 	}
+	
+	// Retorno string em minúsculo com o tipo de poço, se manual ou tubular.
+	getLimitType (interferencia) {
+		return interferencia?.tipoPoco?.id===3? "Limites Outorgados": "Limites Registrados";
+	}
 }

@@ -35,17 +35,17 @@ class PurpouseAuthorizedTableView {
           <table border="1" cellspacing="0" style="align: center">
             <tbody>
               <tr>
-                <td style="text-align: center;"><p>Processo</p></td>
-                <td style="text-align: center;"><p>Requerente</p></td>
-                <td style="text-align: center;"><p>Solicitação</p></td>
-                <td style="text-align: center;"><p>Finalidades</p></td>
-                <td style="text-align: center;"><p>Subfinalidades</p></td>
-                <td style="text-align: center;"><p>Quantidade</p></td>
-                <td style="text-align: center;"><p>Demanda Solicitada (L/dia)</p></td>
-                <td style="text-align: center;"><p>Demanda Total Solicitada (L/dia)</p></td>
-                <td style="text-align: center;"><p>Valor de referência Resolução nº 18/2020 (L/dia)</p></td>
-                <td style="text-align: center;"><p>Demanda Total Resolução nº 18/2020 (L/dia)</p></td>
-                <td style="text-align: center;"><p>Demanda Total ajustada (L/dia)</p></td>
+                <td><p style="text-align: center;">Processo</p></td>
+                <td><p style="text-align: center;">Requerente</p></td>
+                <td><p style="text-align: center;">Solicitação</p></td>
+                <td><p style="text-align: center;">Finalidades</p></td>
+                <td><p style="text-align: center;">Subfinalidades</p></td>
+                <td><p style="text-align: center;">Quantidade</p></td>
+                <td><p style="text-align: center;">Demanda Solicitada (L/dia)</p></td>
+                <td><p style="text-align: center;">Demanda Total Solicitada (L/dia)</p></td>
+                <td><p style="text-align: center;">Valor de referência Resolução nº 18/2020 (L/dia)</p></td>
+                <td><p style="text-align: center;">Demanda Total Resolução nº 18/2020 (L/dia)</p></td>
+                <td><p style="text-align: center;">Demanda Total ajustada (L/dia)</p></td>
               </tr>
               <tr style="text-align: center;">
                 <td style="text-align: center;">${anexo?.numero ?? 'N/A'}</td>

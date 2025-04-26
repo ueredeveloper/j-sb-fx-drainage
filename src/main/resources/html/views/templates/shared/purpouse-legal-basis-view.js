@@ -73,19 +73,23 @@ class PurpouseLegalBasisView {
             </div>
         </blockquote>
 
+		</br>
         <div style="text-align: justify;">
-            <p style="margin-left:6pt;">Resolução/ADASA nº 16/2018</p>
+        <p style="margin-left:6pt;">Resolução/ADASA nº 16/2018</p>
 
-            <p style="margin-left:30.0pt;">Art. 6º. Nas áreas atendidas pela concessionária, poderão ser concedidas 
-            outorgas e/ou registros para captação de água subterrânea, com finalidade exclusiva de irrigação, e desde que as propriedades possuam no mínimo 400 m² (quatrocentos metros quadrados) de área permeável, para os poços manuais (cisternas), e 5000 m² (cinco mil metros quadrados) , para os poços tubulares.</p>
+            <p style="margin-left:30.0pt;">Art. 6º. Nas áreas atendidas pela concessionária, poderão ser concedidas outorgas e/ou 
+            registros para captação de água subterrânea, com finalidade exclusiva de irrigação, e desde que 
+            as propriedades possuam no mínimo 400 m² (quatrocentos metros quadrados) de área permeável, para 
+            os poços manuais (cisternas) e poços tubulares rasos, e 5000 m² (cinco mil metros quadrados), 
+            para os poços tubulares profundos.
+            </p>
 
             <p style="margin-left:30.0pt;">§1º. Para efeito de contagem de área permeável para as concessões de 
             outorga em áreas atendidas pela concessionária de abastecimento público, poderão ser agrupadas áreas 
             permeáveis contíguas, obrigando-se os usuários deste agrupamento a construírem rede de distribuição 
             dissociada da rede de abastecimento da concessionária, que atenda a todas as propriedades, com a 
-            finalidade exclusiva de irrigação.</p>
-
-            <p style="margin-left:30.0pt;">&nbsp;</p>
+            finalidade exclusiva de irrigação.
+            </p>
         </div>
 
         `;

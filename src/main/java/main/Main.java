@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import utilities.VersionUtil;
 
 /**
  * Classe principal que inicia a aplica��o JavaFX.
@@ -32,6 +33,8 @@ public class Main extends Application {
 	
 	@Override
 	public void start(Stage stage) {
+		
+		
 
 		Parent root = null;
 		try {
@@ -45,8 +48,12 @@ public class Main extends Application {
 
 		// Cria uma cena com a raiz carregada a partir do arquivo FXML.
 		Scene scene = new Scene(root, 900, 450);
+		
+		String version = VersionUtil.getVersion();
+		   
+		
 		// Define o t�tulo da janela de aplica��o.
-		stage.setTitle("Login");
+		stage.setTitle("Login | Versão: " + version);
 		// Define a cena no palco e exibe a janela.
 		stage.setScene(scene);
 		stage.show();
