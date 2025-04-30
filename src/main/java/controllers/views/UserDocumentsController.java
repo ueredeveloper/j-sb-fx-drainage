@@ -22,6 +22,7 @@ import models.Documento;
 import models.Usuario;
 import services.DocumentService;
 import services.ServiceResponse;
+import utilities.CpfCnpjFormatter;
 import utilities.URLUtility;
 
 public class UserDocumentsController implements Initializable {
@@ -48,6 +49,8 @@ public class UserDocumentsController implements Initializable {
 		this.addUserController = addUserController;
 		this.urlService = URLUtility.getURLService();
 	}
+	
+	
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {

@@ -14,6 +14,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import models.Anexo;
 import models.Endereco;
 import services.EnderecoService;
 
@@ -116,9 +117,15 @@ public class AddressComboBoxController {
 			}
 
 			if (!fetchedAddresses.isEmpty()) {
-
+				
 				dbObjects.addAll(fetchedAddresses);
-				obsList.addAll(dbObjects);
+				//Filtra por ids diferentes
+				Set<Endereco> filteredUniqueIds = dbObjects.stream()
+						.collect(Collectors.toMap(Endereco::getId, item -> item, (oldValue, newValue) -> newValue))
+						.values().stream().collect(Collectors.toSet());
+				
+				obsList.clear();
+				obsList.addAll(filteredUniqueIds);
 
 			} else {
 				// Se não houver resultados, adiciona o novo endereço diretamente

@@ -46,6 +46,8 @@ public class Usuario {
 	public String toString() {
 		return nome;
 	}
+	
+	
 
 	public Long getId() {
 		return id;

@@ -18,6 +18,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
 import models.Anexo;
+import models.Processo;
 import services.AnexoService;
 
 public class AttachmentComboBoxController implements Initializable {
@@ -124,7 +125,13 @@ public class AttachmentComboBoxController implements Initializable {
 
 			if (!fetchedObjects.isEmpty()) {
 				dbObjects.addAll(fetchedObjects);
-				obsList.addAll(dbObjects);
+				
+				//Filtra por ids diferentes
+				Set<Anexo> filteredUniqueIds = dbObjects.stream()
+						.collect(Collectors.toMap(Anexo::getId, item -> item, (oldValue, newValue) -> newValue))
+						.values().stream().collect(Collectors.toSet());
+				obsList.clear();
+				obsList.addAll(filteredUniqueIds);
 			} else {
 				// Se não houver resultados, adiciona o novo endereço diretamente
 				Anexo newObject = new Anexo(keyword);

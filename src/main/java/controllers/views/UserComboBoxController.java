@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import com.jfoenix.controls.JFXComboBox;
@@ -19,7 +20,6 @@ import services.UsuarioService;
 
 public class UserComboBoxController {
 
-	
 	String localUrl;
 
 	private JFXComboBox<Usuario> comboBox;
@@ -62,7 +62,7 @@ public class UserComboBoxController {
 				// Check if the newValue is a Processo or a String
 				if (newValue instanceof Usuario) {
 					Usuario object = (Usuario) newValue;
-					
+
 					if (object.getNome() != null && !object.getNome().isEmpty()) {
 						// Check if the new search term is a continuation of the previous one
 						if (lastSearch.contains(object.getNome()) || object.getNome().contains(lastSearch)) {
@@ -122,7 +122,12 @@ public class UserComboBoxController {
 
 			if (!fetchedObjects.isEmpty()) {
 				dbObjects.addAll(fetchedObjects);
-				obsList.addAll(dbObjects);
+				//Filtra por ids diferentes
+				Set<Usuario> filteredUniqueIds = dbObjects.stream()
+						.collect(Collectors.toMap(Usuario::getId, item -> item, (oldValue, newValue) -> newValue))
+						.values().stream().collect(Collectors.toSet());
+				obsList.clear();
+				obsList.addAll(filteredUniqueIds);
 			} else {
 				// Se não houver resultados, adiciona o novo endereço diretamente
 				Usuario newObject = new Usuario(keyword);
@@ -185,7 +190,7 @@ public class UserComboBoxController {
 				.collect(Collectors.toMap(Usuario::getId, // Key: id of the Anexo
 						item -> item, // Value: Anexo itself
 						(existing, replacement) -> existing // Keep the first occurrence if duplicates are found
-		));
+				));
 
 		// Get the last item with id == null (if it exists)
 		Optional<Usuario> lastNullIdItem = uniqueItems.stream().filter(anexo -> anexo.getId() == null)

@@ -2,6 +2,7 @@ package controllers.views;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.ParseException;
 import java.util.ResourceBundle;
 import java.util.Set;
 
@@ -22,6 +23,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -33,11 +35,11 @@ import models.Usuario;
 import services.ProcessoService;
 import services.ServiceResponse;
 import services.UsuarioService;
+import utilities.CpfCnpjFormatter;
 import utilities.URLUtility;
 
 public class AddUserController implements Initializable {
 
-	
 	@FXML
 	private JFXTextField tfName;
 
@@ -96,13 +98,29 @@ public class AddUserController implements Initializable {
 		tcName.setCellValueFactory(new PropertyValueFactory<Usuario, String>("nome"));
 		tcCpfCnpj.setCellValueFactory(new PropertyValueFactory<Usuario, String>("cpfCnpj"));
 
+		tcCpfCnpj.setCellFactory(column -> new TableCell<Usuario, String>() {
+			@Override
+			protected void updateItem(String item, boolean empty) {
+				super.updateItem(item, empty);
+
+				if (empty || item == null) {
+					setText(null);
+				} else {
+					try {
+						setText(CpfCnpjFormatter.format(item));
+					} catch (ParseException e) {
+						setText(item); // Se der erro, mostra sem formatação
+					}
+				}
+			}
+		});
+
 		tableView.setItems(obsList);
 
 		tableView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Usuario>() {
 			@Override
 			public void changed(ObservableValue<? extends Usuario> observable, Usuario oldValue, Usuario newValue) {
 				if (newValue != null) {
-					// Perform actions with the selected Endereco object
 
 					tfName.setText(newValue.getNome());
 
@@ -143,10 +161,12 @@ public class AddUserController implements Initializable {
 
 		Long id = object != null && object.getId() != null ? object.getId() : null;
 
-
 		String nome = tfName.getText();
 
 		String cpfCnpj = cbCpfCnpj.selectionModelProperty().get().isEmpty() ? null : cbCpfCnpj.getItems().get(0);
+
+		// Remove todos os caracteres não numéricos da string
+		cpfCnpj = cpfCnpj.replaceAll("\\D", "");
 
 		// Se o logradouro não estiver preenchido não salvar
 		if (nome == null || nome.isEmpty()) {
@@ -230,6 +250,9 @@ public class AddUserController implements Initializable {
 		String nome = tfName.getText();
 		String cpfCnpj = cbCpfCnpj.selectionModelProperty().get().isEmpty() ? null : cbCpfCnpj.getItems().get(0);
 
+		// Remove todos os caracteres não numéricos da string
+		cpfCnpj = cpfCnpj.replaceAll("\\D", "");
+				
 		if (nome.isEmpty() || nome == null) {
 			Node source = (Node) event.getSource();
 			Stage ownerStage = (Stage) source.getScene().getWindow();

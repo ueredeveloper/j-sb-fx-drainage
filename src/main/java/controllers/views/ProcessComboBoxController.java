@@ -15,6 +15,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import models.Processo;
+import models.Usuario;
 import services.ProcessoService;
 
 public class ProcessComboBoxController {
@@ -122,7 +123,14 @@ public class ProcessComboBoxController {
 
 			if (!fetchedObjects.isEmpty()) {
 				dbObjects.addAll(fetchedObjects);
-				obsList.addAll(dbObjects);
+				
+				//Filtra por ids diferentes
+				Set<Processo> filteredUniqueIds = dbObjects.stream()
+						.collect(Collectors.toMap(Processo::getId, item -> item, (oldValue, newValue) -> newValue))
+						.values().stream().collect(Collectors.toSet());
+				
+				obsList.clear();
+				obsList.addAll(filteredUniqueIds);
 			} else {
 				// Se não houver resultados, adiciona o novo endereço diretamente
 				Processo newObject = new Processo(keyword);
