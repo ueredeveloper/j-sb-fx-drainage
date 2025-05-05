@@ -26,6 +26,8 @@ public class UserComboBoxController {
 	ObservableList<Usuario> obsList = FXCollections.observableArrayList();
 	// Objetos buscados no banco de dados. Estes objectos não podem repetir.
 	private Set<Usuario> dbObjects = new HashSet<>();
+	
+	Usuario user = new Usuario ();
 
 	public UserComboBoxController(String localUrl, JFXComboBox<Usuario> comboBox) {
 		this.localUrl = localUrl;
@@ -62,6 +64,8 @@ public class UserComboBoxController {
 				// Check if the newValue is a Processo or a String
 				if (newValue instanceof Usuario) {
 					Usuario object = (Usuario) newValue;
+					
+					user = object;
 
 					if (object.getNome() != null && !object.getNome().isEmpty()) {
 						// Check if the new search term is a continuation of the previous one
@@ -159,10 +163,7 @@ public class UserComboBoxController {
 	}
 
 	public Usuario getSelectedObject() {
-
-		Usuario object = comboBox.selectionModelProperty().get().isEmpty() ? null : comboBox.getItems().get(0);
-
-		return object;
+		return user;
 	}
 
 	public void fillAndSelectComboBox(Usuario object) {

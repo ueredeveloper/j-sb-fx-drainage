@@ -376,8 +376,8 @@ public class DocumentController implements Initializable {
 		loader.setRoot(apAddInterference);
 
 		// Captura o endereço selecionado
-		Endereco address = cbAddress.selectionModelProperty().get().isEmpty() ? null : cbAddress.getItems().get(0);
-		
+		Endereco address = cbAddress.selectionModelProperty().get().isEmpty() ? null : addressCbController.getSelectedObject();
+	
 		if (address == null) {
 			// Alerta (Toast) de sucesso na edi��o
 			Node source = cbAddress; // The source is tfPurpouse (JFXTextField)
@@ -521,7 +521,7 @@ public class DocumentController implements Initializable {
 		// Configura o loader FXML
 		loader.setRoot(anchorPaneUser);
 
-		Usuario object = cbUser.selectionModelProperty().get().isEmpty() ? null : cbUser.getItems().get(0);
+		Usuario object = cbUser.selectionModelProperty().get().isEmpty() ? null : userCbController.getSelectedObject();
 
 		loader.setController(new AddUserController(this, object, urlService, ttClose));
 

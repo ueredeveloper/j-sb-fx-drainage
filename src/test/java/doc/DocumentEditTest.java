@@ -30,6 +30,10 @@ public class DocumentEditTest extends ApplicationTest {
 		Button btnSignUp = lookup("#btnSignUp").query();
 		assertNotNull(btnSignUp);
 		clickOn(btnSignUp);
+		
+		JFXTextField tfSearch = lookup("#tfSearch").query();
+		tfSearch.setText("teste");
+		sleep(1000);
 
 		Button btnSearch = lookup("#btnSearch").query();
 		assertNotNull(btnSignUp);
@@ -62,11 +66,11 @@ public class DocumentEditTest extends ApplicationTest {
 		clickOn(item);
 
 		JFXTextField tfNumber = lookup("#tfNumber").query();
-		tfNumber.setText("195.456.789/2024");
+		tfNumber.setText("123456789");
 		sleep(1000);
 
 		JFXTextField tfNumberSei = lookup("#tfNumberSei").query();
-		tfNumberSei.setText("987/2052");
+		tfNumberSei.setText("123/456789");
 		sleep(1000);
 
 		ComboBox<?> cbAddress = lookup("#cbAddress").query();
@@ -80,7 +84,7 @@ public class DocumentEditTest extends ApplicationTest {
 		});
 
 		sleep(500);
-		clickOn(cbAddress).write("Rua das Acássias, 19");
+		clickOn(cbAddress).write("Casa 30, Lago Norte");
 
 		sleep(500);
 		selectFirstItemInComboBox(cbAddress);
@@ -103,7 +107,7 @@ public class DocumentEditTest extends ApplicationTest {
 				cbUser.getEditor().clear(); // Limpa o editor
 			}
 		});
-		clickOn(cbUser).write("Carlos José");
+		clickOn(cbUser).write("Wagner de Campos Rosário");
 
 		sleep(500);
 		selectFirstItemInComboBox(cbUser);
@@ -117,7 +121,7 @@ public class DocumentEditTest extends ApplicationTest {
 				cbProcess.getEditor().clear(); // Limpa o editor
 			}
 		});
-		clickOn(cbProcess).write("195.123.564/2012");
+		clickOn(cbProcess).write("663/");
 
 		sleep(500);
 
@@ -136,7 +140,7 @@ public class DocumentEditTest extends ApplicationTest {
 				cbAttachment.getEditor().clear(); // Limpa o editor
 			}
 		});
-		clickOn(cbAttachment).write("195.123.555/2015");
+		clickOn(cbAttachment).write("663/");
 
 		sleep(500);
 		selectFirstItemInComboBox(cbAttachment);

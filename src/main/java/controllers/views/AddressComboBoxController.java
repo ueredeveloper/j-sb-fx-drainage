@@ -16,6 +16,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import models.Anexo;
 import models.Endereco;
+import models.Usuario;
 import services.EnderecoService;
 
 public class AddressComboBoxController {
@@ -25,6 +26,8 @@ public class AddressComboBoxController {
 	private ObservableList<Endereco> obsList = FXCollections.observableArrayList();
 	// Objetos buscados no banco de dados
 	private Set<Endereco> dbObjects = new HashSet<>();
+	
+	Endereco address = new Endereco();
 
 	public AddressComboBoxController(String localUrl, JFXComboBox<Endereco> comboBox) {
 		this.localUrl = localUrl;
@@ -54,6 +57,9 @@ public class AddressComboBoxController {
 				// Check if the newValue is a Processo or a String
 				if (newValue instanceof Endereco) {
 					Endereco object = (Endereco) newValue;
+					
+					address = object;
+					
 
 					if (object.getLogradouro() != null && !object.getLogradouro().isEmpty()) {
 						// Check if the new search term is a continuation of the previous one
@@ -113,6 +119,7 @@ public class AddressComboBoxController {
 			// Buscar endereços apenas contento 2, 4 , 6 ou 8 caracteres. Assim o serviço
 			// não fica superesplotado.
 			if (keyword.length() == 2 || keyword.length() == 4 || keyword.length() == 6 || keyword.length() == 8) {
+				
 				fetchedAddresses.addAll(service.fetchAddressByKeyword(keyword));
 			}
 
@@ -140,9 +147,7 @@ public class AddressComboBoxController {
 	}
 
 	public Endereco getSelectedObject() {
-
-		Endereco object = comboBox.selectionModelProperty().get().isEmpty() ? null : comboBox.getItems().get(0);
-		return object;
+		return address;
 	}
 
 	public ObservableList<Endereco> getObservableList() {

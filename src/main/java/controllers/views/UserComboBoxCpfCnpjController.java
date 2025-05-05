@@ -98,34 +98,47 @@ public class UserComboBoxCpfCnpjController {
 				// Seleciona lugares da string de busca que será acessado o serviço do banco de
 				// dados
 				//
-				if (lastChar.equals(".") || lastChar.equals("/") || lastChar.equals("-") || keyword.length() == 3
-						|| keyword.length() == 5 || keyword.length() == 6 || keyword.length() == 9
+				if (lastChar.equals(".") || lastChar.equals("/") || lastChar.equals("-") 
+						|| keyword.length() == 3|| keyword.length() == 5 
+						|| keyword.length() == 6 || keyword.length() == 9
 						|| keyword.length() == 11) {
 					// Retira caracteres especiais para busca no banco de dados (apenas números)
 					String cleanNewValue = ((String) keyword).replaceAll("\\D", "");
 
 					Set<String> fetchByCpfCnpj = service.listByCpfCnpj(cleanNewValue);
 					if (fetchByCpfCnpj != null && !fetchByCpfCnpj.isEmpty()) {
-						System.out.println("searc cpf cpnj");
 						fetchedObjects.addAll(fetchByCpfCnpj);
 					}
 
 				}
 
 				if (!fetchedObjects.isEmpty()) {
+					
+					//String formattedKeyword = CpfCnpjFormatter.format(keyword);
+					
+					// Gera todas as variações possíveis do texto digitado, adicionando caracteres especiais (., - ou /).
+					//List<String> formattedStrings = CpfCnpjSearchFormatter.formatSearch(keyword.toLowerCase());
 
-					Set<String> dbObjectsFormatted = fetchedObjects.stream().map(dbObject -> {
-						try {
-							return CpfCnpjFormatter.format(dbObject);
-						} catch (ParseException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						return dbObject;
-					}).collect(Collectors.toSet());
 
-					dbObjects.clear();
+					Set<String> dbObjectsFormatted = fetchedObjects.stream()
+						    .map(dbObject -> {
+						        try {
+						            return CpfCnpjFormatter.format(dbObject);
+						        } catch (ParseException e) {
+						            e.printStackTrace();
+						            return dbObject;
+						        }
+						    })
+						    /*.sorted((o1, o2) -> {
+						        // Bring exact match with keyword to the top
+						        if (formattedStrings.stream().anyMatch(str -> o1.toLowerCase().contains(str))) return -1;
+						        if (formattedStrings.stream().anyMatch(str -> o2.toLowerCase().contains(str))) return 1;
+						        return o1.compareTo(o2); // fallback to alphabetical
+						    })*/
+						    .collect(Collectors.toSet());
+					
 					dbObjects.addAll(dbObjectsFormatted);
+					
 					obsList.clear();
 					obsList.addAll(dbObjects);
 				} else {
@@ -133,9 +146,8 @@ public class UserComboBoxCpfCnpjController {
 					// Formata CPF ou CNPJ
 					String formattedKeyword = CpfCnpjFormatter.format(keyword);
 
-					dbObjects.clear();
 					dbObjects.add(formattedKeyword);
-
+					// Evita abrir muitos valores neste caso
 					obsList.clear();
 					obsList.add(formattedKeyword);
 				}
