@@ -15,9 +15,9 @@ function App() {
 		<div style="display:flex;flex-direction:column;">
 			<div id="subject-view"></div>
 			<div id="object-view"></div>
-
-			<div align="justify" id="geographic-table-view"></div>
-
+			<br>
+				<div align="justify" id="geographic-table-view"></div>
+			<br>
 			<p>Art. 2º A reserva de disponibilidade hídrica para cada um dos poços tubulares mencionados no art. 1º é a seguinte:</p>
 
 			<p>I – Tabela dos limites outorgados.</p>

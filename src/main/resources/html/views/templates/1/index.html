@@ -20,6 +20,7 @@
 	<script src="./object-view.js"></script>
 	<script src="./grant-requirements-view.js"></script>
 	<script src="../shared/chief-signature-view.js"></script>
+	<script src="../shared/geographic-table-view.js"></script>
 	
 
 	<!-- Arquivos compartilhados entre os temas -->
@@ -38,6 +39,32 @@
 	<script src="../models/demanda-model.js"></script>
 	<script src="../models/tipo-poco-model.js"></script>
 	<script src="../models/finalidade-model.js"></script>
+
+	<style>
+		.btn-acao {
+			margin: 4px 0;
+			padding: 0.5em 1.1em;
+			font-size: 1em;
+			background: linear-gradient(90deg, #4aa7ca 70%, #225f78 100%);
+			color: white;
+			border: none;
+			border-radius: 7px;
+			cursor: pointer;
+			box-shadow: 0 1px 3px rgba(0,0,0,0.13);
+			transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+			font-weight: 500;
+			outline: none;
+			min-width: 120px;
+			max-width: 90vw;
+			width: fit-content;
+		}
+
+		.btn-acao:hover, .btn-acao:focus {
+			background: linear-gradient(90deg, #4aa7ca 60%, #225f78 100%);
+			box-shadow: 0 3px 12px rgba(70,50,0,0.10);
+			transform: translateY(-2px) scale(1.03);
+		}
+	</style>
 </head>
 
 <body>
