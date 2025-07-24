@@ -91,7 +91,7 @@ public class AddAddressController implements Initializable {
 	private String urlService;
 	private TranslateTransition ttClose;
 
-	Endereco object;
+	Endereco address;
 
 	ProcessComboBoxController processCbController;
 	UserComboBoxController userComboBoxController;
@@ -100,10 +100,10 @@ public class AddAddressController implements Initializable {
 
 	ObservableList<Endereco> obsList = FXCollections.observableArrayList();
 
-	public AddAddressController(DocumentController documentController, Endereco object, String urlService,
+	public AddAddressController(DocumentController documentController, Endereco address, String urlService,
 			TranslateTransition ttClose) {
 		this.documentController = documentController;
-		this.object = object;
+		this.address = address;
 		this.urlService = URLUtility.getURLService();
 		this.ttClose = ttClose;
 
@@ -130,6 +130,8 @@ public class AddAddressController implements Initializable {
 			public void changed(ObservableValue<? extends Endereco> observable, Endereco oldValue, Endereco newValue) {
 				if (newValue != null) {
 					// Perform actions with the selected Endereco object
+					
+					address = newValue;
 
 					tfAddress.setText(newValue.getLogradouro());
 					tfNeighborhood.setText(newValue.getBairro());
@@ -145,9 +147,8 @@ public class AddAddressController implements Initializable {
 
 		btnClose.setOnAction(e -> {
 			ttClose.play();
-
-			Endereco seletedObject = tableView.getSelectionModel().getSelectedItem();
-			this.documentController.fillAndSelectComboBoxAddress(seletedObject);
+			System.out.println("bnt close " + this.address.getBairro());
+			this.documentController.fillAndSelectComboBoxAddress(this.address);
 
 		});
 
@@ -157,10 +158,10 @@ public class AddAddressController implements Initializable {
 		btnNew.setOnAction(e -> clearAllComponents());
 		btnSearch.setOnAction(event -> searchByKeyword(event));
 
-		if (object != null) {
+		if (address != null) {
 			obsList.clear();
-			obsList.add(object);
-			tableView.getSelectionModel().select(object);
+			obsList.add(address);
+			tableView.getSelectionModel().select(address);
 		} else {
 			clearAllComponents();
 		}
@@ -242,7 +243,7 @@ public class AddAddressController implements Initializable {
 					// Seleciona o objeto salvo na table view
 					tableView.getSelectionModel().select(newEndereco);
 					// Atualiza objeto vindo do DocumentController
-					object = newEndereco;
+					address = newEndereco;
 
 				} else {
 					Node source = (Node) event.getSource();
@@ -391,7 +392,7 @@ public class AddAddressController implements Initializable {
 
 	public void clearAllComponents() {
 
-		object = null;
+		address = null;
 
 		tfAddress.clear();
 		tfNeighborhood.clear();

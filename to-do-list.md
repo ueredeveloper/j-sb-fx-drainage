@@ -303,7 +303,7 @@ deletar um usuário ou documento, deletando o relacionamento usuario_documento
 ## 23/04/2025
 * ** [] Adicionar pesquisa de interferência por coordenada em string. Assim dá pra encontar uma interferência com endereço errado.	
 
-mvn clean package -DskipTests -Dmaven.javadoc.skip=true
+
 
 * ** [] Editar Nome e Cpf
 	Vefificar se é possível editar o nome relacionado com o cpf ou cnpj
@@ -311,5 +311,11 @@ mvn clean package -DskipTests -Dmaven.javadoc.skip=true
 
 * ** [] Centralizar texto nas colunas das tabelas
 
+## 05/05/2025
+* ** [] Endereço e Bairro
+	Quando salva um documento novo, com endereço novo e abre a visualização não está indo o bairro.
+	
+	
 
+mvn clean package -DskipTests -Dmaven.javadoc.skip=true
  

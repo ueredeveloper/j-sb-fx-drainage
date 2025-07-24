@@ -220,7 +220,6 @@ public class DocumentController implements Initializable {
 				// Adiciona o objeto à lista para não precisar buscar no banco de dados.
 				if (processo != null) {
 					processCbController.addItemToDbObjects(processo);
-
 				}
 				cbProcess.getSelectionModel().select(processo);
 
@@ -595,6 +594,7 @@ public class DocumentController implements Initializable {
 
 	public void fillAndSelectComboBoxAddress(Endereco object) {
 		ObservableList<Endereco> newObsList = FXCollections.observableArrayList();
+		
 		cbAddress.setItems(newObsList);
 
 		newObsList.add(0, object);
@@ -743,6 +743,9 @@ public class DocumentController implements Initializable {
 			Documento selectedDocument = tvDocs.getSelectionModel().getSelectedItem();
 
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/DocumentView.fxml"));
+			
+			
+			System.out.println(selectedDocument.getEndereco().getBairro());
 			DocumentViewController docViewController = new DocumentViewController(selectedDocument, templates);
 			loader.setController(docViewController);
 
@@ -938,6 +941,8 @@ public class DocumentController implements Initializable {
 				// Adiciona resposta na tabela
 				Documento responseDocumento = new Gson().fromJson((String) documentoServiceResponse.getResponseBody(),
 						Documento.class);
+				
+				System.out.println("save doc bairro " + responseDocumento.getEndereco().getBairro());
 				// Adiciona com primeiro na lista
 				tvDocs.getItems().add(0, responseDocumento);
 				// Seleciona o objeto salvo na table view
