@@ -1,11 +1,11 @@
 /**
-* Assunto do parecer.
-* @nome Despacho de Outorga Prévia
-* @descricao Assunto do Despacho
-* @diretorio 1
-* @arquivo subject-view.js
-* @id 
-*/
+ * Assunto do parecer.
+ * @nome Despacho de Outorga Prévia
+ * @descricao Assunto do Despacho
+ * @diretorio 1
+ * @arquivo subject-view.js
+ * @id
+ */
 
 class SubjectView {
 	constructor() {
@@ -32,17 +32,17 @@ class SubjectView {
 
 		let _items = document.getElementsByClassName('us-nome');
 
-    	Array.from(_items).forEach(element => {
-    		let innerHTML = usuario?.nome || 'XXX';
-    		element.innerHTML = innerHTML
-    	});
-		
+		Array.from(_items).forEach(element => {
+			let innerHTML = usuario?.nome || 'XXX';
+			element.innerHTML = innerHTML
+		});
+
 		let __items = document.getElementsByClassName('inter-finalidades');
 
-    	Array.from(__items).forEach(element => {
-    		let innerHTML = new FinalidadeModel().getPurpouseString(finalidades);
-    		element.innerHTML = innerHTML
-    	});
+		Array.from(__items).forEach(element => {
+			let innerHTML = new FinalidadeModel().getPurpouseString(finalidades);
+			element.innerHTML = innerHTML
+		});
 
 	}
 }

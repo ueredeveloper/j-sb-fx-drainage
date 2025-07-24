@@ -3,7 +3,7 @@
  * @descricao Objeto do despacho
  * @diretorio 1
  * @arquivo object-view.js
- * @id 
+ * @id
  */
 
 class ObjectView {
@@ -40,7 +40,7 @@ class ObjectView {
 
 	}
 	update(docJson, interJson) {
-		
+
 		let documento = docJson;
 		let interferencia = interJson;
 		let finalidades = interferencia.finalidades;
@@ -54,11 +54,11 @@ class ObjectView {
 			element.innerHTML = innerHTML;
 		});
 
-		        // Tipo de Poço
-        let __items = document.getElementsByClassName('inter-tipo-poco');
-        Array.from(__items).forEach(element => {
-            element.textContent = new InterferenciaModel().getTipoPoco(interferencia)
-        });
+		// Tipo de Poço
+		let __items = document.getElementsByClassName('inter-tipo-poco');
+		Array.from(__items).forEach(element => {
+			element.textContent = new InterferenciaModel().getTipoPoco(interferencia)
+		});
 
 
 		let ___items = document.getElementsByClassName('end-logradouro');

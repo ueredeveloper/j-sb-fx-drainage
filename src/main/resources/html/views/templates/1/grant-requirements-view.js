@@ -3,7 +3,7 @@
  * @nome Despacho de Outorga Prévia
  * @descricao Obrigações do usuário
  * @arquivo grant-requirements-view.js
- * @id 
+ * @id
  */
 
 class GrantRequirementsView {
@@ -20,11 +20,9 @@ class GrantRequirementsView {
         <div style="margin-left: 2%">
         <p>a) Ensaio de bombeamento (contendo planilhas, gráficos e relatórios);</p>
 		<p>b) Perfil construtivo litológico do poço;</p>
-		<p>c) Rerfilagem ótica (vídeo inspeção do poço, com início do vídeo mostrando parte da residência), com laudo, comprovando que se trata de um poço tubular raso;</p>
-		<p>d) Registro fotográfico que comprove o cumprimento do disposto no art. 7º, incisos II, IV, V, VI e VII,
-desta outorga prévia;</p>
-		<p>e) Anotação de responsabilidade técnica (ART); e</p>
-		<p>f) Os dados do agente perfurador que executou as obras de perfuração do poço.</p>
+		<p>c) Registro fotográfico que comprove o cumprimento do disposto no art. 7º, incisos II, IV, V, VI e VII, desta outorga prévia;</p>
+		<p>d) Anotação de responsabilidade técnica (ART); e</p>
+		<p>e) Os dados do agente perfurador que executou as obras de perfuração do poço.</p>
         </div>
         <p>&nbsp;</p>
 
