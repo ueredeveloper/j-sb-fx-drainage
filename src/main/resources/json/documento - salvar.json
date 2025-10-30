@@ -1,0 +1,362 @@
+{
+	"numero": "123",
+	"processo": {
+		"numero": "123456",
+		"anexo": {
+			"id": 221,
+			"numero": "789456",
+			"processos": [
+				{
+					"id": 174,
+					"numero": "456789"
+				}
+			]
+		}
+	},
+	"numeroSei": 456,
+	"tipoDocumento": {
+		"id": 3,
+		"descricao": "Requerimento"
+	},
+	"endereco": {
+		"id": 651,
+		"logradouro": "Rua Teste 1",
+		"cidade": "Brasília",
+		"bairro": "Taguatinga",
+		"cep": "72.123-40",
+		"documentos": [
+		],
+		"interferencias": [
+			{
+				"caesb": true,
+				"nivelEstatico": "20",
+				"nivelDinamico": "15",
+				"profundidade": "25",
+				"vazaoOutorgavel": 600,
+				"vazaoSistema": 800,
+				"vazaoTeste": 750,
+				"tipoPoco": {
+					"id": 1,
+					"descricao": "Manual"
+				},
+				"id": 745,
+				"latitude": -15.793889,
+				"longitude": -47.882778,
+				"endereco": {
+					"id": 651,
+					"logradouro": "Rua Teste 1",
+					"cidade": "Taguatinga",
+					"bairro": "Brasília",
+					"cep": "72.123-40",
+					"documentos": [
+					],
+					"interferencias": [
+					],
+					"estado": {
+						"id": 1,
+						"descricao": "DF"
+					}
+				},
+				"tipoInterferencia": {
+					"id": 2,
+					"descricao": "Subterrânea"
+				},
+				"tipoOutorga": {
+					"id": 2,
+					"descricao": "Outorga Prévia"
+				},
+				"subtipoOutorga": {
+					"id": 1,
+					"descricao": "Renovação"
+				},
+				"situacaoProcesso": {
+					"id": 1,
+					"descricao": "Arquivado"
+				},
+				"tipoAto": {
+					"id": 1,
+					"descricao": "Despacho"
+				},
+				"finalidades": [
+					{
+						"id": 2544,
+						"finalidade": "Abastecimento Humano",
+						"subfinalidade": "Rural",
+						"quantidade": 10.0,
+						"consumo": 150.0,
+						"total": 1500.0,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 2543,
+						"finalidade": "Abastecimento Humano",
+						"subfinalidade": "Rural",
+						"quantidade": 10.0,
+						"consumo": 150.0,
+						"total": 1500.0,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					}
+				],
+				"demandas": [
+					{
+						"id": 13093,
+						"vazao": 1500.0,
+						"tempo": 2,
+						"periodo": 30,
+						"mes": 9,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 13095,
+						"vazao": 1500.0,
+						"tempo": 2,
+						"periodo": 30,
+						"mes": 4,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 13104,
+						"vazao": 1500.0,
+						"tempo": 2,
+						"periodo": 31,
+						"mes": 10,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 13101,
+						"vazao": 1500.0,
+						"tempo": 2,
+						"periodo": 31,
+						"mes": 5,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 13083,
+						"vazao": 1500.0,
+						"tempo": 2,
+						"periodo": 31,
+						"mes": 12,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 13087,
+						"vazao": 1500.0,
+						"tempo": 2,
+						"periodo": 31,
+						"mes": 1,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 13091,
+						"vazao": 1500.0,
+						"tempo": 2,
+						"periodo": 31,
+						"mes": 8,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 13090,
+						"vazao": 1500.0,
+						"tempo": 2,
+						"periodo": 28,
+						"mes": 2,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 13082,
+						"vazao": 1500.0,
+						"tempo": 2,
+						"periodo": 31,
+						"mes": 10,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 13086,
+						"vazao": 1500.0,
+						"tempo": 2,
+						"periodo": 31,
+						"mes": 8,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 13092,
+						"vazao": 1500.0,
+						"tempo": 2,
+						"periodo": 31,
+						"mes": 3,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 13084,
+						"vazao": 1500.0,
+						"tempo": 2,
+						"periodo": 31,
+						"mes": 7,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 13089,
+						"vazao": 1500.0,
+						"tempo": 2,
+						"periodo": 31,
+						"mes": 5,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 13094,
+						"vazao": 1500.0,
+						"tempo": 2,
+						"periodo": 31,
+						"mes": 1,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 13098,
+						"vazao": 1500.0,
+						"tempo": 2,
+						"periodo": 30,
+						"mes": 9,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 13099,
+						"vazao": 1500.0,
+						"tempo": 2,
+						"periodo": 30,
+						"mes": 11,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 13100,
+						"vazao": 1500.0,
+						"tempo": 2,
+						"periodo": 30,
+						"mes": 4,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 13105,
+						"vazao": 1500.0,
+						"tempo": 2,
+						"periodo": 31,
+						"mes": 3,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 13097,
+						"vazao": 1500.0,
+						"tempo": 2,
+						"periodo": 30,
+						"mes": 11,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 13085,
+						"vazao": 1500.0,
+						"tempo": 2,
+						"periodo": 28,
+						"mes": 2,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					},
+					{
+						"id": 13103,
+						"vazao": 1500.0,
+						"tempo": 2,
+						"periodo": 30,
+						"mes": 6,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 13096,
+						"vazao": 1500.0,
+						"tempo": 2,
+						"periodo": 31,
+						"mes": 12,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 13088,
+						"vazao": 1500.0,
+						"tempo": 2,
+						"periodo": 31,
+						"mes": 7,
+						"tipoFinalidade": {
+							"id": 1
+						}
+					},
+					{
+						"id": 13102,
+						"vazao": 1500.0,
+						"tempo": 2,
+						"periodo": 30,
+						"mes": 6,
+						"tipoFinalidade": {
+							"id": 2
+						}
+					}
+				]
+			}
+		],
+		"estado": {
+			"id": 1,
+			"descricao": "DF"
+		}
+	},
+	"usuarios": [
+		{
+			"id": 914,
+			"nome": "Jorge Teste",
+			"cpfCnpj": "45678932185",
+			"documentos": [
+			]
+		}
+	]
+}

@@ -17,12 +17,7 @@
 	"latitude": -15.950998,
 	"longitude": -47.840584,
 	"endereco": {
-		"id": 9,
-		"logradouro": "Empreendimento Verena Park – BR 251",
-		"documentos": [
-		],
-		"interferencias": [
-		]
+		"id": 9
 	},
 	"tipoInterferencia": {
 		"id": 2,
