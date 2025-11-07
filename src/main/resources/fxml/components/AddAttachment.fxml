@@ -73,7 +73,7 @@
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
             </JFXComboBox>
-            <JFXComboBox fx:id="cbUser" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="400.0" promptText="Usuário" styleClass="text-field" GridPane.columnIndex="2" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS">
+            <JFXComboBox fx:id="cbUser" labelFloat="true" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="400.0" promptText="Usuário" styleClass="text-field" GridPane.columnIndex="2" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS">
                <GridPane.margin>
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>

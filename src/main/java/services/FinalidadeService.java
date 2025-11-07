@@ -55,7 +55,7 @@ public class FinalidadeService {
 
 	public ServiceResponse<?> deleteById(Long id) {
 		try {
-			URL apiUrl = new URL(localUrl + "/purpouse/delete?id=" + id); // Updated URL
+			URL apiUrl = new URL(localUrl + "/purposes/delete-purpose?id=" + id); // Updated URL
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
 			connection.setRequestMethod("DELETE");
 

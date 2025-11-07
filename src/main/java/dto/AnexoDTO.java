@@ -12,6 +12,16 @@ public class AnexoDTO {
 	public AnexoDTO() {
 		super();
 	}
+	
+	
+
+	public AnexoDTO(Long anId, String anNumero) {
+		super();
+		this.anId = anId;
+		this.anNumero = anNumero;
+	}
+
+
 
 	public AnexoDTO(Long anId, String anNumero, Long procId, String procNumero, Long usId, String usNome) {
 		super();

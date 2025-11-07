@@ -20,21 +20,20 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 
-import models.Documento;
 import models.Usuario;
 
 public class UsuarioService {
 
-	private String urlService;
+	private String url;
 
-	public UsuarioService(String urlService) {
-		this.urlService = urlService;
+	public UsuarioService(String url) {
+		this.url = url;
 	}
 
 	public ServiceResponse<?> save(Usuario toSaveObject) {
 
 		try {
-			URL apiUrl = new URL(urlService + "/user/create");
+			URL apiUrl = new URL(url + "/users/upsert-user");
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
 			connection.setRequestMethod("POST");
 			connection.setRequestProperty("Content-Type", "application/json");
@@ -43,7 +42,7 @@ public class UsuarioService {
 			// Convert Documento object to JSON
 			String jsonInputString = convertObjectToJson(toSaveObject);
 
-			//System.out.println("save usuario " + jsonInputString);
+			// System.out.println("save usuario " + jsonInputString);
 
 			// Write JSON to request body
 			try (OutputStream os = connection.getOutputStream();
@@ -53,12 +52,11 @@ public class UsuarioService {
 			}
 
 			int responseCode = connection.getResponseCode();
-			
-			//System.out.println("response code " + responseCode);
 
 			String responseBody;
-		
-			if (responseCode == HttpURLConnection.HTTP_OK || responseCode == HttpURLConnection.HTTP_CREATED) {
+
+			if (responseCode == HttpURLConnection.HTTP_OK || responseCode == HttpURLConnection.HTTP_CREATED
+					|| responseCode == 200) {
 
 				try (BufferedReader br = new BufferedReader(
 						new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
@@ -67,6 +65,7 @@ public class UsuarioService {
 					while ((responseLine = br.readLine()) != null) {
 						response.append(responseLine);
 					}
+					
 					responseBody = response.toString();
 				}
 			} else {
@@ -83,18 +82,17 @@ public class UsuarioService {
 		}
 	}
 
-
 	public ServiceResponse<?> update(Usuario toUpdateObject) {
 		try {
-			URL apiUrl = new URL(urlService + "/user/update?id=" + toUpdateObject.getId());
+			URL apiUrl = new URL(url + "/users/upsert-user");
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
-			connection.setRequestMethod("PUT");
+			connection.setRequestMethod("POST");
 			connection.setRequestProperty("Content-Type", "application/json");
 			connection.setDoOutput(true);
 
 			// Convert Documento object to JSON
 			String jsonInputString = convertObjectToJson(toUpdateObject);
-			
+
 			System.out.println(jsonInputString);
 
 			// Write JSON to request body
@@ -106,8 +104,10 @@ public class UsuarioService {
 
 			int responseCode = connection.getResponseCode();
 
+			System.out.println("update user res code " + responseCode);
+
 			String responseBody;
-			if (responseCode == HttpURLConnection.HTTP_OK) {
+			if (responseCode == HttpURLConnection.HTTP_OK || responseCode == 200) {
 
 				try (BufferedReader br = new BufferedReader(
 						new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
@@ -130,11 +130,10 @@ public class UsuarioService {
 			return null; // Return null if an error occurs
 		}
 	}
-	
 
 	public ServiceResponse<?> deleteById(Long id) {
 		try {
-			URL apiUrl = new URL(urlService + "/user/delete?id=" + id); // Updated URL
+			URL apiUrl = new URL(url + "/users/delete-user-by-id?id=" + id); // Updated URL
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
 			connection.setRequestMethod("DELETE");
 
@@ -144,6 +143,8 @@ public class UsuarioService {
 			InputStream inputStream = connection.getInputStream();
 			String responseBody = new BufferedReader(new InputStreamReader(inputStream)).lines()
 					.collect(Collectors.joining("\n"));
+			
+			System.out.println(responseCode + responseBody);
 
 			connection.disconnect();
 
@@ -155,12 +156,13 @@ public class UsuarioService {
 			return new ServiceResponse<>(-1, null); // You might want to use a different code for errors
 		}
 	}
-	
-	
+
 	public Set<Usuario> listByName(String keyword) {
+		
+		System.out.println("fetch by name " + keyword);
 
 		try {
-			URL apiUrl = new URL(urlService + "/user/list-by-name?name=" + URLEncoder.encode(keyword, "UTF-8"));
+			URL apiUrl = new URL(url + "/users/search-users-by-param?param=" + URLEncoder.encode(keyword, "UTF-8"));
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
 			connection.setRequestMethod("GET");
 
@@ -189,7 +191,7 @@ public class UsuarioService {
 	public Set<String> listByCpfCnpj(String keyword) {
 
 		try {
-			URL apiUrl = new URL(urlService + "/user/list-by-cpf-cnpj?keyword=" + URLEncoder.encode(keyword, "UTF-8"));
+			URL apiUrl = new URL(url + "/users/search-users-by-param?param=" + URLEncoder.encode(keyword, "UTF-8"));
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
 			connection.setRequestMethod("GET");
 
@@ -216,9 +218,9 @@ public class UsuarioService {
 	}
 
 	public Set<Usuario> listUsersByDocumentId(Long id) {
-		
+
 		try {
-			URL apiUrl = new URL(urlService + "/user/list-by-document-id?id=" + id);
+			URL apiUrl = new URL(url + "/users/search-users-by-document-id?docId=" + id);
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
 			connection.setRequestMethod("GET");
 
@@ -278,8 +280,8 @@ public class UsuarioService {
 		}
 
 		reader.close();
-		
-		//System.out.println(response.toString());
+
+		// System.out.println(response.toString());
 
 		return new Gson().fromJson(response.toString(), new TypeToken<Set<Usuario>>() {
 		}.getType());

@@ -318,4 +318,17 @@ deletar um usuário ou documento, deletando o relacionamento usuario_documento
 	
 
 mvn clean package -DskipTests -Dmaven.javadoc.skip=true
- 
+
+
+## 03/11/2025
+- [] Verificar a deleção de um endereço com relacionamento. Não está deletando, porém está dando tooltip verde.
+
+
+## 04/11/2025
+- [] Verificar se ao pesquisar anexos vem também anexos sem relacionamentos com processos, anexo soltos
+
+
+## 07/11/2025
+- [] Chave única no número do processo e anexo
+- [] Ao selecionar um documento, o proceso e anexo não são selecionados, apesar de aparecerem no combobox.
+- [] Verificar a deleção do relacionamento entre documento e usuário na tela usuário

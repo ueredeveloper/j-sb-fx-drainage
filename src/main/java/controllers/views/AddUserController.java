@@ -29,6 +29,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import models.ApiResponse;
 import models.Documento;
 import models.Processo;
 import models.Usuario;
@@ -124,11 +125,11 @@ public class AddUserController implements Initializable {
 
 					tfName.setText(newValue.getNome());
 
-					Usuario selecteInterferenceAddres = newValue;
+					Usuario selectedUser = newValue;
 					// Se houver endereço relacionado com a interferência, preencher o combobox do
 					// endereço
-					if (selecteInterferenceAddres != null) {
-						userCbController.fillAndSelectComboBox(selecteInterferenceAddres.getCpfCnpj().toString());
+					if (selectedUser != null) {
+						userCbController.fillAndSelectComboBox(selectedUser.getCpfCnpj().toString());
 					}
 
 					if (userDocumentsController != null) {
@@ -196,16 +197,21 @@ public class AddUserController implements Initializable {
 
 				ServiceResponse<?> response = service.save(toSaveObject);
 
-				if (response.getResponseCode() == 200) {
+				// Caputura a mensagem do banco de dados e converte para o objeto solicitado, no
+				// caso Usuario, além de status e mensagem.
+				ApiResponse<Usuario> serviceResponseFromJava = ApiResponse
+						.fromJson(response.getResponseBody().toString(), Usuario.class);
+
+				if (!serviceResponseFromJava.getStatus().equals("erro")) {
 
 					// Mensagem
 					Node source = (Node) event.getSource();
 					Stage ownerStage = (Stage) source.getScene().getWindow();
-					String toastMsg = "Sucesso!";
+					String toastMsg = serviceResponseFromJava.getMensagem();
 					utilities.Toast.makeText(ownerStage, toastMsg, ToastType.SUCCESS);
 
 					// Adiciona resposta na tabela
-					Usuario newObject = new Gson().fromJson((String) response.getResponseBody(), Usuario.class);
+					Usuario newObject = serviceResponseFromJava.getObject();
 
 					// Remove o objeto com solicitado de salvamento ou id nulo, se estiver presente
 					// na tableView
@@ -221,7 +227,7 @@ public class AddUserController implements Initializable {
 				} else {
 					Node source = (Node) event.getSource();
 					Stage ownerStage = (Stage) source.getScene().getWindow();
-					String toastMsg = "Erro! + " + response.getResponseCode();
+					String toastMsg = serviceResponseFromJava.getMensagem();
 					utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
 
 				}
@@ -252,7 +258,7 @@ public class AddUserController implements Initializable {
 
 		// Remove todos os caracteres não numéricos da string
 		cpfCnpj = cpfCnpj.replaceAll("\\D", "");
-				
+
 		if (nome.isEmpty() || nome == null) {
 			Node source = (Node) event.getSource();
 			Stage ownerStage = (Stage) source.getScene().getWindow();
@@ -279,16 +285,21 @@ public class AddUserController implements Initializable {
 
 				ServiceResponse<?> response = service.update(seletedObject);
 
-				if (response.getResponseCode() == 200) {
+				// Caputura a mensagem do banco de dados e converte para o objeto solicitado, no
+				// caso Usuario, além de status e mensagem.
+				ApiResponse<Usuario> serviceResponseFromJava = ApiResponse
+						.fromJson(response.getResponseBody().toString(), Usuario.class);
+
+				if (!serviceResponseFromJava.getStatus().equals("erro")) {
 
 					// Mensagem
 					Node source = (Node) event.getSource();
 					Stage ownerStage = (Stage) source.getScene().getWindow();
-					String toastMsg = "Sucesso!";
+					String toastMsg = serviceResponseFromJava.getMensagem();
 					utilities.Toast.makeText(ownerStage, toastMsg, ToastType.SUCCESS);
 
 					// Adiciona resposta na tabela
-					Usuario newObject = new Gson().fromJson((String) response.getResponseBody(), Usuario.class);
+					Usuario newObject = serviceResponseFromJava.getObject();
 
 					// Remove objeto solicitado da tableView
 					tableView.getItems().remove(seletedObject);
@@ -300,7 +311,7 @@ public class AddUserController implements Initializable {
 				} else {
 					Node source = (Node) event.getSource();
 					Stage ownerStage = (Stage) source.getScene().getWindow();
-					String toastMsg = "Erro ao editar objeto!";
+					String toastMsg = serviceResponseFromJava.getMensagem();
 					utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
 
 				}
@@ -323,24 +334,32 @@ public class AddUserController implements Initializable {
 
 			ServiceResponse<?> serviceResponse = service.deleteById(selectedObject.getId());
 
-			if (serviceResponse.getResponseCode() == 200) {
+			// Caputura a mensagem do banco de dados e converte para o objeto solicitado, no
+			// caso Usuario, além de status e mensagem.
+			ApiResponse<Usuario> serviceResponseFromJava = ApiResponse
+					.fromJson(serviceResponse.getResponseBody().toString(), Usuario.class);
+
+			if (!serviceResponseFromJava.getStatus().equals("erro")) {
 
 				// Informa sucesso em deletar
 				Node source = (Node) event.getSource();
 				Stage ownerStage = (Stage) source.getScene().getWindow();
-				String toastMsg = "Usuário deletado com sucesso!";
+				String toastMsg = serviceResponseFromJava.getMensagem();
 				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.SUCCESS);
 
 				// retira objecto da tabela de documentos tvDocs
 				tableView.getItems().remove(selectedObject);
 
 			} else {
+
 				// Informa erro em deletar
 				Node source = (Node) event.getSource();
 				Stage ownerStage = (Stage) source.getScene().getWindow();
-				String toastMsg = "Erro ao deletar objeto!";
+				String toastMsg = serviceResponseFromJava.getMensagem();
 				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+
 			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -351,8 +370,6 @@ public class AddUserController implements Initializable {
 
 		try {
 
-			// clearAllComponents();
-
 			UsuarioService service = new UsuarioService(urlService);
 
 			String keyword = tfSearch.getText();
@@ -362,7 +379,9 @@ public class AddUserController implements Initializable {
 			// Create a list of Document objects
 			obsList.clear();
 			obsList.addAll(objects);
-			// cbDocType.setValue(obsDocumentTypes.get(0));
+
+			// Limpa os inputs e comboboxes
+			clearAllComponents();
 
 		} catch (Exception e) {
 			e.printStackTrace();

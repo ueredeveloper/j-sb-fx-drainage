@@ -24,7 +24,7 @@ public class DocumentoTipoService {
 	public List<DocumentoTipo> fetchDocumentTypes() {
 		
 		try {
-			URL apiUrl = new URL(localUrl + "/document-type");
+			URL apiUrl = new URL(localUrl + "/document-types");
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
 			connection.setRequestMethod("GET");
 

@@ -23,7 +23,7 @@ public class Anexo {
 		this.id = id;
 		this.numero = numero;
 	}
-	
+
 	public Anexo(Long id, String numero, Set<Processo> processos) {
 		super();
 		this.id = id;
@@ -55,6 +55,7 @@ public class Anexo {
 		this.processos = processos;
 	}
 
+	// Método toString para mostrar o logradouro no combobox.
 	@Override
 	public String toString() {
 		return numero;

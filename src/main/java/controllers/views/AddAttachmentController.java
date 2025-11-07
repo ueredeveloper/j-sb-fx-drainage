@@ -1,13 +1,14 @@
 package controllers.views;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.OptionalInt;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.stream.IntStream;
 
-import com.google.gson.Gson;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
@@ -27,6 +28,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import models.Anexo;
+import models.ApiResponse;
 import models.Processo;
 import models.Usuario;
 import services.AnexoService;
@@ -81,17 +83,17 @@ public class AddAttachmentController implements Initializable {
 	private TranslateTransition ttClose;
 	JFXComboBox<Anexo> docCbAttachment;
 	ObservableList<Anexo> obsAttachemnt;
-	Anexo attachment;
+	Anexo attachmentModel;
 	AnexoDTO attachmentDTO;
 
 	DocumentController documentController;
 	ProcessComboBoxController processComboBoxController;
 	UserComboBoxController userComboBoxController;
 
-	public AddAttachmentController(DocumentController documentController, Anexo attachment, String urlService,
+	public AddAttachmentController(DocumentController documentController, Anexo attachmentModel, String urlService,
 			TranslateTransition ttClose) {
 		this.documentController = documentController;
-		this.attachment = attachment;
+		this.attachmentModel = attachmentModel;
 		this.urlService = URLUtility.getURLService();
 		this.ttClose = ttClose;
 
@@ -137,8 +139,8 @@ public class AddAttachmentController implements Initializable {
 
 			// Preencher a tela de cadastro de documentos com o processo persistido
 			// (salvamento ou edição)
-			if (attachment != null) {
-				this.documentController.fillAndSelectComboBoxAttachment(attachment);
+			if (attachmentModel != null) {
+				this.documentController.fillAndSelectComboBoxAttachment(attachmentModel);
 
 			}
 
@@ -152,19 +154,45 @@ public class AddAttachmentController implements Initializable {
 				AnexoService service = new AnexoService(urlService);
 				Set<Anexo> objects = service.fecthByKeyword(keyword);
 
-				Set<AnexoDTO> objectsDTO = new HashSet<AnexoDTO>();
+				List<AnexoDTO> objectsDTO = new ArrayList<AnexoDTO>();
 				// Cria classe DTO e preenche com valores do anexo, processo e usuário, caso
 				// haja relacionamentos
 				objects.forEach(att -> {
-					att.getProcessos().forEach(proc -> {
-						objectsDTO.add(new AnexoDTO(att.getId(), att.getNumero(), proc != null ? proc.getId() : null,
-								proc != null ? proc.getNumero() : "",
-								proc.getUsuario() != null ? proc.getUsuario().getId() : null,
-								proc.getUsuario() != null ? proc.getUsuario().getNome() : ""));
-					});
+
+					System.out.println("tamanho processos " + att.getProcessos().size());
+
+					// Se houver mais de um processo relacionado
+					if (att.getProcessos().size() > 1) {
+
+						att.getProcessos().forEach(proc -> {
+
+							AnexoDTO anexo = new AnexoDTO(att.getId(), att.getNumero());
+
+							System.out.println("número do processo " + proc.getNumero());
+
+							anexo.setProcId(proc.getId() != null ? proc.getId() : null);
+							anexo.setProcNumero(proc.getNumero() != null ? proc.getNumero() : null);
+							anexo.setUsId(proc.getUsuario().getId() != null ? proc.getUsuario().getId() : null);
+							anexo.setUsNome(proc.getUsuario().getNome() != null ? proc.getUsuario().getNome() : null);
+
+							objectsDTO.add(anexo);
+
+						});
+
+					} else {
+
+						AnexoDTO anexo = new AnexoDTO(att.getId(), att.getNumero());
+
+						objectsDTO.add(anexo);
+
+					}
+
 				});
 
 				tableViewObsList.clear();
+
+				System.out.println("adicionados: " + objectsDTO.size());
+
 				tableViewObsList.addAll(objectsDTO);
 
 			} catch (Exception e) {
@@ -207,11 +235,11 @@ public class AddAttachmentController implements Initializable {
 				return;
 			}
 
-			if (this.attachment == null) {
-				this.attachment = new Anexo();
-				this.attachment.setNumero(tfAttachment.getText());
+			if (this.attachmentModel == null) {
+				this.attachmentModel = new Anexo();
+				this.attachmentModel.setNumero(tfAttachment.getText());
 			} else {
-				this.attachment.setNumero(tfAttachment.getText());
+				this.attachmentModel.setNumero(tfAttachment.getText());
 			}
 
 			// Capturar as seleções dos outros atributos nos comboboxes
@@ -262,18 +290,24 @@ public class AddAttachmentController implements Initializable {
 
 			// Cria o objeto completo de persistência
 			selectedProcess.setUsuario(selectedUser);
-			this.attachment.getProcessos().add(selectedProcess);
+
+			this.attachmentModel.getProcessos().add(selectedProcess);
 
 			// DocumentService documentService = new DocumentService(localUrl);
 			AnexoService service = new AnexoService(urlService);
 
-			ServiceResponse<?> response = service.save(this.attachment);
-		
-			if (response.getResponseCode() == 200) {
+			ServiceResponse<?> serviceResponse = service.save(this.attachmentModel);
 
+			// Caputura a mensagem do banco de dados e converte para o objeto solicitado, no
+			// caso Usuario, além de status e mensagem.
+			ApiResponse<Anexo> serviceResponseFromJava = ApiResponse
+					.fromJson(serviceResponse.getResponseBody().toString(), Anexo.class);
+
+			if (!serviceResponseFromJava.getStatus().equals("erro")) {
 
 				// Adiciona resposta na tabela
-				Anexo responseObject = new Gson().fromJson((String) response.getResponseBody(), Anexo.class);
+				Anexo responseObject = serviceResponseFromJava.getObject();
+
 				// Adiciona com primeiro na lista
 
 				ObservableList<AnexoDTO> items = tableView.getItems();
@@ -321,7 +355,7 @@ public class AddAttachmentController implements Initializable {
 				// Informa salvamento com sucesso
 				Node source = (Node) event.getSource();
 				Stage ownerStage = (Stage) source.getScene().getWindow();
-				String toastMsg = "Objeto salvo com sucesso!";
+				String toastMsg = serviceResponseFromJava.getMensagem();
 				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.SUCCESS);
 
 			} else {
@@ -330,7 +364,7 @@ public class AddAttachmentController implements Initializable {
 				// Informa salvamento com sucesso
 				Node source = (Node) event.getSource();
 				Stage ownerStage = (Stage) source.getScene().getWindow();
-				String toastMsg = "Erro ao salvar o objeto !";
+				String toastMsg = serviceResponseFromJava.getMensagem();
 				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
 			}
 
@@ -395,28 +429,36 @@ public class AddAttachmentController implements Initializable {
 			}
 
 			// Preenche objeto de persistência com o anexo selecionado na table view.
-			this.attachment.setId(this.attachmentDTO.getAnId());
-			this.attachment.setNumero(this.attachmentDTO.getAnNumero());
+
+			if (this.attachmentModel == null) {
+				this.attachmentModel = new Anexo();
+			}
+
+			this.attachmentModel.setId(this.attachmentDTO.getAnId());
+			this.attachmentModel.setNumero(tfAttachment.getText());
 			// Relaciona objetos selecionados pelo usuário nos comboboxes
 			selectedProcess.setUsuario(selectedUser);
-			this.attachment.getProcessos().add(selectedProcess);
+			this.attachmentModel.getProcessos().add(selectedProcess);
 
 			// DocumentService documentService = new DocumentService(localUrl);
 			AnexoService service = new AnexoService(urlService);
 
-			ServiceResponse<?> response = service.update(this.attachment);
+			ServiceResponse<?> serviceResponse = service.update(this.attachmentModel);
 
-			//System.out.println("update anexo " + response.getResponseCode());
+			// Caputura a mensagem do banco de dados e converte para o objeto solicitado, no
+			// caso Usuario, além de status e mensagem.
+			ApiResponse<Anexo> serviceResponseFromJava = ApiResponse
+					.fromJson(serviceResponse.getResponseBody().toString(), Anexo.class);
 
-			if (response.getResponseCode() == 200) {
+			if (!serviceResponseFromJava.getStatus().equals("erro")) {
 
 				// Informa salvamento com sucesso
 				Node source = (Node) event.getSource();
 				Stage ownerStage = (Stage) source.getScene().getWindow();
-				String toastMsg = "Objeto salvo com sucesso!";
+				String toastMsg = serviceResponseFromJava.getMensagem();
 				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.SUCCESS);
 				// Adiciona resposta na tabela
-				Anexo responseObject = new Gson().fromJson((String) response.getResponseBody(), Anexo.class);
+				Anexo responseObject = serviceResponseFromJava.getObject();
 				// Adiciona com primeiro na lista
 
 				ObservableList<AnexoDTO> items = tableView.getItems();
@@ -467,7 +509,7 @@ public class AddAttachmentController implements Initializable {
 				// Informa salvamento com sucesso
 				Node source = (Node) event.getSource();
 				Stage ownerStage = (Stage) source.getScene().getWindow();
-				String toastMsg = "Erro ao salvar o objeto !";
+				String toastMsg = serviceResponseFromJava.getMensagem();
 				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
 			}
 
@@ -487,12 +529,15 @@ public class AddAttachmentController implements Initializable {
 
 			ServiceResponse<?> serviceResponse = service.deleteById(selectedObject.getAnId());
 
-			if (serviceResponse.getResponseCode() == 200) {
+			ApiResponse<Anexo> serviceResponseFromJava = ApiResponse
+					.fromJson(serviceResponse.getResponseBody().toString(), Anexo.class);
+
+			if (!serviceResponseFromJava.getStatus().equals("erro")) {
 
 				// Informa sucesso em deletar
 				Node source = (Node) event.getSource();
 				Stage ownerStage = (Stage) source.getScene().getWindow();
-				String toastMsg = "Objeto deletado com sucesso!";
+				String toastMsg = serviceResponseFromJava.getMensagem();
 				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.SUCCESS);
 
 				// retira objecto da tabela de documentos tvDocs
@@ -502,7 +547,7 @@ public class AddAttachmentController implements Initializable {
 				// Informa erro em deletar
 				Node source = (Node) event.getSource();
 				Stage ownerStage = (Stage) source.getScene().getWindow();
-				String toastMsg = "Erro ao deletar objeto!";
+				String toastMsg = serviceResponseFromJava.getMensagem();
 				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
 			}
 		} catch (Exception e) {
@@ -569,7 +614,7 @@ public class AddAttachmentController implements Initializable {
 
 		tfAttachment.clear();
 		// Limpa o id do processo para que seja salvo novo processo
-		this.attachment = new Anexo();
+		this.attachmentModel = new Anexo();
 
 		cbProcess.getSelectionModel().clearSelection();
 		cbProcess.setValue(null);

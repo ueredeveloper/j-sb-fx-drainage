@@ -26,6 +26,7 @@ import controllers.views.ProcessComboBoxController;
 import controllers.views.UserComboBoxController;
 import enums.ToastType;
 import javafx.animation.TranslateTransition;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -48,6 +49,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import models.Anexo;
+import models.ApiResponse;
 import models.Documento;
 import models.DocumentoTipo;
 import models.Endereco;
@@ -55,12 +57,11 @@ import models.Interferencia;
 import models.Processo;
 import models.Template;
 import models.Usuario;
-import services.DocumentService;
+import services.DocumentoService;
 import services.DocumentoTipoService;
 import services.ServiceResponse;
 import utilities.MapListener;
 import utilities.URLUtility;
-
 
 /**
  * Controlador para lidar com operações relacionadas aos documentos.
@@ -146,7 +147,6 @@ public class DocumentController implements Initializable {
 	@FXML
 	private TableColumn<Documento, String> tcAddress;
 
-
 	@FXML
 	private JFXButton btnViews;
 
@@ -178,10 +178,8 @@ public class DocumentController implements Initializable {
 	/**
 	 * Inicializa o controlador e configura a interface.
 	 *
-	 * @param location
-	 *            O URL para localização do recurso.
-	 * @param resources
-	 *            Os recursos utilizados pelo controlador.
+	 * @param location  O URL para localização do recurso.
+	 * @param resources Os recursos utilizados pelo controlador.
 	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -190,13 +188,46 @@ public class DocumentController implements Initializable {
 		// componente pai (MainController)
 		apContent.getStylesheets().clear();
 
-		tcTipo.setCellValueFactory(cellData -> cellData.getValue().getProperty(Documento::getTipoDescricao));
-		tcNum.setCellValueFactory(new PropertyValueFactory<Documento, String>("numero"));
-		tcNumSei.setCellValueFactory(new PropertyValueFactory<Documento, String>("numeroSei"));
-		tcProc.setCellValueFactory(cellData -> cellData.getValue().getProperty(Documento::getProcessoNumero));
-		tcAddress.setCellValueFactory(cellData -> cellData.getValue().getProperty(Documento::getEnderecoLogradouro));
+		tcTipo.setCellValueFactory(cellData -> {
+			Documento doc = cellData.getValue();
+			if (doc == null || doc.getTipoDescricao() == null) {
+				return new SimpleStringProperty("");
+			}
+			return new SimpleStringProperty(doc.getTipoDescricao());
+		});
 
-		
+		tcNum.setCellValueFactory(cellData -> {
+			Documento doc = cellData.getValue();
+			if (doc == null || doc.getNumero() == null) {
+				return new SimpleStringProperty("");
+			}
+			return new SimpleStringProperty(doc.getNumero());
+		});
+
+		tcNumSei.setCellValueFactory(cellData -> {
+			Documento doc = cellData.getValue();
+			if (doc == null || doc.getNumeroSei() == null) {
+				return new SimpleStringProperty("");
+			}
+			return new SimpleStringProperty(doc.getNumeroSei().toString());
+		});
+
+		tcProc.setCellValueFactory(cellData -> {
+			Documento doc = cellData.getValue();
+			if (doc == null || doc.getProcessoNumero() == null) {
+				return new SimpleStringProperty("");
+			}
+			return new SimpleStringProperty(doc.getProcessoNumero());
+		});
+
+		tcAddress.setCellValueFactory(cellData -> {
+			Documento doc = cellData.getValue();
+			if (doc == null || doc.getEnderecoLogradouro() == null) {
+				return new SimpleStringProperty("");
+			}
+			return new SimpleStringProperty(doc.getEnderecoLogradouro());
+		});
+
 		AnchorPane.setRightAnchor(apContent, 0.0);
 		AnchorPane.setLeftAnchor(apContent, 50.0);
 
@@ -235,7 +266,7 @@ public class DocumentController implements Initializable {
 					addressCbController.addItemToDbObjects(endereco);
 
 				}
-				//cbAddress.getSelectionModel().select(endereco);
+				// cbAddress.getSelectionModel().select(endereco);
 				addressCbController.fillAndSelectComboBox(endereco);
 
 				// Limpar componentes que não são preenchidos.
@@ -363,7 +394,7 @@ public class DocumentController implements Initializable {
 
 		// Carrega o arquivo FXML para o painel de edição
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/components/AddInterference.fxml"));
-		
+
 		TranslateTransition ttClose = new TranslateTransition(Duration.millis(300), apAddInterference);
 
 		ttClose.setToX(400.0);
@@ -375,8 +406,9 @@ public class DocumentController implements Initializable {
 		loader.setRoot(apAddInterference);
 
 		// Captura o endereço selecionado
-		Endereco address = cbAddress.selectionModelProperty().get().isEmpty() ? null : addressCbController.getSelectedObject();
-	
+		Endereco address = cbAddress.selectionModelProperty().get().isEmpty() ? null
+				: addressCbController.getSelectedObject();
+
 		if (address == null) {
 			// Alerta (Toast) de sucesso na edi��o
 			Node source = cbAddress; // The source is tfPurpouse (JFXTextField)
@@ -384,11 +416,12 @@ public class DocumentController implements Initializable {
 			String toastMsg = "Selecione um endereço !!!";
 			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
 		} else {
-			
+
 			MapController mapController = this.mainController.getMapController();
-			
-			AddInterferenceController addInterferenceController = new AddInterferenceController(this, address, this.urlService, ttClose);
-			
+
+			AddInterferenceController addInterferenceController = new AddInterferenceController(this, address,
+					this.urlService, ttClose);
+
 			mapController.addMapClickListener(addInterferenceController);
 			addInterferenceController.setTextFieldsListener(mapController);
 
@@ -412,21 +445,25 @@ public class DocumentController implements Initializable {
 		}
 
 	}
+
 	/**
 	 * Captura a latitude para envio para a tela AddInterferenceControler
+	 * 
 	 * @return String
 	 */
 	public String getLatitude() {
-	    Double latitude = interferenceTFController.getLatLng().getLatitude();
-	    return latitude != null ? String.valueOf(latitude) : "";
+		Double latitude = interferenceTFController.getLatLng().getLatitude();
+		return latitude != null ? String.valueOf(latitude) : "";
 	}
+
 	/**
 	 * Captura a longitude para envio para a tela AddInterferenceControler
+	 * 
 	 * @return String
 	 */
 	public String getLongitude() {
-	    Double longitude = interferenceTFController.getLatLng().getLongitude();
-	    return longitude != null ? String.valueOf(longitude) : "";
+		Double longitude = interferenceTFController.getLatLng().getLongitude();
+		return longitude != null ? String.valueOf(longitude) : "";
 	}
 
 	public void openAddProcess() {
@@ -594,7 +631,7 @@ public class DocumentController implements Initializable {
 
 	public void fillAndSelectComboBoxAddress(Endereco object) {
 		ObservableList<Endereco> newObsList = FXCollections.observableArrayList();
-		
+
 		cbAddress.setItems(newObsList);
 
 		newObsList.add(0, object);
@@ -743,8 +780,7 @@ public class DocumentController implements Initializable {
 			Documento selectedDocument = tvDocs.getSelectionModel().getSelectedItem();
 
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/DocumentView.fxml"));
-			
-			
+
 			System.out.println(selectedDocument.getEndereco().getBairro());
 			DocumentViewController docViewController = new DocumentViewController(selectedDocument, templates);
 			loader.setController(docViewController);
@@ -768,8 +804,7 @@ public class DocumentController implements Initializable {
 	/**
 	 * Manipula a ação de pesquisa de documentos por parâmetro.
 	 *
-	 * @param event
-	 *            O evento de ação associado à pesquisa.
+	 * @param event O evento de ação associado à pesquisa.
 	 */
 	public void searchDocument(ActionEvent event) {
 
@@ -777,7 +812,7 @@ public class DocumentController implements Initializable {
 
 			clearAllComponents();
 
-			DocumentService documentService = new DocumentService(urlService);
+			DocumentoService documentService = new DocumentoService(urlService);
 
 			String keyword = tfSearch.getText();
 
@@ -796,8 +831,7 @@ public class DocumentController implements Initializable {
 	/**
 	 * Manipula a ação de salvar um documento.
 	 *
-	 * @param event
-	 *            O evento de ação associado à edição do documento.
+	 * @param event O evento de ação associado à edição do documento.
 	 */
 	public void saveDocument(ActionEvent event) {
 
@@ -916,7 +950,7 @@ public class DocumentController implements Initializable {
 
 		try {
 
-			DocumentService documentService = new DocumentService(urlService);
+			
 
 			DocumentoTipo docType = cbDocType.getValue();
 
@@ -928,21 +962,26 @@ public class DocumentController implements Initializable {
 			newDocument.setProcesso(selectedProcess);
 
 			newDocument.setUsuarios(usuarios);
+			
+			DocumentoService documentService = new DocumentoService(urlService);
 
-			ServiceResponse<?> documentoServiceResponse = documentService.save(newDocument);
+			ServiceResponse<?> serviceResponse = documentService.save(newDocument);
 
-			if (documentoServiceResponse.getResponseCode() == 201) {
+			// Caputura a mensagem do banco de dados e converte para o objeto solicitado, no
+			// caso Usuario, além de status e mensagem.
+			ApiResponse<Documento> serviceResponseFromJava = ApiResponse
+					.fromJson(serviceResponse.getResponseBody().toString(), Documento.class);
+			
+			if (!serviceResponseFromJava.getStatus().equals("erro")) {
 
 				// Informa salvamento com sucesso
 				Node source = (Node) event.getSource();
 				Stage ownerStage = (Stage) source.getScene().getWindow();
-				String toastMsg = "Documento salvo com sucesso!";
+				String toastMsg = serviceResponseFromJava.getMensagem();
 				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.SUCCESS);
 				// Adiciona resposta na tabela
-				Documento responseDocumento = new Gson().fromJson((String) documentoServiceResponse.getResponseBody(),
-						Documento.class);
-				
-				System.out.println("save doc bairro " + responseDocumento.getEndereco().getBairro());
+				Documento responseDocumento = serviceResponseFromJava.getObject();
+
 				// Adiciona com primeiro na lista
 				tvDocs.getItems().add(0, responseDocumento);
 				// Seleciona o objeto salvo na table view
@@ -963,8 +1002,7 @@ public class DocumentController implements Initializable {
 	/**
 	 * Manipula a ação de editar um documento existente.
 	 *
-	 * @param event
-	 *            O evento de ação associado à edição do documento.
+	 * @param event O evento de ação associado à edição do documento.
 	 */
 	public void editDocument(ActionEvent event) {
 		// Get the selected document from the TableView
@@ -1108,22 +1146,26 @@ public class DocumentController implements Initializable {
 		selectedDocument.setUsuarios(usuarios);
 
 		try {
-			DocumentService service = new DocumentService(urlService);
+			DocumentoService service = new DocumentoService(urlService);
 
 			// Requisi��o de resposta de edi��o
 			ServiceResponse<?> serviceResponse = service.update(selectedDocument);
 
-			if (serviceResponse.getResponseCode() == 200) {
+			// Caputura a mensagem do banco de dados e converte para o objeto solicitado, no
+			// caso Usuario, além de status e mensagem.
+			ApiResponse<Documento> serviceResponseFromJava = ApiResponse
+					.fromJson(serviceResponse.getResponseBody().toString(), Documento.class);
+
+			if (!serviceResponseFromJava.getStatus().equals("erro")) {
 				// Alerta (Toast) de sucesso na edi��o
 				Node source = (Node) event.getSource();
 				Stage ownerStage = (Stage) source.getScene().getWindow();
-				String toastMsg = "Documento editado com sucesso!";
+				String toastMsg = serviceResponseFromJava.getMensagem();
 				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.SUCCESS);
 
 				tvDocs.getItems().remove(selectedDocument);
 				// Converte objeto editado para Json
-				Documento responseDocumento = new Gson().fromJson((String) serviceResponse.getResponseBody(),
-						Documento.class);
+				Documento responseDocumento = serviceResponseFromJava.getObject();
 				// Adiciona objeto editado como primeiro �tem ma fila na table view
 				tvDocs.getItems().add(0, responseDocumento);
 				// Seleciona o objeto editado na table view
@@ -1133,7 +1175,7 @@ public class DocumentController implements Initializable {
 				// Alerta (Toast) de sucesso na edi��o
 				Node source = (Node) event.getSource();
 				Stage ownerStage = (Stage) source.getScene().getWindow();
-				String toastMsg = "Erro ao editar objeto!";
+				String toastMsg = serviceResponseFromJava.getMensagem();
 				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
 
 				// Para terminar o processo
@@ -1153,24 +1195,26 @@ public class DocumentController implements Initializable {
 	/**
 	 * Manipula a ação de deletar um documento existente.
 	 *
-	 * @param event
-	 *            O evento de ação associado à exclusão do documento.
+	 * @param event O evento de ação associado à exclusão do documento.
 	 */
 	public void deleteDocument(ActionEvent event) {
 
 		Documento selectedDocument = tvDocs.getSelectionModel().getSelectedItem();
 
 		try {
-			DocumentService documentService = new DocumentService(urlService);
+			DocumentoService documentService = new DocumentoService(urlService);
 
 			ServiceResponse<?> serviceResponse = documentService.deleteById(selectedDocument.getId());
 
-			if (serviceResponse.getResponseCode() == 200) {
+			ApiResponse<Documento> serviceResponseFromJava = ApiResponse
+					.fromJson(serviceResponse.getResponseBody().toString(), Documento.class);
+
+			if (!serviceResponseFromJava.getStatus().equals("erro")) {
 
 				// Informa sucesso em deletar
 				Node source = (Node) event.getSource();
 				Stage ownerStage = (Stage) source.getScene().getWindow();
-				String toastMsg = "Documento deletado com sucesso!";
+				String toastMsg = serviceResponseFromJava.getMensagem();
 				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.SUCCESS);
 
 				// retira objecto da tabela de documentos tvDocs
@@ -1180,7 +1224,7 @@ public class DocumentController implements Initializable {
 				// Informa erro em deletar
 				Node source = (Node) event.getSource();
 				Stage ownerStage = (Stage) source.getScene().getWindow();
-				String toastMsg = "Erro ao deletar documento!";
+				String toastMsg = serviceResponseFromJava.getMensagem();
 				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
 			}
 		} catch (Exception e) {

@@ -30,7 +30,7 @@ public class ProcessoService {
 
 	public ServiceResponse<?> save(Processo object) {
 		try {
-			URL apiUrl = new URL(localUrl + "/process/create");
+			URL apiUrl = new URL(localUrl + "/processes/upsert-process");
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
 			connection.setRequestMethod("POST");
 			connection.setRequestProperty("Content-Type", "application/json");
@@ -60,7 +60,7 @@ public class ProcessoService {
 			int responseCode = connection.getResponseCode();
 
 			String responseBody;
-			if (responseCode == HttpURLConnection.HTTP_CREATED) {
+			if (responseCode == HttpURLConnection.HTTP_CREATED || responseCode == 200) {
 				// System.out.println("service created");
 				try (BufferedReader br = new BufferedReader(
 						new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
@@ -87,9 +87,9 @@ public class ProcessoService {
 
 	public ServiceResponse<?> update(Processo processo) {
 		try {
-			URL apiUrl = new URL(localUrl + "/process/update?id=" + processo.getId());
+			URL apiUrl = new URL(localUrl + "/processes/upsert-process");
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
-			connection.setRequestMethod("PUT");
+			connection.setRequestMethod("POST");
 			connection.setRequestProperty("Content-Type", "application/json");
 			connection.setDoOutput(true);
 
@@ -112,7 +112,7 @@ public class ProcessoService {
 			// System.out.println("update " + jsonInputString);
 
 			String responseBody;
-			if (responseCode == HttpURLConnection.HTTP_OK) {
+			if (responseCode == HttpURLConnection.HTTP_OK || responseCode == 200) {
 
 				try (BufferedReader br = new BufferedReader(
 						new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
@@ -137,19 +137,21 @@ public class ProcessoService {
 	}
 
 	public Set<Processo> fetchByKeyword(String keyword) {
+		
+		System.out.println("fetch key pro " + keyword);
 
 		try {
-			URL apiUrl = new URL(localUrl + "/process/list-by-keyword?keyword=" + URLEncoder.encode(keyword, "UTF-8"));
+			URL apiUrl = new URL(localUrl + "/processes/search-processes-by-param?param=" + URLEncoder.encode(keyword, "UTF-8"));
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
 			connection.setRequestMethod("GET");
 
 			int responseCode = connection.getResponseCode();
 
 			if (responseCode == HttpURLConnection.HTTP_OK) {
-				System.out.println("HTTP OK");
+				//System.out.println("HTTP OK");
 				return handleSuccessResponse(connection);
 			} else if (responseCode == HttpURLConnection.HTTP_CREATED) {
-				System.out.println("HTTP Created");
+				//System.out.println("HTTP Created");
 				return handleSuccessResponse(connection);
 			} else {
 				handleErrorResponse(connection);
@@ -167,7 +169,7 @@ public class ProcessoService {
 
 	public ServiceResponse<?> deleteById(Long id) {
 		try {
-			URL apiUrl = new URL(localUrl + "/process/delete?id=" + id); // Updated URL
+			URL apiUrl = new URL(localUrl + "/processes/delete-process?id=" + id); // Updated URL
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
 			connection.setRequestMethod("DELETE");
 
@@ -179,6 +181,8 @@ public class ProcessoService {
 					.collect(Collectors.joining("\n"));
 
 			connection.disconnect();
+			
+			System.out.println("delete processo " + responseBody);
 
 			return new ServiceResponse<>(responseCode, responseBody); // Change null to the actual response body if
 																		// needed

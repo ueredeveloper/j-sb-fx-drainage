@@ -28,7 +28,7 @@ public class AnexoService {
 
 	public ServiceResponse<?> save(Anexo object) {
 		try {
-			URL apiUrl = new URL(urlService + "/attachment/create");
+			URL apiUrl = new URL(urlService + "/attachments/upsert-attachment");
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
 			connection.setRequestMethod("POST");
 			connection.setRequestProperty("Content-Type", "application/json");
@@ -37,8 +37,8 @@ public class AnexoService {
 			// Convert Documento object to JSON
 			String jsonInputString = convertObjectToJson(object);
 
-			//System.out.println("save anexo service");
-			//System.out.println(jsonInputString);
+			System.out.println("save anexo service");
+			System.out.println(jsonInputString);
 
 			// Write JSON to request body
 			try (OutputStream os = connection.getOutputStream();
@@ -77,17 +77,17 @@ public class AnexoService {
 
 	public ServiceResponse<?> update(Anexo object) {
 		try {
-			URL apiUrl = new URL(urlService + "/attachment/update?id=" + object.getId());
+			URL apiUrl = new URL(urlService + "/attachments/upsert-attachment");
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
-			connection.setRequestMethod("PUT");
+			connection.setRequestMethod("POST");
 			connection.setRequestProperty("Content-Type", "application/json");
 			connection.setDoOutput(true);
 
 			// Convert Documento object to JSON
 			String jsonInputString = convertObjectToJson(object);
 
-			//System.out.println("update anexo");
-			//System.out.println(jsonInputString);
+			System.out.println("update anexo");
+			System.out.println(jsonInputString);
 
 			// Write JSON to request body
 			try (OutputStream os = connection.getOutputStream();
@@ -101,7 +101,7 @@ public class AnexoService {
 			// System.out.println("update " + jsonInputString);
 
 			String responseBody;
-			if (responseCode == HttpURLConnection.HTTP_OK) {
+			if (responseCode == HttpURLConnection.HTTP_CREATED || responseCode == HttpURLConnection.HTTP_OK) {
 
 				try (BufferedReader br = new BufferedReader(
 						new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
@@ -127,7 +127,7 @@ public class AnexoService {
 
 	public ServiceResponse<?> deleteById(Long id) {
 		try {
-			URL apiUrl = new URL(urlService + "/attachment/delete-by-id?id=" + id); // Updated URL
+			URL apiUrl = new URL(urlService + "/attachments/delete-attachment?id=" + id); // Updated URL
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
 			connection.setRequestMethod("DELETE");
 
@@ -153,17 +153,17 @@ public class AnexoService {
 
 		try {
 			URL apiUrl = new URL(
-					urlService + "/attachment/list-by-keyword?keyword=" + URLEncoder.encode(keyword, "UTF-8"));
+					urlService + "/attachments/search-attachments-by-param?param=" + URLEncoder.encode(keyword, "UTF-8"));
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
 			connection.setRequestMethod("GET");
 
 			int responseCode = connection.getResponseCode();
 
 			if (responseCode == HttpURLConnection.HTTP_OK) {
-				System.out.println("HTTP OK");
+				//System.out.println("HTTP OK");
 				return handleSuccessResponse(connection);
 			} else if (responseCode == HttpURLConnection.HTTP_CREATED) {
-				System.out.println("HTTP Created");
+				//System.out.println("HTTP Created");
 				return handleSuccessResponse(connection);
 			} else {
 				handleErrorResponse(connection);

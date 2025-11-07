@@ -107,34 +107,33 @@ public class AddSubterraneanDetailsController implements Initializable {
 	private JFXTextField tfTotalRequestedConsumption, tfTotalAuthorizedConsumption;
 
 	@FXML
-    private Button btnRefereshSubsystem;
+	private Button btnRefereshSubsystem;
 
-    @FXML
-    private Button btnFillReqFlow;
+	@FXML
+	private Button btnFillReqFlow;
 
-    @FXML
-    private Button btnFillReqTime;
+	@FXML
+	private Button btnFillReqTime;
 
-    @FXML
-    private Button btnFillReqPeriod;
+	@FXML
+	private Button btnFillReqPeriod;
 
+	@FXML
+	private Button btnCalculateAuthTotalConsumption, btnCalculateReqTotalConsumption;
 
-    @FXML
-    private Button btnCalculateAuthTotalConsumption, btnCalculateReqTotalConsumption;	
+	@FXML
+	private Button btnCopyReqDemand;
 
-    @FXML
-    private Button btnCopyReqDemand;
+	@FXML
+	private Button btnFillAuthFlow;
 
-    @FXML
-    private Button btnFillAuthFlow;
+	@FXML
+	private Button btnFillAuthTime;
 
-    @FXML
-    private Button btnFillAuthTime;
+	@FXML
+	private Button btnFillAuthPeriod;
 
-    @FXML
-    private Button btnFillAuthPeriod;
-
-	PurpousesWrapper purpousesWrapper = new PurpousesWrapper(new HashSet<>());
+	PurposesWrapper purposesWrapper = new PurposesWrapper(new HashSet<>());
 
 	DemandsWrapper demandsWrapper = new DemandsWrapper(new HashSet<>());
 
@@ -161,9 +160,9 @@ public class AddSubterraneanDetailsController implements Initializable {
 		cbConcessionaire.getItems().addAll("Sim", "Não");
 
 		// Adiciona cadastro de finalidade
-		addPurpouseRow(0, requestedPurposesGrid, tfTotalRequestedConsumption, btnCalculateReqTotalConsumption,
+		addPurposeRow(0, requestedPurposesGrid, tfTotalRequestedConsumption, btnCalculateReqTotalConsumption,
 				new TipoFinalidade(1L), new Finalidade(new TipoFinalidade(1L)));
-		addPurpouseRow(0, authorizedPurposesGrid, tfTotalAuthorizedConsumption, btnCalculateAuthTotalConsumption,
+		addPurposeRow(0, authorizedPurposesGrid, tfTotalAuthorizedConsumption, btnCalculateAuthTotalConsumption,
 				new TipoFinalidade(2L), new Finalidade(new TipoFinalidade(2L)));
 
 		// Cria lista de demandas requeridas e autorizadas vazias.
@@ -373,7 +372,7 @@ public class AddSubterraneanDetailsController implements Initializable {
 							addDemandFlowLine(gpAuthorizedDemands, demand.getMes(), demand);
 
 						} else {
-							//System.out.println(tfTotalRequestedConsumption.getText());
+							
 							demand.setVazao(Double.parseDouble(tfTotalAuthorizedConsumption.getText()));
 							addDemandFlowLine(gpAuthorizedDemands, demand.getMes(), demand);
 						}
@@ -410,7 +409,7 @@ public class AddSubterraneanDetailsController implements Initializable {
 				selectedValue = rawValue != null ? Integer.parseInt(rawValue) : null;
 
 				if (selectedValue != null) {
-					System.out.println("Selected Value: " + selectedValue);
+					//System.out.println("Selected Value: " + selectedValue);
 				}
 			} catch (NumberFormatException e) {
 				System.err.println("Invalid input: Please enter a valid number.");
@@ -746,8 +745,6 @@ public class AddSubterraneanDetailsController implements Initializable {
 		 */
 		btnRefereshSubsystem.setOnAction(event -> {
 
-			System.out.println("clicked");
-
 			SubsystemCodeAttributes sca = addInterferenceControler.getSubsystemCodeAttributes();
 
 			if (sca.getLatitude() != null && sca.getLongitude() != null) {
@@ -765,26 +762,26 @@ public class AddSubterraneanDetailsController implements Initializable {
 		 */
 		btnCopyReqDemand.setOnMouseClicked(event -> {
 
-			Stream<Finalidade> purpouses = purpousesWrapper.getPurpouses().stream();
+			Stream<Finalidade> purposes = purposesWrapper.getPurposes().stream();
 
-			List<Finalidade> purListType1 = purpouses.filter(d -> d.getTipoFinalidade().getId() == 1L)
+			List<Finalidade> purListType1 = purposes.filter(d -> d.getTipoFinalidade().getId() == 1L)
 					// .sorted(Comparator.comparing(d -> d.getMes()))
 					.collect(Collectors.toList());
 			;
 
-			purpouses = purpousesWrapper.getPurpouses().stream();
+			purposes = purposesWrapper.getPurposes().stream();
 
 			List<Finalidade> purListType2 = new ArrayList<Finalidade>();
 			// 07/02/2025 -> removi pois neste caso não me parece necessário captura o que
 			// já existe nas finalidades autorizadas
 
-			// purpouses.filter(d -> d.getTipoFinalidade().getId() == 2L)
+			// purposes.filter(d -> d.getTipoFinalidade().getId() == 2L)
 			// .sorted(Comparator.comparing(d -> d.getMes()))
 			// .collect(Collectors.toList());
 
 			int[] idxPur = { 0 };
 			// Limpa todas as finalidades
-			purpousesWrapper.getPurpouses().clear();
+			purposesWrapper.getPurposes().clear();
 			// Limpa o GridPane de finalidades autorizadas
 			authorizedPurposesGrid.getChildren().clear();
 
@@ -804,7 +801,6 @@ public class AddSubterraneanDetailsController implements Initializable {
 
 					if (purListType2.get(idxPur[0]).getId() != null) {
 
-						System.out.println("!null id " + purListType2.get(idxPur[0]).getId());
 						// Edita a finalidade autorizada com os valores da finalidade requerida
 						purListType2.get(idxPur[0]).setFinalidade(pur.getFinalidade());
 						purListType2.get(idxPur[0]).setSubfinalidade(pur.getSubfinalidade());
@@ -826,7 +822,7 @@ public class AddSubterraneanDetailsController implements Initializable {
 				}
 
 				// Atualiza o GridPane
-				addPurpouseRow(idxPur[0], authorizedPurposesGrid, tfTotalConsumption, btnCalculateAuthTotalConsumption,
+				addPurposeRow(idxPur[0], authorizedPurposesGrid, tfTotalConsumption, btnCalculateAuthTotalConsumption,
 						new TipoFinalidade(2L), pur);
 
 				idxPur[0]++;
@@ -834,8 +830,8 @@ public class AddSubterraneanDetailsController implements Initializable {
 			});
 
 			// Adiciona as finalidades
-			purpousesWrapper.getPurpouses().addAll(purListType1);
-			purpousesWrapper.getPurpouses().addAll(purListType2);
+			purposesWrapper.getPurposes().addAll(purListType1);
+			purposesWrapper.getPurposes().addAll(purListType2);
 
 			// demandsStream
 			Stream<Demanda> demands = demandsWrapper.getDemands().stream();
@@ -907,7 +903,15 @@ public class AddSubterraneanDetailsController implements Initializable {
 		DemandWrapper demandWrapper = new DemandWrapper(demand);
 		// Listeners
 		tfFlow.textProperty().addListener((observable, oldValue, newValue) -> {
-			demandWrapper.getDemand().setVazao(Double.parseDouble(newValue));
+
+			if (newValue != null && !newValue.trim().isEmpty() ) {
+				demandWrapper.getDemand().setVazao(Double.parseDouble(newValue));
+			} else {
+				Stage ownerStage = (Stage) tfFlow.getScene().getWindow();
+				String toastMsg = "Preencha com número! Não pode ficar vazio!";
+				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+				return;
+			}
 
 		});
 
@@ -933,7 +937,16 @@ public class AddSubterraneanDetailsController implements Initializable {
 		DemandWrapper demandWrapper = new DemandWrapper(demand);
 
 		tfTime.textProperty().addListener((observable, oldValue, newValue) -> {
-			demandWrapper.getDemand().setTempo(Integer.valueOf(newValue));
+
+			if (newValue != null && !newValue.trim().isEmpty() ) {
+				demandWrapper.getDemand().setTempo(Integer.valueOf(newValue));
+			} else {
+
+				Stage ownerStage = (Stage) tfTime.getScene().getWindow();
+				String toastMsg = "Preencha com número! Não pode ficar vazio!";
+				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+				return;
+			}
 
 		});
 	}
@@ -959,7 +972,17 @@ public class AddSubterraneanDetailsController implements Initializable {
 		// Listeners
 
 		tfPeriod.textProperty().addListener((observable, oldValue, newValue) -> {
-			demandWrapper.getDemand().setPeriodo(Integer.valueOf(newValue));
+			if (newValue != null && !newValue.trim().isEmpty() ) {
+				demandWrapper.getDemand().setPeriodo(Integer.valueOf(newValue));
+			}
+
+			else {
+
+				Stage ownerStage = (Stage) tfPeriod.getScene().getWindow();
+				String toastMsg = "Preencha com número! Não pode ficar vazio!";
+				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+				return;
+			}
 
 		});
 	}
@@ -993,15 +1016,51 @@ public class AddSubterraneanDetailsController implements Initializable {
 		DemandWrapper demandWrapper = new DemandWrapper(demand);
 		// Listeners
 		tfFlow.textProperty().addListener((observable, oldValue, newValue) -> {
-			demandWrapper.getDemand().setVazao(Double.parseDouble(newValue));
+			
+			if (newValue != null && !newValue.trim().isEmpty() ) {
+				demandWrapper.getDemand().setVazao(Double.parseDouble(newValue));
+			}
+
+			else {
+
+				Stage ownerStage = (Stage) tfFlow.getScene().getWindow();
+				String toastMsg = "Preencha com número! Não pode ficar vazio!";
+				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+				return;
+			}
 
 		});
 		tfTime.textProperty().addListener((observable, oldValue, newValue) -> {
-			demandWrapper.getDemand().setTempo(Integer.valueOf(newValue));
+			
+			
+			if (newValue != null && !newValue.trim().isEmpty() ) {
+				demandWrapper.getDemand().setTempo(Integer.valueOf(newValue));
+			}
+
+			else {
+
+				Stage ownerStage = (Stage) tfTime.getScene().getWindow();
+				String toastMsg = "Preencha com número! Não pode ficar vazio!";
+				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+				return;
+			}
 
 		});
 		tfPeriod.textProperty().addListener((observable, oldValue, newValue) -> {
-			demandWrapper.getDemand().setPeriodo(Integer.valueOf(newValue));
+			
+			
+			// Se valor vazio ou se valor é letra
+			if (newValue != null && !newValue.trim().isEmpty() ) {
+				demandWrapper.getDemand().setPeriodo(Integer.valueOf(newValue));
+			}
+
+			else {
+
+				Stage ownerStage = (Stage) tfPeriod.getScene().getWindow();
+				String toastMsg = "Preencha com número! Não pode ficar vazio!";
+				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+				return;
+			}
 
 		});
 
@@ -1031,17 +1090,17 @@ public class AddSubterraneanDetailsController implements Initializable {
 	 * Adiciona linhas de finalidades, cada linha tem uma finalidade, subfinalidade,
 	 * quantidade, consumo e total por finalidade.
 	 * 
-	 * index gridPane tfTotalConsumption btnTotalConsumption typeOfPurpouse purpouse
+	 * index gridPane tfTotalConsumption btnTotalConsumption typeOfPurpose purpose
 	 */
-	public void addPurpouseRow(int index, GridPane gridPane, JFXTextField tfTotalConsumption,
-			Button btnTotalConsumption, TipoFinalidade typeOfPurpouse, Finalidade purpouse) {
+	public void addPurposeRow(int index, GridPane gridPane, JFXTextField tfTotalConsumption, Button btnTotalConsumption,
+			TipoFinalidade typeOfPurpose, Finalidade purpose) {
 
-		JFXTextField tfPurpouse = new JFXTextField();
+		JFXTextField tfPurpose = new JFXTextField();
 		JFXTextField tfSubpurpose = new JFXTextField();
 		JFXTextField tfQuantity = new JFXTextField();
 		JFXTextField tfConsumption = new JFXTextField();
 		JFXTextField tfTotal = new JFXTextField();
-		
+
 		Button btnCalculate = new Button();
 		btnCalculate.getStyleClass().addAll("btn-acc");
 		btnCalculate.setStyle("-fx-padding: 0 5 0 5");
@@ -1049,7 +1108,7 @@ public class AddSubterraneanDetailsController implements Initializable {
 		calculateIcon.setGlyphName("CALCULATOR");
 		calculateIcon.getStyleClass().addAll("icons");
 		btnCalculate.setGraphic(calculateIcon);
-		
+
 		Button btnPlus = new Button();
 		btnPlus.getStyleClass().addAll("btn-acc");
 		btnPlus.setStyle("-fx-padding: 0 5 0 5");
@@ -1057,7 +1116,7 @@ public class AddSubterraneanDetailsController implements Initializable {
 		plusIcon.setGlyphName("PLUS");
 		plusIcon.getStyleClass().addAll("icons");
 		btnPlus.setGraphic(plusIcon);
-		
+
 		Button btnMinus = new Button();
 		btnMinus.getStyleClass().addAll("btn-acc");
 		btnMinus.setStyle("-fx-padding: 0 5 0 5");
@@ -1066,46 +1125,45 @@ public class AddSubterraneanDetailsController implements Initializable {
 		minusIcon.getStyleClass().addAll("icons");
 		btnMinus.setGraphic(minusIcon);
 
-
-		PurpouseWrapper purpouseWrapper = new PurpouseWrapper();
+		PurposeWrapper purposeWrapper = new PurposeWrapper();
 
 		// Cria finalidade
-		if (purpouse == null || purpouse.getTipoFinalidade() == null) {
+		if (purpose == null || purpose.getTipoFinalidade() == null) {
 
-			purpouse = new Finalidade(typeOfPurpouse);
+			purpose = new Finalidade(typeOfPurpose);
 
-			purpouseWrapper.setPurpouse(purpouse);
+			purposeWrapper.setPurpose(purpose);
 			// Adiciona finalidade com única na lista (Set)
 
-			purpousesWrapper.getPurpouses().add(purpouseWrapper.getPurpouse());
+			purposesWrapper.getPurposes().add(purposeWrapper.getPurpose());
 
 		} else {
 
-			purpouseWrapper.setPurpouse(purpouse);
+			purposeWrapper.setPurpose(purpose);
 
-			purpousesWrapper.getPurpouses().add(purpouseWrapper.getPurpouse());
+			purposesWrapper.getPurposes().add(purposeWrapper.getPurpose());
 
-			tfPurpouse.setText(purpouseWrapper.getPurpouse().getFinalidade());
-			tfSubpurpose.setText(purpouseWrapper.getPurpouse().getSubfinalidade());
-			if (purpouseWrapper.getPurpouse().getQuantidade() != null) {
-				tfQuantity.setText(purpouseWrapper.getPurpouse().getQuantidade().toString());
+			tfPurpose.setText(purposeWrapper.getPurpose().getFinalidade());
+			tfSubpurpose.setText(purposeWrapper.getPurpose().getSubfinalidade());
+			if (purposeWrapper.getPurpose().getQuantidade() != null) {
+				tfQuantity.setText(purposeWrapper.getPurpose().getQuantidade().toString());
 			}
-			if (purpouseWrapper.getPurpouse().getConsumo() != null) {
-				tfConsumption.setText(purpouseWrapper.getPurpouse().getConsumo().toString());
+			if (purposeWrapper.getPurpose().getConsumo() != null) {
+				tfConsumption.setText(purposeWrapper.getPurpose().getConsumo().toString());
 			}
 
 			// Se o total não foi cadastrado não mostrar
-			if (purpouseWrapper.getPurpouse().getTotal() != null) {
-				tfTotal.setText(purpouseWrapper.getPurpouse().getTotal().toString());
+			if (purposeWrapper.getPurpose().getTotal() != null) {
+				tfTotal.setText(purposeWrapper.getPurpose().getTotal().toString());
 			}
 
 		}
 
-		tfPurpouse.setPrefHeight(40.0);
-		tfPurpouse.setMinHeight(40.00);
-		tfPurpouse.setPrefWidth(200.0);
-		tfPurpouse.getStyleClass().add("text-field-subpurpose");
-		tfPurpouse.setPromptText("Finalidade");
+		tfPurpose.setPrefHeight(40.0);
+		tfPurpose.setMinHeight(40.00);
+		tfPurpose.setPrefWidth(200.0);
+		tfPurpose.getStyleClass().add("text-field-subpurpose");
+		tfPurpose.setPromptText("Finalidade");
 
 		tfSubpurpose.setPrefHeight(40.0);
 		tfSubpurpose.setMinHeight(40.0);
@@ -1131,15 +1189,15 @@ public class AddSubterraneanDetailsController implements Initializable {
 		tfTotal.getStyleClass().add("text-field-subpurpose");
 		tfTotal.setPromptText("Total");
 
-		tfPurpouse.textProperty().addListener((observable, oldValue, newValue) -> {
+		tfPurpose.textProperty().addListener((observable, oldValue, newValue) -> {
 
-			purpouseWrapper.getPurpouse().setFinalidade(newValue);
+			purposeWrapper.getPurpose().setFinalidade(newValue);
 
 			// You can add custom logic here, for example:
 			if (newValue.length() > 70) {
-				// Since you don't have access to an Event, just use the tfPurpouse as the
+				// Since you don't have access to an Event, just use the tfPurpose as the
 				// source
-				Node source = tfPurpouse; // The source is tfPurpouse (JFXTextField)
+				Node source = tfPurpose; // The source is tfPurpose (JFXTextField)
 				Stage ownerStage = (Stage) source.getScene().getWindow();
 
 				// Display toast message
@@ -1151,13 +1209,13 @@ public class AddSubterraneanDetailsController implements Initializable {
 
 		tfSubpurpose.textProperty().addListener((observable, oldValue, newValue) -> {
 
-			purpouseWrapper.getPurpouse().setSubfinalidade(newValue);
+			purposeWrapper.getPurpose().setSubfinalidade(newValue);
 
 			// You can add custom logic here, for example:
 			if (newValue.length() > 70) {
-				// Since you don't have access to an Event, just use the tfPurpouse as the
+				// Since you don't have access to an Event, just use the tfPurpose as the
 				// source
-				Node source = tfSubpurpose; // The source is tfPurpouse (JFXTextField)
+				Node source = tfSubpurpose; // The source is tfPurpose (JFXTextField)
 				Stage ownerStage = (Stage) source.getScene().getWindow();
 
 				// Display toast message
@@ -1169,13 +1227,13 @@ public class AddSubterraneanDetailsController implements Initializable {
 
 		tfQuantity.textProperty().addListener((observable, oldValue, newValue) -> {
 
-			purpouseWrapper.getPurpouse().setQuantidade(Double.parseDouble(newValue));
+			purposeWrapper.getPurpose().setQuantidade(Double.parseDouble(newValue));
 
 			// You can add custom logic here, for example:
 			if (newValue.length() > 30) {
-				// Since you don't have access to an Event, just use the tfPurpouse as the
+				// Since you don't have access to an Event, just use the tfPurpose as the
 				// source
-				Node source = tfSubpurpose; // The source is tfPurpouse (JFXTextField)
+				Node source = tfSubpurpose; // The source is tfPurpose (JFXTextField)
 				Stage ownerStage = (Stage) source.getScene().getWindow();
 
 				// Display toast message
@@ -1187,13 +1245,13 @@ public class AddSubterraneanDetailsController implements Initializable {
 
 		tfConsumption.textProperty().addListener((observable, oldValue, newValue) -> {
 
-			purpouseWrapper.getPurpouse().setConsumo(Double.parseDouble((newValue)));
+			purposeWrapper.getPurpose().setConsumo(Double.parseDouble((newValue)));
 
 			// You can add custom logic here, for example:
 			if (newValue.length() > 30) {
-				// Since you don't have access to an Event, just use the tfPurpouse as the
+				// Since you don't have access to an Event, just use the tfPurpose as the
 				// source
-				Node source = tfSubpurpose; // The source is tfPurpouse (JFXTextField)
+				Node source = tfSubpurpose; // The source is tfPurpose (JFXTextField)
 				Stage ownerStage = (Stage) source.getScene().getWindow();
 
 				// Display toast message
@@ -1205,13 +1263,13 @@ public class AddSubterraneanDetailsController implements Initializable {
 
 		tfTotal.textProperty().addListener((observable, oldValue, newValue) -> {
 
-			purpouseWrapper.getPurpouse().setTotal(Double.parseDouble((newValue)));
+			purposeWrapper.getPurpose().setTotal(Double.parseDouble((newValue)));
 
 			// You can add custom logic here, for example:
 			if (newValue.length() > 30) {
-				// Since you don't have access to an Event, just use the tfPurpouse as the
+				// Since you don't have access to an Event, just use the tfPurpose as the
 				// source
-				Node source = tfTotal; // The source is tfPurpouse (JFXTextField)
+				Node source = tfTotal; // The source is tfPurpose (JFXTextField)
 				Stage ownerStage = (Stage) source.getScene().getWindow();
 
 				// Display toast message
@@ -1226,7 +1284,7 @@ public class AddSubterraneanDetailsController implements Initializable {
 			Double y = Double.parseDouble(tfQuantity.getText());
 
 			Double result = x * y;
-			purpouseWrapper.getPurpouse().setTotal(result);
+			purposeWrapper.getPurpose().setTotal(result);
 
 			tfTotal.setText(result.toString());
 
@@ -1254,7 +1312,7 @@ public class AddSubterraneanDetailsController implements Initializable {
 				}
 			}
 
-			addPurpouseRow(rowIndex + 1, gridPane, tfTotalConsumption, btnTotalConsumption, typeOfPurpouse, null);
+			addPurposeRow(rowIndex + 1, gridPane, tfTotalConsumption, btnTotalConsumption, typeOfPurpose, null);
 
 		});
 
@@ -1270,25 +1328,25 @@ public class AddSubterraneanDetailsController implements Initializable {
 			removeRowAndShift(gridPane, rowIndex);
 
 			// Retrieve the purpose object to be deleted
-			Finalidade purpouseToDelete = purpouseWrapper.getPurpouse();
+			Finalidade purposeToDelete = purposeWrapper.getPurpose();
 
 			// Check if the purpose object and its ID are not null before attempting to
 			// delete
-			if (purpouseToDelete != null && purpouseToDelete.getId() != null) {
-				deletePurpouse(btnMinus, purpouseToDelete);
+			if (purposeToDelete != null && purposeToDelete.getId() != null) {
+				deletePurpose(btnMinus, purposeToDelete);
 			}
 
 			// Remove the purpose from the Set
-			purpousesWrapper.getPurpouses().remove(purpouseToDelete);
+			purposesWrapper.getPurposes().remove(purposeToDelete);
 		});
 
 		btnTotalConsumption.setOnMouseClicked(event -> {
 			// Usando um array para contornar a limitação de variáveis finais
 			final Double[] total = { 0.0 };
 
-			purpousesWrapper.getPurpouses().forEach(p -> {
+			purposesWrapper.getPurposes().forEach(p -> {
 
-				if (p.getTipoFinalidade().getId() == typeOfPurpouse.getId()) {
+				if (p.getTipoFinalidade().getId() == typeOfPurpose.getId()) {
 					Double subtotal = p.getTotal();
 					if (subtotal != null) {
 						total[0] += subtotal;
@@ -1311,13 +1369,13 @@ public class AddSubterraneanDetailsController implements Initializable {
 			Double y = Double.parseDouble(tfQuantity.getText());
 
 			Double result = x * y;
-			purpouseWrapper.getPurpouse().setTotal(result);
+			purposeWrapper.getPurpose().setTotal(result);
 
 			tfTotal.setText(result.toString());
 
 		});
 
-		gridPane.add(tfPurpouse, 0, index);
+		gridPane.add(tfPurpose, 0, index);
 		gridPane.add(tfSubpurpose, 1, index);
 		gridPane.add(tfQuantity, 2, index);
 		gridPane.add(tfConsumption, 3, index);
@@ -1366,27 +1424,27 @@ public class AddSubterraneanDetailsController implements Initializable {
 		}
 	}
 
-	public Set<Finalidade> getPurpouses() {
+	public Set<Finalidade> getPurposes() {
 
-		return purpousesWrapper.getPurpouses();
+		return purposesWrapper.getPurposes();
 	}
 
-	public void setPurpouses(Set<Finalidade> newPurpouses) {
+	public void setPurposes(Set<Finalidade> newPurposes) {
 
 		/**
 		 * Se não houver finalidades cadastradas, adicione uma requerida e uma
 		 * autorizada com valores vazios
 		 */
-		if (newPurpouses.size() == 0) {
-			newPurpouses.add(new Finalidade("", "", 0.0, 0.0, 0.0, null, new TipoFinalidade(1L)));
-			newPurpouses.add(new Finalidade("", "", 0.0, 0.0, 0.0, null, new TipoFinalidade(2L)));
+		if (newPurposes.size() == 0) {
+			newPurposes.add(new Finalidade("", "", 0.0, 0.0, 0.0, null, new TipoFinalidade(1L)));
+			newPurposes.add(new Finalidade("", "", 0.0, 0.0, 0.0, null, new TipoFinalidade(2L)));
 		}
 
 		/*
 		 * Se não tiver sido salvo o tipo de finalidade, adicinar como finalidade
 		 * requerida. Assim o usuário pode ver, editar ou apagar se for o caso
 		 */
-		newPurpouses.forEach(item -> {
+		newPurposes.forEach(item -> {
 			if (item.getTipoFinalidade() == null) {
 				item.setTipoFinalidade(new TipoFinalidade(1L));
 			}
@@ -1394,23 +1452,23 @@ public class AddSubterraneanDetailsController implements Initializable {
 
 		// Busca finalidade requerida, se não houver, adiciona. É preciso have ao menos
 		// uma para que o usuário possa manipular.
-		Finalidade finReq = newPurpouses.stream().filter(obj -> obj.getTipoFinalidade().getId() == 1L).findAny()
+		Finalidade finReq = newPurposes.stream().filter(obj -> obj.getTipoFinalidade().getId() == 1L).findAny()
 				.orElse(null);
 
 		if (finReq == null) {
-			newPurpouses.add(new Finalidade("", "", 0.0, 0.0, 0.0, null, new TipoFinalidade(1L)));
+			newPurposes.add(new Finalidade("", "", 0.0, 0.0, 0.0, null, new TipoFinalidade(1L)));
 		}
 
 		// Busca finalidade autorizada, se não houver, adiciona. É preciso have ao menos
 		// uma para que o usuário possa manipular.
-		Finalidade finAuth = newPurpouses.stream().filter(obj -> obj.getTipoFinalidade().getId() == 2L).findAny()
+		Finalidade finAuth = newPurposes.stream().filter(obj -> obj.getTipoFinalidade().getId() == 2L).findAny()
 				.orElse(null);
 
 		if (finAuth == null) {
-			newPurpouses.add(new Finalidade("", "", 0.0, 0.0, 0.0, null, new TipoFinalidade(2L)));
+			newPurposes.add(new Finalidade("", "", 0.0, 0.0, 0.0, null, new TipoFinalidade(2L)));
 		}
 
-		purpousesWrapper.setPurpouses(newPurpouses);
+		purposesWrapper.setPurposes(newPurposes);
 
 		requestedPurposesGrid.getChildren().clear();
 		authorizedPurposesGrid.getChildren().clear();
@@ -1418,12 +1476,12 @@ public class AddSubterraneanDetailsController implements Initializable {
 		AtomicInteger reqIndex = new AtomicInteger(0);
 		AtomicInteger autIndex = new AtomicInteger(0);
 
-		purpousesWrapper.getPurpouses().forEach(item -> {
+		purposesWrapper.getPurposes().forEach(item -> {
 			if (item.getTipoFinalidade().getId() == 1L) {
-				addPurpouseRow(reqIndex.getAndIncrement(), requestedPurposesGrid, tfTotalRequestedConsumption,
+				addPurposeRow(reqIndex.getAndIncrement(), requestedPurposesGrid, tfTotalRequestedConsumption,
 						btnCalculateReqTotalConsumption, item.getTipoFinalidade(), item);
 			} else {
-				addPurpouseRow(autIndex.getAndIncrement(), authorizedPurposesGrid, tfTotalAuthorizedConsumption,
+				addPurposeRow(autIndex.getAndIncrement(), authorizedPurposesGrid, tfTotalAuthorizedConsumption,
 						btnCalculateAuthTotalConsumption, item.getTipoFinalidade(), item);
 			}
 
@@ -1437,35 +1495,35 @@ public class AddSubterraneanDetailsController implements Initializable {
 		if (demandsWrapper.getDemands() != null) {
 
 			// Demanda por tipo de finalidade requerida
-			List<Demanda> demandsByRequestedTypePurpouse = demandsWrapper.getDemands().stream()
+			List<Demanda> demandsByRequestedTypePurpose = demandsWrapper.getDemands().stream()
 					.filter(d -> d.getTipoFinalidade().getId() == 1L).sorted(Comparator.comparing(d -> d.getMes()))
 					.collect(Collectors.toList());
 
-			demandsByRequestedTypePurpouse.forEach(demand -> {
+			demandsByRequestedTypePurpose.forEach(demand -> {
 				addDemandFlowLine(gpRequestedDemands, demand.getMes(), demand);
 			});
 
-			demandsByRequestedTypePurpouse.forEach(demand -> {
+			demandsByRequestedTypePurpose.forEach(demand -> {
 				addDemandTimeLine(gpRequestedDemands, demand.getMes(), demand);
 			});
 
-			demandsByRequestedTypePurpouse.forEach(demand -> {
+			demandsByRequestedTypePurpose.forEach(demand -> {
 				addDemandPeriodLine(gpRequestedDemands, demand.getMes(), demand);
 			});
 
 			// Demanda por tipo de finalidade autorizada
-			List<Demanda> demandsByAuthorizedTypePurpouse = demandsWrapper.getDemands().stream()
+			List<Demanda> demandsByAuthorizedTypePurpose = demandsWrapper.getDemands().stream()
 					.filter(d -> d.getTipoFinalidade().getId() == 2L).sorted(Comparator.comparing(d -> d.getMes()))
 					.collect(Collectors.toList());
 
-			demandsByAuthorizedTypePurpouse.forEach(demand -> {
+			demandsByAuthorizedTypePurpose.forEach(demand -> {
 				addDemandFlowLine(gpAuthorizedDemands, demand.getMes(), demand);
 			});
 
-			demandsByAuthorizedTypePurpouse.forEach(demand -> {
+			demandsByAuthorizedTypePurpose.forEach(demand -> {
 				addDemandTimeLine(gpAuthorizedDemands, demand.getMes(), demand);
 			});
-			demandsByAuthorizedTypePurpouse.forEach(demand -> {
+			demandsByAuthorizedTypePurpose.forEach(demand -> {
 				addDemandPeriodLine(gpAuthorizedDemands, demand.getMes(), demand);
 			});
 		}
@@ -1501,12 +1559,12 @@ public class AddSubterraneanDetailsController implements Initializable {
 						if (matchingTipoPoco.getId() == 1L || matchingTipoPoco.getId() == 2L) {
 							Set<HidrogeoPoroso> set = findPorosoByCodPlan(subterranea.getCodPlan());
 
-							set.forEach(s -> System.out.println("poroso " + s.getCodPlan()));
+							//set.forEach(s -> System.out.println("poroso " + s.getCodPlan()));
 
 						} else {
 							Set<HidrogeoFraturado> set = findSubsystemFraturadoByCodPlan(subterranea.getCodPlan());
 
-							set.forEach(s -> System.out.println("fraturado " + s.getCodPlan()));
+							//set.forEach(s -> System.out.println("fraturado " + s.getCodPlan()));
 						}
 					}
 
@@ -1521,7 +1579,7 @@ public class AddSubterraneanDetailsController implements Initializable {
 			tfSystemFlow.setText(subterranea.getVazaoSistema().toString());
 			tfSystemGrant.setText(subterranea.getVazaoOutorgavel().toString());
 			tfSystemTest.setText(subterranea.getVazaoTeste().toString());
-			tfStaticLevel.setText(subterranea.getNivelDinamico());
+			tfStaticLevel.setText(subterranea.getNivelEstatico());
 			tfDynamicLevel.setText(subterranea.getNivelDinamico().toString());
 			tfWaterDepth.setText(subterranea.getProfundidade());
 
@@ -1547,7 +1605,7 @@ public class AddSubterraneanDetailsController implements Initializable {
 			String toastMsg = "Selecione o Tipo de Poço, se manual ou tubular!!!";
 			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
 			return null;
-			
+
 		} else if (cbConcessionaire.getSelectionModel().getSelectedItem() == null) {
 			// Alerta (Toast) de sucesso na edi��o
 			Node source = (Node) cbConcessionaire;
@@ -1555,7 +1613,7 @@ public class AddSubterraneanDetailsController implements Initializable {
 			String toastMsg = "Selecione se há uso da Caesb no empreendimento!!!";
 			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
 			return null;
-			
+
 		} else {
 
 			// Set the selected item if it exists
@@ -1589,37 +1647,37 @@ public class AddSubterraneanDetailsController implements Initializable {
 	}
 
 	// Modifica as finalidade dentro de uma expressão lambda.
-	public class PurpouseWrapper {
+	public class PurposeWrapper {
 
-		private Finalidade purpouse;
+		private Finalidade purpose;
 
-		public PurpouseWrapper() {
+		public PurposeWrapper() {
 		}
 
-		public Finalidade getPurpouse() {
-			return purpouse;
+		public Finalidade getPurpose() {
+			return purpose;
 		}
 
-		public void setPurpouse(Finalidade purpouse) {
-			this.purpouse = purpouse;
+		public void setPurpose(Finalidade purpose) {
+			this.purpose = purpose;
 		}
 	}
 
-	public class PurpousesWrapper {
+	public class PurposesWrapper {
 		// Use set para não repetir finalidade
-		Set<Finalidade> purpouses;
+		Set<Finalidade> purposes;
 
-		public PurpousesWrapper(Set<Finalidade> purpouses) {
+		public PurposesWrapper(Set<Finalidade> purposes) {
 			super();
-			this.purpouses = purpouses;
+			this.purposes = purposes;
 		}
 
-		public Set<Finalidade> getPurpouses() {
-			return purpouses;
+		public Set<Finalidade> getPurposes() {
+			return purposes;
 		}
 
-		public void setPurpouses(Set<Finalidade> purpouses) {
-			this.purpouses = purpouses;
+		public void setPurposes(Set<Finalidade> purposes) {
+			this.purposes = purposes;
 		}
 
 	}
@@ -1719,12 +1777,12 @@ public class AddSubterraneanDetailsController implements Initializable {
 
 	}
 
-	public void deletePurpouse(Node source, Finalidade purpouse) {
+	public void deletePurpose(Node source, Finalidade purpose) {
 
 		try {
 			FinalidadeService documentService = new FinalidadeService(urlService);
 
-			ServiceResponse<?> serviceResponse = documentService.deleteById(purpouse.getId());
+			ServiceResponse<?> serviceResponse = documentService.deleteById(purpose.getId());
 
 			if (serviceResponse.getResponseCode() == 200) {
 

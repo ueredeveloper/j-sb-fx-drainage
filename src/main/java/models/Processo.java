@@ -55,10 +55,10 @@ public class Processo {
 		this.usuario = usuario;
 	}
 
-	// Override toString() method to display numero in ComboBox
+	// Método toString para mostrar o logradouro no combobox.
 	@Override
-    public String toString() {
-        return numero; // Display numero in ComboBox
-    }
+	public String toString() {
+		return numero;
+	}
 
 }

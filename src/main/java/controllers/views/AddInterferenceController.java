@@ -32,6 +32,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import models.ApiResponse;
 import models.BaciaHidrografica;
 import models.Demanda;
 import models.Endereco;
@@ -55,7 +56,6 @@ import utilities.URLUtility;
 
 public class AddInterferenceController implements Initializable, MapListener {
 
-	
 	private static AddInterferenceController instance;
 
 	public static AddInterferenceController getInstance() {
@@ -304,8 +304,8 @@ public class AddInterferenceController implements Initializable, MapListener {
 				}
 
 				// Envia as finalidades para o controlador AddSubterraneanDetailsController
-				Set<Finalidade> purpouses = newValue.getFinalidades();
-				addSubterraneanDetailsController.setPurpouses(purpouses);
+				Set<Finalidade> purposes = newValue.getFinalidades();
+				addSubterraneanDetailsController.setPurposes(purposes);
 
 				// Preenchimento das demandas buscadas (AddSubterraneanController)
 				Set<Demanda> demands = newValue.getDemandas();
@@ -520,7 +520,7 @@ public class AddInterferenceController implements Initializable, MapListener {
 			}
 
 		} catch (NumberFormatException e) {
-			System.out.println("Coordenadas inválidas");
+			//System.out.println("Coordenadas inválidas");
 		}
 	}
 
@@ -551,11 +551,11 @@ public class AddInterferenceController implements Initializable, MapListener {
 		String latitude = tfLatitude.getText();
 		String longitude = tfLongitude.getText();
 
-		Set<Finalidade> purpouses = null;
+		Set<Finalidade> purposes = null;
 		Set<Demanda> demands = null;
 
 		if (addSubterraneanDetailsController != null) {
-			purpouses = addSubterraneanDetailsController.getPurpouses();
+			purposes = addSubterraneanDetailsController.getPurposes();
 			demands = addSubterraneanDetailsController.getDemands();
 
 		}
@@ -648,13 +648,11 @@ public class AddInterferenceController implements Initializable, MapListener {
 					return;
 				}
 
-				InterferenciaService service = new InterferenciaService(urlService);
-
 				// ADICIOINAR GEOMETRY, BACIA E UNIDADE HIDROGRÁFICA
 
 				Subterranea newInterference = new Subterranea(Double.parseDouble(latitude),
 						Double.parseDouble(longitude), address, typeOfInterference, typeOfGrant, subtypeOfGrant,
-						processSituation, typeOfAct, purpouses, demands);
+						processSituation, typeOfAct, purposes, demands);
 				// Só precisa enviar um atributo, o objectid.
 				newInterference.setBaciaHidrografica(new BaciaHidrografica(hydrographicBasin.getObjectid()));
 				// Só precisa enviar um atributo, o objectid.
@@ -677,28 +675,37 @@ public class AddInterferenceController implements Initializable, MapListener {
 				newInterference.setSubsistema(subterraneanAttributes.getSubsistema());
 				newInterference.setCodPlan(subterraneanAttributes.getCodPlan());
 
-				ServiceResponse<?> response = service.save(newInterference);
+				InterferenciaService service = new InterferenciaService(urlService);
 
-				if (response.getResponseCode() == 201) {
+				ServiceResponse<?> serviceResponse = service.save(newInterference);
+
+				// Caputura a mensagem do banco de dados e converte para o objeto solicitado, no
+				// caso Usuario, além de status e mensagem.
+				ApiResponse<Subterranea> serviceResponseFromJava = ApiResponse
+						.fromJson(serviceResponse.getResponseBody().toString(), Subterranea.class);
+
+				if (!serviceResponseFromJava.getStatus().equals("erro")) {
 
 					// Mensagem
 					Node source = (Node) event.getSource();
 					Stage ownerStage = (Stage) source.getScene().getWindow();
-					String toastMsg = "Sucesso!";
+					String toastMsg = serviceResponseFromJava.getMensagem();
 					utilities.Toast.makeText(ownerStage, toastMsg, ToastType.SUCCESS);
 
 					// Adiciona resposta na tabela
-					Subterranea newInterferencia = new Gson().fromJson((String) response.getResponseBody(),
-							Subterranea.class);
-					// Adiciona com primeiro na lista
-					tableView.getItems().add(0, newInterferencia);
-					// Seleciona o objeto salvo na table view
-					tableView.getSelectionModel().select(newInterferencia);
+
+					if (serviceResponseFromJava.getObject() instanceof Subterranea) {
+						Subterranea newInterferencia = (Subterranea) serviceResponseFromJava.getObject();
+						// Adiciona com primeiro na lista
+						tableView.getItems().add(0, newInterferencia);
+						// Seleciona o objeto salvo na table view
+						tableView.getSelectionModel().select(newInterferencia);
+					}
 
 				} else {
 					Node source = (Node) event.getSource();
 					Stage ownerStage = (Stage) source.getScene().getWindow();
-					String toastMsg = "Erro!";
+					String toastMsg = serviceResponseFromJava.getMensagem();
 					utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
 
 				}
@@ -866,19 +873,23 @@ public class AddInterferenceController implements Initializable, MapListener {
 				InterferenciaService service = new InterferenciaService(urlService);
 
 				// Requisicao de edicao e reposta
-				ServiceResponse<?> response = service.update(subterranea);
+				ServiceResponse<?> serviceResponse = service.update(subterranea);
 
-				if (response.getResponseCode() == 200) {
+				// Caputura a mensagem do banco de dados e converte para o objeto solicitado, no
+				// caso Usuario, além de status e mensagem.
+				ApiResponse<Subterranea> serviceResponseFromJava = ApiResponse
+						.fromJson(serviceResponse.getResponseBody().toString(), Subterranea.class);
+
+				if (!serviceResponseFromJava.getStatus().equals("erro")) {
 					// Alerta (Toast) de sucesso na edi��o
 					Node source = (Node) event.getSource();
 					Stage ownerStage = (Stage) source.getScene().getWindow();
-					String toastMsg = "Sucesso!";
+					String toastMsg = serviceResponseFromJava.getMensagem();
 					utilities.Toast.makeText(ownerStage, toastMsg, ToastType.SUCCESS);
 
 					tableView.getItems().remove(selectedObject);
 					// Converte objeto editado para Json
-					Interferencia jsonObject = new Gson().fromJson((String) response.getResponseBody(),
-							Interferencia.class);
+					Interferencia jsonObject = serviceResponseFromJava.getObject();
 					// Adiciona objeto editado como primeiro �tem ma fila na table view
 					tableView.getItems().add(0, jsonObject);
 					// Seleciona o objeto editado na table view
@@ -978,14 +989,20 @@ public class AddInterferenceController implements Initializable, MapListener {
 			InterferenciaService service = new InterferenciaService(urlService);
 
 			// É preciso informar o tipo de
-			ServiceResponse<?> response = service.deleteById(selected.getId(), selected.getTipoInterferencia().getId());
+			ServiceResponse<?> serviceResponse = service.deleteById(selected.getId(),
+					selected.getTipoInterferencia().getId());
 
-			if (response.getResponseCode() == 200) {
+			// Caputura a mensagem do banco de dados e converte para o objeto solicitado, no
+			// caso Usuario, além de status e mensagem.
+			ApiResponse<Subterranea> serviceResponseFromJava = ApiResponse
+					.fromJson(serviceResponse.getResponseBody().toString(), Subterranea.class);
+
+			if (!serviceResponseFromJava.getStatus().equals("erro")) {
 
 				// Informa sucesso em deletar
 				Node source = (Node) event.getSource();
 				Stage ownerStage = (Stage) source.getScene().getWindow();
-				String toastMsg = "Ojeto deletado com sucesso!";
+				String toastMsg = serviceResponseFromJava.getMensagem();
 				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.SUCCESS);
 
 				// retira objecto da tabela de documentos tvDocs
@@ -995,7 +1012,7 @@ public class AddInterferenceController implements Initializable, MapListener {
 				// Informa erro em deletar
 				Node source = (Node) event.getSource();
 				Stage ownerStage = (Stage) source.getScene().getWindow();
-				String toastMsg = "Erro ao deletar!";
+				String toastMsg = serviceResponseFromJava.getMensagem();
 				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
 			}
 		} catch (Exception e) {

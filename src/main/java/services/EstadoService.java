@@ -22,9 +22,11 @@ public class EstadoService {
 	}
 
 	public List<Estado> fetchAll() {
+		
+		System.out.println("fetch all states");
 
 		try {
-			URL apiUrl = new URL(localUrl + "/state/find-all");
+			URL apiUrl = new URL(localUrl + "/states/fetch-all-states");
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
 			connection.setRequestMethod("GET");
 

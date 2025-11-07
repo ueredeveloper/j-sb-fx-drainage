@@ -21,15 +21,15 @@ import models.Endereco;
 
 public class EnderecoService {
 
-	private String localUrl;
+	private String url;
 
-	public EnderecoService(String localUrl) {
-		this.localUrl = localUrl;
+	public EnderecoService(String url) {
+		this.url = url;
 	}
 
 	public ServiceResponse<?> save(Endereco endereco) {
 		try {
-			URL apiUrl = new URL(localUrl + "/address/create");
+			URL apiUrl = new URL(url + "/addresses/upsert-address");
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
 			connection.setRequestMethod("POST");
 			connection.setRequestProperty("Content-Type", "application/json");
@@ -37,9 +37,9 @@ public class EnderecoService {
 
 			// Convert Documento object to JSON
 			String jsonInputString = convertObjectToJson(endereco);
-			
-			//System.out.println("save address");
-			//System.out.println(jsonInputString);
+
+			// System.out.println("save address");
+			// System.out.println(jsonInputString);
 
 			// Write JSON to request body
 			try (OutputStream os = connection.getOutputStream();
@@ -51,7 +51,9 @@ public class EnderecoService {
 			int responseCode = connection.getResponseCode();
 
 			String responseBody;
-			if (responseCode == HttpURLConnection.HTTP_CREATED) {
+
+
+			if (responseCode == HttpURLConnection.HTTP_CREATED || responseCode == 200) {
 				// System.out.println("service created");
 				try (BufferedReader br = new BufferedReader(
 						new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
@@ -63,7 +65,7 @@ public class EnderecoService {
 					responseBody = response.toString();
 				}
 			} else {
-				System.out.println("ERROR");
+				System.out.println("Erro na resposta de salvamento do endereço!");
 				handleErrorResponse(connection);
 				responseBody = readErrorStream(connection);
 			}
@@ -72,24 +74,25 @@ public class EnderecoService {
 			return new ServiceResponse<>(responseCode, responseBody);
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("EEEEE EXCETION");
+			System.out.println("Erro ao salvar o endereço");
 			// showAlert("Error saving document", AlertType.ERROR);
 			return null; // Return null if an error occurs
 		}
 	}
 
 	public ServiceResponse<?> update(Endereco endereco) {
+
 		try {
-			URL apiUrl = new URL(localUrl + "/address/update?id=" + endereco.getId());
+			URL apiUrl = new URL(url + "/addresses/upsert-address");
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
-			connection.setRequestMethod("PUT");
+			connection.setRequestMethod("POST");
 			connection.setRequestProperty("Content-Type", "application/json");
 			connection.setDoOutput(true);
 
 			// Convert Documento object to JSON
 			String jsonInputString = convertObjectToJson(endereco);
-			
-			//System.out.println("edited string return");
+
+			//System.out.println("service endereco: edição");
 
 			//System.out.println(jsonInputString);
 
@@ -101,11 +104,9 @@ public class EnderecoService {
 			}
 
 			int responseCode = connection.getResponseCode();
-			
-			//System.out.println("edição res code " + responseCode);
 
 			String responseBody;
-			if (responseCode == HttpURLConnection.HTTP_OK) {
+			if (responseCode == HttpURLConnection.HTTP_OK || responseCode == 200) {
 
 				try (BufferedReader br = new BufferedReader(
 						new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
@@ -117,6 +118,8 @@ public class EnderecoService {
 					responseBody = response.toString();
 				}
 			} else {
+				
+				System.out.println("Erro ao editar o endereço");
 				handleErrorResponse(connection);
 				responseBody = readErrorStream(connection);
 			}
@@ -124,15 +127,18 @@ public class EnderecoService {
 			connection.disconnect();
 			return new ServiceResponse<String>(responseCode, responseBody);
 		} catch (Exception e) {
+			
+			System.out.println("Erro ao editar o endereço");
 			e.printStackTrace();
 			return null; // Return null if an error occurs
 		}
 	}
 
-	public Set<Endereco> fetchAddressByKeyword (String keyword) {
+	public Set<Endereco> fetchAddressByKeyword(String keyword) {
 
 		try {
-			URL apiUrl = new URL(localUrl + "/address/list-by-keyword?keyword=" + URLEncoder.encode(keyword, "UTF-8"));
+			URL apiUrl = new URL(
+					url + "/addresses/search-address-by-param?param=" + URLEncoder.encode(keyword, "UTF-8"));
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
 			connection.setRequestMethod("GET");
 
@@ -160,32 +166,35 @@ public class EnderecoService {
 
 	public ServiceResponse<?> deleteById(Long id) {
 		try {
-			URL apiUrl = new URL(localUrl + "/address/delete?id=" + id); // Updated URL
+			URL apiUrl = new URL(url + "/addresses/delete-address?id=" + id); // Updated URL
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
 			connection.setRequestMethod("DELETE");
 
 			int responseCode = connection.getResponseCode();
+			
+			
 
 			// Read the response body if needed
 			InputStream inputStream = connection.getInputStream();
 			String responseBody = new BufferedReader(new InputStreamReader(inputStream)).lines()
 					.collect(Collectors.joining("\n"));
+			
+			System.out.println(responseCode + " \n" + responseBody);
 
 			connection.disconnect();
-			
-			//System.out.println(responseBody);
+
+			// System.out.println(responseBody);
 
 			return new ServiceResponse<>(responseCode, responseBody); // Change null to the actual response body if
 																		// needed
 		} catch (Exception e) {
 			e.printStackTrace();
-			//System.out.println(e.getMessage());
+			// System.out.println(e.getMessage());
 			// Handle the exception if needed
 			return new ServiceResponse<>(-1, e.getMessage()); // You might want to use a different code for errors
 		}
 	}
-	
-	
+
 	private Set<Endereco> handleSuccessResponse(HttpURLConnection connection) throws IOException {
 		BufferedReader reader = new BufferedReader(
 				new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8));
@@ -197,14 +206,14 @@ public class EnderecoService {
 		}
 
 		reader.close();
-		
+
 		return new Gson().fromJson(response.toString(), new TypeToken<Set<Endereco>>() {
 		}.getType());
 	}
 
 	private void handleErrorResponse(HttpURLConnection connection) throws IOException {
 		String responseMessage = connection.getResponseMessage();
-		System.out.println("Error (method handleErrorRespose, Service Class: " + responseMessage);
+		System.out.println("Erro na edição do endereço: " + responseMessage);
 	}
 
 	private String readErrorStream(HttpURLConnection connection) throws IOException {

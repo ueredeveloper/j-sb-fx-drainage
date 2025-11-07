@@ -18,18 +18,20 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
 import models.Anexo;
+import models.Endereco;
 import models.Processo;
 import services.AnexoService;
 
 public class AttachmentComboBoxController implements Initializable {
 
-	
 	String urlService;
 
 	private JFXComboBox<Anexo> comboBox;
 	ObservableList<Anexo> obsList = FXCollections.observableArrayList();
 	// Objetos buscados no banco de dados. Estes objectos não podem repetir.
 	private Set<Anexo> dbObjects = new HashSet<>();
+
+	Anexo attachment = new Anexo();
 
 	public AttachmentComboBoxController(String urlService, JFXComboBox<Anexo> comboBox) {
 		this.urlService = urlService;
@@ -51,6 +53,7 @@ public class AttachmentComboBoxController implements Initializable {
 		// Preeche com valores do servido atualizando ao digitar
 
 		comboBox.valueProperty().addListener(new ChangeListener<Object>() {
+
 			private String lastSearch = "";
 
 			@Override
@@ -64,32 +67,34 @@ public class AttachmentComboBoxController implements Initializable {
 
 				// Check if the newValue is a Processo or a String
 				if (newValue instanceof Anexo) {
-					Anexo anexo = (Anexo) newValue;
+					Anexo object = (Anexo) newValue;
 
-					if (anexo.getNumero() != null && !anexo.getNumero().isEmpty()) {
+					attachment = object;
+
+					if (object.getNumero() != null && !object.getNumero().isEmpty()) {
 						// Check if the new search term is a continuation of the previous one
-						if (lastSearch.contains(anexo.getNumero()) || anexo.getNumero().contains(lastSearch)) {
+						if (lastSearch.contains(object.getNumero()) || object.getNumero().contains(lastSearch)) {
 							obsList.clear();
 
-							boolean containsSearchTerm = dbObjects.stream().anyMatch(object -> object.getNumero()
-									.toLowerCase().contains(anexo.getNumero().toLowerCase()));
+							boolean containsSearchTerm = dbObjects.stream().anyMatch(
+									item -> item.getNumero().toLowerCase().contains(object.getNumero().toLowerCase()));
 
 							if (containsSearchTerm) {
 								obsList.clear();
 								obsList.addAll(dbObjects);
 							} else {
 								obsList.clear();
-								fetchAndUpdate(anexo.getNumero());
+								fetchAndUpdate(object.getNumero());
 							}
 						}
 
-						lastSearch = anexo.getNumero();
+						lastSearch = object.getNumero();
 
 						// Sort the list to put the selected value at the top
 						obsList.sort((object1, object2) -> {
-							if (object1.getNumero().equalsIgnoreCase(anexo.getNumero())) {
+							if (object1.getNumero().equalsIgnoreCase(object.getNumero())) {
 								return -1;
-							} else if (object2.getNumero().equalsIgnoreCase(anexo.getNumero())) {
+							} else if (object2.getNumero().equalsIgnoreCase(object.getNumero())) {
 								return 1;
 							}
 							return 0;
@@ -125,8 +130,8 @@ public class AttachmentComboBoxController implements Initializable {
 
 			if (!fetchedObjects.isEmpty()) {
 				dbObjects.addAll(fetchedObjects);
-				
-				//Filtra por ids diferentes
+
+				// Filtra por ids diferentes
 				Set<Anexo> filteredUniqueIds = dbObjects.stream()
 						.collect(Collectors.toMap(Anexo::getId, item -> item, (oldValue, newValue) -> newValue))
 						.values().stream().collect(Collectors.toSet());
@@ -164,8 +169,7 @@ public class AttachmentComboBoxController implements Initializable {
 
 	public Anexo getSelectedObject() {
 
-		Anexo object = comboBox.selectionModelProperty().get().isEmpty() ? null : comboBox.getItems().get(0);
-		return object;
+		return attachment;
 	}
 
 	@Override
@@ -193,10 +197,8 @@ public class AttachmentComboBoxController implements Initializable {
 	 * garantindo que apenas uma instância com id nulo (a última) seja mantida. Este
 	 * método também garante que cada id não nulo único apareça apenas uma vez.
 	 * 
-	 *  items
-	 *            ObservableList<Anexo> items a ser filtrada
-	 *  List<Anexo> uma lista filtrada com ids não nulos únicos e, se
-	 *         aplicável, o último item com id nulo.
+	 * items ObservableList<Anexo> items a ser filtrada List<Anexo> uma lista
+	 * filtrada com ids não nulos únicos e, se aplicável, o último item com id nulo.
 	 */
 	public List<Anexo> filterAndMaintainLastNullId(ObservableList<Anexo> items) {
 
@@ -209,7 +211,7 @@ public class AttachmentComboBoxController implements Initializable {
 				.collect(Collectors.toMap(Anexo::getId, // Key: id of the Anexo
 						anexo -> anexo, // Value: Anexo itself
 						(existing, replacement) -> existing // Keep the first occurrence if duplicates are found
-		));
+				));
 
 		// Get the last item with id == null (if it exists)
 		Optional<Anexo> lastNullIdItem = uniqueItems.stream().filter(anexo -> anexo.getId() == null)

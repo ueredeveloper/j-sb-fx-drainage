@@ -34,7 +34,7 @@ public class InterferenciaService {
 
 	public ServiceResponse<?> save(Subterranea obj) {
 		try {
-			URL apiUrl = new URL(localUrl + "/interference/subterranean/create");
+			URL apiUrl = new URL(localUrl + "/interferences/upsert-interference");
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
 			connection.setRequestMethod("POST");
 			connection.setRequestProperty("Content-Type", "application/json");
@@ -43,7 +43,7 @@ public class InterferenciaService {
 			// Convert Documento object to JSON
 			String jsonInputString = convertObjectToJson(obj);
 			
-			//System.out.println("salvar int " + jsonInputString);
+			System.out.println("salvar int " + jsonInputString);
 
 			// Write JSON to request body
 			try (OutputStream os = connection.getOutputStream();
@@ -55,7 +55,7 @@ public class InterferenciaService {
 			int responseCode = connection.getResponseCode();
 
 			String responseBody;
-			if (responseCode == HttpURLConnection.HTTP_CREATED) {
+			if (responseCode == HttpURLConnection.HTTP_CREATED || responseCode == 200) {
 
 				try (BufferedReader br = new BufferedReader(
 						new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
@@ -67,7 +67,7 @@ public class InterferenciaService {
 					responseBody = response.toString();
 				}
 			} else {
-				System.out.println("ERROR");
+				//System.out.println("ERROR");
 				handleErrorResponse(connection);
 				responseBody = readErrorStream(connection);
 			}
@@ -85,16 +85,16 @@ public class InterferenciaService {
 	public ServiceResponse<?> update(Interferencia object) {
 		
 		try {
-			URL apiUrl = new URL(localUrl + "/interference/subterranean/update?id=" + object.getId());
+			URL apiUrl = new URL(localUrl + "/interferences/upsert-interference");
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
-			connection.setRequestMethod("PUT");
+			connection.setRequestMethod("POST");
 			connection.setRequestProperty("Content-Type", "application/json");
 			connection.setDoOutput(true);
 
 			// Convert Documento object to JSON
 			String jsonInputString = convertObjectToJson(object);
 			
-			//System.out.println("editar int " + jsonInputString);
+		    System.out.println("editar int " + jsonInputString);
 
 			// Write JSON to request body
 			try (OutputStream os = connection.getOutputStream();
@@ -106,7 +106,7 @@ public class InterferenciaService {
 			int responseCode = connection.getResponseCode();
 
 			String responseBody;
-			if (responseCode == HttpURLConnection.HTTP_OK) {
+			if (responseCode == HttpURLConnection.HTTP_CREATED || responseCode == 200) {
 
 				try (BufferedReader br = new BufferedReader(
 						new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
@@ -136,7 +136,7 @@ public class InterferenciaService {
 
 		try {
 			URL apiUrl = new URL(
-					localUrl + "/interference/list-by-keyword?keyword=" + URLEncoder.encode(keyword, "UTF-8"));
+					localUrl + "/interferences/search-interferences-by-param?param=" + URLEncoder.encode(keyword, "UTF-8"));
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
 			connection.setRequestMethod("GET");
 
@@ -165,7 +165,7 @@ public class InterferenciaService {
 	public ServiceResponse<?> deleteById(Long id, Long tipoInterferenciaId) {
 
 		try {
-			URL apiUrl = new URL(localUrl + "/interference/delete?id=" + id); // Updated URL
+			URL apiUrl = new URL(localUrl + "/interferences/delete-interference?id=" + id); // Updated URL
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
 			connection.setRequestMethod("DELETE");
 
@@ -228,7 +228,7 @@ public class InterferenciaService {
 		           // System.out.println("Nivel Estatico: " + subterranea.getNivelEstatico());
 		           // System.out.println("Nivel Dinamico: " + subterranea.getNivelDinamico());
 		           // System.out.println("Profundidade: " + subterranea.getProfundidade());
-		           System.out.println("Vazão outorgável" + subterranea.getVazaoOutorgavel());
+		           //System.out.println("Vazão outorgável" + subterranea.getVazaoOutorgavel());
 		            // Access other Subterranea-specific attributes if needed
 		        } else {
 		            System.out.println("Regular Interferencia");

@@ -22,7 +22,7 @@ public class DominioService {
 	public Dominio fetchAllDomainsTables() {
 
 		try {
-			URL apiUrl = new URL(localUrl + "/domain/tables");
+			URL apiUrl = new URL(localUrl + "/domains/fetch-all-domain-tables");
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
 			connection.setRequestMethod("GET");
 

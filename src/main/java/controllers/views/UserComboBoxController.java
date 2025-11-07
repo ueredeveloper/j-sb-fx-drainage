@@ -15,6 +15,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import models.Anexo;
 import models.Usuario;
 import services.UsuarioService;
 
@@ -163,6 +164,9 @@ public class UserComboBoxController {
 	}
 
 	public Usuario getSelectedObject() {
+		
+		System.out.println("usuario: get selected object" + user!=null? ((Usuario) user).getNome(): null);
+
 		return user;
 	}
 

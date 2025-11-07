@@ -20,7 +20,7 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 import models.Documento;
 import models.Usuario;
-import services.DocumentService;
+import services.DocumentoService;
 import services.ServiceResponse;
 import utilities.CpfCnpjFormatter;
 import utilities.URLUtility;
@@ -106,7 +106,7 @@ public class UserDocumentsController implements Initializable {
 
 		try {
 
-			DocumentService documentService = new DocumentService(urlService);
+			DocumentoService documentService = new DocumentoService(urlService);
 			Set<Documento> documents = documentService.fetchDocumentByUserId(userId);
 
 			// Create a list of Document objects
@@ -120,7 +120,7 @@ public class UserDocumentsController implements Initializable {
 
 	@SuppressWarnings("unused")
 	public void deleteDocUserRelation(Long docId, Long usId) {
-		DocumentService documentService = new DocumentService(urlService);
+		DocumentoService documentService = new DocumentoService(urlService);
 		ServiceResponse<?> response = documentService.deleteDocUserRelation(docId, usId);
 
 		///System.out.println(response.getResponseBody()); // 77

@@ -25,7 +25,7 @@ public class HidrogeoPorosoService {
 	public Set<HidrogeoPoroso> findByPoint(String lat, String lng) {
 
 		try {
-			URL apiUrl = new URL(urlService + "/poroso/find-by-point?lat=" + lat + "&" + "lng=" + lng);
+			URL apiUrl = new URL(urlService + "/hydrogeo-poroso/find-by-point?latitude=" + lat + "&" + "longitude=" + lng);
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
 			connection.setRequestMethod("GET");
 
@@ -84,7 +84,7 @@ public class HidrogeoPorosoService {
 	public Set<HidrogeoPoroso> listAll() {
 
 		try {
-			URL apiUrl = new URL(urlService + "/poroso/list-all");
+			URL apiUrl = new URL(urlService + "/hydrogeo-poroso/list-all");
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
 			connection.setRequestMethod("GET");
 
