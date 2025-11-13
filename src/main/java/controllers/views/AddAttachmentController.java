@@ -26,6 +26,7 @@ import javafx.scene.Node;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import models.Anexo;
 import models.ApiResponse;
@@ -120,9 +121,6 @@ public class AddAttachmentController implements Initializable {
 				// Preencher o text field para edição se precisar
 				tfAttachment.setText(newSelection.getAnNumero());
 
-				// Limpa o combobox processo e combobox usuario
-				// cbProcess.getSelectionModel().clearSelection();
-				// cbProcess.setValue(null);
 				processComboBoxController.fillAndSelectComboBoxProcess(
 						new Processo(newSelection.getProcId(), newSelection.getProcNumero()));
 
@@ -159,16 +157,14 @@ public class AddAttachmentController implements Initializable {
 				// haja relacionamentos
 				objects.forEach(att -> {
 
-					System.out.println("tamanho processos " + att.getProcessos().size());
-
-					// Se houver mais de um processo relacionado
-					if (att.getProcessos().size() > 1) {
-
+					/* Se houver mais de um processo relacionado, criará um anexo com processo e usuário 
+					 * para cada processo relacionado
+					 */
+					if (att.getProcessos().size() > 0) {
+						
 						att.getProcessos().forEach(proc -> {
 
 							AnexoDTO anexo = new AnexoDTO(att.getId(), att.getNumero());
-
-							System.out.println("número do processo " + proc.getNumero());
 
 							anexo.setProcId(proc.getId() != null ? proc.getId() : null);
 							anexo.setProcNumero(proc.getNumero() != null ? proc.getNumero() : null);
@@ -178,9 +174,9 @@ public class AddAttachmentController implements Initializable {
 							objectsDTO.add(anexo);
 
 						});
-
+						// Se não houver processo relacionado ao anexo mostra somenteo o anexo
 					} else {
-
+					
 						AnexoDTO anexo = new AnexoDTO(att.getId(), att.getNumero());
 
 						objectsDTO.add(anexo);
@@ -191,8 +187,6 @@ public class AddAttachmentController implements Initializable {
 
 				tableViewObsList.clear();
 
-				System.out.println("adicionados: " + objectsDTO.size());
-
 				tableViewObsList.addAll(objectsDTO);
 
 			} catch (Exception e) {
@@ -201,6 +195,17 @@ public class AddAttachmentController implements Initializable {
 			}
 
 		});
+		
+
+		/*
+		 * Buscar apenas clicando no enter do teclado
+		 */
+		tfSearch.setOnKeyReleased(event -> {
+			if (event.getCode() == KeyCode.ENTER){
+				btnSearch.fire();
+			}
+		});
+		
 
 		btnNew.setOnAction(event -> {
 			clearAllComponents();

@@ -39,8 +39,8 @@ public class ProcessoService {
 			// Convert Documento object to JSON
 			String jsonInputString = convertObjectToJson(object);
 
-			System.out.println("save processo");
-			System.out.println(jsonInputString);
+			//System.out.println("save processo");
+			//System.out.println(jsonInputString);
 			// Escreve o objeto que será persistido para verificações
 			try {
 				Files.write(Paths.get("src/main/resources/test-docs/" + "save-process.json"),
@@ -96,9 +96,9 @@ public class ProcessoService {
 			// Convert Documento object to JSON
 			String jsonInputString = convertObjectToJson(processo);
 
-			System.out.println("update processo");
+			//System.out.println("update processo");
 
-			System.out.println(jsonInputString);
+			//System.out.println(jsonInputString);
 
 			// Write JSON to request body
 			try (OutputStream os = connection.getOutputStream();
@@ -138,7 +138,7 @@ public class ProcessoService {
 
 	public Set<Processo> fetchByKeyword(String keyword) {
 		
-		System.out.println("fetch key pro " + keyword);
+		//System.out.println("fetch key pro " + keyword);
 
 		try {
 			URL apiUrl = new URL(localUrl + "/processes/search-processes-by-param?param=" + URLEncoder.encode(keyword, "UTF-8"));
@@ -182,7 +182,7 @@ public class ProcessoService {
 
 			connection.disconnect();
 			
-			System.out.println("delete processo " + responseBody);
+			//System.out.println("delete processo " + responseBody);
 
 			return new ServiceResponse<>(responseCode, responseBody); // Change null to the actual response body if
 																		// needed

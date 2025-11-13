@@ -39,7 +39,7 @@ public class EnderecoService {
 			String jsonInputString = convertObjectToJson(endereco);
 
 			// System.out.println("save address");
-			// System.out.println(jsonInputString);
+			 //System.out.println(jsonInputString);
 
 			// Write JSON to request body
 			try (OutputStream os = connection.getOutputStream();

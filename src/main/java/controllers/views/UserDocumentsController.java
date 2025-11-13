@@ -1,7 +1,6 @@
 package controllers.views;
 
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Set;
 
@@ -18,11 +17,11 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import models.ApiResponse;
 import models.Documento;
 import models.Usuario;
 import services.DocumentoService;
 import services.ServiceResponse;
-import utilities.CpfCnpjFormatter;
 import utilities.URLUtility;
 
 public class UserDocumentsController implements Initializable {
@@ -49,11 +48,11 @@ public class UserDocumentsController implements Initializable {
 		this.addUserController = addUserController;
 		this.urlService = URLUtility.getURLService();
 	}
-	
-	
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+
+		System.out.println("clear table view document relation with user");
 		tableView.setItems(obsList);
 		tcNumber.setCellValueFactory(new PropertyValueFactory<Documento, String>("numero"));
 		tcNumberSei.setCellValueFactory(new PropertyValueFactory<Documento, String>("numeroSei"));
@@ -90,7 +89,7 @@ public class UserDocumentsController implements Initializable {
 
 	private void handleAction(Documento document, Usuario user) {
 
-		///System.out.println(document.getId() + " " + user.getId());
+		/// System.out.println(document.getId() + " " + user.getId());
 		deleteDocUserRelation(document.getId(), user.getId());
 	}
 
@@ -99,7 +98,14 @@ public class UserDocumentsController implements Initializable {
 	public void updateUser(Usuario user) {
 		this.user = user;
 
-		listDocumentByUserId(user.getId());
+		if (this.user == null) {
+			// Limpa os componentes
+			obsList.clear();
+			tableView.getItems().clear();
+		} else {
+			listDocumentByUserId(user.getId());
+		}
+
 	}
 
 	public void listDocumentByUserId(Long userId) {
@@ -109,7 +115,7 @@ public class UserDocumentsController implements Initializable {
 			DocumentoService documentService = new DocumentoService(urlService);
 			Set<Documento> documents = documentService.fetchDocumentByUserId(userId);
 
-			// Create a list of Document objects
+			// Limpa os componentes
 			obsList.clear();
 			obsList.addAll(documents);
 
@@ -119,33 +125,35 @@ public class UserDocumentsController implements Initializable {
 	}
 
 	@SuppressWarnings("unused")
-	public void deleteDocUserRelation(Long docId, Long usId) {
+	public void deleteDocUserRelation(Long docId, Long userId) {
+
 		DocumentoService documentService = new DocumentoService(urlService);
-		ServiceResponse<?> response = documentService.deleteDocUserRelation(docId, usId);
+		ServiceResponse<?> serviceResponse = documentService.deleteDocUserRelation(docId, userId);
 
-		///System.out.println(response.getResponseBody()); // 77
+		// Caputura a mensagem do banco de dados e converte para o objeto solicitado, no
+		// caso Usuario, além de status e mensagem.
+		ApiResponse<Documento> serviceResponseFromJava = ApiResponse
+				.fromJson(serviceResponse.getResponseBody().toString(), Documento.class);
 
-		// Check if the response body contains the deleted document ID (e.g., 77)
-		Long deletedDocId = Long.parseLong((String) response.getResponseBody());
+		if (!serviceResponseFromJava.getStatus().equals("erro")) {
 
-		if (deletedDocId != null) {
+			Documento serviceResponseDoc = serviceResponseFromJava.getObject();
+
+			System.out.println("remove doc id " + serviceResponseDoc.getId());
 
 			// Iterate over the observable list to find and remove the object
-			obsList.removeIf(document -> document.getId().equals(deletedDocId));
-
-			// Optional: If you want to print the updated list
-		//	/System.out.println("Updated Observable List: " + obsList);
+			obsList.removeIf(document -> document.getId().equals(serviceResponseDoc.getId()));
 
 			// Success toast message
 			Node source = tableView; // The source is tfPurpouse (JFXTextField)
 			Stage ownerStage = (Stage) source.getScene().getWindow();
-			String toastMsg = "Relacionamento deletado !!!";
+			String toastMsg = serviceResponseFromJava.getMensagem();
 			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.SUCCESS);
 		} else {
 			// Error toast message if the document was not found
 			Node source = tableView; // The source is tfPurpouse (JFXTextField)
 			Stage ownerStage = (Stage) source.getScene().getWindow();
-			String toastMsg = "Relacionamento não encontrado !!!";
+			String toastMsg = serviceResponseFromJava.getMensagem();
 			utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
 		}
 	}

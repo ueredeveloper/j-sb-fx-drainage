@@ -99,7 +99,7 @@ public class UserComboBoxController {
 
 					}
 				} else if (newValue instanceof String) {
-					// Handle the case where newValue is a String (when the user is typing)
+					// Handle the case where newValue is a String (when the  is typing)
 					String searchText = (String) newValue;
 					fetchAndUpdate(searchText);
 				}
@@ -165,12 +165,14 @@ public class UserComboBoxController {
 
 	public Usuario getSelectedObject() {
 		
-		System.out.println("usuario: get selected object" + user!=null? ((Usuario) user).getNome(): null);
-
+		System.out.println(user.getCpfCnpj());
 		return user;
 	}
 
 	public void fillAndSelectComboBox(Usuario object) {
+	
+		user = object;
+		
 		ObservableList<Usuario> newObsList = FXCollections.observableArrayList();
 		comboBox.setItems(newObsList);
 

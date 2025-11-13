@@ -44,6 +44,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -320,6 +321,17 @@ public class DocumentController implements Initializable {
 		btnViews.setOnAction(event -> showDocumentView());
 		btnSave.setOnAction(event -> saveDocument(event));
 		btnSearch.setOnAction(event -> searchDocument(event));
+		
+		/*
+		 * Buscar apenas clicando no enter do teclado
+		 */
+		tfSearch.setOnKeyReleased(event -> {
+			if (event.getCode() == KeyCode.ENTER){
+				btnSearch.fire();
+			}
+		});
+		
+		
 		btnDelete.setOnAction(event -> deleteDocument(event));
 		btnEdit.setOnAction(event -> editDocument(event));
 
@@ -778,10 +790,20 @@ public class DocumentController implements Initializable {
 	public void showDocumentView() {
 		try {
 			Documento selectedDocument = tvDocs.getSelectionModel().getSelectedItem();
+			
+			
+			if (selectedDocument==null ) {
+				// Informa salvamento com sucesso
+				Node source = (Node) tfLatitude;
+				Stage ownerStage = (Stage) source.getScene().getWindow();
+				String toastMsg = "Escolha um documento !!!";
+				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.WARNING);
+
+				return;
+			}
 
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/DocumentView.fxml"));
 
-			System.out.println(selectedDocument.getEndereco().getBairro());
 			DocumentViewController docViewController = new DocumentViewController(selectedDocument, templates);
 			loader.setController(docViewController);
 
@@ -816,11 +838,11 @@ public class DocumentController implements Initializable {
 
 			String keyword = tfSearch.getText();
 
-			Set<Documento> documentos = documentService.fetchByParam(keyword);
+			Set<Documento> documents = documentService.fetchByParam(keyword);
 
 			// Create a list of Document objects
 			obsListDocs.clear();
-			obsListDocs.addAll(documentos);
+			obsListDocs.addAll(documents);
 			cbDocType.setValue(obsDocumentTypes.get(0));
 
 		} catch (Exception e) {

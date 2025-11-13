@@ -23,6 +23,7 @@ import javafx.scene.Node;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import models.Anexo;
 import models.ApiResponse;
@@ -127,6 +128,7 @@ public class AddProcessController implements Initializable {
 				}
 
 				if (newSelection.getUsuario() != null) {
+					
 					userComboBoxController.fillAndSelectComboBox(newSelection.getUsuario());
 				} else {
 					userComboBoxController.fillAndSelectComboBox(null);
@@ -169,6 +171,17 @@ public class AddProcessController implements Initializable {
 			}
 
 		});
+		
+
+		/*
+		 * Buscar apenas clicando no enter do teclado
+		 */
+		tfSearch.setOnKeyReleased(event -> {
+			if (event.getCode() == KeyCode.ENTER){
+				btnSearch.fire();
+			}
+		});
+		
 
 		btnSave.setOnAction(event -> {
 			saveProcess(event);
@@ -191,6 +204,7 @@ public class AddProcessController implements Initializable {
 		tfProcess.setText(process.getNumero());
 
 		if (process.getUsuario() != null) {
+			
 			this.userComboBoxController.fillAndSelectComboBox(process.getUsuario());
 		}
 
@@ -288,9 +302,7 @@ public class AddProcessController implements Initializable {
 				}
 
 			} else {
-				// adiconar alerta (Toast) de erro
-				// System.out.println(serviceResponse.getResponseCode());
-
+			
 				// Informa salvamento com sucesso
 				Node source = (Node) event.getSource();
 				Stage ownerStage = (Stage) source.getScene().getWindow();
@@ -393,9 +405,7 @@ public class AddProcessController implements Initializable {
 					}
 
 				} else {
-					// adiconar alerta (Toast) de erro
-					// System.out.println(serviceResponse.getResponseCode());
-
+					
 					// Informa salvamento com sucesso
 					Node source = (Node) event.getSource();
 					Stage ownerStage = (Stage) source.getScene().getWindow();
@@ -425,8 +435,9 @@ public class AddProcessController implements Initializable {
 			// caso Usuario, além de status e mensagem.
 			ApiResponse<Processo> serviceResponseFromJava = ApiResponse
 					.fromJson(serviceResponse.getResponseBody().toString(), Processo.class);
+			
 
-			if (!serviceResponseFromJava.getMensagem().equals("erro")) {
+			if (!serviceResponseFromJava.getStatus().equals("erro")) {
 				// Informa sucesso em deletar
 				Node source = (Node) event.getSource();
 				Stage ownerStage = (Stage) source.getScene().getWindow();
@@ -438,7 +449,6 @@ public class AddProcessController implements Initializable {
 
 			} else {
 				
-				System.out.println("Else deleção processo");
 				// Informa erro em deletar
 				Node source = (Node) event.getSource();
 				Stage ownerStage = (Stage) source.getScene().getWindow();

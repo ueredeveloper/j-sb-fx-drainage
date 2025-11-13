@@ -118,7 +118,8 @@ public class DocumentViewController implements Initializable {
 				}
 			});
 		});
-
+		
+		
 		tfDocument.setText(
 				"Número: " + this.selectedDocument.getNumero() + " | Sei: " + this.selectedDocument.getNumeroSei());
 		tfAddress.setText(this.selectedDocument.getEnderecoLogradouro());

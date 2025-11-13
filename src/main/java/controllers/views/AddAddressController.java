@@ -25,6 +25,7 @@ import javafx.scene.Node;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import models.ApiResponse;
 import models.Endereco;
@@ -146,7 +147,6 @@ public class AddAddressController implements Initializable {
 
 		btnClose.setOnAction(e -> {
 			ttClose.play();
-			//System.out.println("bnt close " + this.address.getBairro());
 			this.documentController.fillAndSelectComboBoxAddress(this.address);
 
 		});
@@ -156,6 +156,18 @@ public class AddAddressController implements Initializable {
 		btnDelete.setOnAction(event -> delete(event));
 		btnNew.setOnAction(e -> clearAllComponents());
 		btnSearch.setOnAction(event -> searchByKeyword(event));
+		
+
+		/*
+		 * Buscar apenas clicando no enter do teclado
+		 */
+		tfSearch.setOnKeyReleased(event -> {
+			if (event.getCode() == KeyCode.ENTER){
+				btnSearch.fire();
+			}
+		});
+		
+		
 
 		if (address != null) {
 			obsList.clear();

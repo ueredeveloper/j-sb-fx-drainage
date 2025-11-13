@@ -14,6 +14,8 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import javax.swing.border.CompoundBorder;
+
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 
@@ -43,6 +45,7 @@ import services.FinalidadeService;
 import services.HidrogeoFraturadoService;
 import services.HidrogeoPorosoService;
 import services.ServiceResponse;
+import utilities.SortPurposes;
 import utilities.URLUtility;
 
 public class AddSubterraneanDetailsController implements Initializable {
@@ -1131,12 +1134,11 @@ public class AddSubterraneanDetailsController implements Initializable {
 		if (purpose == null || purpose.getTipoFinalidade() == null) {
 
 			purpose = new Finalidade(typeOfPurpose);
-
+			
 			purposeWrapper.setPurpose(purpose);
 			// Adiciona finalidade com única na lista (Set)
-
 			purposesWrapper.getPurposes().add(purposeWrapper.getPurpose());
-
+			
 		} else {
 
 			purposeWrapper.setPurpose(purpose);
@@ -1430,6 +1432,9 @@ public class AddSubterraneanDetailsController implements Initializable {
 	}
 
 	public void setPurposes(Set<Finalidade> newPurposes) {
+		
+		// Ordenar para listar primeiro abastecimento humano, depois criação de animais e depois as outras
+		newPurposes = SortPurposes.orderByPurpouses(newPurposes);
 
 		/**
 		 * Se não houver finalidades cadastradas, adicione uma requerida e uma
@@ -1441,7 +1446,7 @@ public class AddSubterraneanDetailsController implements Initializable {
 		}
 
 		/*
-		 * Se não tiver sido salvo o tipo de finalidade, adicinar como finalidade
+		 * Se não tiver sido salvo o tipo de finalidade, adicionar como finalidade
 		 * requerida. Assim o usuário pode ver, editar ou apagar se for o caso
 		 */
 		newPurposes.forEach(item -> {
@@ -1467,7 +1472,7 @@ public class AddSubterraneanDetailsController implements Initializable {
 		if (finAuth == null) {
 			newPurposes.add(new Finalidade("", "", 0.0, 0.0, 0.0, null, new TipoFinalidade(2L)));
 		}
-
+	
 		purposesWrapper.setPurposes(newPurposes);
 
 		requestedPurposesGrid.getChildren().clear();
@@ -1639,6 +1644,9 @@ public class AddSubterraneanDetailsController implements Initializable {
 			subterraneanAttributes.setSistema(cbSystem.getSelectionModel().getSelectedItem());
 			subterraneanAttributes.setSubsistema(cbSubsystem.getSelectionModel().getSelectedItem());
 			subterraneanAttributes.setCodPlan(tfCodeSystem.getText());
+			
+			subterraneanAttributes.setFinalidades(purposesWrapper.getPurposes());
+			subterraneanAttributes.setDemandas(demandsWrapper.getDemands());
 
 			return subterraneanAttributes;
 

@@ -30,6 +30,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import models.ApiResponse;
@@ -354,6 +355,17 @@ public class AddInterferenceController implements Initializable, MapListener {
 		btnSave.setOnAction(event -> save(event));
 		btnUpdate.setOnAction(event -> update(event));
 		btnSearch.setOnAction(event -> fetchByKeyword(event));
+		
+		/*
+		 * Buscar apenas clicando no enter do teclado
+		 */
+		tfSearch.setOnKeyReleased(event -> {
+			if (event.getCode() == KeyCode.ENTER){
+				btnSearch.fire();
+			}
+		});
+		
+		
 		btnDelete.setOnAction(event -> delete(event));
 		btnNew.setOnAction(event -> clearAllComponents());
 		btnRefresh.setOnAction(event -> {
@@ -361,7 +373,8 @@ public class AddInterferenceController implements Initializable, MapListener {
 			String lat = tfLatitude.getText();
 			String lng = tfLongitude.getText();
 
-			if (lat != null && lng != null) {
+			if (lat != null && !lat.trim().isEmpty() && lng != null && !lng.trim().isEmpty()) {
+
 				Set<BaciaHidrografica> basis = findBhByPoint(lat, lng);
 
 				// Iterar e no primeiro resultado buscar este valor na observable list e
@@ -401,8 +414,8 @@ public class AddInterferenceController implements Initializable, MapListener {
 				// Informa sucesso em deletar
 				Node source = (Node) tfLatitude;
 				Stage ownerStage = (Stage) source.getScene().getWindow();
-				String toastMsg = "Preencha as coordenadas para buscar a bacia hidrográfica !!!";
-				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.WARNING);
+				String toastMsg = "Preencha as coordenadas !!!";
+				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
 			}
 
 		});
@@ -520,7 +533,7 @@ public class AddInterferenceController implements Initializable, MapListener {
 			}
 
 		} catch (NumberFormatException e) {
-			//System.out.println("Coordenadas inválidas");
+			// System.out.println("Coordenadas inválidas");
 		}
 	}
 
@@ -863,6 +876,8 @@ public class AddInterferenceController implements Initializable, MapListener {
 			subterranea.setSistema(subterraneanAttributes.getSistema());
 			subterranea.setSubsistema(subterraneanAttributes.getSubsistema());
 			subterranea.setCodPlan(subterraneanAttributes.getCodPlan());
+			subterranea.setFinalidades(subterraneanAttributes.getFinalidades());
+			subterranea.setDemandas(subterraneanAttributes.getDemandas());
 
 			// Só precisa enviar um atributo, o objectid.
 			subterranea.setBaciaHidrografica(new BaciaHidrografica(hydrographicBasin.getObjectid()));

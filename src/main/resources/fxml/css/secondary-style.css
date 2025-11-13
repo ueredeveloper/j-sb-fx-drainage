@@ -117,6 +117,12 @@
 
 .combo-box .list-cell {
 	-fx-text-fill: -fx-text-inner-color; /* texto na lista do combobox */
+	
+}
+.combo-box-searchable .list-view {
+	-fx-min-height: 200px;
+	-fx-pref-height: 200px;
+	-fx-max-height: 200px;
 }
 
 .text-field {
@@ -184,4 +190,6 @@
     -fx-pref-width: 200px;   /* Preferred width */
     /* Add any other styles as needed */
 }
+
+
 

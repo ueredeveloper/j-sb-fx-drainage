@@ -6,7 +6,6 @@ import java.text.ParseException;
 import java.util.ResourceBundle;
 import java.util.Set;
 
-import com.google.gson.Gson;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
@@ -27,6 +26,7 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import models.ApiResponse;
@@ -149,6 +149,19 @@ public class AddUserController implements Initializable {
 		});
 
 		btnSearch.setOnAction(event -> searchByKeyword(event));
+		
+
+		/*
+		 * Buscar apenas clicando no enter do teclado
+		 */
+		tfSearch.setOnKeyReleased(event -> {
+			if (event.getCode() == KeyCode.ENTER){
+				btnSearch.fire();
+			}
+		});
+		
+		
+		
 		btnSave.setOnAction(event -> save(event));
 		btnEdit.setOnAction(event -> update(event));
 		btnDelete.setOnAction(event -> delete(event));
@@ -367,6 +380,8 @@ public class AddUserController implements Initializable {
 	}
 
 	public void searchByKeyword(ActionEvent event) {
+
+		userDocumentsController.updateUser(null);
 
 		try {
 

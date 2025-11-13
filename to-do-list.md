@@ -330,5 +330,10 @@ mvn clean package -DskipTests -Dmaven.javadoc.skip=true
 
 ## 07/11/2025
 - [] Chave única no número do processo e anexo
-- [] Ao selecionar um documento, o proceso e anexo não são selecionados, apesar de aparecerem no combobox.
+- [X] Ao selecionar um documento, o proceso e anexo não são selecionados, apesar de aparecerem no combobox.
 - [] Verificar a deleção do relacionamento entre documento e usuário na tela usuário
+
+## 12/11/2025
+- [] Adição de Finalidades
+	Quando na edição de uma interferência não está permitindo adicionar uma finalidade e editar. A finalidade
+	adicionada não é salva.

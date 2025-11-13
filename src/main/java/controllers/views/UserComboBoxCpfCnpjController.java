@@ -37,7 +37,7 @@ public class UserComboBoxCpfCnpjController {
 
 		comboBox.setItems(obsList);
 		comboBox.setEditable(true);
-
+		
 		utilities.FxUtilComboBoxSearchable.autoCompleteComboBoxPlus(comboBox,
 
 				(typedText, itemToCompare) -> {

@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -42,7 +43,7 @@ public class UsuarioService {
 			// Convert Documento object to JSON
 			String jsonInputString = convertObjectToJson(toSaveObject);
 
-			// System.out.println("save usuario " + jsonInputString);
+			//System.out.println("save usuario " + jsonInputString);
 
 			// Write JSON to request body
 			try (OutputStream os = connection.getOutputStream();
@@ -93,7 +94,7 @@ public class UsuarioService {
 			// Convert Documento object to JSON
 			String jsonInputString = convertObjectToJson(toUpdateObject);
 
-			System.out.println(jsonInputString);
+			//System.out.println("update usuario " + jsonInputString);
 
 			// Write JSON to request body
 			try (OutputStream os = connection.getOutputStream();
@@ -104,7 +105,7 @@ public class UsuarioService {
 
 			int responseCode = connection.getResponseCode();
 
-			System.out.println("update user res code " + responseCode);
+			//System.out.println("update user res code " + responseCode);
 
 			String responseBody;
 			if (responseCode == HttpURLConnection.HTTP_OK || responseCode == 200) {
@@ -144,7 +145,7 @@ public class UsuarioService {
 			String responseBody = new BufferedReader(new InputStreamReader(inputStream)).lines()
 					.collect(Collectors.joining("\n"));
 			
-			System.out.println(responseCode + responseBody);
+			//System.out.println(responseCode + responseBody);
 
 			connection.disconnect();
 
@@ -159,8 +160,6 @@ public class UsuarioService {
 
 	public Set<Usuario> listByName(String keyword) {
 		
-		System.out.println("fetch by name " + keyword);
-
 		try {
 			URL apiUrl = new URL(url + "/users/search-users-by-param?param=" + URLEncoder.encode(keyword, "UTF-8"));
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
@@ -188,10 +187,10 @@ public class UsuarioService {
 		return null;
 	}
 
-	public Set<String> listByCpfCnpj(String keyword) {
-
+	public Set<String> listByCpfCnpj(String keyword) throws UnsupportedEncodingException {
+	
 		try {
-			URL apiUrl = new URL(url + "/users/search-users-by-param?param=" + URLEncoder.encode(keyword, "UTF-8"));
+			URL apiUrl = new URL(url + "/users/search-users-by-cpf-cnpj?param=" + URLEncoder.encode(keyword, "UTF-8"));
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
 			connection.setRequestMethod("GET");
 
@@ -210,7 +209,7 @@ public class UsuarioService {
 			connection.disconnect();
 		} catch (Exception e) {
 			e.printStackTrace();
-			// System.out.println("serv save e print ");
+			
 
 			// showAlert("Erro na busca de algum documento", AlertType.ERROR);
 		}
