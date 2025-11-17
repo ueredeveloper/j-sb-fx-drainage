@@ -1,10 +1,11 @@
 /**
 * Assunto do parecer.
-* @nome Despacho de Outorga Prévia
-* @descricao Assunto do Despacho
-* @diretorio 1
-* @arquivo subject-view.js
 * @id 
+* @nome Despacho de Outorga Prévia
+* @arquivo subject-view.js
+* @diretorio 1
+* @descricao Assunto do Despacho
+
 */
 
 class SubjectView {

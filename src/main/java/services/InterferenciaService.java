@@ -133,6 +133,8 @@ public class InterferenciaService {
 	}
 
 	public Set<Interferencia> fetchByKeyword(String keyword) {
+		
+		System.out.println("interfernecia ,fetch by keyword ");
 
 		try {
 			URL apiUrl = new URL(
@@ -211,7 +213,8 @@ public class InterferenciaService {
 		// Parse the string as a JsonArray
 		JsonArray jsonArray = JsonParser.parseString(json).getAsJsonArray();
 		
-		//System.out.println(jsonArray);
+		
+	System.out.println("interferencia fetch by key \n" + jsonArray);
 
 		Gson gson = new GsonBuilder().registerTypeAdapter(Interferencia.class, new InterferenciaTypeAdapter()).create();
 

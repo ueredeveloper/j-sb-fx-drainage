@@ -40,8 +40,8 @@ public class DocumentoService {
 			// Convert Documento object to JSON
 			String jsonInputString = convertObjectToJson(documento);
 			
-			//System.out.println("save doc");
-			//System.out.println(jsonInputString);
+		System.out.println("save doc");
+			System.out.println(jsonInputString);
 			
 			// Write JSON to request body
 			try (OutputStream os = connection.getOutputStream();
@@ -93,9 +93,9 @@ public class DocumentoService {
 			// Convert Documento object to JSON
 			String jsonInputString = convertObjectToJson(documento);
 			
-			//System.out.println("update doc");
+			System.out.println("update doc");
 			
-		   // System.out.println(jsonInputString);
+		    System.out.println(jsonInputString);
 
 			// Write JSON to request body
 			try (OutputStream os = connection.getOutputStream();

@@ -135,6 +135,8 @@ public class EnderecoService {
 	}
 
 	public Set<Endereco> fetchAddressByKeyword(String keyword) {
+		
+		System.out.println("endereco fetch by key");
 
 		try {
 			URL apiUrl = new URL(
