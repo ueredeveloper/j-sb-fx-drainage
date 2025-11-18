@@ -77,17 +77,12 @@ public class MapController implements Initializable, TextFieldsListener {
 
 		
 		mapView = new MapView();
-<<<<<<< HEAD
-		
-		// Inicialização assíncrona
-        mapView.initialize();
-=======
+
 
 		// Inicialização assíncrona
 		mapView.initialize();
 
 		// mapView.initialize(Configuration.builder().showZoomControls(true).build());
->>>>>>> a9b082bb5e27d221bca196408be5f0c2d40dad20
 
 		// Wait until map is ready
 		mapView.initializedProperty().addListener((obs, oldVal, newVal) -> {
