@@ -81,8 +81,7 @@ public class Interferencia {
 		this.finalidades = finalidades;
 		this.demandas = demandas;
 	}
-	
-	
+
 	public Interferencia(Long id, Double latitude, Double longitude, String geometry, Endereco endereco,
 			TipoInterferencia tipoInterferencia, TipoOutorga tipoOutorga, SubtipoOutorga subtipoOutorga,
 			SituacaoProcesso situacaoProcesso, TipoAto tipoAto, BaciaHidrografica baciaHidrografica,

@@ -9,8 +9,6 @@ import javafx.scene.input.KeyEvent;
 
 public class FxUtilComboBoxSearchable {
 
-	
-	
 	public interface AutoCompleteComparator<T> {
 		boolean matches(String typedText, T objectToCompare);
 	}
@@ -19,11 +17,15 @@ public class FxUtilComboBoxSearchable {
 		ObservableList<T> data = comboBox.getItems();
 
 		comboBox.setEditable(true);
+		
+		comboBox.getStyleClass().add("combo-box-searchable");
+		
 		comboBox.getEditor().focusedProperty().addListener(observable -> {
 			if (comboBox.getSelectionModel().getSelectedIndex() < 0) {
 				comboBox.getEditor().setText(null);
 			}
 		});
+		
 		comboBox.addEventHandler(KeyEvent.KEY_PRESSED, t -> comboBox.hide());
 		comboBox.addEventHandler(KeyEvent.KEY_RELEASED, new EventHandler<KeyEvent>() {
 

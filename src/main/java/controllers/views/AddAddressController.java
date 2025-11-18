@@ -25,7 +25,9 @@ import javafx.scene.Node;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
+import models.ApiResponse;
 import models.Endereco;
 import models.Estado;
 import services.EnderecoService;
@@ -50,8 +52,6 @@ public class AddAddressController implements Initializable {
 	@FXML
 	private JFXTextField tfCity;
 
-	@FXML
-	private JFXTextField tfArea;
 
 	@FXML
 	private JFXComboBox<Estado> cbState;
@@ -92,7 +92,7 @@ public class AddAddressController implements Initializable {
 	private String urlService;
 	private TranslateTransition ttClose;
 
-	Endereco object;
+	Endereco address;
 
 	ProcessComboBoxController processCbController;
 	UserComboBoxController userComboBoxController;
@@ -101,10 +101,10 @@ public class AddAddressController implements Initializable {
 
 	ObservableList<Endereco> obsList = FXCollections.observableArrayList();
 
-	public AddAddressController(DocumentController documentController, Endereco object, String urlService,
+	public AddAddressController(DocumentController documentController, Endereco address, String urlService,
 			TranslateTransition ttClose) {
 		this.documentController = documentController;
-		this.object = object;
+		this.address = address;
 		this.urlService = URLUtility.getURLService();
 		this.ttClose = ttClose;
 
@@ -131,6 +131,8 @@ public class AddAddressController implements Initializable {
 			public void changed(ObservableValue<? extends Endereco> observable, Endereco oldValue, Endereco newValue) {
 				if (newValue != null) {
 					// Perform actions with the selected Endereco object
+					
+					address = newValue;
 
 					tfAddress.setText(newValue.getLogradouro());
 					tfNeighborhood.setText(newValue.getBairro());
@@ -146,9 +148,7 @@ public class AddAddressController implements Initializable {
 
 		btnClose.setOnAction(e -> {
 			ttClose.play();
-
-			Endereco seletedObject = tableView.getSelectionModel().getSelectedItem();
-			this.documentController.fillAndSelectComboBoxAddress(seletedObject);
+			this.documentController.fillAndSelectComboBoxAddress(this.address);
 
 		});
 
@@ -157,11 +157,23 @@ public class AddAddressController implements Initializable {
 		btnDelete.setOnAction(event -> delete(event));
 		btnNew.setOnAction(e -> clearAllComponents());
 		btnSearch.setOnAction(event -> searchByKeyword(event));
+		
 
-		if (object != null) {
+		/*
+		 * Buscar apenas clicando no enter do teclado
+		 */
+		tfSearch.setOnKeyReleased(event -> {
+			if (event.getCode() == KeyCode.ENTER){
+				btnSearch.fire();
+			}
+		});
+		
+		
+
+		if (address != null) {
 			obsList.clear();
-			obsList.add(object);
-			tableView.getSelectionModel().select(object);
+			obsList.add(address);
+			tableView.getSelectionModel().select(address);
 		} else {
 			clearAllComponents();
 		}
@@ -220,18 +232,23 @@ public class AddAddressController implements Initializable {
 				endereco.setCep(cep);
 				endereco.setEstado(estado);
 
-				ServiceResponse<?> service = enderecoService.save(endereco);
+				ServiceResponse<?> serviceResponse = enderecoService.save(endereco);
+				
+				// Caputura a mensagem do banco de dados e converte para o objeto solicitado, no
+				// caso Usuario, além de status e mensagem.
+				ApiResponse<Endereco> serviceResponseFromJava = ApiResponse
+						.fromJson(serviceResponse.getResponseBody().toString(), Endereco.class);
 
-				if (service.getResponseCode() == 201) {
+				if (!serviceResponseFromJava.getStatus().equals("erro")) {
 
 					// Mensagem
 					Node source = (Node) event.getSource();
 					Stage ownerStage = (Stage) source.getScene().getWindow();
-					String toastMsg = "Sucesso!";
+					String toastMsg = serviceResponseFromJava.getMensagem();
 					utilities.Toast.makeText(ownerStage, toastMsg, ToastType.SUCCESS);
 
 					// Adiciona resposta na tabela
-					Endereco newEndereco = new Gson().fromJson((String) service.getResponseBody(), Endereco.class);
+					Endereco newEndereco = serviceResponseFromJava.getObject();
 
 					// Remove o objeto com solicitado de salvamento ou id nulo, se estiver presente
 					// na tableView
@@ -243,12 +260,12 @@ public class AddAddressController implements Initializable {
 					// Seleciona o objeto salvo na table view
 					tableView.getSelectionModel().select(newEndereco);
 					// Atualiza objeto vindo do DocumentController
-					object = newEndereco;
+					address = newEndereco;
 
 				} else {
 					Node source = (Node) event.getSource();
 					Stage ownerStage = (Stage) source.getScene().getWindow();
-					String toastMsg = "Erro! + " + service.getResponseCode();
+					String toastMsg = serviceResponseFromJava.getMensagem();
 					utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
 
 				}
@@ -256,7 +273,7 @@ public class AddAddressController implements Initializable {
 			} catch (Exception e) {
 				Node source = (Node) event.getSource();
 				Stage ownerStage = (Stage) source.getScene().getWindow();
-				String toastMsg = "Erro! + " + e.getMessage();
+				String toastMsg = "Erro ao salvar o endereço, mensage: " + e.getMessage();
 				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
 				e.printStackTrace();
 			}
@@ -297,21 +314,29 @@ public class AddAddressController implements Initializable {
 			endereco.setCep(cep);
 			endereco.setEstado(estado);
 
-			ServiceResponse<?> service = enderecoService.update(endereco);
+			ServiceResponse<?> serviceResponse = enderecoService.update(endereco);
 
-			if (service.getResponseCode() == 200) {
+			// Caputura a mensagem do banco de dados e converte para o objeto solicitado, no
+			// caso Usuario, além de status e mensagem.
+			ApiResponse<Endereco> serviceResponseFromJava = ApiResponse
+					.fromJson(serviceResponse.getResponseBody().toString(), Endereco.class);
+
+			if (!serviceResponseFromJava.getStatus().equals("erro")) {
 
 				// Mensagem
 				Node source = (Node) event.getSource();
 				Stage ownerStage = (Stage) source.getScene().getWindow();
-				String toastMsg = "Sucesso!";
+				String toastMsg = 
+						serviceResponseFromJava.getMensagem();
 				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.SUCCESS);
 
 				// Adiciona resposta na tabela
-				Endereco newEndereco = new Gson().fromJson((String) service.getResponseBody(), Endereco.class);
+				Endereco newEndereco = serviceResponseFromJava.getObject();
 
 				// Remove objeto solicitado da tableView
-				tableView.getItems().remove(seletedObject);
+				//tableView.getItems().remove(seletedObject);
+				tableView.getItems().removeIf(item -> item.getId().equals(seletedObject.getId()));
+
 				// Adiciona objeto já editado como primeiro da lista.
 				tableView.getItems().add(0, newEndereco);
 				// Seleciona o objeto na table view
@@ -320,12 +345,13 @@ public class AddAddressController implements Initializable {
 			} else {
 				Node source = (Node) event.getSource();
 				Stage ownerStage = (Stage) source.getScene().getWindow();
-				String toastMsg = "Erro!";
+				String toastMsg = "Erro ao editar o endereço!";
 				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
 
 			}
 
 		} catch (Exception e) {
+			System.out.println("Erro ao editar o endereço! ");
 			// adicionar Toast de erro
 			e.printStackTrace();
 		}
@@ -361,13 +387,18 @@ public class AddAddressController implements Initializable {
 			EnderecoService service = new EnderecoService(urlService);
 
 			ServiceResponse<?> serviceResponse = service.deleteById(selected.getId());
+			
+			// Caputura a mensagem do banco de dados e converte para o objeto solicitado, no
+			// caso Usuario, além de status e mensagem.
+			ApiResponse<Endereco> serviceResponseFromJava = ApiResponse
+					.fromJson(serviceResponse.getResponseBody().toString(), Endereco.class);
 
-			if (serviceResponse.getResponseCode() == 200) {
+			if (!serviceResponseFromJava.getStatus().equals("erro")) {
 
 				// Informa sucesso em deletar
 				Node source = (Node) event.getSource();
 				Stage ownerStage = (Stage) source.getScene().getWindow();
-				String toastMsg = "Documento deletado com sucesso!";
+				String toastMsg = serviceResponseFromJava.getMensagem();
 				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.SUCCESS);
 
 				// retira objecto da tabela de documentos tvDocs
@@ -377,7 +408,7 @@ public class AddAddressController implements Initializable {
 				// Informa erro em deletar
 				Node source = (Node) event.getSource();
 				Stage ownerStage = (Stage) source.getScene().getWindow();
-				String toastMsg = "Erro ao deletar! " + serviceResponse.getResponseBody();
+				String toastMsg = serviceResponseFromJava.getMensagem();
 				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
 			}
 		} catch (Exception e) {
@@ -392,14 +423,13 @@ public class AddAddressController implements Initializable {
 
 	public void clearAllComponents() {
 
-		object = null;
+		address = null;
 
 		tfAddress.clear();
 		tfNeighborhood.clear();
 		tfCity.clear();
 		tfCity.setText("Brasília");
 		tfZipCode.clear();
-		tfArea.clear();
 		cbState.getSelectionModel().clearSelection();
 		Optional<Estado> estadoDF = obsListState.stream().filter(estado -> "DF".equals(estado.getDescricao()))
 				.findFirst();

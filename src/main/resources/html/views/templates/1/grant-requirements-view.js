@@ -1,9 +1,11 @@
 /**
- * @diretorio 1
- * @nome Despacho de Outorga Prévia
- * @descricao Obrigações do usuário
- * @arquivo grant-requirements-view.js
  * @id 
+ * @nome Despacho de Outorga Prévia
+ * @arquivo grant-requirements-view.js
+ * @diretorio 1
+ * @descricao Obrigações do usuário
+
+
  */
 
 class GrantRequirementsView {

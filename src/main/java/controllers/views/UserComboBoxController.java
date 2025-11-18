@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import com.jfoenix.controls.JFXComboBox;
@@ -14,18 +15,20 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import models.Anexo;
 import models.Usuario;
 import services.UsuarioService;
 
 public class UserComboBoxController {
 
-	
 	String localUrl;
 
 	private JFXComboBox<Usuario> comboBox;
 	ObservableList<Usuario> obsList = FXCollections.observableArrayList();
 	// Objetos buscados no banco de dados. Estes objectos não podem repetir.
 	private Set<Usuario> dbObjects = new HashSet<>();
+	
+	Usuario user = new Usuario ();
 
 	public UserComboBoxController(String localUrl, JFXComboBox<Usuario> comboBox) {
 		this.localUrl = localUrl;
@@ -63,6 +66,8 @@ public class UserComboBoxController {
 				if (newValue instanceof Usuario) {
 					Usuario object = (Usuario) newValue;
 					
+					user = object;
+
 					if (object.getNome() != null && !object.getNome().isEmpty()) {
 						// Check if the new search term is a continuation of the previous one
 						if (lastSearch.contains(object.getNome()) || object.getNome().contains(lastSearch)) {
@@ -94,7 +99,7 @@ public class UserComboBoxController {
 
 					}
 				} else if (newValue instanceof String) {
-					// Handle the case where newValue is a String (when the user is typing)
+					// Handle the case where newValue is a String (when the  is typing)
 					String searchText = (String) newValue;
 					fetchAndUpdate(searchText);
 				}
@@ -122,7 +127,12 @@ public class UserComboBoxController {
 
 			if (!fetchedObjects.isEmpty()) {
 				dbObjects.addAll(fetchedObjects);
-				obsList.addAll(dbObjects);
+				//Filtra por ids diferentes
+				Set<Usuario> filteredUniqueIds = dbObjects.stream()
+						.collect(Collectors.toMap(Usuario::getId, item -> item, (oldValue, newValue) -> newValue))
+						.values().stream().collect(Collectors.toSet());
+				obsList.clear();
+				obsList.addAll(filteredUniqueIds);
 			} else {
 				// Se não houver resultados, adiciona o novo endereço diretamente
 				Usuario newObject = new Usuario(keyword);
@@ -154,13 +164,15 @@ public class UserComboBoxController {
 	}
 
 	public Usuario getSelectedObject() {
-
-		Usuario object = comboBox.selectionModelProperty().get().isEmpty() ? null : comboBox.getItems().get(0);
-
-		return object;
+		
+		System.out.println(user.getCpfCnpj());
+		return user;
 	}
 
 	public void fillAndSelectComboBox(Usuario object) {
+	
+		user = object;
+		
 		ObservableList<Usuario> newObsList = FXCollections.observableArrayList();
 		comboBox.setItems(newObsList);
 
@@ -185,7 +197,7 @@ public class UserComboBoxController {
 				.collect(Collectors.toMap(Usuario::getId, // Key: id of the Anexo
 						item -> item, // Value: Anexo itself
 						(existing, replacement) -> existing // Keep the first occurrence if duplicates are found
-		));
+				));
 
 		// Get the last item with id == null (if it exists)
 		Optional<Usuario> lastNullIdItem = uniqueItems.stream().filter(anexo -> anexo.getId() == null)

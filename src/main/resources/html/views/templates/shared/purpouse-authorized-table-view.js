@@ -27,7 +27,7 @@ class PurpouseAuthorizedTableView {
     let usuario = this.documento.usuarios[0];
     let tipoOutorga = this.interferencia.tipoOutorga;
     let sutipoOutorga = this.interferencia.subtipoOutorga;
-    let finalidades = this.interferencia.finalidades;
+    let finalidades = new FinalidadeModel().sortPurposes(this.interferencia.finalidades);
 
     let _finalidades = finalidades.filter(f => f.tipoFinalidade.id === this.tipoFinalidade);
 

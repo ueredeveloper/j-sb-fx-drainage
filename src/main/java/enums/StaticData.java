@@ -185,8 +185,6 @@ public enum StaticData {
 		// Se já houver solicitado uma vez não precisa solicitar mais.
 		if (obsHidrographicUnits == null) {
 
-			System.out.println("obs units null static data");
-
 			try {
 
 				UnidadeHidrograficaService service = new UnidadeHidrograficaService(localUrl);

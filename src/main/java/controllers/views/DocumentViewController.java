@@ -118,7 +118,8 @@ public class DocumentViewController implements Initializable {
 				}
 			});
 		});
-
+		
+		
 		tfDocument.setText(
 				"Número: " + this.selectedDocument.getNumero() + " | Sei: " + this.selectedDocument.getNumeroSei());
 		tfAddress.setText(this.selectedDocument.getEnderecoLogradouro());
@@ -175,7 +176,9 @@ public class DocumentViewController implements Initializable {
 
 			// Leitura dos templates na pasta resources.
 			if (!ifHasTemplate) {
+				
 				Set<Template> setOfTemplates = null;
+				
 				try {
 					setOfTemplates = ReadAndCreateSetOfTemplates.getSetOfTemplates();
 				} catch (URISyntaxException e1) {

@@ -69,7 +69,6 @@ class WaterDataView {
 		let ____items = document.getElementsByClassName('inter-vazao-outorgavel');
 		// Converte o resultado para array e atualiza
 		Array.from(____items).forEach(item => {
-			console.log('vazão outorgavel ', typeof vazaoOutorgavel)
 			item.innerHTML = new DemandaModel().formatNumber(vazaoOutorgavel) || 'XXX';
 
 		});

@@ -38,6 +38,8 @@ public class ReadAndCreateSetOfTemplates {
 							// Pasta resources, diretório dentro desta pasta, pasta específica e arquivo que
 							// será persistido
 							String fullPath = resourceDir + folderName + "/" + fileName;
+							
+							//System.out.println(fullPath);
 
 							if (fullPath != null) {
 							

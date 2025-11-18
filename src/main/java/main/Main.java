@@ -13,28 +13,24 @@ import utilities.VersionUtil;
  * Classe principal que inicia a aplica��o JavaFX.
  */
 public class Main extends Application {
-	
 
 	/**
-	 * Método principal que inicia a aplicação  
+	 * Método principal que inicia a aplicação
 	 *
 	 * @param args.
 	 */
 	public static void main(String[] args) {
 		launch(args);
-	} 
+	}
 
 	/**
 	 * Método de inicialização da aplicação JavaFX.
 	 *
-	 * @param stage
-	 *            O palco principal da aplicação.
+	 * @param stage O palco principal da aplicação.
 	 */
-	
+
 	@Override
 	public void start(Stage stage) {
-		
-		
 
 		Parent root = null;
 		try {
@@ -48,10 +44,9 @@ public class Main extends Application {
 
 		// Cria uma cena com a raiz carregada a partir do arquivo FXML.
 		Scene scene = new Scene(root, 900, 450);
-		
+
 		String version = VersionUtil.getVersion();
-		   
-		
+
 		// Define o t�tulo da janela de aplica��o.
 		stage.setTitle("Login | Versão: " + version);
 		// Define a cena no palco e exibe a janela.

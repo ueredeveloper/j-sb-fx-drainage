@@ -24,17 +24,17 @@ public class BaciaHidrograficaService {
 	public Set<BaciaHidrografica> findBhByPoint(String lat, String lng) {
 
 		try {
-			URL apiUrl = new URL(urlService + "/hydrographic-basins/find-by-point?lat=" + lat + "&" + "lng=" + lng);
+			URL apiUrl = new URL(urlService + "/hydrographic-basins/find-by-point?latitude="+lat+"&longitude="+ lng);
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
 			connection.setRequestMethod("GET");
 
 			int responseCode = connection.getResponseCode();
 
 			if (responseCode == HttpURLConnection.HTTP_OK) {
-				System.out.println("HTTP OK");
+				
 				return handleSuccessResponse(connection);
 			} else if (responseCode == HttpURLConnection.HTTP_CREATED) {
-				System.out.println("HTTP Created");
+				
 				return handleSuccessResponse(connection);
 			} else {
 				handleErrorResponse(connection);
@@ -60,10 +60,10 @@ public class BaciaHidrograficaService {
 			int responseCode = connection.getResponseCode();
 
 			if (responseCode == HttpURLConnection.HTTP_OK) {
-				System.out.println("HTTP OK");
+				
 				return handleSuccessResponse(connection);
 			} else if (responseCode == HttpURLConnection.HTTP_CREATED) {
-				System.out.println("HTTP Created");
+				
 				return handleSuccessResponse(connection);
 			} else {
 				handleErrorResponse(connection);

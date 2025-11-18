@@ -146,9 +146,9 @@
          <children>
             <TableView fx:id="tableView" layoutX="14.0" layoutY="79.0" prefHeight="200.0" prefWidth="689.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="15.0">
               <columns>
-                <TableColumn fx:id="tcProcess" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" text="Processo" />
-                <TableColumn fx:id="tcUser" minWidth="200.0" prefWidth="410.0" text="Usuário" />
-                  <TableColumn fx:id="tcAttachment" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" text="Processo Anexo" />
+                <TableColumn fx:id="tcProcess" minWidth="200.0" prefWidth="220.0" text="Processo" />
+                <TableColumn fx:id="tcUser" minWidth="320.0" prefWidth="700.0" text="Usuário" />
+                  <TableColumn fx:id="tcAttachment" minWidth="200.0" prefWidth="220.0" text="Processo Anexo" />
               </columns>
                <columnResizePolicy>
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

@@ -1,9 +1,11 @@
 /**
- * @nome Despacho de Outorga Prévia
- * @descricao Objeto do despacho
- * @diretorio 1
- * @arquivo object-view.js
  * @id 
+ * @nome Despacho de Outorga Prévia
+ * @arquivo object-view.js
+ * @diretorio 1
+ * @descricao Objeto do despacho
+
+
  */
 
 class ObjectView {

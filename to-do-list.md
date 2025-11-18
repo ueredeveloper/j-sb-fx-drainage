@@ -303,5 +303,37 @@ deletar um usuário ou documento, deletando o relacionamento usuario_documento
 ## 23/04/2025
 * ** [] Adicionar pesquisa de interferência por coordenada em string. Assim dá pra encontar uma interferência com endereço errado.	
 
+
+
+* ** [] Editar Nome e Cpf
+	Vefificar se é possível editar o nome relacionado com o cpf ou cnpj
+* ** [] Buscar usuário por nome ou cpf/cnpj
+
+* ** [] Centralizar texto nas colunas das tabelas
+
+## 05/05/2025
+* ** [] Endereço e Bairro
+	Quando salva um documento novo, com endereço novo e abre a visualização não está indo o bairro.
+	
+	
+
 mvn clean package -DskipTests -Dmaven.javadoc.skip=true
- 
+
+
+## 03/11/2025
+- [] Verificar a deleção de um endereço com relacionamento. Não está deletando, porém está dando tooltip verde.
+
+
+## 04/11/2025
+- [] Verificar se ao pesquisar anexos vem também anexos sem relacionamentos com processos, anexo soltos
+
+
+## 07/11/2025
+- [] Chave única no número do processo e anexo
+- [X] Ao selecionar um documento, o proceso e anexo não são selecionados, apesar de aparecerem no combobox.
+- [] Verificar a deleção do relacionamento entre documento e usuário na tela usuário
+
+## 12/11/2025
+- [] Adição de Finalidades
+	Quando na edição de uma interferência não está permitindo adicionar uma finalidade e editar. A finalidade
+	adicionada não é salva.

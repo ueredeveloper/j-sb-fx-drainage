@@ -75,6 +75,8 @@
 	/* cor do prompt text ao subir no text field */
 }
 
+
+
 .btn-conversor {
 	-fx-background-color: primary-color;
 	-fx-text-fill: white-color;
@@ -164,3 +166,5 @@
     -fx-pref-width: 200px;   /* Preferred width */
     /* Add any other styles as needed */
 }
+
+

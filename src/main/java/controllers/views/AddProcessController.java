@@ -23,8 +23,10 @@ import javafx.scene.Node;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import models.Anexo;
+import models.ApiResponse;
 import models.Processo;
 import models.Usuario;
 import services.ProcessoService;
@@ -126,6 +128,7 @@ public class AddProcessController implements Initializable {
 				}
 
 				if (newSelection.getUsuario() != null) {
+					
 					userComboBoxController.fillAndSelectComboBox(newSelection.getUsuario());
 				} else {
 					userComboBoxController.fillAndSelectComboBox(null);
@@ -168,6 +171,17 @@ public class AddProcessController implements Initializable {
 			}
 
 		});
+		
+
+		/*
+		 * Buscar apenas clicando no enter do teclado
+		 */
+		tfSearch.setOnKeyReleased(event -> {
+			if (event.getCode() == KeyCode.ENTER){
+				btnSearch.fire();
+			}
+		});
+		
 
 		btnSave.setOnAction(event -> {
 			saveProcess(event);
@@ -190,6 +204,7 @@ public class AddProcessController implements Initializable {
 		tfProcess.setText(process.getNumero());
 
 		if (process.getUsuario() != null) {
+			
 			this.userComboBoxController.fillAndSelectComboBox(process.getUsuario());
 		}
 
@@ -254,17 +269,22 @@ public class AddProcessController implements Initializable {
 			this.process.setAnexo(obsAttachList0);
 			this.process.setUsuario(obsUsList0);
 
-			ServiceResponse<?> reponse = service.save(this.process);
+			ServiceResponse<?> serviceResponse = service.save(this.process);
+			
+			// Caputura a mensagem do banco de dados e converte para o objeto solicitado, no
+			// caso Usuario, além de status e mensagem.
+			ApiResponse<Processo> serviceResponseFromJava = ApiResponse
+					.fromJson(serviceResponse.getResponseBody().toString(), Processo.class);
 
-			if (reponse.getResponseCode() == 201) {
+			if (!serviceResponseFromJava.getMensagem().equals("erro")) {
 
 				// Informa salvamento com sucesso
 				Node source = (Node) event.getSource();
 				Stage ownerStage = (Stage) source.getScene().getWindow();
-				String toastMsg = "Objeto salvo com sucesso!";
+				String toastMsg = serviceResponseFromJava.getMensagem();
 				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.SUCCESS);
 				// Adiciona resposta na tabela
-				Processo responseObject = new Gson().fromJson((String) reponse.getResponseBody(), Processo.class);
+				Processo responseObject = serviceResponseFromJava.getObject();
 				// Adiciona com primeiro na lista
 
 				ObservableList<Processo> items = tableView.getItems();
@@ -282,13 +302,11 @@ public class AddProcessController implements Initializable {
 				}
 
 			} else {
-				// adiconar alerta (Toast) de erro
-				// System.out.println(serviceResponse.getResponseCode());
-
+			
 				// Informa salvamento com sucesso
 				Node source = (Node) event.getSource();
 				Stage ownerStage = (Stage) source.getScene().getWindow();
-				String toastMsg = "Erro ao salvar o objeto !";
+				String toastMsg = serviceResponseFromJava.getMensagem();
 				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
 			}
 
@@ -303,7 +321,7 @@ public class AddProcessController implements Initializable {
 
 		try {
 
-			ProcessoService service = new ProcessoService(urlService);
+			
 
 			this.process = tableView.getSelectionModel().getSelectedItem();
 
@@ -346,18 +364,30 @@ public class AddProcessController implements Initializable {
 					return;
 
 				}
+				
+				this.process.setNumero(tfProcess.getText());
+				this.process.setUsuario(obsUsList0);
+				this.process.setAnexo(new Anexo(obsAttachList0.getId(), obsAttachList0.getNumero()));
+				
+				ProcessoService service = new ProcessoService(urlService);
 
-				ServiceResponse<?> reponse = service.update(this.process);
+				ServiceResponse<?> serviceResponse = service.update(this.process);
+				
+				
+				// Caputura a mensagem do banco de dados e converte para o objeto solicitado, no
+				// caso Usuario, além de status e mensagem.
+				ApiResponse<Processo> serviceResponseFromJava = ApiResponse
+						.fromJson(serviceResponse.getResponseBody().toString(), Processo.class);
 
-				if (reponse.getResponseCode() == 200) {
+				if (!serviceResponseFromJava.getMensagem().equals("erro")) {
 
 					// Informa salvamento com sucesso
 					Node source = (Node) event.getSource();
 					Stage ownerStage = (Stage) source.getScene().getWindow();
-					String toastMsg = "Objeto editado com sucesso!";
+					String toastMsg = serviceResponseFromJava.getMensagem();
 					utilities.Toast.makeText(ownerStage, toastMsg, ToastType.SUCCESS);
 					// Adiciona resposta na tabela
-					Processo responseObject = new Gson().fromJson((String) reponse.getResponseBody(), Processo.class);
+					Processo responseObject = serviceResponseFromJava.getObject();
 					// Adiciona com primeiro na lista
 
 					ObservableList<Processo> items = tableView.getItems();
@@ -375,9 +405,7 @@ public class AddProcessController implements Initializable {
 					}
 
 				} else {
-					// adiconar alerta (Toast) de erro
-					// System.out.println(serviceResponse.getResponseCode());
-
+					
 					// Informa salvamento com sucesso
 					Node source = (Node) event.getSource();
 					Stage ownerStage = (Stage) source.getScene().getWindow();
@@ -402,23 +430,29 @@ public class AddProcessController implements Initializable {
 			ProcessoService service = new ProcessoService(urlService);
 
 			ServiceResponse<?> serviceResponse = service.deleteById(selectedObject.getId());
+			
+			// Caputura a mensagem do banco de dados e converte para o objeto solicitado, no
+			// caso Usuario, além de status e mensagem.
+			ApiResponse<Processo> serviceResponseFromJava = ApiResponse
+					.fromJson(serviceResponse.getResponseBody().toString(), Processo.class);
+			
 
-			if (serviceResponse.getResponseCode() == 200) {
-
+			if (!serviceResponseFromJava.getStatus().equals("erro")) {
 				// Informa sucesso em deletar
 				Node source = (Node) event.getSource();
 				Stage ownerStage = (Stage) source.getScene().getWindow();
-				String toastMsg = "Objeto deletado com sucesso!";
+				String toastMsg = serviceResponseFromJava.getMensagem();
 				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.SUCCESS);
 
 				// retira objecto da tabela de documentos tvDocs
 				tableView.getItems().remove(selectedObject);
 
 			} else {
+				
 				// Informa erro em deletar
 				Node source = (Node) event.getSource();
 				Stage ownerStage = (Stage) source.getScene().getWindow();
-				String toastMsg = "Erro ao deletar objeto!";
+				String toastMsg = serviceResponseFromJava.getMensagem();
 				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
 			}
 		} catch (Exception e) {

@@ -2,10 +2,10 @@ package controllers.views;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.ParseException;
 import java.util.ResourceBundle;
 import java.util.Set;
 
-import com.google.gson.Gson;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
@@ -22,22 +22,25 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import models.ApiResponse;
 import models.Documento;
 import models.Processo;
 import models.Usuario;
 import services.ProcessoService;
 import services.ServiceResponse;
 import services.UsuarioService;
+import utilities.CpfCnpjFormatter;
 import utilities.URLUtility;
 
 public class AddUserController implements Initializable {
 
-	
 	@FXML
 	private JFXTextField tfName;
 
@@ -96,21 +99,37 @@ public class AddUserController implements Initializable {
 		tcName.setCellValueFactory(new PropertyValueFactory<Usuario, String>("nome"));
 		tcCpfCnpj.setCellValueFactory(new PropertyValueFactory<Usuario, String>("cpfCnpj"));
 
+		tcCpfCnpj.setCellFactory(column -> new TableCell<Usuario, String>() {
+			@Override
+			protected void updateItem(String item, boolean empty) {
+				super.updateItem(item, empty);
+
+				if (empty || item == null) {
+					setText(null);
+				} else {
+					try {
+						setText(CpfCnpjFormatter.format(item));
+					} catch (ParseException e) {
+						setText(item); // Se der erro, mostra sem formatação
+					}
+				}
+			}
+		});
+
 		tableView.setItems(obsList);
 
 		tableView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Usuario>() {
 			@Override
 			public void changed(ObservableValue<? extends Usuario> observable, Usuario oldValue, Usuario newValue) {
 				if (newValue != null) {
-					// Perform actions with the selected Endereco object
 
 					tfName.setText(newValue.getNome());
 
-					Usuario selecteInterferenceAddres = newValue;
+					Usuario selectedUser = newValue;
 					// Se houver endereço relacionado com a interferência, preencher o combobox do
 					// endereço
-					if (selecteInterferenceAddres != null) {
-						userCbController.fillAndSelectComboBox(selecteInterferenceAddres.getCpfCnpj().toString());
+					if (selectedUser != null) {
+						userCbController.fillAndSelectComboBox(selectedUser.getCpfCnpj().toString());
 					}
 
 					if (userDocumentsController != null) {
@@ -130,6 +149,19 @@ public class AddUserController implements Initializable {
 		});
 
 		btnSearch.setOnAction(event -> searchByKeyword(event));
+		
+
+		/*
+		 * Buscar apenas clicando no enter do teclado
+		 */
+		tfSearch.setOnKeyReleased(event -> {
+			if (event.getCode() == KeyCode.ENTER){
+				btnSearch.fire();
+			}
+		});
+		
+		
+		
 		btnSave.setOnAction(event -> save(event));
 		btnEdit.setOnAction(event -> update(event));
 		btnDelete.setOnAction(event -> delete(event));
@@ -143,10 +175,12 @@ public class AddUserController implements Initializable {
 
 		Long id = object != null && object.getId() != null ? object.getId() : null;
 
-
 		String nome = tfName.getText();
 
 		String cpfCnpj = cbCpfCnpj.selectionModelProperty().get().isEmpty() ? null : cbCpfCnpj.getItems().get(0);
+
+		// Remove todos os caracteres não numéricos da string
+		cpfCnpj = cpfCnpj.replaceAll("\\D", "");
 
 		// Se o logradouro não estiver preenchido não salvar
 		if (nome == null || nome.isEmpty()) {
@@ -176,16 +210,21 @@ public class AddUserController implements Initializable {
 
 				ServiceResponse<?> response = service.save(toSaveObject);
 
-				if (response.getResponseCode() == 200) {
+				// Caputura a mensagem do banco de dados e converte para o objeto solicitado, no
+				// caso Usuario, além de status e mensagem.
+				ApiResponse<Usuario> serviceResponseFromJava = ApiResponse
+						.fromJson(response.getResponseBody().toString(), Usuario.class);
+
+				if (!serviceResponseFromJava.getStatus().equals("erro")) {
 
 					// Mensagem
 					Node source = (Node) event.getSource();
 					Stage ownerStage = (Stage) source.getScene().getWindow();
-					String toastMsg = "Sucesso!";
+					String toastMsg = serviceResponseFromJava.getMensagem();
 					utilities.Toast.makeText(ownerStage, toastMsg, ToastType.SUCCESS);
 
 					// Adiciona resposta na tabela
-					Usuario newObject = new Gson().fromJson((String) response.getResponseBody(), Usuario.class);
+					Usuario newObject = serviceResponseFromJava.getObject();
 
 					// Remove o objeto com solicitado de salvamento ou id nulo, se estiver presente
 					// na tableView
@@ -201,7 +240,7 @@ public class AddUserController implements Initializable {
 				} else {
 					Node source = (Node) event.getSource();
 					Stage ownerStage = (Stage) source.getScene().getWindow();
-					String toastMsg = "Erro! + " + response.getResponseCode();
+					String toastMsg = serviceResponseFromJava.getMensagem();
 					utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
 
 				}
@@ -230,6 +269,9 @@ public class AddUserController implements Initializable {
 		String nome = tfName.getText();
 		String cpfCnpj = cbCpfCnpj.selectionModelProperty().get().isEmpty() ? null : cbCpfCnpj.getItems().get(0);
 
+		// Remove todos os caracteres não numéricos da string
+		cpfCnpj = cpfCnpj.replaceAll("\\D", "");
+
 		if (nome.isEmpty() || nome == null) {
 			Node source = (Node) event.getSource();
 			Stage ownerStage = (Stage) source.getScene().getWindow();
@@ -256,16 +298,21 @@ public class AddUserController implements Initializable {
 
 				ServiceResponse<?> response = service.update(seletedObject);
 
-				if (response.getResponseCode() == 200) {
+				// Caputura a mensagem do banco de dados e converte para o objeto solicitado, no
+				// caso Usuario, além de status e mensagem.
+				ApiResponse<Usuario> serviceResponseFromJava = ApiResponse
+						.fromJson(response.getResponseBody().toString(), Usuario.class);
+
+				if (!serviceResponseFromJava.getStatus().equals("erro")) {
 
 					// Mensagem
 					Node source = (Node) event.getSource();
 					Stage ownerStage = (Stage) source.getScene().getWindow();
-					String toastMsg = "Sucesso!";
+					String toastMsg = serviceResponseFromJava.getMensagem();
 					utilities.Toast.makeText(ownerStage, toastMsg, ToastType.SUCCESS);
 
 					// Adiciona resposta na tabela
-					Usuario newObject = new Gson().fromJson((String) response.getResponseBody(), Usuario.class);
+					Usuario newObject = serviceResponseFromJava.getObject();
 
 					// Remove objeto solicitado da tableView
 					tableView.getItems().remove(seletedObject);
@@ -277,7 +324,7 @@ public class AddUserController implements Initializable {
 				} else {
 					Node source = (Node) event.getSource();
 					Stage ownerStage = (Stage) source.getScene().getWindow();
-					String toastMsg = "Erro ao editar objeto!";
+					String toastMsg = serviceResponseFromJava.getMensagem();
 					utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
 
 				}
@@ -300,24 +347,32 @@ public class AddUserController implements Initializable {
 
 			ServiceResponse<?> serviceResponse = service.deleteById(selectedObject.getId());
 
-			if (serviceResponse.getResponseCode() == 200) {
+			// Caputura a mensagem do banco de dados e converte para o objeto solicitado, no
+			// caso Usuario, além de status e mensagem.
+			ApiResponse<Usuario> serviceResponseFromJava = ApiResponse
+					.fromJson(serviceResponse.getResponseBody().toString(), Usuario.class);
+
+			if (!serviceResponseFromJava.getStatus().equals("erro")) {
 
 				// Informa sucesso em deletar
 				Node source = (Node) event.getSource();
 				Stage ownerStage = (Stage) source.getScene().getWindow();
-				String toastMsg = "Usuário deletado com sucesso!";
+				String toastMsg = serviceResponseFromJava.getMensagem();
 				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.SUCCESS);
 
 				// retira objecto da tabela de documentos tvDocs
 				tableView.getItems().remove(selectedObject);
 
 			} else {
+
 				// Informa erro em deletar
 				Node source = (Node) event.getSource();
 				Stage ownerStage = (Stage) source.getScene().getWindow();
-				String toastMsg = "Erro ao deletar objeto!";
+				String toastMsg = serviceResponseFromJava.getMensagem();
 				utilities.Toast.makeText(ownerStage, toastMsg, ToastType.ERROR);
+
 			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -326,9 +381,9 @@ public class AddUserController implements Initializable {
 
 	public void searchByKeyword(ActionEvent event) {
 
-		try {
+		userDocumentsController.updateUser(null);
 
-			// clearAllComponents();
+		try {
 
 			UsuarioService service = new UsuarioService(urlService);
 
@@ -339,7 +394,9 @@ public class AddUserController implements Initializable {
 			// Create a list of Document objects
 			obsList.clear();
 			obsList.addAll(objects);
-			// cbDocType.setValue(obsDocumentTypes.get(0));
+
+			// Limpa os inputs e comboboxes
+			clearAllComponents();
 
 		} catch (Exception e) {
 			e.printStackTrace();

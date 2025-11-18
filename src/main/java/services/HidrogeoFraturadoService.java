@@ -25,7 +25,7 @@ public class HidrogeoFraturadoService {
 	public Set<HidrogeoFraturado> findByPoint(String lat, String lng) {
 
 		try {
-			URL apiUrl = new URL(urlService + "/fraturado/find-by-point?lat=" + lat + "&" + "lng=" + lng);
+			URL apiUrl = new URL(urlService + "/hydrogeo-fraturado/find-by-point?latitude=" + lat + "&" + "longitude=" + lng);
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
 			connection.setRequestMethod("GET");
 
@@ -84,7 +84,7 @@ public class HidrogeoFraturadoService {
 	public Set<HidrogeoFraturado> listAll() {
 
 		try {
-			URL apiUrl = new URL(urlService + "/fraturado/list-all");
+			URL apiUrl = new URL(urlService + "/hydrogeo-fraturado/list-all");
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
 			connection.setRequestMethod("GET");
 

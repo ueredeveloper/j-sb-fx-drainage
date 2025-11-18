@@ -33,6 +33,22 @@ public class BaciaHidrografica {
 		this.gdbGeomattrData = gdbGeomattrData;
 		this.shape = shape;
 	}
+	
+	public BaciaHidrografica(Long objectid, Long baciaCod, String baciaNome, String shape) {
+		super();
+		this.objectid = objectid;
+		this.baciaCod = baciaCod;
+		this.baciaNome = baciaNome;
+		this.shape = shape;
+	}
+	
+
+	public BaciaHidrografica(Long objectid, Long baciaCod, String baciaNome) {
+		super();
+		this.objectid = objectid;
+		this.baciaCod = baciaCod;
+		this.baciaNome = baciaNome;
+	}
 
 	public Long getObjectid() {
 		return objectid;

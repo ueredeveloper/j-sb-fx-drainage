@@ -19,12 +19,12 @@ import com.google.gson.reflect.TypeToken;
 
 import models.Documento;
 
-public class DocumentService {
+public class DocumentoService {
 	
 	
 	private String localUrl;
 
-	public DocumentService(String localUrl) {
+	public DocumentoService(String localUrl) {
 		this.localUrl = localUrl;
 	}
 	
@@ -32,7 +32,7 @@ public class DocumentService {
 	public ServiceResponse<?> save(Documento documento) {
 		
 		try {
-			URL apiUrl = new URL(localUrl + "/document/create");
+			URL apiUrl = new URL(localUrl + "/documents/upsert-document");
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
 			connection.setRequestMethod("POST");
 			connection.setRequestProperty("Content-Type", "application/json");
@@ -41,8 +41,8 @@ public class DocumentService {
 			// Convert Documento object to JSON
 			String jsonInputString = convertObjectToJson(documento);
 			
-			///System.out.println("save doc");
-			///System.out.println(jsonInputString);
+		System.out.println("save doc");
+			System.out.println(jsonInputString);
 			
 			// Write JSON to request body
 			try (OutputStream os = connection.getOutputStream();
@@ -56,7 +56,7 @@ public class DocumentService {
 			///System.out.println(responseCode);
 
 			String responseBody;
-			if (responseCode == HttpURLConnection.HTTP_CREATED) {
+			if (responseCode == HttpURLConnection.HTTP_CREATED || responseCode == 200)  {
 
 				try (BufferedReader br = new BufferedReader(
 						new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
@@ -85,18 +85,18 @@ public class DocumentService {
 
 	public ServiceResponse<?> update(Documento documento) {
 		try {
-			URL apiUrl = new URL(localUrl + "/document/update?id=" + documento.getId());
+			URL apiUrl = new URL(localUrl + "/documents/upsert-document");
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
-			connection.setRequestMethod("PUT");
+			connection.setRequestMethod("POST");
 			connection.setRequestProperty("Content-Type", "application/json");
 			connection.setDoOutput(true);
 
 			// Convert Documento object to JSON
 			String jsonInputString = convertObjectToJson(documento);
 			
-			///System.out.println("update doc");
+			System.out.println("update doc");
 			
-			///System.out.println(jsonInputString);
+		    System.out.println(jsonInputString);
 
 			// Write JSON to request body
 			try (OutputStream os = connection.getOutputStream();
@@ -110,7 +110,7 @@ public class DocumentService {
 			///System.out.println("update " + jsonInputString);
 
 			String responseBody;
-			if (responseCode == HttpURLConnection.HTTP_OK) {
+			if (responseCode == HttpURLConnection.HTTP_CREATED || responseCode == 200)  {
 
 				try (BufferedReader br = new BufferedReader(
 						new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
@@ -138,7 +138,7 @@ public class DocumentService {
 	public Set<Documento> fetchByParam(String keyword) {
 		
 		try {
-			URL apiUrl = new URL(localUrl + "/document/list?keyword=" + URLEncoder.encode(keyword, "UTF-8"));
+			URL apiUrl = new URL(localUrl + "/documents/search-documents-by-param?param=" + URLEncoder.encode(keyword, "UTF-8"));
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
 			connection.setRequestMethod("GET");
 
@@ -167,7 +167,7 @@ public class DocumentService {
 	public Set<Documento> fetchDocumentByUserId (Long userId) {
 		
 		try {
-			URL apiUrl = new URL(localUrl + "/document/list-by-user-id?id=" + userId);
+			URL apiUrl = new URL(localUrl + "/documents/search-documents-by-user-id?id=" + userId);
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
 			connection.setRequestMethod("GET");
 
@@ -195,7 +195,7 @@ public class DocumentService {
 
 	public ServiceResponse<?> deleteById(Long id) {
 		try {
-			URL apiUrl = new URL(localUrl + "/document/delete?id=" + id); // Updated URL
+			URL apiUrl = new URL(localUrl + "/documents/delete-document?id=" + id); // Updated URL
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
 			connection.setRequestMethod("DELETE");
 
@@ -217,9 +217,10 @@ public class DocumentService {
 		}
 	}
 	
-	public ServiceResponse<?> deleteDocUserRelation (Long docId, Long usId) {
+	public ServiceResponse<?> deleteDocUserRelation (Long docId, Long userId) {
+		
 		try {
-			URL apiUrl = new URL(localUrl + "/document/delete-user-doc-relation?docId=" + docId + "&" + "usId=" + usId); // Updated URL
+			URL apiUrl = new URL(localUrl + "/documents/delete-doc-user-relation?docId=" + docId + "&" + "userId=" + userId); // Updated URL
 			HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
 			connection.setRequestMethod("DELETE");
 

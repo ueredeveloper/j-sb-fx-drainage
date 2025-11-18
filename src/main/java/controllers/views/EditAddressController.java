@@ -94,6 +94,9 @@ public class EditAddressController implements Initializable {
 
 			// Requisi��o de resposta de edi��o
 			ServiceResponse<?> serviceResponse = endServ.update(endereco);
+			
+			System.out.println("update endereço response code: " + serviceResponse);
+			
 			if (serviceResponse.getResponseCode() == 200) {
 				// Alerta (Toast) de sucesso na edi��o
 				Node source = (Node) event.getSource();
