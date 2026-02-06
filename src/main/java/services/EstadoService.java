@@ -23,7 +23,7 @@ public class EstadoService {
 
 	public List<Estado> fetchAll() {
 		
-		System.out.println("fetch all states");
+		//System.out.println("fetch all states");
 
 		try {
 			URL apiUrl = new URL(localUrl + "/states/fetch-all-states");
@@ -33,10 +33,10 @@ public class EstadoService {
 			int responseCode = connection.getResponseCode();
 
 			if (responseCode == HttpURLConnection.HTTP_OK) {
-				System.out.println("HTTP OK");
+				//System.out.println("HTTP OK");
 				return handleSuccessResponse(connection);
 			} else if (responseCode == HttpURLConnection.HTTP_CREATED) {
-				System.out.println("HTTP Created");
+				//System.out.println("HTTP Created");
 				return handleSuccessResponse(connection);
 			} else {
 				handleErrorResponse(connection);

@@ -38,8 +38,8 @@ class FinalidadeModel {
 		setFromArray.sort((a, b) => {
 			const aHasAba = a.includes("aba");
 			const bHasAba = b.includes("aba");
-			const aHasCri = a.includes("cri");
-			const bHasCri = b.includes("cri");
+			const aHasCri = a.includes("cri") || a.includes("des");
+			const bHasCri = b.includes("cri") || b.includes("des");
 
 			// Primary sort: prioritize strings with "a"
 			if (aHasAba && !bHasAba) {
@@ -73,10 +73,9 @@ class FinalidadeModel {
 
 		purposes = purposes.sort((a, b) => {
 			const aHasAba = a.finalidade.toLowerCase().includes("aba");
-
 			const bHasAba = b.finalidade.toLowerCase().includes("aba");
-			const aHasCri = a.finalidade.toLowerCase().includes("cri");
-			const bHasCri = b.finalidade.toLowerCase().includes("cri");
+			const aHasCri = a.finalidade.toLowerCase().includes("cri") || a.finalidade.toLowerCase().includes("des");
+			const bHasCri = b.finalidade.toLowerCase().includes("cri") || b.finalidade.toLowerCase().includes("des");
 
 
 			// Primary sort: prioritize strings with "a"
