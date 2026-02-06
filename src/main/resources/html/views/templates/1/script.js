@@ -1,6 +1,6 @@
 /**
  * @id 
- * @nome Despacho de Outorga Prévia
+ * @nome Outorga Prévia
  * @arquivo script.js
  * @diretorio 1
  * @descricao Arquivo principal .js

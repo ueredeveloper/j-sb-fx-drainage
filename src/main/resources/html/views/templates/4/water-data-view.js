@@ -27,6 +27,7 @@ class WaterDataView {
           <p>I -  Dados da captação:</p>
 
           <div id="geographic-table-view"></div>
+          <br>
           <p>II - Demanda a ser outorgada:</p>
 
           <div id="limits-table-view"></div>

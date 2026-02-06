@@ -1,6 +1,6 @@
 /**
 * Assunto do parecer.
-* @nome Despacho de Outorga Prévia - Poço Raso
+* @nome Outorga Prévia - Poço Raso
 * @descricao Assunto do Despacho
 * @diretório 6
 * @arquivo subject-view.js

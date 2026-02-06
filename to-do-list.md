@@ -187,7 +187,7 @@
 
 ## 27 de Dezembro de 2024
 * **[X] Para compilar sem testes e sem gerar documentação
-	mvn clean install -DskipTests -Dmaven.javadoc.skip=true
+	i
 
 * **[X] Adicioanr conversor de coordenadas
 	 

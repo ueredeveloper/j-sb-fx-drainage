@@ -30,6 +30,7 @@ class ObjectView {
 					no endereço: <span class="end-logradouro"></span> - Distrito Federal, 
 					para fins de <span class="inter-finalidades"></span>.
 					</p>
+					<br>
 					<p>
 					2. Trata o presente processo de outorga de direito de uso de água subterrânea por meio de 01 (um) poço <span class="inter-tipo-poco"></span>, para fins de <span class="inter-finalidades"></span> e demanda total de <span class="dem-l-dia"></span> L/dia. Foi apresentado: 
 					perfilagem ótica - () onde indica características no domínio freático/<span class="inter-sistema"></span>. Conforme Resolução nº 16, de 03 

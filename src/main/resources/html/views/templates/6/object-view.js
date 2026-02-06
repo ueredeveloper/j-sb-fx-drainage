@@ -1,6 +1,6 @@
 /**
  * @id 
- * @nome Despacho de Outorga Prévia - Poço Raso
+ * @nome Outorga Prévia - Poço Raso
  * @arquivo object-view.js
  * @diretório 6
  * @descricao Objeto do despacho
@@ -28,7 +28,8 @@ class ObjectView {
 
 			<p>Art. 1º Emitir outorga prévia para reservar o direito de uso de água subterrânea a <b><span class="us-nome"></span>
 			</b>, 
-			CPF/CNPJ n.º <b><span class="us-cpf-cnpj"></span></b>, mediante a perfuração de 01 (um) poço tubular raso</span>, 
+			CPF/CNPJ n.º <b><span class="us-cpf-cnpj"></span></b>, mediante a perfuração de 01 (um) poço 
+			<span class="inter-tipo-poco"></span>, 
 			para fins de <span class="inter-finalidades"></span>, localizado no endereço: <span class="end-logradouro"></span> - 
 			Distrito Federal, 
 			tendo a seguinte característica:</p>

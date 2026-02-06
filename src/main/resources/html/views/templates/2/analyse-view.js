@@ -19,19 +19,25 @@ class AnalyseView {
 		let innerHTML = `
         <h2>III. DA ANÁLISE</h2>
 			<p>3. Existe outorga anterior: </p>
+			<br>
 	    	<p>4. O ponto de captação analisado está localizado no subsistema <span class="inter-sistema"></span>, 
 	    	Unidade Hidrográfica do
 	        <span class="inter-uh" class="highlight"></span>, 
 	        Bacia Hidrográfica do 
 	        <span class="inter-bh" class="highlight"></span>.</p>
+	        <br>
 	        <h3>I. Localização da propriedade e do poço:</h3>
 	        <p>Figura 01: croqui de localização da propriedade.</p>
 	        </br>
+	        </br>
 	        <p>Figura 02: croqui de localização do poço.</p>
+	        </br>
 	        </br>
 	        <p>Figura 03: Croqui da área com existência de irrigação (Frutífera) em 31/05/2016.</p>
 	        </br>
+	        </br>
 	        <p>Figura 04: Croqui da área atendida pela CAESB - Sistema de abastecimento da área (Portal Atlas Caesb).</p> 
+			</br>
 			</br>
 			
             <!-- Informações do poço -->
@@ -67,7 +73,8 @@ class AnalyseView {
         	</p>
         	</br>
 
-        	<p>Figura 04: Reserva explotável e balanço hídrico do subsistema <span class="inter-sistema"></span>.</p>
+        	<p>Figura 05: Reserva explotável e balanço hídrico do subsistema <span class="inter-sistema"></span>.</p>
+			<br>
 			<br>
 			<!-- Demanda --> 
 			 <div id="water-demand-view"></div>

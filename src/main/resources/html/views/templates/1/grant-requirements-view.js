@@ -1,6 +1,6 @@
 /**
  * @id 
- * @nome Despacho de Outorga Prévia
+ * @nome Outorga Prévia
  * @arquivo grant-requirements-view.js
  * @diretorio 1
  * @descricao Obrigações do usuário

@@ -20,7 +20,7 @@ class AnalyseView {
 		let innerHTML = `
 			<div>
 			<p><strong>III. DA ANÁLISE</strong></p>
-			<p></p><p><br></p>
+			<p></p>
 			<p>4. Outorga anterior: Despacho nºou Regularização</p>
 			<p></p>
             <p><br></p>
@@ -31,26 +31,27 @@ class AnalyseView {
 			<p></p><p><br></p>
 
 			<h3>I. Localização da propriedade e do poço:</h3>
-			<p></p><p><br></p>
+			<p></p><p></p>
 
 			<p>Figura 01: croqui de localização da propriedade.</p>
-			<p><br></p><p></p>
+			<p><br><br></p>
 
 			<p>Figura 02: croqui de localização do poço.</p>
-			<p></p><p><br></p>
+			<p><br><br></p>
 
 			<p>Figura 03: Croqui da área com existência de irrigação (Frutífera) em 31/05/2016.</p>
-			<p><br></p><p></p>
+			<p><br><br></p>
 
 			<p>Figura 04: Croqui da área atendida pela CAESB - Sistema de abastecimento da área (Portal Atlas Caesb).</p> 
-			<p></p><p><br></p>
+			<p><br><br></p>
 
 			<!--<p>II. Dados do poço:</p>-->
             <!-- Informações do poço -->
 			<div id="well-info-view"></div>
+			
 
 			<div>
-			<p></p><p><br></p>
+			<p></p>
 
 			<p>6. As finalidades de uso e respectivas demandas solicitadas estão dispostos na tabela abaixo, organizadas por tipo de processo:</p>
 
@@ -66,6 +67,7 @@ class AnalyseView {
 			<div style="align:center" id="purpouse-legal-basis-view"></div>
 
 			<p>
+			<br>
 			8. As demandas solicitadas e devidamente justificadas para cada finalidade de uso foram analisadas considerando a 
 			disponibilidade hídrica da reserva explotável dos subsistemas subterrâneos. As demandas que apresentaram ausência de 
 			justificativas para as estimativas de uso, foram ajustadas às recomendações da Resolução nº 18/2020:
@@ -78,12 +80,14 @@ class AnalyseView {
             <!-- Finalidades Autorizadas -->
             <div id="tbl-authorized-purpouse-view" style="display:flex; justify-content: center;"></div>
 
+			<br>
 			<p>9. A reserva explotável e balanço hídrico do subsistema subterrâneo apresenta dados favoráveis, 
 			considerando a inclusão das demandas requeridas, conforme tabelas abaixo:
 			</p>
 
-			<p>Figura 04: Reserva explotável e balanço hídrico do subsistema <span class="inter-sistema"></span>.</p>
+			<p>Figura 05: Reserva explotável e balanço hídrico do subsistema <span class="inter-sistema"></span>.</p>
         
+        	</br>
         	</br>
 			<p>10.&nbsp;As demandas poderão ser outorgadas pela Adasa, desde que observados os limites estabelecidos pela 
 			Resolução/ADASA nº 16/2018 e valores da demanda ajustados na tabela 2.</p>
@@ -103,11 +107,9 @@ class AnalyseView {
 
 			<p style="margin-left:30.0pt;">&nbsp;</p>
 
-			<p><br></p>
-			
 			<!-- Ponto de Captação e Limites Outorgados -->
 			<div id="water-data-view"></div>
-
+			<br>
 			<div id="limits-table-view"></div>
 
 			<p>12. As solicitações de renovação de outorga protocoladas fora do prazo previsto no parágrafo único, art. 27 
