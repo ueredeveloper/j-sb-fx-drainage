@@ -69,3 +69,8 @@ Thumbs.db
 *.iml
 out/
 *.class
+
+# Electron sub-project
+electron-regg+/node_modules/
+electron-regg+/dist/
+electron-regg+/services/json/

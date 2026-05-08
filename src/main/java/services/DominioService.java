@@ -27,6 +27,8 @@ public class DominioService {
 			connection.setRequestMethod("GET");
 
 			int responseCode = connection.getResponseCode();
+			
+			
 
 			if (responseCode == HttpURLConnection.HTTP_OK) {
 				//System.out.println("HTTP OK");
