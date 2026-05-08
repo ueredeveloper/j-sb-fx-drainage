@@ -1,0 +1,19 @@
+{
+  "name": "electron-regg",
+  "version": "1.0.0",
+  "description": "Sistema de Registro e Outorga de Recursos Hídricos - Desktop",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron ."
+  },
+  "devDependencies": {
+    "electron": "^28.0.0",
+    "electron-reload": "^2.0.0-alpha.1"
+  },
+  "dependencies": {
+    "@turf/helpers": "^6.5.0",
+    "leaflet": "^1.9.4",
+    "turf": "^3.0.14"
+  }
+}

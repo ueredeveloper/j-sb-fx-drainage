@@ -22,7 +22,7 @@ class SubjectView {
                 reservar o direito de uso de água subterrânea por meio de 01 (um) poço 
                 <span class="inter-tipo-poco"></span> para fins de 
 				<span class="inter-finalidades"></span>.
-				</p>
+				</p>		
 		`;
 		if (this.div !== null) this.div.innerHTML = innerHTML;
 

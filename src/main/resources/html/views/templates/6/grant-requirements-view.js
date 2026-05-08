@@ -1,6 +1,6 @@
 ﻿/**
  * @id
- * @nome Despacho de Outorga Prévia - Poço Raso
+ * @nome Outorga Prévia - Poço Raso
  * @arquivo grant-requirements-view.js
  * @diretório 6
  * @descrição Obrigações do usuário

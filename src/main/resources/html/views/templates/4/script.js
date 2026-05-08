@@ -15,10 +15,15 @@ function App() {
 	appDiv.innerHTML = `
 			<div style="display:flex; flex-direction:column">
 				<div id="subject-view"></div>
+				<br>
 				<div id="object-view"></div>
+				<br>
 				<div id="legal-basis-view"></div>
+				<br>
 				<div id="analyse-view"></div>
+				<br>
 				<div id="conclusion-view"></div>
+				<br>
 				<div id="signature-view"></div>
 				
 			</div>

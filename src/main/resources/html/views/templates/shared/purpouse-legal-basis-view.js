@@ -56,40 +56,32 @@ class PurpouseLegalBasisView {
 
         <p style="margin-left:6pt;">Resolução/ADASA nº 36/2018</p>
 
-        <blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;">
-            <div style="text-align: justify;">
-                <p style="margin-left:6pt;">Art. 3º Estabelecer que, a montante do reservatório do Descoberto, 
-                outorgas de direito de uso de recursos hídricos somente poderão ser emitidas para as finalidades 
-                de irrigação e piscicultura em áreas já utilizadas para essas atividades antes de 16 de setembro de 
-                2016.</p>
-            </div>
-        </blockquote>
+        <p style="margin-left:30.0pt;">Art. 3º Estabelecer que, a montante do reservatório do Descoberto, 
+        outorgas de direito de uso de recursos hídricos somente poderão ser emitidas para as finalidades 
+        de irrigação e piscicultura em áreas já utilizadas para essas atividades antes de 16 de setembro de 
+        2016.</p>
 
-        <blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;">
-            <div style="text-align: justify;">
-                <p style="margin-left:6pt;">§1º É vedada a renovação ou alteração de outorgas de direito de uso de 
-                recursos hídricos, a montante do reservatório do Descoberto, com o objetivo de ampliação das 
-                atividades mencionadas no caput.</p>
-            </div>
-        </blockquote>
-
+        <p style="margin-left:30.0pt;">§1º É vedada a renovação ou alteração de outorgas de direito de uso de 
+        recursos hídricos, a montante do reservatório do Descoberto, com o objetivo de ampliação das 
+        atividades mencionadas no caput.</p>
+      
 		</br>
         <div style="text-align: justify;">
         <p style="margin-left:6pt;">Resolução/ADASA nº 16/2018</p>
 
-            <p style="margin-left:30.0pt;">Art. 6º. Nas áreas atendidas pela concessionária, poderão ser concedidas outorgas e/ou 
-            registros para captação de água subterrânea, com finalidade exclusiva de irrigação, e desde que 
-            as propriedades possuam no mínimo 400 m² (quatrocentos metros quadrados) de área permeável, para 
-            os poços manuais (cisternas) e poços tubulares rasos, e 5000 m² (cinco mil metros quadrados), 
-            para os poços tubulares profundos.
-            </p>
+        <p style="margin-left:30.0pt;">Art. 6º. Nas áreas atendidas pela concessionária, poderão ser concedidas outorgas e/ou 
+        registros para captação de água subterrânea, com finalidade exclusiva de irrigação, e desde que 
+        as propriedades possuam no mínimo 400 m² (quatrocentos metros quadrados) de área permeável, para 
+        os poços manuais (cisternas) e poços tubulares rasos, e 5000 m² (cinco mil metros quadrados), 
+        para os poços tubulares profundos.
+        </p>
 
-            <p style="margin-left:30.0pt;">§1º. Para efeito de contagem de área permeável para as concessões de 
-            outorga em áreas atendidas pela concessionária de abastecimento público, poderão ser agrupadas áreas 
-            permeáveis contíguas, obrigando-se os usuários deste agrupamento a construírem rede de distribuição 
-            dissociada da rede de abastecimento da concessionária, que atenda a todas as propriedades, com a 
-            finalidade exclusiva de irrigação.
-            </p>
+        <p style="margin-left:30.0pt;">§1º. Para efeito de contagem de área permeável para as concessões de 
+        outorga em áreas atendidas pela concessionária de abastecimento público, poderão ser agrupadas áreas 
+        permeáveis contíguas, obrigando-se os usuários deste agrupamento a construírem rede de distribuição 
+        dissociada da rede de abastecimento da concessionária, que atenda a todas as propriedades, com a 
+        finalidade exclusiva de irrigação.
+        </p>
         </div>
 
         `;

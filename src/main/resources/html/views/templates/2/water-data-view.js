@@ -26,9 +26,11 @@ class WaterDataView {
           sendo estimado tempo de captação 
           máximo de <b><span class="dem-h-dia"></span>h/dia</b>. O ato de outorga seguirá as seguintes características:
           </p>
+          <br>
           <p>I -  Dados da captação:</p>
 
           <div id="geographic-table-view"></div>
+          <br>
           <p>II - Demanda a ser outorgada:</p>
 
           <div id="limits-table-view"></div>

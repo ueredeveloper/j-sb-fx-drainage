@@ -174,6 +174,7 @@ class LimitsTableView {
 			}
 	
 			// Atualização
+			// Formatação. Ex: 1000,00 para 1.000,00
 			document.getElementById(`q-litros-hora-${month}`).innerText = new DemandaModel().formatNumber(vazaoOutorgavel);
 			document.getElementById(`q-m3-hora-${month}`).innerText = new DemandaModel().maskDoubleToFloat(new DemandaModel().convertLitersToCubicMeters(vazaoOutorgavel));
 			// Printa também zero, por isso duas interrogações (??)
@@ -181,7 +182,13 @@ class LimitsTableView {
 			// índice
 			document.getElementById(`q-m3-dia-${month}`).innerText = new DemandaModel().maskDoubleToFloat(new DemandaModel().calculateCubicMetersPerDay(interferencia.vazaoOutorgavel, authorizedDemands[index].tempo));
 			document.getElementById(`p-dias-mes-${month}`).innerText = authorizedDemands[index].periodo
-			document.getElementById(`q-m3-mes-${month}`).innerText = new DemandaModel().maskDoubleToFloat(new DemandaModel().calculateCubicMetersPerMonth(interferencia.vazaoOutorgavel, authorizedDemands[index].tempo, authorizedDemands[index].periodo));
+			
+			// Cálculo metros cúbicos por mês
+			let cubicMetersPerMonth = new DemandaModel().maskDoubleToFloat(new DemandaModel().calculateCubicMetersPerMonth(interferencia.vazaoOutorgavel, authorizedDemands[index].tempo, authorizedDemands[index].periodo));
+			// Formatação. Ex: 1000,00 para 1.000,00
+			let cubicMetersPerMonthFormated = new DemandaModel().formatNumber(cubicMetersPerMonth)
+			
+			document.getElementById(`q-m3-mes-${month}`).innerText = cubicMetersPerMonthFormated;
 		});
 
 	}

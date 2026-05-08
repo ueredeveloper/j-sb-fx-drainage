@@ -33,7 +33,8 @@ class WellInfoView {
             <li>Vazão média do Subsistema (L/h): <span class="inter-vazao-sistema"></span></li>
             <li>Vazão teste (L/h): <span class="inter-vazao-teste"></span></li>
             <li>Vazão autorizada (L/h): <span class="inter-vazao-outorgavel"></span></li>
-        </ul>`;
+        </ul>
+        <br>`;
 
         if (this.div !== null) this.div.innerHTML = innerHtml;
 

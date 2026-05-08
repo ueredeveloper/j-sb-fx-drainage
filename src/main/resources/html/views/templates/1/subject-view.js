@@ -1,7 +1,7 @@
 /**
 * Assunto do parecer.
 * @id 
-* @nome Despacho de Outorga Prévia
+* @nome Outorga Prévia
 * @arquivo subject-view.js
 * @diretorio 1
 * @descricao Assunto do Despacho

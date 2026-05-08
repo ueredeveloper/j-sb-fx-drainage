@@ -43,7 +43,7 @@ public class InterferenciaService {
 			// Convert Documento object to JSON
 			String jsonInputString = convertObjectToJson(obj);
 			
-			System.out.println("salvar int " + jsonInputString);
+			//System.out.println("salvar int " + jsonInputString);
 
 			// Write JSON to request body
 			try (OutputStream os = connection.getOutputStream();
@@ -94,7 +94,7 @@ public class InterferenciaService {
 			// Convert Documento object to JSON
 			String jsonInputString = convertObjectToJson(object);
 			
-		    System.out.println("editar int " + jsonInputString);
+		    //System.out.println("editar int " + jsonInputString);
 
 			// Write JSON to request body
 			try (OutputStream os = connection.getOutputStream();
@@ -133,9 +133,7 @@ public class InterferenciaService {
 	}
 
 	public Set<Interferencia> fetchByKeyword(String keyword) {
-		
-		System.out.println("interfernecia ,fetch by keyword ");
-
+	
 		try {
 			URL apiUrl = new URL(
 					localUrl + "/interferences/search-interferences-by-param?param=" + URLEncoder.encode(keyword, "UTF-8"));
@@ -214,8 +212,6 @@ public class InterferenciaService {
 		JsonArray jsonArray = JsonParser.parseString(json).getAsJsonArray();
 		
 		
-	System.out.println("interferencia fetch by key \n" + jsonArray);
-
 		Gson gson = new GsonBuilder().registerTypeAdapter(Interferencia.class, new InterferenciaTypeAdapter()).create();
 
 		if (jsonArray != null) {

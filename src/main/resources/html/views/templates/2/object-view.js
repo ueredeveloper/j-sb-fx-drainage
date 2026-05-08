@@ -20,6 +20,7 @@ class ObjectView {
 	render() {
 		let innerHTML = `
     	<h2>I. DO OBJETO</h2>
+    	
     	<p>1. Em XXX, foi protocolado requerimento relacionado a 
     	<span class="inter-tipo-outorga"></span> para reservar o direito de uso de água subterrânea, 
     	por meio de 01 (um) poço <span class="inter-tipo-poco"></span> em nome de 

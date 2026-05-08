@@ -105,7 +105,7 @@ public class TemplateService {
 
 			int responseCode = connection.getResponseCode();
 
-			System.out.println("edição res code " + responseCode);
+			//System.out.println("edição res code " + responseCode);
 
 			String responseBody;
 			if (responseCode == HttpURLConnection.HTTP_OK) {
@@ -135,12 +135,12 @@ public class TemplateService {
 	public Set<Template> listTemplatesByParams(String typeOfDocument, String typeOfGrand, String subtypeOfGrant)
 			throws UnsupportedEncodingException {
 
-		System.out.println("search  template if not has");
+		//System.out.println("search  template if not has");
 		String url = localUrl + "/template/list-templates-by-params?" + "tipoDocumento="
 				+ URLEncoder.encode(typeOfDocument, "UTF-8") + "&tipoOutorga=" + URLEncoder.encode(typeOfGrand, "UTF-8")
 				+ "&subtipoOutorga=" + URLEncoder.encode(subtypeOfGrant, "UTF-8");
 
-		System.out.println(url);
+		//System.out.println(url);
 
 		try {
 			URL apiUrl = new URL(url);
@@ -150,10 +150,10 @@ public class TemplateService {
 			int responseCode = connection.getResponseCode();
 
 			if (responseCode == HttpURLConnection.HTTP_OK) {
-				System.out.println("HTTP OK");
+				//System.out.println("HTTP OK");
 				return handleSuccessResponse(connection);
 			} else if (responseCode == HttpURLConnection.HTTP_CREATED) {
-				System.out.println("HTTP Created");
+				//System.out.println("HTTP Created");
 				return handleSuccessResponse(connection);
 			} else {
 				handleErrorResponse(connection);

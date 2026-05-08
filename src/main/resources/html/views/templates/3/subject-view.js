@@ -1,5 +1,5 @@
 /**
-* @nome Despacho de Outorga De Direito de Uso
+* @nome Outorga De Direito de Uso
 * @descricao Assunto do Despacho
 * @diretorio 3
 * @arquivo subject-view.js

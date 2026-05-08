@@ -1,5 +1,5 @@
 /**
- * @nome Despacho de Outorga Prévia - Poço Raso
+ * @nome Outorga Prévia - Poço Raso
  * @descricao Arquivo principal.js
  * @diretório 6
  * @arquivo script.js

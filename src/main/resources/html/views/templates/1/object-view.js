@@ -1,6 +1,6 @@
 /**
  * @id 
- * @nome Despacho de Outorga Prévia
+ * @nome Outorga Prévia
  * @arquivo object-view.js
  * @diretorio 1
  * @descricao Objeto do despacho
