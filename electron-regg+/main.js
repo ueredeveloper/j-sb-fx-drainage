@@ -57,8 +57,8 @@ if (!app.isPackaged) {
 
 function createWindow() {
   const win = new BrowserWindow({
-    width: 1400,
-    height: 900,
+    width: 1280,
+    height: 800,
     minWidth: 900,
     minHeight: 600,
     webPreferences: {

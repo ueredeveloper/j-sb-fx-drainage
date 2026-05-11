@@ -154,19 +154,29 @@ html, body {
 /* ── CONVERSOR DE COORDENADAS ── */
 #coord-converter {
   position: absolute;
-  bottom: 50px;
+  bottom: 30px;
   left: 50%;
-  transform: translateX(-50%) scale(0.82);
-  transform-origin: center bottom;
+  transform: translateX(-50%);
   z-index: 400;
   width: calc(100% - 16px);
   max-width: 780px;
   pointer-events: none;
-  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.workspace.map-expanded #coord-converter {
-  transform: translateX(-50%) scale(1);
+/* Fora do full screen: oculta a UI de entrada, mantém apenas o resultado */
+#coord-converter .cc-tabbar,
+#coord-converter #ccUtmPanel,
+#coord-converter #ccGmsPanel {
+  display: none;
+}
+
+/* Full screen: exibe a UI completa */
+.workspace.map-expanded #coord-converter .cc-tabbar {
+  display: flex;
+}
+.workspace.map-expanded #coord-converter #ccUtmPanel:not([hidden]),
+.workspace.map-expanded #coord-converter #ccGmsPanel:not([hidden]) {
+  display: block;
 }
 
 .cc-wrapper {
@@ -310,6 +320,38 @@ html, body {
   border-top: 1px solid var(--border);
 }
 
+.cc-examples {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px 6px;
+}
+
+.cc-examples-label {
+  font-size: 10px;
+  color: var(--text-light);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-right: 2px;
+}
+
+.cc-example-btn {
+  font-size: 11px;
+  padding: 2px 8px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--surface);
+  color: var(--text-light);
+  cursor: pointer;
+  line-height: 1.4;
+}
+
+.cc-example-btn:hover {
+  background: var(--bg);
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
 #ccResultText {
   font-family: monospace;
   color: var(--primary);
@@ -328,6 +370,33 @@ html, body {
   flex-shrink: 0;
   color: var(--primary);
   font-weight: 500;
+}
+
+.mc-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.mc-icon-btn {
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text-light);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.mc-icon-btn:hover {
+  background: var(--bg);
+  color: var(--primary);
+  border-color: var(--primary);
 }
 
 .btn-link {

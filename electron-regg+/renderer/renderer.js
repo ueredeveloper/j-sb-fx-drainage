@@ -19,6 +19,7 @@ SelectInterference.mount(document.getElementById('section-interference'))
 SelectUser.mount(document.getElementById('section-user'))
 SelectProcess.mount(document.getElementById('section-process'))
 SelectAnnex.mount(document.getElementById('section-attachment'))
+MapCoordsBar.mount(document.getElementById('map-coords-bar'))
 CoordConverter.mount(document.getElementById('coord-converter'))
 
 // ── MAPA ─────────────────────────────────────────────────────────────────────
@@ -73,27 +74,35 @@ function placeMarker(lat, lng) {
 }
 
 /**
- * @description Atualiza o rodapé do mapa com as coordenadas atuais.
+ * @description Atualiza a barra de coordenadas do mapa.
  * @param {number} lat
  * @param {number} lng
  */
 function _updateMapFooter(lat, lng) {
-  document.getElementById('mapCoords').style.display = 'flex'
-  document.getElementById('coordDisplay').textContent =
-    `Lat: ${lat.toFixed(6)}  Lon: ${lng.toFixed(6)}`
+  MapCoordsBar.show(lat, lng)
   document.getElementById('mapHint').textContent = 'Marcador pode ser arrastado'
+  map.invalidateSize({ animate: false })
 }
 
 /* Clique no mapa posiciona o marcador */
 map.on('click', (e) => placeMarker(e.latlng.lat, e.latlng.lng))
 
-/* Botão de remover marcador */
-document.getElementById('btnRemoveMarker').addEventListener('click', () => {
+/* MapCoordsBar: remover marcador */
+document.addEventListener('map-coords:remove', () => {
   if (marker) { map.removeLayer(marker); marker = null }
-  document.getElementById('mapCoords').style.display = 'none'
+  MapCoordsBar.hide()
+  map.invalidateSize({ animate: false })
   document.getElementById('mapHint').textContent = 'Clique no mapa para marcar a interferência'
   if (SelectInterference.isMounted()) SelectInterference.reset()
   if (InterferenceView.isMounted())   InterferenceView.reset()
+})
+
+/* MapCoordsBar: centralizar mapa e propagar coordenadas ao formulário */
+document.addEventListener('map-coords:center', (e) => {
+  const { lat, lng } = e.detail
+  map.setView([lat, lng], map.getZoom())
+  if (SelectInterference.isMounted()) SelectInterference.setCoords(lat, lng)
+  if (InterferenceView.isMounted())   InterferenceView.setCoords(lat, lng)
 })
 
 /* InterferenceView emite este evento ao clicar em "Ir ao mapa" */
