@@ -67,7 +67,7 @@ html, body {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  height: 62px;
+  height: 44px;
   width: auto;
   opacity: 0.26;
   pointer-events: none;
@@ -154,7 +154,7 @@ html, body {
 /* ── CONVERSOR DE COORDENADAS ── */
 #coord-converter {
   position: absolute;
-  bottom: 30px;
+  bottom: 60px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 400;
@@ -249,6 +249,7 @@ html, body {
 .cc-row {
   display: flex;
   align-items: flex-end;
+  justify-content: center;
   gap: 8px;
   flex-wrap: wrap;
 }
@@ -318,38 +319,6 @@ html, body {
   background: var(--bg);
   font-size: 12px;
   border-top: 1px solid var(--border);
-}
-
-.cc-examples {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 4px 12px 6px;
-}
-
-.cc-examples-label {
-  font-size: 10px;
-  color: var(--text-light);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-right: 2px;
-}
-
-.cc-example-btn {
-  font-size: 11px;
-  padding: 2px 8px;
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  background: var(--surface);
-  color: var(--text-light);
-  cursor: pointer;
-  line-height: 1.4;
-}
-
-.cc-example-btn:hover {
-  background: var(--bg);
-  color: var(--primary);
-  border-color: var(--primary);
 }
 
 #ccResultText {
@@ -450,6 +419,28 @@ html, body {
   flex-direction: column;
   gap: 10px;
 }
+
+/* Variante sem padding interno (usa doc-view-header + doc-view-body) */
+.doc-view { padding: 0; overflow: hidden; }
+.doc-view-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+}
+.doc-view-title {
+  flex: 1;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.doc-view-body { padding: 12px 16px 8px; }
 
 .section-title {
   font-size: 12px;
@@ -576,6 +567,17 @@ select {
 }
 .btn-secondary:hover { background: rgba(255,255,255,0.25); }
 
+/* Variante do botão Novo para fundos claros (drawers e formulários) */
+.av-new-btn {
+  background: var(--bg);
+  color: var(--primary);
+  border: 1px solid var(--border);
+}
+.av-new-btn:hover {
+  background: #e8eef4;
+  border-color: var(--primary);
+}
+
 .btn-map {
   background: var(--accent);
   color: #fff;
@@ -648,7 +650,7 @@ select {
   overflow-y: auto;
 }
 
-.doc-list-wrap::-webkit-scrollbar { width: 5px; }
+.doc-list-wrap::-webkit-scrollbar { width: 15px; }
 .doc-list-wrap::-webkit-scrollbar-track { background: transparent; }
 .doc-list-wrap::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 
@@ -680,7 +682,8 @@ select {
 .doc-list-table th:nth-child(2) { width: 18%; }
 .doc-list-table th:nth-child(3) { width: 20%; }
 .doc-list-table th:nth-child(4) { width: 18%; }
-.doc-list-table th:nth-child(5) { width: 26%; }
+.doc-list-table th:nth-child(5) { width: 20%; }
+.doc-list-table th:nth-child(6) { width: 44px; }
 
 .doc-list-table tbody td {
   padding: 7px 10px;
@@ -705,6 +708,39 @@ select {
 .doc-list-row.selected td {
   color: var(--primary);
   font-weight: 600;
+}
+
+@keyframes row-flash {
+  0%   { background: #d5f5e3; }
+  60%  { background: #d5f5e3; }
+  100% { background: transparent; }
+}
+.doc-list-row--flash { animation: row-flash 2s ease-out forwards; }
+
+.doc-list-action-cell {
+  width: 44px;
+  text-align: center;
+  padding: 0 !important;
+}
+
+.doc-list-delete-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #e74c3c;
+  opacity: 0.5;
+  padding: 4px 7px;
+  border-radius: 3px;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  transition: opacity 0.15s, background 0.15s;
+}
+
+.doc-list-delete-btn:hover {
+  color: #c0392b;
+  background: #fdf0ee;
+  opacity: 1;
 }
 
 .doc-list-empty {
@@ -994,6 +1030,300 @@ select {
   font-size: 11px;
   color: var(--text-light);
   margin-top: 1px;
+}
+
+/* ── INTERFERENCE LIST ── */
+.iv-if-list { min-height: 100px; }
+
+/* ── INTERFERENCE DETAILS ── */
+.id-section {
+  margin-top: 14px;
+  border-radius: 8px;
+  border: 1.5px solid #67e8f9;
+  background: #f0fdff;
+  overflow: hidden;
+}
+
+.id-section-header {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 14px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(90deg, #0e7490 0%, #0891b2 100%);
+  letter-spacing: 0.02em;
+}
+
+.id-fields {
+  padding: 10px 14px 4px;
+  background: #f0fdff;
+}
+
+/* abas */
+.id-tabs {
+  display: flex;
+  border-bottom: 2px solid #a5f3fc;
+  margin: 0 14px;
+}
+
+.id-tab {
+  padding: 6px 20px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 13px;
+  color: #6b7280;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.id-tab:hover { color: #0e7490; }
+
+.id-tab.id-tab-active {
+  color: #0e7490;
+  border-bottom-color: #0e7490;
+  font-weight: 700;
+}
+
+.id-tab-panel { padding: 10px 14px 14px; }
+
+/* títulos de grupo dentro das abas */
+.id-group-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: #0891b2;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin: 0 0 5px;
+}
+
+/* tabela de finalidades */
+.id-fin-wrap  { max-height: 160px; border-color: #a5f3fc; }
+.id-fin-table {}
+
+.id-fin-wrap .doc-list-table thead th {
+  background: #cffafe;
+  color: #0e7490;
+  border-bottom-color: #67e8f9;
+}
+.id-fin-wrap .doc-list-table tbody tr:hover td { background: #e0f7fa; }
+
+.id-fin-input {
+  width: 100%;
+  border: 1px solid transparent;
+  background: transparent;
+  padding: 2px 4px;
+  font-size: 12px;
+  color: var(--text);
+  border-radius: 3px;
+  min-width: 0;
+}
+.id-fin-input:focus {
+  outline: none;
+  border-color: #0891b2;
+  background: #fff;
+}
+
+.id-col-n    { width: 70px; }
+.id-col-acts { width: 80px; }
+
+/* célula de ações: calc + add + del alinhados */
+.id-fin-actions {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 2px 4px;
+}
+
+/* botão calcular consumo = qtd × total */
+.id-calc-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  border: 1px solid #a5f3fc;
+  border-radius: 4px;
+  background: #e0f2fe;
+  color: #0e7490;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.12s;
+}
+.id-calc-btn:hover { background: #0e7490; color: #fff; border-color: #0e7490; }
+
+/* botões de linha: adicionar / remover */
+.id-row-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  border: 1px solid;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1;
+  padding: 0;
+  transition: background 0.12s, color 0.12s;
+}
+.id-add-btn { border-color: #67e8f9; background: #ecfeff; color: #0e7490; }
+.id-add-btn:hover { background: #0e7490; color: #fff; border-color: #0e7490; }
+.id-del-btn { border-color: #fca5a5; background: #fee2e2; color: #dc2626; }
+.id-del-btn:hover { background: #dc2626; color: #fff; border-color: #dc2626; }
+
+/* linha de total */
+.id-total-row td { background: #cffafe; font-size: 12px; }
+.id-total-label  { text-align: right; font-weight: 600; color: #0e7490; padding-right: 8px; }
+.id-total-value  { font-weight: 700; color: #0c4a6e; text-align: right; padding-right: 6px; }
+
+/* tabela transposta de demandas */
+.iv-subtable-wrap { max-height: 140px; }
+
+.iv-demandas-scroll {
+  overflow-x: auto;
+  border: 1.5px solid #a5f3fc;
+  border-radius: var(--radius);
+  margin-bottom: 4px;
+}
+
+.iv-demandas-table {
+  border-collapse: collapse;
+  font-size: 12px;
+  width: 100%;
+  min-width: 760px;
+}
+
+.iv-demandas-table th,
+.iv-demandas-table td {
+  border: 1px solid #a5f3fc;
+  padding: 4px 6px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.id-dem-th {
+  background: #cffafe;
+  font-weight: 700;
+  color: #0e7490;
+}
+
+.id-metric-label {
+  text-align: left !important;
+  vertical-align: top;
+  background: #e0f2fe;
+  min-width: 190px;
+  padding: 6px 8px !important;
+}
+
+.id-metric-name {
+  display: block;
+  font-weight: 700;
+  color: #0c4a6e;
+  font-size: 11px;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* ferramentas de preenchimento automático */
+.id-fill-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  align-items: center;
+}
+
+.id-fill-btn {
+  padding: 2px 7px;
+  font-size: 11px;
+  border: 1px solid #67e8f9;
+  border-radius: 4px;
+  background: #ecfeff;
+  color: #0e7490;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.12s;
+}
+.id-fill-btn:hover  { background: #0e7490; color: #fff; border-color: #0e7490; }
+.id-fill-dry        { border-color: #fbbf24; background: #fffbeb; color: #92400e; }
+.id-fill-dry:hover  { background: #92400e; color: #fff; border-color: #92400e; }
+
+.id-tempo-sel {
+  font-size: 11px;
+  padding: 2px 4px;
+  border: 1px solid #67e8f9;
+  border-radius: 4px;
+  background: #ecfeff;
+  color: #0e7490;
+}
+
+.id-dem-cell {
+  width: 54px;
+  border: none;
+  background: transparent;
+  text-align: center;
+  font-size: 12px;
+  color: var(--text);
+  padding: 2px;
+  border-radius: 3px;
+}
+.id-dem-cell:focus {
+  outline: none;
+  background: #fff;
+  box-shadow: 0 0 0 1px #0891b2;
+}
+
+.id-empty-cell {
+  text-align: center;
+  color: var(--text-light);
+  font-style: italic;
+  padding: 8px;
+}
+
+/* tabs legadas (usadas em outros drawers) */
+.iv-tabs {
+  display: flex;
+  gap: 0;
+  margin: 14px 0 0;
+  border-bottom: 2px solid var(--border);
+}
+
+.iv-tab {
+  padding: 6px 20px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--text-light);
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.iv-tab:hover { color: var(--text); }
+
+.iv-tab.iv-tab-active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+  font-weight: 600;
+}
+
+.iv-tab-panel { padding-top: 10px; }
+
+.iv-subtable-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-light);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin: 10px 0 4px;
 }
 
 /* ── LEAFLET OVERRIDES ── */

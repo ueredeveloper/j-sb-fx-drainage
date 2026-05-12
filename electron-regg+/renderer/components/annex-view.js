@@ -14,8 +14,9 @@
  * Aberto via `AnnexView.open()` e fechado pelo botão Voltar ou tecla Escape.
  */
 const AnnexView = (() => {
-  let _mounted   = false
-  let _container = null
+  let _mounted    = false
+  let _container  = null
+  let _selectedId = null
 
   /**
    * @description Renderiza o drawer no container e registra os eventos.
@@ -37,7 +38,15 @@ const AnnexView = (() => {
           Voltar
         </button>
         <span class="av-title">Cadastro de Processo Principal</span>
-        <button type="button" class="btn btn-primary" id="axSave">Salvar Anexo</button>
+        <button type="button" class="btn btn-secondary av-new-btn" id="axNew">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="2.5"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/>
+          </svg>
+          Novo
+        </button>
+        <button type="button" class="btn btn-primary" id="axSave">Salvar</button>
       </div>
 
       <div class="av-content">
@@ -101,9 +110,10 @@ const AnnexView = (() => {
             <table class="doc-list-table" aria-label="Lista de processos principais">
               <thead>
                 <tr>
-                  <th style="width:50%">Processo Principal</th>
-                  <th style="width:30%">Processo</th>
-                  <th style="width:20%">Usuário</th>
+                  <th style="width:46%">Processo Principal</th>
+                  <th style="width:27%">Processo</th>
+                  <th style="width:17%">Usuário</th>
+                  <th style="width:44px"></th>
                 </tr>
               </thead>
               <tbody id="axListBody"></tbody>
@@ -124,6 +134,7 @@ const AnnexView = (() => {
    */
   function _bindEvents() {
     _el('axBack').addEventListener('click', close)
+    _el('axNew').addEventListener('click', _new)
     _el('axSave').addEventListener('click', _save)
 
     _el('axSearchBtn').addEventListener('click', () => _searchList(_el('axSearch').value.trim()))
@@ -239,7 +250,7 @@ const AnnexView = (() => {
    * @description Valida e salva um novo anexo.
    * TODO: conectar a window.documentService.saveAnnex(data).
    */
-  function _save() {
+  async function _save() {
     const form = _el('axForm')
     if (!form.checkValidity()) { form.reportValidity(); return }
 
@@ -248,11 +259,77 @@ const AnnexView = (() => {
       processo:         _el('axProcSearch').value.trim(),
       usuario:          _el('axUserSearch').value.trim()
     }
+    const payload = _selectedId ? { id: _selectedId, ...data } : data
 
-    console.log('Salvar anexo:', data)
-    document.dispatchEvent(new CustomEvent('annex-view:saved', { detail: data }))
-    form.reset()
-    _searchList('')
+    try {
+      const raw   = await window.annexService.save(payload)
+      const saved = raw?.object ?? raw
+      document.dispatchEvent(new CustomEvent('annex-view:saved', { detail: saved }))
+      const savedId = _selectedId
+      _selectedId = null
+      _el('axSave').textContent = 'Salvar'
+      form.reset()
+      _el('axProcSearch').value = ''
+      _el('axProcClear').hidden = true
+      _el('axUserSearch').value = ''
+      _el('axUserClear').hidden = true
+      _prependRow({
+        id:         saved?.id      ?? savedId,
+        numero:     saved?.numero  ?? data.processPrincipal,
+        procNumero: data.processo,
+        userNome:   data.usuario
+      })
+    } catch (err) {
+      console.error('AnnexView: erro ao salvar processo principal', err)
+    }
+  }
+
+  /**
+   * @description Insere ou move um processo principal para o topo da tabela e destaca com animação.
+   * @param {Object} r
+   */
+  function _prependRow(r) {
+    if (!r?.id) return
+    const tbody = _el('axListBody')
+    const empty = _el('axListEmpty')
+
+    tbody.querySelector(`tr[data-id="${r.id}"]`)?.remove()
+
+    const tr = document.createElement('tr')
+    tr.className             = 'doc-list-row'
+    tr.dataset.id            = String(r.id)
+    tr.dataset.label         = r.numero     || ''
+    tr.dataset.numero        = r.numero     || ''
+    tr.dataset.procNumero    = r.procNumero || ''
+    tr.dataset.usuarioNome   = r.userNome   || ''
+
+    tr.innerHTML = `
+      <td title="${r.numero}">${r.numero || '—'}</td>
+      <td>${r.procNumero || '—'}</td>
+      <td>${r.userNome   || '—'}</td>
+      <td class="doc-list-action-cell">
+        <button type="button" class="doc-list-delete-btn" title="Excluir">
+          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="2.5"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="3 6 5 6 21 6"/>
+            <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+            <path d="M10 11v6M14 11v6M9 6V4h6v2"/>
+          </svg>
+        </button>
+      </td>
+    `
+
+    tbody.prepend(tr)
+    empty.setAttribute('hidden', '')
+
+    tr.addEventListener('click', () => _pickAnnex(tr))
+    tr.querySelector('.doc-list-delete-btn').addEventListener('click', (e) => {
+      e.stopPropagation(); _deleteRow(tr)
+    })
+
+    void tr.offsetWidth
+    tr.classList.add('doc-list-row--flash')
   }
 
   /**
@@ -308,11 +385,41 @@ const AnnexView = (() => {
         <td title="${f.numero}">${f.numero || '—'}</td>
         <td>${f.procNumero || '—'}</td>
         <td>${f.userNome   || '—'}</td>
+        <td class="doc-list-action-cell">
+          <button type="button" class="doc-list-delete-btn" title="Excluir">
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
+                 fill="none" stroke="currentColor" stroke-width="2.5"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="3 6 5 6 21 6"/>
+              <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+              <path d="M10 11v6M14 11v6M9 6V4h6v2"/>
+            </svg>
+          </button>
+        </td>
       </tr>`).join('')
 
     tbody.querySelectorAll('.doc-list-row').forEach(tr =>
       tr.addEventListener('click', () => _pickAnnex(tr))
     )
+    tbody.querySelectorAll('.doc-list-delete-btn').forEach(btn =>
+      btn.addEventListener('click', (e) => { e.stopPropagation(); _deleteRow(btn.closest('tr')) })
+    )
+  }
+
+  /**
+   * @description Remove um processo principal pelo id.
+   * @param {HTMLTableRowElement} tr
+   */
+  async function _deleteRow(tr) {
+    const id = tr.dataset.id
+    if (!confirm('Confirmar exclusão do processo principal?')) return
+    try {
+      await window.annexService.deleteById(id)
+      document.dispatchEvent(new CustomEvent('annex-view:deleted', { detail: { id } }))
+      tr.remove()
+    } catch (err) {
+      console.error('AnnexView: erro ao excluir processo principal', err)
+    }
   }
 
   /**
@@ -321,6 +428,8 @@ const AnnexView = (() => {
    * @param {HTMLTableRowElement} tr
    */
   function _pickAnnex(tr) {
+    _selectedId = tr.dataset.id
+    _el('axSave').textContent = 'Editar'
     _el('axProcPrincipal').value = tr.dataset.numero    || ''
 
     _el('axProcSearch').value = tr.dataset.procNumero  || ''
@@ -335,10 +444,40 @@ const AnnexView = (() => {
   }
 
   /**
-   * @description Abre o drawer com animação de deslize.
+   * @description Abre o drawer com animação de deslize e pré-preenche o formulário
+   * com os dados do processo principal atualmente selecionado em SelectAnnex, se houver.
    */
-  function open() {
+  /**
+   * @description Limpa o formulário e reseta para modo de criação.
+   */
+  function _new() {
+    _selectedId = null
+    _el('axSave').textContent = 'Salvar'
+    _el('axForm').reset()
+    _el('axProcSearch').value = ''
+    _el('axProcClear').hidden = true
+    _el('axUserSearch').value = ''
+    _el('axUserClear').hidden = true
+  }
+
+  async function open() {
     if (!_mounted) return
+    const { annexId } = SelectAnnex.getValue()
+    if (annexId) {
+      let r = SelectAnnex.getData()
+      if (!r) {
+        try { r = await window.annexService.fetchById(annexId) } catch { r = null }
+      }
+      if (r) {
+        _selectedId                  = annexId
+        _el('axProcPrincipal').value = r.numero         || ''
+        _el('axProcSearch').value    = r.processoNumero || ''
+        _el('axProcClear').hidden    = !r.processoNumero
+        _el('axUserSearch').value    = r.usuarioNome    || ''
+        _el('axUserClear').hidden    = !r.usuarioNome
+      }
+    }
+    _el('axSave').textContent = _selectedId ? 'Editar' : 'Salvar'
     _container.classList.add('open')
     setTimeout(() => _el('axSearch')?.focus(), 320)
   }

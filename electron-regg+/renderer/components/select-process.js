@@ -6,9 +6,11 @@
  * TODO: conectar ao banco via `window.db.searchProcess(term)`.
  */
 const SelectProcess = (() => {
-  let _mounted    = false
-  let _selectedId = null
-  let _activeIdx  = -1
+  let _mounted      = false
+  let _selectedId   = null
+  let _selectedData = null
+  let _activeIdx    = -1
+  let _lastRows     = []
 
   /**
    * @description Renderiza o componente e registra os eventos.
@@ -139,6 +141,7 @@ const SelectProcess = (() => {
   function _renderDropdown(rows) {
     const list = _el('sProcDropdown')
     _activeIdx = -1
+    _lastRows  = rows
     list.innerHTML = rows.length
       ? rows.map(r => `
           <li class="autocomplete-item" role="option"
@@ -152,7 +155,10 @@ const SelectProcess = (() => {
     _el('sProcSearch').setAttribute('aria-expanded', 'true')
 
     list.querySelectorAll('.autocomplete-item').forEach(li => {
-      li.addEventListener('click',      () => _select({ id: li.dataset.id, label: li.dataset.label }))
+      li.addEventListener('click', () => {
+        const data = _lastRows.find(r => String(r.id) === li.dataset.id) ?? null
+        _select({ id: li.dataset.id, label: li.dataset.label }, data)
+      })
       li.addEventListener('mouseenter', () => {
         _activeIdx = [...list.children].indexOf(li)
         _highlight(list.querySelectorAll('.autocomplete-item'))
@@ -164,8 +170,9 @@ const SelectProcess = (() => {
    * @description Confirma a seleção e fecha o dropdown.
    * @param {{ id: string, label: string }} item
    */
-  function _select(item) {
-    _selectedId = item.id
+  function _select(item, data = null) {
+    _selectedId   = item.id
+    _selectedData = data
     _el('sProcSearch').value = item.label
     _el('sProcClear').hidden = false
     _closeDropdown()
@@ -186,7 +193,13 @@ const SelectProcess = (() => {
    * @param {{ processId?: string, processLabel?: string }} data
    */
   function setValue(data = {}) {
-    _selectedId = data.processId ?? null
+    _selectedId   = data.processId ?? null
+    _selectedData = data.processId ? {
+      id:          data.processId,
+      numero:      data.processLabel ?? '',
+      usuarioNome: data.usuarioNome  ?? '',
+      anexoNumero: data.anexoNumero  ?? ''
+    } : null
     const input = _el('sProcSearch')
     if (input) { input.value = data.processLabel ?? ''; _el('sProcClear').hidden = !data.processLabel }
   }
@@ -194,7 +207,8 @@ const SelectProcess = (() => {
   /** @description Limpa a seleção e o campo de busca. */
   function reset() {
     if (!_mounted) return
-    _selectedId = null
+    _selectedId   = null
+    _selectedData = null
     const input = _el('sProcSearch')
     if (input) input.value = ''
     _el('sProcClear').hidden = true
@@ -210,5 +224,11 @@ const SelectProcess = (() => {
   /** @param {string} id @returns {HTMLElement} */
   function _el(id) { return document.getElementById(id) }
 
-  return { mount, getValue, setValue, reset, validate, isMounted }
+  /** @returns {string} Label do processo atualmente selecionado. */
+  function getLabel() { return _el('sProcSearch')?.value ?? '' }
+
+  /** @returns {Object|null} Objeto completo do processo selecionado. */
+  function getData() { return _selectedData }
+
+  return { mount, getValue, getLabel, getData, setValue, reset, validate, isMounted }
 })()

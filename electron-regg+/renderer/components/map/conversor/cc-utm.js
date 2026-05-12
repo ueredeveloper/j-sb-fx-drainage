@@ -17,17 +17,12 @@ const CcUtm = (() => {
     _bindEvents()
   }
 
-  const _EXAMPLES = [
-    { label: '22S', zone: 22, hem: 'S', e: 676000, n: 7185000 },
-    { label: '23S', zone: 23, hem: 'S', e: 188000, n: 8261000 }
-  ]
-
   function _render() {
     _container.innerHTML = `
       <div class="cc-row">
         <div class="cc-field">
           <label>Zona</label>
-          <input type="number" id="ccUtmZone" min="1" max="60" placeholder="23">
+          <input type="number" id="ccUtmZone" min="1" max="60" value="23">
         </div>
         <div class="cc-field narrow">
           <label>Hem.</label>
@@ -38,11 +33,11 @@ const CcUtm = (() => {
         </div>
         <div class="cc-field grow">
           <label>Leste — E (m)</label>
-          <input type="number" id="ccUtmE" placeholder="188000">
+          <input type="number" id="ccUtmE" value="188000">
         </div>
         <div class="cc-field grow">
           <label>Norte — N (m)</label>
-          <input type="number" id="ccUtmN" placeholder="8261000">
+          <input type="number" id="ccUtmN" value="8261000">
         </div>
         <button class="btn btn-primary cc-convert-btn" id="ccUtmBtn">
           <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24"
@@ -55,24 +50,10 @@ const CcUtm = (() => {
           Converter
         </button>
       </div>
-      <div class="cc-examples">
-        <span class="cc-examples-label">Teste:</span>
-        ${_EXAMPLES.map(ex =>
-          `<button class="cc-example-btn" data-zone="${ex.zone}" data-hem="${ex.hem}" data-e="${ex.e}" data-n="${ex.n}">${ex.label}</button>`
-        ).join('')}
-      </div>
     `
   }
 
   function _bindEvents() {
-    _container.querySelectorAll('.cc-example-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        _container.querySelector('#ccUtmZone').value = btn.dataset.zone
-        _container.querySelector('#ccUtmHem').value  = btn.dataset.hem
-        _container.querySelector('#ccUtmE').value    = btn.dataset.e
-        _container.querySelector('#ccUtmN').value    = btn.dataset.n
-      })
-    })
 
     _container.querySelector('#ccUtmBtn').addEventListener('click', async () => {
       const e = parseFloat(_container.querySelector('#ccUtmE').value)

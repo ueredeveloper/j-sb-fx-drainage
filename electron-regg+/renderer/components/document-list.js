@@ -48,6 +48,7 @@ const DocumentList = (() => {
                 <th>Número SEI</th>
                 <th>Processo</th>
                 <th class="col-address">Endereço</th>
+                <th></th>
               </tr>
             </thead>
             <tbody id="docListBody"></tbody>
@@ -96,6 +97,34 @@ const DocumentList = (() => {
   }
 
   /**
+   * @description Gera o HTML de uma linha da tabela de documentos.
+   * @param {Object} r - Documento normalizado.
+   * @param {number} idx - Índice em `_rows`.
+   * @returns {string}
+   */
+  function _rowHtml(r, idx) {
+    return `
+      <tr class="doc-list-row" data-idx="${idx}" data-id="${r.id}">
+        <td>${r.tipoDocumentoNome || '—'}</td>
+        <td>${r.numero           || '—'}</td>
+        <td>${r.numeroSei        || '—'}</td>
+        <td>${r.processoNumero   || '—'}</td>
+        <td class="col-address" title="${r.logradouro || ''}">${r.logradouro || '—'}</td>
+        <td class="doc-list-action-cell">
+          <button type="button" class="doc-list-delete-btn" title="Excluir">
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
+                 fill="none" stroke="currentColor" stroke-width="2.5"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="3 6 5 6 21 6"/>
+              <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+              <path d="M10 11v6M14 11v6M9 6V4h6v2"/>
+            </svg>
+          </button>
+        </td>
+      </tr>`
+  }
+
+  /**
    * @description Popula a tabela com os documentos retornados pela busca.
    * Armazena os dados completos em `_rows` para uso no evento de seleção.
    * @param {Object[]} rows - Linhas retornadas por documentService.fetchByParam.
@@ -113,19 +142,73 @@ const DocumentList = (() => {
     }
 
     empty.setAttribute('hidden', '')
-    tbody.innerHTML = rows.map((r, idx) => `
-      <tr class="doc-list-row" data-idx="${idx}">
-        <td>${r.tipoDocumentoNome || '—'}</td>
-        <td>${r.numero           || '—'}</td>
-        <td>${r.numeroSei        || '—'}</td>
-        <td>${r.processoNumero   || '—'}</td>
-        <td class="col-address" title="${r.logradouro || ''}">${r.logradouro || '—'}</td>
-      </tr>
-    `).join('')
+    tbody.innerHTML = rows.map((r, idx) => _rowHtml(r, idx)).join('')
 
     tbody.querySelectorAll('.doc-list-row').forEach(tr =>
       tr.addEventListener('click', () => _selectRow(tr))
     )
+    tbody.querySelectorAll('.doc-list-delete-btn').forEach(btn =>
+      btn.addEventListener('click', (e) => { e.stopPropagation(); _deleteRow(btn.closest('tr')) })
+    )
+  }
+
+  /**
+   * @description Insere um documento no topo da lista com animação de destaque.
+   * Chamado após salvar ou atualizar um documento para feedback visual imediato.
+   * @param {Object} doc - Documento normalizado (mesmo formato de `_rows`).
+   */
+  function prependRow(doc) {
+    if (!_mounted) return
+
+    const tbody = _el('docListBody')
+
+    // Remove linha existente com o mesmo ID para evitar duplicata na edição
+    const existingTr = tbody.querySelector(`tr[data-id="${doc.id}"]`)
+    if (existingTr) {
+      const removedIdx = parseInt(existingTr.dataset.idx, 10)
+      _rows.splice(removedIdx, 1)
+      existingTr.remove()
+      tbody.querySelectorAll('.doc-list-row').forEach(tr => {
+        const i = parseInt(tr.dataset.idx, 10)
+        if (i > removedIdx) tr.dataset.idx = String(i - 1)
+      })
+    }
+
+    _rows.unshift(doc)
+    tbody.querySelectorAll('.doc-list-row').forEach(tr => {
+      tr.dataset.idx = String(parseInt(tr.dataset.idx, 10) + 1)
+    })
+
+    _el('docListEmpty').setAttribute('hidden', '')
+
+    const tmp = document.createElement('tbody')
+    tmp.innerHTML = _rowHtml(doc, 0)
+    const tr = tmp.firstElementChild
+    tbody.prepend(tr)
+
+    tr.classList.add('doc-list-row--flash')
+    tr.addEventListener('click', () => _selectRow(tr))
+    tr.querySelector('.doc-list-delete-btn').addEventListener('click', (e) => {
+      e.stopPropagation()
+      _deleteRow(tr)
+    })
+  }
+
+  /**
+   * @description Remove um documento pelo id.
+   * @param {HTMLTableRowElement} tr
+   */
+  async function _deleteRow(tr) {
+    const id = tr.dataset.id
+    if (!confirm('Confirmar exclusão do documento?')) return
+    try {
+      await window.documentService.deleteById(id)
+      document.dispatchEvent(new CustomEvent('document-list:deleted', { detail: { id } }))
+      if (_selectedId === id) _selectedId = null
+      tr.remove()
+    } catch (err) {
+      console.error('[DocumentList] Erro ao excluir:', err)
+    }
   }
 
   /**
@@ -179,5 +262,5 @@ const DocumentList = (() => {
   /** @param {string} id @returns {HTMLElement} */
   function _el(id) { return document.getElementById(id) }
 
-  return { mount, getValue, clearSelection, reset, validate, isMounted }
+  return { mount, getValue, clearSelection, prependRow, reset, validate, isMounted }
 })()

@@ -128,6 +128,7 @@ document.addEventListener('document-list:select', (e) => {
 
   if (DocumentView.isMounted()) {
     DocumentView.setValue({
+      id:        doc.id,
       typeId:    doc.tipoDocumentoId,
       number:    doc.numero    || '',
       numberSei: doc.numeroSei || ''
@@ -137,7 +138,12 @@ document.addEventListener('document-list:select', (e) => {
   if (SelectAddress.isMounted()) {
     SelectAddress.setValue({
       addressId:    doc.enderecoId,
-      addressLabel: doc.logradouro || ''
+      addressLabel: doc.logradouro  || '',
+      bairro:       doc.bairro      || '',
+      cidade:       doc.cidade      || '',
+      cep:          doc.cep         || '',
+      estado:       doc.enderecoEstado   || '',
+      estadoId:     doc.enderecoEstadoId ?? null
     })
   }
 
@@ -151,21 +157,24 @@ document.addEventListener('document-list:select', (e) => {
   if (SelectUser.isMounted()) {
     SelectUser.setValue({
       userId:    doc.usuarioId,
-      userLabel: doc.usuarioNome || ''
+      userLabel: doc.usuarioNome || '',
+      cpfCnpj:   doc.cpfCnpj    || ''
     })
   }
 
   if (SelectProcess.isMounted()) {
     SelectProcess.setValue({
       processId:    doc.processoId,
-      processLabel: doc.processoNumero || ''
+      processLabel: doc.processoNumero || '',
+      anexoNumero:  doc.anexoNumero    || ''
     })
   }
 
   if (SelectAnnex.isMounted()) {
     SelectAnnex.setValue({
-      annexId:    doc.anexoId,
-      annexLabel: doc.anexoNumero || ''
+      annexId:        doc.anexoId,
+      annexLabel:     doc.anexoNumero    || '',
+      processoNumero: doc.processoNumero || ''
     })
   }
 
@@ -178,13 +187,48 @@ document.addEventListener('document-list:select', (e) => {
 
 // ── AÇÕES DO FORMULÁRIO ───────────────────────────────────────────────────────
 
-document.getElementById('btnSave').addEventListener('click', () => {
+document.getElementById('btnNew').addEventListener('click', () => {
+  if (SelectAddress.isMounted())      SelectAddress.reset()
+  if (SelectInterference.isMounted()) SelectInterference.reset()
+  if (SelectUser.isMounted())         SelectUser.reset()
+  if (SelectProcess.isMounted())      SelectProcess.reset()
+  if (SelectAnnex.isMounted())        SelectAnnex.reset()
+  if (marker) { map.removeLayer(marker); marker = null }
+  MapCoordsBar.hide()
+  map.invalidateSize({ animate: false })
+  document.getElementById('mapHint').textContent = 'Clique no mapa para marcar a interferência'
+})
+
+document.getElementById('btnSave').addEventListener('click', async () => {
   const form = document.getElementById('documentForm')
   if (!form.checkValidity()) { form.reportValidity(); return }
+  if (!_validateSelects()) return
 
-  const data = _collectData()
-  console.log('Dados do cadastro:', data)
-  showToast('Cadastro salvo com sucesso!', 'success')
+  const btn  = document.getElementById('btnSave')
+  const orig = btn.textContent
+  btn.disabled    = true
+  btn.textContent = orig === 'Editar' ? 'Editando…' : 'Salvando…'
+
+  try {
+    const data = _collectData()
+    const { documentId } = DocumentView.getValue()
+
+    if (documentId) {
+      const updated = await window.documentService.update({ id: documentId, ...data })
+      if (DocumentList.isMounted()) DocumentList.prependRow(updated)
+      showToast('Documento atualizado com sucesso!', 'success')
+    } else {
+      const saved = await window.documentService.save(data)
+      if (DocumentList.isMounted()) DocumentList.prependRow(saved)
+      showToast('Documento salvo com sucesso!', 'success')
+    }
+  } catch (err) {
+    console.error('[renderer] Erro ao salvar documento:', err)
+    showToast('Erro ao salvar documento.', 'error')
+  } finally {
+    btn.disabled    = false
+    btn.textContent = orig
+  }
 })
 
 document.getElementById('btnToggleMap').addEventListener('click', () => {
@@ -193,18 +237,44 @@ document.getElementById('btnToggleMap').addEventListener('click', () => {
 })
 
 /**
+ * @description Valida se todos os campos obrigatórios dos Select components estão preenchidos.
+ * Exibe um toast de erro para o primeiro campo em falta e retorna false.
+ * @returns {boolean}
+ */
+function _validateSelects() {
+  const { userId }    = SelectUser.isMounted()    ? SelectUser.getValue()    : {}
+  const { addressId } = SelectAddress.isMounted() ? SelectAddress.getValue() : {}
+  const { processId } = SelectProcess.isMounted() ? SelectProcess.getValue() : {}
+  const { annexId }   = SelectAnnex.isMounted()   ? SelectAnnex.getValue()   : {}
+
+  if (!userId)    { showToast('Selecione um usuário (requerente).', 'error');         return false }
+  if (!addressId) { showToast('Selecione um endereço.',              'error');         return false }
+  if (!processId) { showToast('Selecione um processo.',              'error');         return false }
+  if (!annexId)   { showToast('Selecione um processo principal.',    'error');         return false }
+  return true
+}
+
+/**
  * @description Coleta os dados de todos os componentes montados.
+ * Inclui os dados completos (getData) dos Selects para montar o payload aninhado.
  * @returns {Object}
  */
 function _collectData() {
-  const components = [
+  const basic = [
     DocumentView, SelectAddress, SelectInterference,
     SelectUser, SelectProcess, SelectAnnex,
     InterferenceView, UserView, ProcessView, AnnexView
   ]
-  return components
     .filter(c => c.isMounted())
     .reduce((acc, c) => ({ ...acc, ...c.getValue() }), {})
+
+  return {
+    ...basic,
+    addressData:  SelectAddress.isMounted()  ? SelectAddress.getData()  : null,
+    userData:     SelectUser.isMounted()     ? SelectUser.getData()     : null,
+    processData:  SelectProcess.isMounted()  ? SelectProcess.getData()  : null,
+    annexData:    SelectAnnex.isMounted()    ? SelectAnnex.getData()    : null
+  }
 }
 
 // ── TOAST ─────────────────────────────────────────────────────────────────────

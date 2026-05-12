@@ -7,9 +7,11 @@
  * TODO: conectar ao banco via `window.db.searchAnnex(term)`.
  */
 const SelectAnnex = (() => {
-  let _mounted    = false
-  let _selectedId = null
-  let _activeIdx  = -1
+  let _mounted      = false
+  let _selectedId   = null
+  let _selectedData = null
+  let _activeIdx    = -1
+  let _lastRows     = []
 
   /**
    * @description Renderiza o componente e registra os eventos.
@@ -139,6 +141,7 @@ const SelectAnnex = (() => {
   function _renderDropdown(rows) {
     const list = _el('sAnnDropdown')
     _activeIdx = -1
+    _lastRows  = rows
     list.innerHTML = rows.length
       ? rows.map(r => `
           <li class="autocomplete-item" role="option"
@@ -152,7 +155,10 @@ const SelectAnnex = (() => {
     _el('sAnnSearch').setAttribute('aria-expanded', 'true')
 
     list.querySelectorAll('.autocomplete-item').forEach(li => {
-      li.addEventListener('click',      () => _select({ id: li.dataset.id, label: li.dataset.label }))
+      li.addEventListener('click', () => {
+        const data = _lastRows.find(r => String(r.id) === li.dataset.id) ?? null
+        _select({ id: li.dataset.id, label: li.dataset.label }, data)
+      })
       li.addEventListener('mouseenter', () => {
         _activeIdx = [...list.children].indexOf(li)
         _highlight(list.querySelectorAll('.autocomplete-item'))
@@ -164,8 +170,9 @@ const SelectAnnex = (() => {
    * @description Confirma a seleção e fecha o dropdown.
    * @param {{ id: string, label: string }} item
    */
-  function _select(item) {
-    _selectedId = item.id
+  function _select(item, data = null) {
+    _selectedId   = item.id
+    _selectedData = data
     _el('sAnnSearch').value = item.label
     _el('sAnnClear').hidden = false
     _closeDropdown()
@@ -186,7 +193,13 @@ const SelectAnnex = (() => {
    * @param {{ annexId?: string, annexLabel?: string }} data
    */
   function setValue(data = {}) {
-    _selectedId = data.annexId ?? null
+    _selectedId   = data.annexId ?? null
+    _selectedData = data.annexId ? {
+      id:             data.annexId,
+      numero:         data.annexLabel    ?? '',
+      processoNumero: data.processoNumero ?? '',
+      usuarioNome:    data.usuarioNome   ?? ''
+    } : null
     const input = _el('sAnnSearch')
     if (input) { input.value = data.annexLabel ?? ''; _el('sAnnClear').hidden = !data.annexLabel }
   }
@@ -194,7 +207,8 @@ const SelectAnnex = (() => {
   /** @description Limpa a seleção e o campo de busca. */
   function reset() {
     if (!_mounted) return
-    _selectedId = null
+    _selectedId   = null
+    _selectedData = null
     const input = _el('sAnnSearch')
     if (input) input.value = ''
     _el('sAnnClear').hidden = true
@@ -210,5 +224,11 @@ const SelectAnnex = (() => {
   /** @param {string} id @returns {HTMLElement} */
   function _el(id) { return document.getElementById(id) }
 
-  return { mount, getValue, setValue, reset, validate, isMounted }
+  /** @returns {string} Label do processo principal atualmente selecionado. */
+  function getLabel() { return _el('sAnnSearch')?.value ?? '' }
+
+  /** @returns {Object|null} Objeto completo do processo principal selecionado. */
+  function getData() { return _selectedData }
+
+  return { mount, getValue, getLabel, getData, setValue, reset, validate, isMounted }
 })()

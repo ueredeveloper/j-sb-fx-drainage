@@ -19,6 +19,11 @@ contextBridge.exposeInMainWorld('domainService', {
   listUnidades: () => ipcRenderer.invoke('domain:listUnidades')
 })
 
+/** @description Serviço de estados. */
+contextBridge.exposeInMainWorld('estadoService', {
+  fetchAll: () => ipcRenderer.invoke('estado:fetchAll')
+})
+
 /** @description Serviço de endereços. */
 contextBridge.exposeInMainWorld('addressService', {
   fetchByKeyword: (keyword) => ipcRenderer.invoke('address:fetchByKeyword', keyword),

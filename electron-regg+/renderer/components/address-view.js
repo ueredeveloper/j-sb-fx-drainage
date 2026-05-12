@@ -14,16 +14,10 @@
  * Aberto via `AddressView.open()` e fechado pelo botão Voltar ou tecla Escape.
  */
 const AddressView = (() => {
-  let _mounted   = false
-  let _container = null
-  let _rows      = []
-
-  /** Lista de estados brasileiros para reutilizar no select. */
-  const _UF_OPTIONS = [
-    'AC','AL','AP','AM','BA','CE','DF','ES','GO',
-    'MA','MT','MS','MG','PA','PB','PR','PE','PI',
-    'RJ','RN','RS','RO','RR','SC','SP','SE','TO'
-  ].map(uf => `<option value="${uf}"${uf === 'DF' ? ' selected' : ''}>${uf}</option>`).join('')
+  let _mounted     = false
+  let _container   = null
+  let _selectedId  = null
+  let _estadoList  = []
 
   /**
    * @description Renderiza o drawer no container e registra os eventos.
@@ -45,7 +39,15 @@ const AddressView = (() => {
           Voltar
         </button>
         <span class="av-title">Cadastro de Endereço</span>
-        <button type="button" class="btn btn-primary" id="avSave">Salvar Endereço</button>
+        <button type="button" class="btn btn-secondary av-new-btn" id="avNew">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="2.5"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/>
+          </svg>
+          Novo
+        </button>
+        <button type="button" class="btn btn-primary" id="avSave">Salvar</button>
       </div>
 
       <div class="av-content">
@@ -80,7 +82,6 @@ const AddressView = (() => {
                 <label for="avEstado">UF</label>
                 <select id="avEstado" name="avEstado">
                   <option value="">UF</option>
-                  ${_UF_OPTIONS}
                 </select>
               </div>
             </div>
@@ -104,10 +105,11 @@ const AddressView = (() => {
             <table class="doc-list-table" style="table-layout:fixed" aria-label="Lista de endereços">
               <thead>
                 <tr>
-                  <th style="width:42%">Logradouro</th>
-                  <th style="width:20%">Bairro</th>
-                  <th style="width:25%">Cidade</th>
-                  <th style="width:13%">UF</th>
+                  <th style="width:38%">Logradouro</th>
+                  <th style="width:19%">Bairro</th>
+                  <th style="width:22%">Cidade</th>
+                  <th style="width:12%">UF</th>
+                  <th style="width:44px"></th>
                 </tr>
               </thead>
               <tbody id="avListBody"></tbody>
@@ -121,6 +123,23 @@ const AddressView = (() => {
 
     _bindEvents()
     _mounted = true
+    _loadEstados()
+  }
+
+  /**
+   * @description Carrega a lista de estados da API e popula o select de UF.
+   */
+  async function _loadEstados() {
+    try {
+      _estadoList = await window.estadoService.fetchAll()
+    } catch (err) {
+      console.error('AddressView: erro ao carregar estados', err)
+      _estadoList = []
+    }
+    const sel = _el('avEstado')
+    if (!sel || !_estadoList.length) return
+    sel.innerHTML = '<option value="">UF</option>' +
+      _estadoList.map(e => `<option value="${e.id}">${e.descricao}</option>`).join('')
   }
 
   /**
@@ -129,8 +148,7 @@ const AddressView = (() => {
   function _bindEvents() {
     /* Botão Voltar */
     _el('avBack').addEventListener('click', close)
-
-    /* Botão Salvar */
+    _el('avNew').addEventListener('click', _new)
     _el('avSave').addEventListener('click', _save)
 
     /* Pesquisa na lista */
@@ -157,24 +175,94 @@ const AddressView = (() => {
    * Dispara `address-view:saved` com os dados para que o banco possa persistir.
    * TODO: conectar a window.db.insertAddress(data).
    */
-  function _save() {
+  async function _save() {
     const form = _el('avForm')
     if (!form.checkValidity()) { form.reportValidity(); return }
 
-    const data = {
+    const sel      = _el('avEstado')
+    const estadoId = sel.value ? Number(sel.value) : null
+    const estado   = sel.options[sel.selectedIndex]?.text ?? ''
+
+    const formData = {
       logradouro: _el('avLogradouro').value.trim(),
       bairro:     _el('avBairro').value.trim(),
       cidade:     _el('avCidade').value.trim(),
       cep:        _el('avCep').value.trim(),
-      estado:     _el('avEstado').value
+      estado,
+      estadoId
     }
+    const payload = _selectedId ? { id: _selectedId, ...formData } : formData
 
-    /* TODO: const id = window.db.insertAddress(data) */
-    console.log('Salvar endereço:', data)
-    document.dispatchEvent(new CustomEvent('address-view:saved', { detail: data }))
+    try {
+      const raw  = await window.addressService.save(payload)
+      const saved = raw?.object ?? raw
+      document.dispatchEvent(new CustomEvent('address-view:saved', { detail: saved }))
+      _selectedId = null
+      _el('avSave').textContent = 'Salvar'
+      form.reset()
+      _prependRow({
+        id:         saved?.id         ?? payload.id,
+        logradouro: saved?.logradouro ?? formData.logradouro,
+        bairro:     saved?.bairro     ?? formData.bairro,
+        cidade:     saved?.cidade     ?? formData.cidade,
+        cep:        saved?.cep        ?? formData.cep,
+        estado:     saved?.estado     ?? formData.estado,
+        estadoId:   saved?.estadoId   ?? formData.estadoId
+      })
+    } catch (err) {
+      console.error('AddressView: erro ao salvar endereço', err)
+    }
+  }
 
-    form.reset()
-    _searchList('')
+  /**
+   * @description Insere ou move um endereço para o topo da tabela e destaca com animação.
+   * @param {Object} r - Endereço normalizado.
+   */
+  function _prependRow(r) {
+    if (!r?.id) return
+    const tbody = _el('avListBody')
+    const empty = _el('avListEmpty')
+
+    tbody.querySelector(`tr[data-id="${r.id}"]`)?.remove()
+
+    const tr = document.createElement('tr')
+    tr.className          = 'doc-list-row'
+    tr.dataset.id         = String(r.id)
+    tr.dataset.logradouro = r.logradouro || ''
+    tr.dataset.bairro     = r.bairro     || ''
+    tr.dataset.cidade     = r.cidade     || ''
+    tr.dataset.cep        = r.cep        || ''
+    tr.dataset.estado     = r.estado     || ''
+    tr.dataset.estadoId   = String(r.estadoId || '')
+
+    tr.innerHTML = `
+      <td title="${r.logradouro}">${r.logradouro || '—'}</td>
+      <td>${r.bairro || '—'}</td>
+      <td>${r.cidade || '—'}</td>
+      <td>${r.estado || '—'}</td>
+      <td class="doc-list-action-cell">
+        <button type="button" class="doc-list-delete-btn" title="Excluir">
+          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="2.5"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="3 6 5 6 21 6"/>
+            <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+            <path d="M10 11v6M14 11v6M9 6V4h6v2"/>
+          </svg>
+        </button>
+      </td>
+    `
+
+    tbody.prepend(tr)
+    empty.setAttribute('hidden', '')
+
+    tr.addEventListener('click', () => _pickAddress(tr))
+    tr.querySelector('.doc-list-delete-btn').addEventListener('click', (e) => {
+      e.stopPropagation(); _deleteRow(tr)
+    })
+
+    void tr.offsetWidth
+    tr.classList.add('doc-list-row--flash')
   }
 
   /**
@@ -199,7 +287,6 @@ const AddressView = (() => {
   function _renderRows(rows) {
     const tbody = _el('avListBody')
     const empty = _el('avListEmpty')
-    _rows = rows
 
     if (!rows.length) {
       tbody.innerHTML = ''
@@ -208,18 +295,55 @@ const AddressView = (() => {
     }
 
     empty.setAttribute('hidden', '')
-    tbody.innerHTML = rows.map((r, idx) => `
-      <tr class="doc-list-row" data-idx="${idx}">
-        <td title="${r.logradouro}">${r.logradouro}</td>
+    tbody.innerHTML = rows.map(r => `
+      <tr class="doc-list-row"
+          data-id="${r.id}"
+          data-logradouro="${r.logradouro || ''}"
+          data-bairro="${r.bairro || ''}"
+          data-cidade="${r.cidade || ''}"
+          data-cep="${r.cep || ''}"
+          data-estado="${r.estado || ''}"
+          data-estado-id="${r.estadoId || ''}">
+        <td title="${r.logradouro}">${r.logradouro || '—'}</td>
         <td>${r.bairro || '—'}</td>
-        <td>${r.cidade}</td>
-        <td>${r.estado}</td>
+        <td>${r.cidade || '—'}</td>
+        <td>${r.estado || '—'}</td>
+        <td class="doc-list-action-cell">
+          <button type="button" class="doc-list-delete-btn" title="Excluir">
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
+                 fill="none" stroke="currentColor" stroke-width="2.5"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="3 6 5 6 21 6"/>
+              <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+              <path d="M10 11v6M14 11v6M9 6V4h6v2"/>
+            </svg>
+          </button>
+        </td>
       </tr>
     `).join('')
 
     tbody.querySelectorAll('.doc-list-row').forEach(tr =>
       tr.addEventListener('click', () => _pickAddress(tr))
     )
+    tbody.querySelectorAll('.doc-list-delete-btn').forEach(btn =>
+      btn.addEventListener('click', (e) => { e.stopPropagation(); _deleteRow(btn.closest('tr')) })
+    )
+  }
+
+  /**
+   * @description Remove um endereço pelo id.
+   * @param {HTMLTableRowElement} tr
+   */
+  async function _deleteRow(tr) {
+    const id = tr.dataset.id
+    if (!confirm('Confirmar exclusão do endereço?')) return
+    try {
+      await window.addressService.deleteById(id)
+      document.dispatchEvent(new CustomEvent('address-view:deleted', { detail: { id } }))
+      tr.remove()
+    } catch (err) {
+      console.error('AddressView: erro ao excluir endereço', err)
+    }
   }
 
   /**
@@ -228,26 +352,53 @@ const AddressView = (() => {
    * @param {HTMLTableRowElement} tr
    */
   function _pickAddress(tr) {
-    const r = _rows[parseInt(tr.dataset.idx, 10)]
-    if (!r) return
-
-    _el('avLogradouro').value = r.logradouro || ''
-    _el('avCep').value        = r.cep        || ''
-    _el('avBairro').value     = r.bairro     || ''
-    _el('avCidade').value     = r.cidade     || ''
-    _el('avEstado').value     = r.estado     || ''
+    _selectedId               = tr.dataset.id
+    _el('avSave').textContent = 'Editar'
+    _el('avLogradouro').value = tr.dataset.logradouro || ''
+    _el('avCep').value        = tr.dataset.cep        || ''
+    _el('avBairro').value     = tr.dataset.bairro     || ''
+    _el('avCidade').value     = tr.dataset.cidade     || ''
+    _el('avEstado').value     = tr.dataset.estadoId   || ''
 
     document.dispatchEvent(new CustomEvent('address-view:select', {
-      detail: { id: r.id, label: `${r.logradouro} — ${r.cidade}/${r.estado}` }
+      detail: {
+        id:    tr.dataset.id,
+        label: `${tr.dataset.logradouro} — ${tr.dataset.cidade}/${tr.dataset.estado}`
+      }
     }))
   }
 
   /**
-   * @description Abre o drawer com animação de deslize.
-   * Foca automaticamente no campo de pesquisa da lista.
+   * @description Abre o drawer com animação de deslize e pré-preenche o formulário
+   * com os dados do endereço atualmente selecionado em SelectAddress, se houver.
    */
-  function open() {
+  /**
+   * @description Limpa o formulário e reseta para modo de criação.
+   */
+  function _new() {
+    _selectedId = null
+    _el('avSave').textContent = 'Salvar'
+    _el('avForm').reset()
+  }
+
+  async function open() {
     if (!_mounted) return
+    const { addressId } = SelectAddress.getValue()
+    if (addressId) {
+      let r = SelectAddress.getData()
+      if (!r) {
+        try { r = await window.addressService.fetchById(addressId) } catch { r = null }
+      }
+      if (r) {
+        _selectedId               = addressId
+        _el('avLogradouro').value = r.logradouro          || ''
+        _el('avCep').value        = r.cep                 || ''
+        _el('avBairro').value     = r.bairro              || ''
+        _el('avCidade').value     = r.cidade              || ''
+        _el('avEstado').value     = String(r.estadoId     || '')
+      }
+    }
+    _el('avSave').textContent = _selectedId ? 'Editar' : 'Salvar'
     _container.classList.add('open')
     setTimeout(() => _el('avSearch')?.focus(), 320)
   }

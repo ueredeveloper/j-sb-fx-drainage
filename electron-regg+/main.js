@@ -5,6 +5,7 @@ const fs   = require('fs')
 const DocumentService      = require('./services/document-service')
 const DomainService        = require('./services/domain-service')
 const AddressService       = require('./services/address-service')
+const EstadoService        = require('./services/estado-service')
 const UserService          = require('./services/user-service')
 const ProcessService       = require('./services/process-service')
 const AnnexService         = require('./services/annex-service')
@@ -16,6 +17,7 @@ const CoordConverter       = require('./utils/coord-converter')
 const _docSvc     = new DocumentService()
 const _domainSvc  = new DomainService()
 const _addrSvc    = new AddressService()
+const _estadoSvc  = new EstadoService()
 const _userSvc    = new UserService()
 const _procSvc    = new ProcessService()
 const _annexSvc   = new AnnexService()
@@ -89,6 +91,10 @@ ipcMain.handle('document:deleteById',   (_event, id)      => _docSvc.deleteById(
 ipcMain.handle('domain:fetchAll',    () => _domainSvc.fetchAll())
 ipcMain.handle('domain:listBacias',  () => _domainSvc.listBacias())
 ipcMain.handle('domain:listUnidades',() => _domainSvc.listUnidades())
+
+/* ── IPC: EstadoService ────────────────────────────────────────────────────── */
+
+ipcMain.handle('estado:fetchAll', () => _estadoSvc.fetchAll())
 
 /* ── IPC: AddressService ───────────────────────────────────────────────────── */
 

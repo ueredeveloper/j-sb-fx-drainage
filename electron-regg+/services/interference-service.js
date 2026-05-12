@@ -7,7 +7,7 @@
  */
 
 const path          = require('path')
-const { writeJson } = require('../utils/write-json')
+const { appendJson } = require('../utils/write-json')
 
 const BASE_URL   = 'https://app-sis-out-srh-backend-01-h3hkbcf5f8dubbdy.brazilsouth-01.azurewebsites.net'
 const SAMPLE_OUT = path.join(__dirname, 'json', 'interference-fetch-by-keyword.json')
@@ -25,7 +25,7 @@ class InterferenceService {
     if (!res.ok) throw new Error(`fetchByKeyword: HTTP ${res.status} ${res.statusText}`)
     const data = await res.json()
 
-    if (Array.isArray(data) && data.length > 0) writeJson(SAMPLE_OUT, data[0])
+    if (Array.isArray(data) && data.length > 0) appendJson(SAMPLE_OUT, data[0])
 
     return Array.isArray(data) ? data.map(i => this._normalize(i)) : []
   }
@@ -76,6 +76,7 @@ class InterferenceService {
     const ta   = obj.tipoAto              || {}
     const bh   = obj.baciaHidrografica    || {}
     const uh   = obj.unidadeHidrografica  || {}
+    const tp   = obj.tipoPoco             || {}
 
     return {
       id:                    obj.id,
@@ -99,7 +100,18 @@ class InterferenceService {
       baciaHidrograficaId:   bh.objectid   ?? null,
       baciaHidrografica:     bh.baciaNome  ?? bh.descricao  ?? null,
       unidadeHidrograficaId: uh.objectid   ?? null,
-      unidadeHidrografica:   uh.uhNome     ?? uh.descricao  ?? null
+      unidadeHidrografica:   uh.uhNome     ?? uh.descricao  ?? null,
+      tipoPoco:              tp.id         ?? null,
+      caesb:                 obj.caesb     ?? null,
+      codigoSubsistema:      obj.codigoSubsistema ?? null,
+      vazaoSistema:          obj.vazaoSistema     ?? null,
+      vazaoOutorgavel:       obj.vazaoOutorgavel  ?? null,
+      vazaoTeste:            obj.vazaoTeste       ?? null,
+      nivelEstatico:         obj.nivelEstatico    ?? null,
+      nivelDinamico:         obj.nivelDinamico    ?? null,
+      profundidade:          obj.profundidade     ?? null,
+      finalidades:           Array.isArray(obj.finalidades) ? obj.finalidades : [],
+      demandas:              Array.isArray(obj.demandas)    ? obj.demandas    : []
     }
   }
 }

@@ -17,23 +17,19 @@ const CcGms = (() => {
     _bindEvents()
   }
 
-  const _EXAMPLES = [
-    { label: '8°45\'43"S / 63°54\'14"O', ld: 8, lm: 45, ls: 43, ldir: 'S', od: 63, om: 54, os: 14, odir: 'O' }
-  ]
-
   function _render() {
     _container.innerHTML = `
       <div class="cc-row">
-        <div class="cc-field narrow"><label>Lat °</label><input type="number" id="ccGmsLatD" placeholder="8"></div>
-        <div class="cc-field narrow"><label>′</label><input type="number" id="ccGmsLatM" placeholder="45"></div>
-        <div class="cc-field sec"><label>″</label><input type="number" id="ccGmsLatS" placeholder="43.000" step="0.001"></div>
+        <div class="cc-field narrow"><label>Lat °</label><input type="number" id="ccGmsLatD" value="8"></div>
+        <div class="cc-field narrow"><label>′</label><input type="number" id="ccGmsLatM" value="45"></div>
+        <div class="cc-field sec"><label>″</label><input type="number" id="ccGmsLatS" value="43" step="0.001"></div>
         <div class="cc-field narrow">
           <label>Dir.</label>
           <select id="ccGmsLatDir"><option value="S">S</option><option value="N">N</option></select>
         </div>
-        <div class="cc-field narrow"><label>Lon °</label><input type="number" id="ccGmsLonD" placeholder="63"></div>
-        <div class="cc-field narrow"><label>′</label><input type="number" id="ccGmsLonM" placeholder="54"></div>
-        <div class="cc-field sec"><label>″</label><input type="number" id="ccGmsLonS" placeholder="14.000" step="0.001"></div>
+        <div class="cc-field narrow"><label>Lon °</label><input type="number" id="ccGmsLonD" value="63"></div>
+        <div class="cc-field narrow"><label>′</label><input type="number" id="ccGmsLonM" value="54"></div>
+        <div class="cc-field sec"><label>″</label><input type="number" id="ccGmsLonS" value="14" step="0.001"></div>
         <div class="cc-field narrow">
           <label>Dir.</label>
           <select id="ccGmsLonDir"><option value="O">O</option><option value="W">W</option><option value="E">E</option></select>
@@ -49,31 +45,10 @@ const CcGms = (() => {
           Converter
         </button>
       </div>
-      <div class="cc-examples">
-        <span class="cc-examples-label">Teste:</span>
-        ${_EXAMPLES.map(ex =>
-          `<button class="cc-example-btn"
-            data-ld="${ex.ld}" data-lm="${ex.lm}" data-ls="${ex.ls}" data-ldir="${ex.ldir}"
-            data-od="${ex.od}" data-om="${ex.om}" data-os="${ex.os}" data-odir="${ex.odir}"
-          >${ex.label}</button>`
-        ).join('')}
-      </div>
     `
   }
 
   function _bindEvents() {
-    _container.querySelectorAll('.cc-example-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        _container.querySelector('#ccGmsLatD').value   = btn.dataset.ld
-        _container.querySelector('#ccGmsLatM').value   = btn.dataset.lm
-        _container.querySelector('#ccGmsLatS').value   = btn.dataset.ls
-        _container.querySelector('#ccGmsLatDir').value = btn.dataset.ldir
-        _container.querySelector('#ccGmsLonD').value   = btn.dataset.od
-        _container.querySelector('#ccGmsLonM').value   = btn.dataset.om
-        _container.querySelector('#ccGmsLonS').value   = btn.dataset.os
-        _container.querySelector('#ccGmsLonDir').value = btn.dataset.odir
-      })
-    })
 
     _container.querySelector('#ccGmsBtn').addEventListener('click', async () => {
       const ld   = _container.querySelector('#ccGmsLatD').value

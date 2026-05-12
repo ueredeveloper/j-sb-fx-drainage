@@ -14,8 +14,9 @@
  * Aberto via `ProcessView.open()` e fechado pelo botão Voltar ou tecla Escape.
  */
 const ProcessView = (() => {
-  let _mounted   = false
-  let _container = null
+  let _mounted    = false
+  let _container  = null
+  let _selectedId = null
 
   /**
    * @description Renderiza o drawer no container e registra os eventos.
@@ -37,7 +38,15 @@ const ProcessView = (() => {
           Voltar
         </button>
         <span class="av-title">Cadastro de Processo</span>
-        <button type="button" class="btn btn-primary" id="pvSave">Salvar Processo</button>
+        <button type="button" class="btn btn-secondary av-new-btn" id="pvNew">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="2.5"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/>
+          </svg>
+          Novo
+        </button>
+        <button type="button" class="btn btn-primary" id="pvSave">Salvar</button>
       </div>
 
       <div class="av-content">
@@ -101,9 +110,10 @@ const ProcessView = (() => {
             <table class="doc-list-table" aria-label="Lista de processos">
               <thead>
                 <tr>
-                  <th style="width:45%">Número</th>
-                  <th style="width:30%">Usuário</th>
-                  <th style="width:25%">Processo Principal</th>
+                  <th style="width:41%">Número</th>
+                  <th style="width:27%">Usuário</th>
+                  <th style="width:22%">Processo Principal</th>
+                  <th style="width:44px"></th>
                 </tr>
               </thead>
               <tbody id="pvListBody"></tbody>
@@ -124,6 +134,7 @@ const ProcessView = (() => {
    */
   function _bindEvents() {
     _el('pvBack').addEventListener('click', close)
+    _el('pvNew').addEventListener('click', _new)
     _el('pvSave').addEventListener('click', _save)
 
     _el('pvSearchBtn').addEventListener('click', () => _searchList(_el('pvSearch').value.trim()))
@@ -239,20 +250,86 @@ const ProcessView = (() => {
    * @description Valida e salva um novo processo.
    * TODO: conectar a window.documentService.saveProcess(data).
    */
-  function _save() {
+  async function _save() {
     const form = _el('pvForm')
     if (!form.checkValidity()) { form.reportValidity(); return }
 
     const data = {
-      numero:          _el('pvNum').value.trim(),
+      numero:           _el('pvNum').value.trim(),
       processPrincipal: _el('pvAnexoSearch').value.trim(),
-      usuario:         _el('pvUserSearch').value.trim()
+      usuario:          _el('pvUserSearch').value.trim()
     }
+    const payload = _selectedId ? { id: _selectedId, ...data } : data
 
-    console.log('Salvar processo:', data)
-    document.dispatchEvent(new CustomEvent('process-view:saved', { detail: data }))
-    form.reset()
-    _searchList('')
+    try {
+      const raw   = await window.processService.save(payload)
+      const saved = raw?.object ?? raw
+      document.dispatchEvent(new CustomEvent('process-view:saved', { detail: saved }))
+      const savedId = _selectedId
+      _selectedId = null
+      _el('pvSave').textContent = 'Salvar'
+      form.reset()
+      _el('pvUserSearch').value  = ''
+      _el('pvUserClear').hidden  = true
+      _el('pvAnexoSearch').value = ''
+      _el('pvAnexoClear').hidden = true
+      _prependRow({
+        id:          saved?.id          ?? savedId,
+        numero:      saved?.numero      ?? data.numero,
+        usuarioNome: saved?.usuarioNome ?? data.usuario,
+        anexoNumero: saved?.anexoNumero ?? data.processPrincipal
+      })
+    } catch (err) {
+      console.error('ProcessView: erro ao salvar processo', err)
+    }
+  }
+
+  /**
+   * @description Insere ou move um processo para o topo da tabela e destaca com animação.
+   * @param {Object} r
+   */
+  function _prependRow(r) {
+    if (!r?.id) return
+    const tbody = _el('pvListBody')
+    const empty = _el('pvListEmpty')
+
+    tbody.querySelector(`tr[data-id="${r.id}"]`)?.remove()
+
+    const tr = document.createElement('tr')
+    tr.className             = 'doc-list-row'
+    tr.dataset.id            = String(r.id)
+    tr.dataset.label         = r.numero      || ''
+    tr.dataset.numero        = r.numero      || ''
+    tr.dataset.usuarioNome   = r.usuarioNome || ''
+    tr.dataset.anexoNumero   = r.anexoNumero || ''
+
+    tr.innerHTML = `
+      <td title="${r.numero}">${r.numero || '—'}</td>
+      <td>${r.usuarioNome || '—'}</td>
+      <td>${r.anexoNumero || '—'}</td>
+      <td class="doc-list-action-cell">
+        <button type="button" class="doc-list-delete-btn" title="Excluir">
+          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="2.5"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="3 6 5 6 21 6"/>
+            <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+            <path d="M10 11v6M14 11v6M9 6V4h6v2"/>
+          </svg>
+        </button>
+      </td>
+    `
+
+    tbody.prepend(tr)
+    empty.setAttribute('hidden', '')
+
+    tr.addEventListener('click', () => _pickProcess(tr))
+    tr.querySelector('.doc-list-delete-btn').addEventListener('click', (e) => {
+      e.stopPropagation(); _deleteRow(tr)
+    })
+
+    void tr.offsetWidth
+    tr.classList.add('doc-list-row--flash')
   }
 
   /**
@@ -295,12 +372,42 @@ const ProcessView = (() => {
         <td title="${r.numero}">${r.numero}</td>
         <td>${r.usuarioNome || '—'}</td>
         <td>${r.anexoNumero || '—'}</td>
+        <td class="doc-list-action-cell">
+          <button type="button" class="doc-list-delete-btn" title="Excluir">
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
+                 fill="none" stroke="currentColor" stroke-width="2.5"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="3 6 5 6 21 6"/>
+              <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+              <path d="M10 11v6M14 11v6M9 6V4h6v2"/>
+            </svg>
+          </button>
+        </td>
       </tr>
     `).join('')
 
     tbody.querySelectorAll('.doc-list-row').forEach(tr =>
       tr.addEventListener('click', () => _pickProcess(tr))
     )
+    tbody.querySelectorAll('.doc-list-delete-btn').forEach(btn =>
+      btn.addEventListener('click', (e) => { e.stopPropagation(); _deleteRow(btn.closest('tr')) })
+    )
+  }
+
+  /**
+   * @description Remove um processo pelo id.
+   * @param {HTMLTableRowElement} tr
+   */
+  async function _deleteRow(tr) {
+    const id = tr.dataset.id
+    if (!confirm('Confirmar exclusão do processo?')) return
+    try {
+      await window.processService.deleteById(id)
+      document.dispatchEvent(new CustomEvent('process-view:deleted', { detail: { id } }))
+      tr.remove()
+    } catch (err) {
+      console.error('ProcessView: erro ao excluir processo', err)
+    }
   }
 
   /**
@@ -309,6 +416,8 @@ const ProcessView = (() => {
    * @param {HTMLTableRowElement} tr
    */
   function _pickProcess(tr) {
+    _selectedId = tr.dataset.id
+    _el('pvSave').textContent = 'Editar'
     _el('pvNum').value = tr.dataset.numero || ''
 
     _el('pvUserSearch').value = tr.dataset.usuarioNome || ''
@@ -323,10 +432,40 @@ const ProcessView = (() => {
   }
 
   /**
-   * @description Abre o drawer com animação de deslize.
+   * @description Abre o drawer com animação de deslize e pré-preenche o formulário
+   * com os dados do processo atualmente selecionado em SelectProcess, se houver.
    */
-  function open() {
+  /**
+   * @description Limpa o formulário e reseta para modo de criação.
+   */
+  function _new() {
+    _selectedId = null
+    _el('pvSave').textContent = 'Salvar'
+    _el('pvForm').reset()
+    _el('pvUserSearch').value  = ''
+    _el('pvUserClear').hidden  = true
+    _el('pvAnexoSearch').value = ''
+    _el('pvAnexoClear').hidden = true
+  }
+
+  async function open() {
     if (!_mounted) return
+    const { processId } = SelectProcess.getValue()
+    if (processId) {
+      let r = SelectProcess.getData()
+      if (!r) {
+        try { r = await window.processService.fetchById(processId) } catch { r = null }
+      }
+      if (r) {
+        _selectedId                = processId
+        _el('pvNum').value         = r.numero       || ''
+        _el('pvUserSearch').value  = r.usuarioNome  || ''
+        _el('pvUserClear').hidden  = !r.usuarioNome
+        _el('pvAnexoSearch').value = r.anexoNumero  || ''
+        _el('pvAnexoClear').hidden = !r.anexoNumero
+      }
+    }
+    _el('pvSave').textContent = _selectedId ? 'Editar' : 'Salvar'
     _container.classList.add('open')
     setTimeout(() => _el('pvSearch')?.focus(), 320)
   }

@@ -19,6 +19,7 @@ const InterferenceView = (() => {
   let _domainsLoaded  = false
   let _addrSelectedId = null
   let _ifRows         = []
+  let _selectedId     = null
 
   /**
    * @description Renderiza o drawer no container e registra os eventos.
@@ -40,7 +41,15 @@ const InterferenceView = (() => {
           Voltar
         </button>
         <span class="av-title">Cadastro de Interferência</span>
-        <button type="button" class="btn btn-primary" id="ivSave">Salvar Interferência</button>
+        <button type="button" class="btn btn-secondary av-new-btn" id="ivNew">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="2.5"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/>
+          </svg>
+          Novo
+        </button>
+        <button type="button" class="btn btn-primary" id="ivSave">Salvar</button>
       </div>
 
       <div class="av-content">
@@ -152,14 +161,15 @@ const InterferenceView = (() => {
             </div>
             <button type="button" id="ivSearchBtn" class="btn btn-primary">Pesquisar</button>
           </div>
-          <div class="doc-list-wrap">
+          <div class="doc-list-wrap iv-if-list">
             <table class="doc-list-table" aria-label="Lista de interferências">
               <thead>
                 <tr>
-                  <th style="width:35%">Logradouro</th>
-                  <th style="width:22%">Latitude</th>
-                  <th style="width:22%">Longitude</th>
-                  <th style="width:21%">Tipo</th>
+                  <th style="width:32%">Logradouro</th>
+                  <th style="width:20%">Latitude</th>
+                  <th style="width:20%">Longitude</th>
+                  <th style="width:18%">Tipo</th>
+                  <th style="width:44px"></th>
                 </tr>
               </thead>
               <tbody id="ivListBody"></tbody>
@@ -168,9 +178,13 @@ const InterferenceView = (() => {
           </div>
         </div>
 
+        <!-- Montado por InterferenceDetails.mount() -->
+        <div id="ivDetailsContainer"></div>
+
       </div>
     `
 
+    InterferenceDetails.mount(_el('ivDetailsContainer'))
     _bindEvents()
     _mounted = true
   }
@@ -180,11 +194,24 @@ const InterferenceView = (() => {
    */
   function _bindEvents() {
     _el('ivBack').addEventListener('click', close)
+    _el('ivNew').addEventListener('click', _new)
     _el('ivSave').addEventListener('click', _save)
 
     _el('ivSearchBtn').addEventListener('click', () => _searchList(_el('ivSearch').value.trim()))
     _el('ivSearch').addEventListener('keydown', (e) => {
       if (e.key === 'Enter') _searchList(_el('ivSearch').value.trim())
+    })
+
+    _el('ivTipoInterf').addEventListener('change', () => {
+      if (_selectedId) return
+      const sel  = _el('ivTipoInterf')
+      const text = sel.options[sel.selectedIndex]?.text ?? ''
+      if (text === 'Subterrânea') {
+        InterferenceDetails.fillEmpty()
+        InterferenceDetails.show()
+      } else {
+        InterferenceDetails.hide()
+      }
     })
 
     _bindAddressSearch()
@@ -297,22 +324,30 @@ const InterferenceView = (() => {
     if (!form.checkValidity()) { form.reportValidity(); return }
 
     const data = {
-      enderecoId:       _addrSelectedId || null,
-      logradouro:       _el('ivAddrSearch').value.trim(),
-      latitude:         parseFloat(_el('ivLat').value),
-      longitude:        parseFloat(_el('ivLon').value),
+      enderecoId:        _addrSelectedId || null,
+      logradouro:        _el('ivAddrSearch').value.trim(),
+      latitude:          parseFloat(_el('ivLat').value),
+      longitude:         parseFloat(_el('ivLon').value),
       tipoInterferencia: _el('ivTipoInterf').value,
-      tipoOutorga:      _el('ivTipoOut').value,
-      subtipoOutorga:   _el('ivSubtipoOut').value,
-      situacao:         _el('ivSituacao').value,
-      tipoAto:          _el('ivTipoAto').value,
-      bacia:            _el('ivBacia').value,
-      unidade:          _el('ivUnidade').value
+      tipoOutorga:       _el('ivTipoOut').value,
+      subtipoOutorga:    _el('ivSubtipoOut').value,
+      situacao:          _el('ivSituacao').value,
+      tipoAto:           _el('ivTipoAto').value,
+      bacia:             _el('ivBacia').value,
+      unidade:           _el('ivUnidade').value
     }
 
-    console.log('Salvar interferência:', data)
-    document.dispatchEvent(new CustomEvent('interference-view:saved', { detail: data }))
+    if (_selectedId) {
+      console.log('Editar interferência:', _selectedId, data)
+      document.dispatchEvent(new CustomEvent('interference-view:saved', { detail: { id: _selectedId, ...data } }))
+    } else {
+      console.log('Criar interferência:', data)
+      document.dispatchEvent(new CustomEvent('interference-view:saved', { detail: data }))
+    }
+    _selectedId = null
     form.reset()
+    InterferenceDetails.hide()
+    _el('ivSave').textContent = 'Salvar'
     _searchList('')
   }
 
@@ -356,6 +391,7 @@ const InterferenceView = (() => {
       _fillSelect('ivSubtipoOut', Object.values(d.subtipoOutorga    ?? {}))
       _fillSelect('ivSituacao',   Object.values(d.situacaoProcesso  ?? {}))
       _fillSelect('ivTipoAto',    Object.values(d.tipoAto           ?? {}))
+      InterferenceDetails.fillDomains(d)
       const bacias   = await window.baciaService.listAll()
       const unidades = await window.unidadeService.listAll()
       _fillSelect('ivBacia',   bacias)
@@ -384,17 +420,42 @@ const InterferenceView = (() => {
 
     empty.setAttribute('hidden', '')
     tbody.innerHTML = rows.map((r, idx) => `
-      <tr class="doc-list-row" data-idx="${idx}">
+      <tr class="doc-list-row" data-idx="${idx}" data-id="${r.id}">
         <td title="${r.logradouro || ''}">${r.logradouro || '—'}</td>
         <td>${r.latitude  ?? '—'}</td>
         <td>${r.longitude ?? '—'}</td>
         <td>${r.tipoInterferencia || '—'}</td>
+        <td class="doc-list-action-cell">
+          <button type="button" class="doc-list-delete-btn" title="Excluir">
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
+                 fill="none" stroke="currentColor" stroke-width="2.5"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="3 6 5 6 21 6"/>
+              <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+              <path d="M10 11v6M14 11v6M9 6V4h6v2"/>
+            </svg>
+          </button>
+        </td>
       </tr>
     `).join('')
 
     tbody.querySelectorAll('.doc-list-row').forEach(tr =>
       tr.addEventListener('click', () => _pickInterference(tr))
     )
+    tbody.querySelectorAll('.doc-list-delete-btn').forEach(btn =>
+      btn.addEventListener('click', (e) => { e.stopPropagation(); _deleteRow(btn.closest('tr')) })
+    )
+  }
+
+  /**
+   * @description Remove uma interferência pelo id.
+   * @param {HTMLTableRowElement} tr
+   */
+  function _deleteRow(tr) {
+    const id = tr.dataset.id
+    console.log('Excluir interferência:', id)
+    document.dispatchEvent(new CustomEvent('interference-view:deleted', { detail: { id } }))
+    tr.remove()
   }
 
   /**
@@ -406,6 +467,7 @@ const InterferenceView = (() => {
     const r = _ifRows[parseInt(tr.dataset.idx, 10)]
     if (!r) return
 
+    _selectedId     = r.id
     _addrSelectedId = r.enderecoId || null
     _el('ivAddrId').value     = r.enderecoId    || ''
     _el('ivAddrSearch').value = r.enderecoLabel || r.logradouro || ''
@@ -421,6 +483,15 @@ const InterferenceView = (() => {
     _setSelectValue('ivTipoAto',    r.tipoAtoId)
     _setSelectValue('ivBacia',      r.baciaHidrograficaId)
     _setSelectValue('ivUnidade',    r.unidadeHidrograficaId)
+
+    _el('ivSave').textContent = 'Editar'
+
+    if (r.tipoInterferencia === 'Subterrânea') {
+      InterferenceDetails.show()
+      InterferenceDetails.fill(r)
+    } else {
+      InterferenceDetails.hide()
+    }
 
     document.dispatchEvent(new CustomEvent('interference-view:select', {
       detail: {
@@ -457,11 +528,31 @@ const InterferenceView = (() => {
   }
 
   /**
-   * @description Abre o drawer com animação de deslize.
+   * @description Abre o drawer com animação de deslize e pré-preenche os campos de
+   * coordenadas com os valores atualmente selecionados em SelectInterference, se houver.
    */
+  /**
+   * @description Limpa o formulário e reseta para modo de criação.
+   */
+  function _new() {
+    _selectedId     = null
+    _addrSelectedId = null
+    _el('ivForm').reset()
+    _el('ivAddrClear').hidden = true
+    _closeAddrDropdown()
+    InterferenceDetails.hide()
+    _el('ivSave').textContent = 'Salvar'
+  }
+
   function open() {
     if (!_mounted) return
+    const { latitude, longitude } = SelectInterference.getValue()
+    if (latitude && longitude) {
+      _el('ivLat').value = latitude
+      _el('ivLon').value = longitude
+    }
     _loadDomains()
+    _el('ivSave').textContent = _selectedId ? 'Editar' : 'Salvar'
     _container.classList.add('open')
     setTimeout(() => _el('ivSearch')?.focus(), 320)
   }

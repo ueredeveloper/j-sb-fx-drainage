@@ -7,10 +7,12 @@
  */
 
 const path          = require('path')
-const { writeJson } = require('../utils/write-json')
+const { appendJson } = require('../utils/write-json')
 
 const BASE_URL   = 'https://app-sis-out-srh-backend-01-h3hkbcf5f8dubbdy.brazilsouth-01.azurewebsites.net'
-const SAMPLE_OUT = path.join(__dirname, 'json', 'address-fetch-by-keyword.json')
+const OUT_FETCH  = path.join(__dirname, 'json', 'address-fetch-by-keyword.json')
+const OUT_SAVE   = path.join(__dirname, 'json', 'address-save-response.json')
+const OUT_DELETE = path.join(__dirname, 'json', 'address-delete-response.json')
 
 class AddressService {
   /**
@@ -24,23 +26,29 @@ class AddressService {
     const res = await fetch(url)
     if (!res.ok) throw new Error(`fetchByKeyword: HTTP ${res.status} ${res.statusText}`)
     const data = await res.json()
-    if (Array.isArray(data) && data.length > 0) writeJson(SAMPLE_OUT, data[0])
+    if (Array.isArray(data) && data.length > 0) appendJson(OUT_FETCH, data[0])
     return Array.isArray(data) ? data.map(a => this._normalize(a)) : []
   }
 
   /**
    * @description Persiste ou atualiza um endereço.
-   * @param {Object} address
-   * @returns {Promise<Object>}
+   * O backend distingue create/update pela presença de `id`.
+   * @param {Object} address - Dados do formulário (flat).
+   * @returns {Promise<Object>} Endereço normalizado retornado pela API.
    */
   async save(address) {
+    const payload = this._toPayload(address)
+    console.log('Payload para salvar endereço:', JSON.stringify(payload, null, 2))
+
     const res = await fetch(`${BASE_URL}/addresses/upsert-address`, {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify(address)
+      body:    JSON.stringify(payload)
     })
     if (!res.ok) throw new Error(`save: HTTP ${res.status} ${res.statusText}`)
-    return res.json()
+    const raw = await res.json()
+    appendJson(OUT_SAVE, raw)
+    return this._normalize(raw.object ?? raw)
   }
 
   /**
@@ -51,13 +59,15 @@ class AddressService {
   async deleteById(id) {
     const res = await fetch(`${BASE_URL}/addresses/delete-address?id=${id}`, { method: 'DELETE' })
     if (!res.ok) throw new Error(`deleteById: HTTP ${res.status} ${res.statusText}`)
+    const text = await res.text()
+    appendJson(OUT_DELETE, text ? JSON.parse(text) : { deleted: true, id: Number(id) })
   }
 
   /**
-   * @description Normaliza o objeto de endereço da API para campos planos.
-   * Estrutura da API: { id, logradouro, bairro, cidade, cep, estado: { id, sigla } }
-   * @param {Object} addr
-   * @returns {Object}
+   * @description Normaliza o objeto de endereço da API para um objeto plano.
+   * Estrutura da API: { id, logradouro, bairro, cidade, cep, estado: { id, descricao/sigla } }
+   * @param {Object} addr - Endereço bruto da API.
+   * @returns {Object} Endereço com campos planos.
    */
   _normalize(addr) {
     const estado = addr.estado || {}
@@ -67,8 +77,39 @@ class AddressService {
       bairro:     addr.bairro     ?? null,
       cidade:     addr.cidade     ?? null,
       cep:        addr.cep        ?? null,
+      estadoId:   estado.id       ?? null,
       estado:     estado.descricao ?? estado.sigla ?? null
     }
+  }
+
+  /**
+   * @description Converte o objeto plano do formulário para o formato aninhado
+   * esperado pelo backend no upsert.
+   *
+   * Campos de entrada: { id?, logradouro, bairro, cidade, cep, estado, estadoId? }
+   *
+   * @param {Object} data - Dados do formulário de endereço.
+   * @returns {Object} Payload aninhado para a API.
+   */
+  _toPayload(data) {
+    const payload = {
+      documentos:    [],
+      interferencias: []
+    }
+
+    if (data.id) payload.id = Number(data.id)
+
+    if (data.logradouro) payload.logradouro = data.logradouro
+    if (data.cidade)     payload.cidade     = data.cidade
+    if (data.bairro)     payload.bairro     = data.bairro
+    if (data.cep)        payload.cep        = data.cep
+
+    if (data.estado) {
+      payload.estado = { descricao: data.estado }
+      if (data.estadoId) payload.estado.id = Number(data.estadoId)
+    }
+
+    return payload
   }
 }
 
