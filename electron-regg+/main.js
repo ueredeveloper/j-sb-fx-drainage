@@ -10,9 +10,12 @@ const UserService          = require('./services/user-service')
 const ProcessService       = require('./services/process-service')
 const AnnexService         = require('./services/annex-service')
 const InterferenceService  = require('./services/interference-service')
-const BaciaService         = require('./services/bacia-service')
-const UnidadeService       = require('./services/unidade-service')
-const CoordConverter       = require('./utils/coord-converter')
+const BaciaService             = require('./services/bacia-service')
+const UnidadeService           = require('./services/unidade-service')
+const HidrogeoPorosoService    = require('./services/hidrogeo-poroso-service')
+const HidrogeoFraturadoService = require('./services/hidrogeo-fraturado-service')
+const FinalidadeService        = require('./services/finalidade-service')
+const CoordConverter           = require('./utils/coord-converter')
 
 const _docSvc     = new DocumentService()
 const _domainSvc  = new DomainService()
@@ -22,8 +25,11 @@ const _userSvc    = new UserService()
 const _procSvc    = new ProcessService()
 const _annexSvc   = new AnnexService()
 const _ifSvc      = new InterferenceService()
-const _baciaSvc   = new BaciaService()
-const _unidadeSvc = new UnidadeService()
+const _baciaSvc      = new BaciaService()
+const _unidadeSvc    = new UnidadeService()
+const _porosoSvc     = new HidrogeoPorosoService()
+const _fraturadoSvc  = new HidrogeoFraturadoService()
+const _finalidadeSvc = new FinalidadeService()
 
 /* Caminho real do electron.exe lido do path.txt do pacote npm.
    Necessário porque dentro do processo Electron require('electron')
@@ -104,9 +110,10 @@ ipcMain.handle('address:deleteById',     (_event, id)      => _addrSvc.deleteByI
 
 /* ── IPC: UserService ──────────────────────────────────────────────────────── */
 
-ipcMain.handle('user:fetchByKeyword', (_event, keyword) => _userSvc.fetchByKeyword(keyword))
-ipcMain.handle('user:save',           (_event, user)    => _userSvc.save(user))
-ipcMain.handle('user:deleteById',     (_event, id)      => _userSvc.deleteById(id))
+ipcMain.handle('user:fetchByKeyword',    (_event, keyword) => _userSvc.fetchByKeyword(keyword))
+ipcMain.handle('user:fetchByDocumentId',(_event, docId)   => _userSvc.fetchByDocumentId(docId))
+ipcMain.handle('user:save',             (_event, user)    => _userSvc.save(user))
+ipcMain.handle('user:deleteById',       (_event, id)      => _userSvc.deleteById(id))
 
 /* ── IPC: ProcessService ───────────────────────────────────────────────────── */
 
@@ -122,9 +129,11 @@ ipcMain.handle('annex:deleteById',     (_event, id)      => _annexSvc.deleteById
 
 /* ── IPC: InterferenceService ──────────────────────────────────────────────── */
 
-ipcMain.handle('interference:fetchByKeyword', (_event, keyword) => _ifSvc.fetchByKeyword(keyword))
-ipcMain.handle('interference:save',           (_event, obj)     => _ifSvc.save(obj))
-ipcMain.handle('interference:deleteById',     (_event, id)      => _ifSvc.deleteById(id))
+ipcMain.handle('interference:fetchByKeyword',    (_event, keyword) => _ifSvc.fetchByKeyword(keyword))
+ipcMain.handle('interference:fetchRawByKeyword', (_event, keyword) => _ifSvc.fetchRawByKeyword(keyword))
+ipcMain.handle('interference:save',              (_event, obj)     => _ifSvc.save(obj))
+ipcMain.handle('interference:update',            (_event, obj)     => _ifSvc.update(obj))
+ipcMain.handle('interference:deleteById',        (_event, id)      => _ifSvc.deleteById(id))
 
 /* ── IPC: BaciaService ─────────────────────────────────────────────────────── */
 
@@ -135,6 +144,22 @@ ipcMain.handle('bacia:findByPoint',   (_event, lat, lng)   => _baciaSvc.findByPo
 
 ipcMain.handle('unidade:listAll',     ()                   => _unidadeSvc.listAll())
 ipcMain.handle('unidade:findByPoint', (_event, lat, lng)   => _unidadeSvc.findByPoint(lat, lng))
+
+/* ── IPC: FinalidadeService ─────────────────────────────────────────────────── */
+
+ipcMain.handle('finalidade:deleteById', (_event, id) => _finalidadeSvc.deleteById(id))
+
+/* ── IPC: HidrogeoPorosoService ────────────────────────────────────────────── */
+
+ipcMain.handle('poroso:listAll',       ()                  => _porosoSvc.listAll())
+ipcMain.handle('poroso:findByPoint',   (_event, lat, lng)  => _porosoSvc.findByPoint(lat, lng))
+ipcMain.handle('poroso:findByCodPlan', (_event, codPlan)   => _porosoSvc.findByCodPlan(codPlan))
+
+/* ── IPC: HidrogeoFraturadoService ─────────────────────────────────────────── */
+
+ipcMain.handle('fraturado:listAll',       ()                  => _fraturadoSvc.listAll())
+ipcMain.handle('fraturado:findByPoint',   (_event, lat, lng)  => _fraturadoSvc.findByPoint(lat, lng))
+ipcMain.handle('fraturado:findByCodPlan', (_event, codPlan)   => _fraturadoSvc.findByCodPlan(codPlan))
 
 /* ── IPC: CoordConverter ───────────────────────────────────────────────────── */
 

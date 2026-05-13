@@ -1,17 +1,14 @@
 /**
  * @file process-view.js
- * @description Painel lateral deslizante (drawer) para cadastro e seleção de processos.
- * Desliza da direita para a esquerda sobre o painel de formulário.
- *
- * Seções internas:
- *  1. Formulário de cadastro: número do processo, processo principal e usuário.
- *  2. Pesquisa de processos cadastrados com lista de resultados.
+ * @description Drawer de cadastro de processos. Apenas o formulário.
+ * A seção de pesquisa/lista é delegada ao componente ProcessList.
  *
  * Eventos disparados:
- *  - `process-view:select` → usuário clica em um processo da lista (fecha o drawer).
- *  - `process-view:saved`  → novo processo salvo com sucesso.
+ *  - `process-view:select` → processo selecionado via ProcessList.
+ *  - `process-view:saved`  → processo salvo com sucesso.
  *
- * Aberto via `ProcessView.open()` e fechado pelo botão Voltar ou tecla Escape.
+ * Escuta:
+ *  - `process-list:select` → preenche formulário e notifica SelectProcess.
  */
 const ProcessView = (() => {
   let _mounted    = false
@@ -19,8 +16,7 @@ const ProcessView = (() => {
   let _selectedId = null
 
   /**
-   * @description Renderiza o drawer no container e registra os eventos.
-   * O container deve ser o `#process-drawer` no DOM.
+   * @description Renderiza o drawer e monta ProcessList abaixo do formulário.
    * @param {HTMLElement} container
    */
   function mount(container) {
@@ -51,7 +47,6 @@ const ProcessView = (() => {
 
       <div class="av-content">
 
-        <!-- Formulário de cadastro de novo processo -->
         <form id="pvForm" autocomplete="off">
           <fieldset class="form-section">
             <legend class="section-title">
@@ -93,54 +88,23 @@ const ProcessView = (() => {
           </fieldset>
         </form>
 
-        <!-- Pesquisa e lista de processos cadastrados -->
-        <div class="form-section">
-          <div class="doc-list-header">
-            <span class="doc-list-title">Pesquisar Processos</span>
-          </div>
-          <div class="doc-search-bar">
-            <div class="form-group grow">
-              <input type="text" id="pvSearch"
-                placeholder="Pesquisar por número ou nome de usuário..."
-                autocomplete="off">
-            </div>
-            <button type="button" id="pvSearchBtn" class="btn btn-primary">Pesquisar</button>
-          </div>
-          <div class="doc-list-wrap">
-            <table class="doc-list-table" aria-label="Lista de processos">
-              <thead>
-                <tr>
-                  <th style="width:41%">Número</th>
-                  <th style="width:27%">Usuário</th>
-                  <th style="width:22%">Processo Principal</th>
-                  <th style="width:44px"></th>
-                </tr>
-              </thead>
-              <tbody id="pvListBody"></tbody>
-            </table>
-            <p class="doc-list-empty" id="pvListEmpty" hidden>Nenhum processo encontrado.</p>
-          </div>
-        </div>
+        <div id="pvListMount"></div>
 
       </div>
     `
 
     _bindEvents()
+    ProcessList.mount(_el('pvListMount'))
     _mounted = true
   }
 
   /**
-   * @description Registra todos os eventos do drawer.
+   * @description Registra os eventos do formulário e escuta seleção da lista.
    */
   function _bindEvents() {
     _el('pvBack').addEventListener('click', close)
     _el('pvNew').addEventListener('click', _new)
     _el('pvSave').addEventListener('click', _save)
-
-    _el('pvSearchBtn').addEventListener('click', () => _searchList(_el('pvSearch').value.trim()))
-    _el('pvSearch').addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') _searchList(_el('pvSearch').value.trim())
-    })
 
     _bindInlineSearch('pvAnexoSearch', 'pvAnexoDropdown', 'pvAnexoClear', _searchAnexo)
     _bindInlineSearch('pvUserSearch',  'pvUserDropdown',  'pvUserClear',  _searchUser)
@@ -148,10 +112,22 @@ const ProcessView = (() => {
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && _container?.classList.contains('open')) close()
     })
+
+    document.addEventListener('process-list:select', (e) => {
+      const { id, label, numero, usuarioNome, anexoNumero } = e.detail
+      _selectedId = id
+      _el('pvSave').textContent      = 'Editar'
+      _el('pvNum').value             = numero      || ''
+      _el('pvUserSearch').value      = usuarioNome || ''
+      _el('pvUserClear').hidden      = !usuarioNome
+      _el('pvAnexoSearch').value     = anexoNumero || ''
+      _el('pvAnexoClear').hidden     = !anexoNumero
+      document.dispatchEvent(new CustomEvent('process-view:select', { detail: { id, label } }))
+    })
   }
 
   /**
-   * @description Configura um campo de busca inline com dropdown simples.
+   * @description Configura um campo de busca inline com dropdown.
    * @param {string} inputId
    * @param {string} dropdownId
    * @param {string} clearId
@@ -180,8 +156,6 @@ const ProcessView = (() => {
 
   /**
    * @description Fecha um dropdown inline.
-   * @param {string} dropdownId
-   * @param {string} inputId
    */
   function _closeInlineDropdown(dropdownId, inputId) {
     _el(dropdownId)?.setAttribute('hidden', '')
@@ -189,7 +163,7 @@ const ProcessView = (() => {
   }
 
   /**
-   * @description Busca anexos (processos principais) para o campo processo principal via API.
+   * @description Busca anexos para o campo processo principal.
    * @param {string} term
    */
   async function _searchAnexo(term) {
@@ -204,7 +178,7 @@ const ProcessView = (() => {
   }
 
   /**
-   * @description Busca usuários para o campo usuário via API.
+   * @description Busca usuários para o campo usuário.
    * @param {string} term
    */
   async function _searchUser(term) {
@@ -223,7 +197,7 @@ const ProcessView = (() => {
    * @param {string} dropdownId
    * @param {string} inputId
    * @param {string} clearId
-   * @param {Array<{id: number, label: string}>} rows
+   * @param {Array<{id, label}>} rows
    */
   function _renderInlineDropdown(dropdownId, inputId, clearId, rows) {
     const list = _el(dropdownId)
@@ -247,8 +221,7 @@ const ProcessView = (() => {
   }
 
   /**
-   * @description Valida e salva um novo processo.
-   * TODO: conectar a window.documentService.saveProcess(data).
+   * @description Valida e salva um processo.
    */
   async function _save() {
     const form = _el('pvForm')
@@ -273,7 +246,7 @@ const ProcessView = (() => {
       _el('pvUserClear').hidden  = true
       _el('pvAnexoSearch').value = ''
       _el('pvAnexoClear').hidden = true
-      _prependRow({
+      ProcessList.prependRow({
         id:          saved?.id          ?? savedId,
         numero:      saved?.numero      ?? data.numero,
         usuarioNome: saved?.usuarioNome ?? data.usuario,
@@ -284,157 +257,6 @@ const ProcessView = (() => {
     }
   }
 
-  /**
-   * @description Insere ou move um processo para o topo da tabela e destaca com animação.
-   * @param {Object} r
-   */
-  function _prependRow(r) {
-    if (!r?.id) return
-    const tbody = _el('pvListBody')
-    const empty = _el('pvListEmpty')
-
-    tbody.querySelector(`tr[data-id="${r.id}"]`)?.remove()
-
-    const tr = document.createElement('tr')
-    tr.className             = 'doc-list-row'
-    tr.dataset.id            = String(r.id)
-    tr.dataset.label         = r.numero      || ''
-    tr.dataset.numero        = r.numero      || ''
-    tr.dataset.usuarioNome   = r.usuarioNome || ''
-    tr.dataset.anexoNumero   = r.anexoNumero || ''
-
-    tr.innerHTML = `
-      <td title="${r.numero}">${r.numero || '—'}</td>
-      <td>${r.usuarioNome || '—'}</td>
-      <td>${r.anexoNumero || '—'}</td>
-      <td class="doc-list-action-cell">
-        <button type="button" class="doc-list-delete-btn" title="Excluir">
-          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
-               fill="none" stroke="currentColor" stroke-width="2.5"
-               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <polyline points="3 6 5 6 21 6"/>
-            <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
-            <path d="M10 11v6M14 11v6M9 6V4h6v2"/>
-          </svg>
-        </button>
-      </td>
-    `
-
-    tbody.prepend(tr)
-    empty.setAttribute('hidden', '')
-
-    tr.addEventListener('click', () => _pickProcess(tr))
-    tr.querySelector('.doc-list-delete-btn').addEventListener('click', (e) => {
-      e.stopPropagation(); _deleteRow(tr)
-    })
-
-    void tr.offsetWidth
-    tr.classList.add('doc-list-row--flash')
-  }
-
-  /**
-   * @description Busca processos cadastrados pelo número via API.
-   * @param {string} term
-   */
-  async function _searchList(term) {
-    try {
-      const rows = await window.processService.fetchByKeyword(term)
-      _renderRows(rows)
-    } catch (err) {
-      console.error('ProcessView: erro ao buscar processos', err)
-      _renderRows([])
-    }
-  }
-
-  /**
-   * @description Popula a tabela de processos com os resultados da busca.
-   * Campos esperados: { id, numero, usuarioId, usuarioNome, anexoId, anexoNumero } (normalizados pelo serviço).
-   * @param {Array<Object>} rows
-   */
-  function _renderRows(rows) {
-    const tbody = _el('pvListBody')
-    const empty = _el('pvListEmpty')
-
-    if (!rows.length) {
-      tbody.innerHTML = ''
-      empty.removeAttribute('hidden')
-      return
-    }
-
-    empty.setAttribute('hidden', '')
-    tbody.innerHTML = rows.map(r => `
-      <tr class="doc-list-row"
-          data-id="${r.id}"
-          data-label="${r.numero}"
-          data-numero="${r.numero || ''}"
-          data-usuario-nome="${r.usuarioNome || ''}"
-          data-anexo-numero="${r.anexoNumero || ''}">
-        <td title="${r.numero}">${r.numero}</td>
-        <td>${r.usuarioNome || '—'}</td>
-        <td>${r.anexoNumero || '—'}</td>
-        <td class="doc-list-action-cell">
-          <button type="button" class="doc-list-delete-btn" title="Excluir">
-            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
-                 fill="none" stroke="currentColor" stroke-width="2.5"
-                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <polyline points="3 6 5 6 21 6"/>
-              <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
-              <path d="M10 11v6M14 11v6M9 6V4h6v2"/>
-            </svg>
-          </button>
-        </td>
-      </tr>
-    `).join('')
-
-    tbody.querySelectorAll('.doc-list-row').forEach(tr =>
-      tr.addEventListener('click', () => _pickProcess(tr))
-    )
-    tbody.querySelectorAll('.doc-list-delete-btn').forEach(btn =>
-      btn.addEventListener('click', (e) => { e.stopPropagation(); _deleteRow(btn.closest('tr')) })
-    )
-  }
-
-  /**
-   * @description Remove um processo pelo id.
-   * @param {HTMLTableRowElement} tr
-   */
-  async function _deleteRow(tr) {
-    const id = tr.dataset.id
-    if (!confirm('Confirmar exclusão do processo?')) return
-    try {
-      await window.processService.deleteById(id)
-      document.dispatchEvent(new CustomEvent('process-view:deleted', { detail: { id } }))
-      tr.remove()
-    } catch (err) {
-      console.error('ProcessView: erro ao excluir processo', err)
-    }
-  }
-
-  /**
-   * @description Seleciona um processo da lista, preenche o formulário e notifica o SelectProcess.
-   * O drawer permanece aberto para permitir nova seleção se necessário.
-   * @param {HTMLTableRowElement} tr
-   */
-  function _pickProcess(tr) {
-    _selectedId = tr.dataset.id
-    _el('pvSave').textContent = 'Editar'
-    _el('pvNum').value = tr.dataset.numero || ''
-
-    _el('pvUserSearch').value = tr.dataset.usuarioNome || ''
-    _el('pvUserClear').hidden = !tr.dataset.usuarioNome
-
-    _el('pvAnexoSearch').value = tr.dataset.anexoNumero || ''
-    _el('pvAnexoClear').hidden = !tr.dataset.anexoNumero
-
-    document.dispatchEvent(new CustomEvent('process-view:select', {
-      detail: { id: tr.dataset.id, label: tr.dataset.label }
-    }))
-  }
-
-  /**
-   * @description Abre o drawer com animação de deslize e pré-preenche o formulário
-   * com os dados do processo atualmente selecionado em SelectProcess, se houver.
-   */
   /**
    * @description Limpa o formulário e reseta para modo de criação.
    */
@@ -448,6 +270,9 @@ const ProcessView = (() => {
     _el('pvAnexoClear').hidden = true
   }
 
+  /**
+   * @description Abre o drawer e pré-preenche com o processo selecionado em SelectProcess.
+   */
   async function open() {
     if (!_mounted) return
     const { processId } = SelectProcess.getValue()
@@ -467,31 +292,29 @@ const ProcessView = (() => {
     }
     _el('pvSave').textContent = _selectedId ? 'Editar' : 'Salvar'
     _container.classList.add('open')
-    setTimeout(() => _el('pvSearch')?.focus(), 320)
+    setTimeout(() => _el('plvSearch')?.focus(), 320)
   }
 
   /**
-   * @description Fecha o drawer com animação de deslize.
+   * @description Fecha o drawer.
    */
   function close() {
     _container?.classList.remove('open')
   }
 
-  /** @returns {boolean} */
-  function isMounted() { return _mounted }
-
-  /** @description Limpa o formulário e a lista. */
+  /**
+   * @description Limpa o formulário e a lista.
+   */
   function reset() {
     if (!_mounted) return
     _el('pvForm')?.reset()
-    _el('pvSearch').value = ''
-    _el('pvListBody').innerHTML = ''
-    _el('pvListEmpty').setAttribute('hidden', '')
+    ProcessList.reset()
     close()
   }
 
-  function validate() { return true }
+  function validate()  { return true }
   function getValue()  { return {} }
+  function isMounted() { return _mounted }
 
   /** @param {string} id @returns {HTMLElement} */
   function _el(id) { return document.getElementById(id) }

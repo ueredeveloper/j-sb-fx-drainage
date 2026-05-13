@@ -10,7 +10,8 @@ const InterferenceDetails = (() => {
   const _DIAS  = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
   const _CHUVA = new Set([1, 2, 3, 11, 12])  // jan fev mar nov dez
 
-  let _mounted = false
+  let _mounted            = false
+  let _lastFraturadoItems = []   // cache do listAll() para filtragem de subsistemas
 
   /**
    * @description Renderiza o painel e registra os eventos de aba.
@@ -45,12 +46,16 @@ const InterferenceDetails = (() => {
               </select>
             </div>
             <div class="form-group grow">
+              <label for="idSistema">Sistema</label>
+              <select id="idSistema"><option value="">Selecione...</option></select>
+            </div>
+            <div class="form-group grow" id="idSubsistemaWrap" hidden>
               <label for="idSubsistema">Subsistema</label>
               <select id="idSubsistema"><option value="">Selecione...</option></select>
             </div>
             <div class="form-group">
-              <label for="idCodSubsistema">Código do Subsistema</label>
-              <input type="text" id="idCodSubsistema">
+              <label for="idCodSistema">Código do Sistema</label>
+              <input type="text" id="idCodSistema">
             </div>
           </div>
           <div class="form-row">
@@ -94,6 +99,9 @@ const InterferenceDetails = (() => {
 
     _el('idTabReqBtn').addEventListener('click',  () => _switchTab('requeridas'))
     _el('idTabAuthBtn').addEventListener('click', () => _switchTab('autorizadas'))
+    _el('idTipoPoco').addEventListener('change', _onTipoPocoChange)
+    _el('idSistema').addEventListener('change', _onSistemaChange)
+    _el('idCodSistema').addEventListener('change', _onCodSistemaChange)
     _mounted = true
   }
 
@@ -143,8 +151,8 @@ const InterferenceDetails = (() => {
    * @param {Object} d - Objeto retornado por domainService.fetchAll().
    */
   function fillDomains(d) {
-    _fillSelect('idTipoPoco',   Object.values(d.tipoPoco   ?? {}))
-    _fillSelect('idSubsistema', Object.values(d.subsistema ?? {}))
+    _fillSelect('idTipoPoco', Object.values(d.tipoPoco ?? {}))
+    // idSistema e idSubsistema são preenchidos dinamicamente via _onTipoPocoChange
   }
 
   /**
@@ -155,9 +163,10 @@ const InterferenceDetails = (() => {
   function fill(r) {
     if (!_mounted) return
 
-    _setSelectValue('idTipoPoco',    r.tipoPoco)
-    _el('idCaebs').value           = r.caesb != null ? String(r.caesb) : ''
-    _el('idCodSubsistema').value   = r.codigoSubsistema ?? ''
+    _setSelectValue('idTipoPoco', r.tipoPoco)
+    _el('idCaebs').value          = r.caesb != null ? String(r.caesb) : ''
+    _el('idCodSistema').value     = r.codigoSubsistema ?? ''
+    _onTipoPocoChange()  // async — popula idSistema/idSubsistema e auto-seleciona pelo ponto
     _el('idVazaoSistema').value    = r.vazaoSistema     ?? ''
     _el('idVazaoOutorgavel').value = r.vazaoOutorgavel  ?? ''
     _el('idVazaoTeste').value      = r.vazaoTeste       ?? ''
@@ -195,6 +204,193 @@ const InterferenceDetails = (() => {
   /** @description Oculta o painel. */
   function hide() { if (_mounted) _el('idSection').setAttribute('hidden', '') }
 
+  // ── Sistema / Subsistema ─────────────────────────────────────────────────
+
+  /**
+   * @description Lê as coordenadas dos inputs do drawer de interferência.
+   * @returns {{lat: number, lng: number}|null}
+   */
+  function _getCoords() {
+    const lat = parseFloat(document.getElementById('ivLat')?.value)
+    const lng = parseFloat(document.getElementById('ivLon')?.value)
+    return (isNaN(lat) || isNaN(lng)) ? null : { lat, lng }
+  }
+
+  /**
+   * @description Retorna o texto do tipo de poço selecionado em minúsculas.
+   * @returns {string}
+   */
+  function _getTipoPocoText() {
+    const sel = _el('idTipoPoco')
+    return (sel?.options[sel.selectedIndex]?.text ?? '').toLowerCase()
+  }
+
+  /**
+   * @description Reage à mudança do tipo de poço: carrega sistemas via listAll()
+   * e auto-seleciona pelo ponto geográfico via findByPoint().
+   * Poroso → Poço Manual / Poço Raso | Fraturado → Poço Profundo.
+   */
+  async function _onTipoPocoChange() {
+    const text = _getTipoPocoText()
+    _el('idSistema').innerHTML    = '<option value="">Selecione...</option>'
+    _el('idSubsistema').innerHTML = '<option value="">Selecione...</option>'
+    _el('idCodSistema').value     = ''
+
+    const isPoroso    = text.includes('manual') || text.includes('raso')
+    const isFraturado = text.includes('profundo')
+
+    _el('idSubsistemaWrap').hidden = !isFraturado
+
+    if (isPoroso)    await _loadPorosoData()
+    else if (isFraturado) await _loadFraturadoData()
+  }
+
+  /**
+   * @description Carrega sistemas porosos e auto-seleciona pelo ponto.
+   */
+  async function _loadPorosoData() {
+    try {
+      const items = await window.porosoService.listAll()
+      _fillSistemaSelectPoroso(items)
+      const coords = _getCoords()
+      if (coords) {
+        const found = await window.porosoService.findByPoint(coords.lat, coords.lng)
+        if (found.length) _applyPorosoSelection(found[0])
+      }
+    } catch (err) {
+      console.error('InterferenceDetails: erro ao carregar poroso', err)
+    }
+  }
+
+  /**
+   * @description Carrega sistemas fraturados e auto-seleciona pelo ponto.
+   */
+  async function _loadFraturadoData() {
+    try {
+      const items = await window.fraturadoService.listAll()
+      _fillSistemaSelectFraturado(items)
+      const coords = _getCoords()
+      if (coords) {
+        const found = await window.fraturadoService.findByPoint(coords.lat, coords.lng)
+        if (found.length) _applyFraturadoSelection(found[0])
+      }
+    } catch (err) {
+      console.error('InterferenceDetails: erro ao carregar fraturado', err)
+    }
+  }
+
+  /**
+   * @description Popula #idSistema com dados do poroso.
+   * @param {Array<{id, codPlan, descricao}>} items
+   */
+  function _fillSistemaSelectPoroso(items) {
+    const seen = new Set()
+    const opts = []
+    items.forEach(p => {
+      if (!seen.has(p.descricao)) {
+        seen.add(p.descricao)
+        opts.push(`<option value="${p.id}" data-cod="${_esc(p.codPlan ?? '')}">${_esc(p.descricao)}</option>`)
+      }
+    })
+    _el('idSistema').innerHTML = `<option value="">Selecione...</option>${opts.join('')}`
+  }
+
+  /**
+   * @description Popula #idSistema com sistemas únicos do fraturado.
+   * #idSubsistema é preenchido ao selecionar um sistema.
+   * @param {Array<{id, codPlan, sistema, subsistema}>} items
+   */
+  function _fillSistemaSelectFraturado(items) {
+    _lastFraturadoItems = items
+    const seen    = new Set()
+    const sisOpts = []
+    items.forEach(f => {
+      if (!seen.has(f.sistema)) {
+        seen.add(f.sistema)
+        sisOpts.push(`<option value="${_esc(f.sistema)}">${_esc(f.sistema)}</option>`)
+      }
+    })
+    _el('idSistema').innerHTML = `<option value="">Selecione...</option>${sisOpts.join('')}`
+  }
+
+  /**
+   * @description Filtra #idSubsistema para exibir apenas os registros do sistema informado.
+   * @param {string} sistema
+   */
+  function _filterSubsistemas(sistema) {
+    const seen = new Set()
+    const opts = []
+    _lastFraturadoItems
+      .filter(f => f.sistema === sistema)
+      .forEach(f => {
+        if (!seen.has(f.subsistema)) {
+          seen.add(f.subsistema)
+          opts.push(`<option value="${f.id}" data-cod="${_esc(f.codPlan ?? '')}">${_esc(f.subsistema)}</option>`)
+        }
+      })
+    _el('idSubsistema').innerHTML = `<option value="">Selecione...</option>${opts.join('')}`
+  }
+
+  /**
+   * @description Seleciona um sistema poroso no dropdown e preenche o código.
+   * @param {{id, codPlan}} item
+   */
+  function _applyPorosoSelection(item) {
+    const sel = _el('idSistema')
+    const opt = Array.from(sel.options).find(o => o.text === item.descricao)
+    if (opt) sel.value = opt.value
+    _el('idCodSistema').value = item.codPlan ?? ''
+  }
+
+  /**
+   * @description Seleciona sistema e subsistema fraturado e preenche o código.
+   * @param {{id, codPlan, sistema, subsistema}} item
+   */
+  function _applyFraturadoSelection(item) {
+    _el('idSistema').value = item.sistema ?? ''
+    _filterSubsistemas(item.sistema)
+    const subSel = _el('idSubsistema')
+    const opt    = Array.from(subSel.options).find(o => o.text === item.subsistema)
+    if (opt) subSel.value = opt.value
+    _el('idCodSistema').value = item.codPlan ?? ''
+  }
+
+  /**
+   * @description Reage à mudança de #idSistema: preenche código e filtra subsistemas (fraturado).
+   */
+  function _onSistemaChange() {
+    const text = _getTipoPocoText()
+    const opt  = _el('idSistema').selectedOptions[0]
+    if (!opt?.value) return
+
+    if (text.includes('manual') || text.includes('raso')) {
+      _el('idCodSistema').value = opt.dataset.cod ?? ''
+    } else if (text.includes('profundo')) {
+      _filterSubsistemas(opt.value)
+      _el('idCodSistema').value = ''
+    }
+  }
+
+  /**
+   * @description Reage à mudança manual do #idCodSistema: busca via findByCodPlan e seleciona.
+   */
+  async function _onCodSistemaChange() {
+    const codPlan = _el('idCodSistema').value.trim()
+    if (!codPlan) return
+    const text = _getTipoPocoText()
+    try {
+      if (text.includes('manual') || text.includes('raso')) {
+        const found = await window.porosoService.findByCodPlan(codPlan)
+        if (found.length) _applyPorosoSelection(found[0])
+      } else if (text.includes('profundo')) {
+        const found = await window.fraturadoService.findByCodPlan(codPlan)
+        if (found.length) _applyFraturadoSelection(found[0])
+      }
+    } catch (err) {
+      console.error('InterferenceDetails: erro ao buscar por código do sistema', err)
+    }
+  }
+
   // ── Finalidades ──────────────────────────────────────────────────────────
 
   /**
@@ -222,6 +418,8 @@ const InterferenceDetails = (() => {
   function _addFinRow(tab, f = {}, afterRow = null) {
     const tbody = _el(`idFin${tab}Body`)
     const tr    = document.createElement('tr')
+
+    if (f.id) tr.dataset.finalidadeId = f.id
 
     tr.innerHTML = `
       <td><input type="text"   class="id-fin-input"             value="${_esc(f.finalidade    ?? '')}"></td>
@@ -251,7 +449,12 @@ const InterferenceDetails = (() => {
 
     tr.querySelector('.id-add-btn').addEventListener('click', () => _addFinRow(tab, {}, tr))
 
-    tr.querySelector('.id-del-btn').addEventListener('click', () => {
+    tr.querySelector('.id-del-btn').addEventListener('click', async () => {
+      const finId = tr.dataset.finalidadeId
+      if (finId) {
+        try { await window.finalidadeService.deleteById(finId) }
+        catch (err) { console.error('InterferenceDetails: erro ao deletar finalidade', err) }
+      }
       tr.remove()
       _updateFinTotal(tab)
     })
@@ -388,6 +591,85 @@ const InterferenceDetails = (() => {
     }
   }
 
+  // ── Leitura de dados ─────────────────────────────────────────────────────
+
+  /**
+   * @description Retorna todos os dados do painel de detalhes prontos para envio à API.
+   * @returns {Object}
+   */
+  function getValue() {
+    if (!_mounted) return null
+    return {
+      tipoPoco:        _numOrNull(_el('idTipoPoco').value),
+      caesb:           _boolOrNull(_el('idCaebs').value),
+      sistema:         _el('idSistema').selectedOptions[0]?.text        ?? null,
+      subsistema:      _el('idSubsistema').selectedOptions[0]?.text     ?? null,
+      codPlan:         _el('idCodSistema').value.trim()                 || null,
+      vazaoSistema:    _numOrNull(_el('idVazaoSistema').value),
+      vazaoOutorgavel: _numOrNull(_el('idVazaoOutorgavel').value),
+      vazaoTeste:      _numOrNull(_el('idVazaoTeste').value),
+      nivelEstatico:   _el('idNivelEstatico').value.trim()              || null,
+      nivelDinamico:   _el('idNivelDinamico').value.trim()              || null,
+      profundidade:    _el('idProfundidade').value.trim()               || null,
+      finalidades:     _readFinalidades(),
+      demandas:        _readDemandas()
+    }
+  }
+
+  /**
+   * @description Lê todas as linhas de finalidades das abas Req e Auth.
+   * @returns {Array<{finalidade, subfinalidade, quantidade, total, consumo, tipoFinalidade}>}
+   */
+  function _readFinalidades() {
+    const result = []
+    ;[['Req', 1], ['Auth', 2]].forEach(([tab, tipoId]) => {
+      _el(`idFin${tab}Body`).querySelectorAll('tr').forEach(tr => {
+        const inputs = tr.querySelectorAll('input')
+        if (!inputs.length) return
+        const entry = {
+          finalidade:     inputs[0].value.trim(),
+          subfinalidade:  inputs[1].value.trim(),
+          quantidade:     parseFloat(inputs[2].value) || 0,
+          total:          parseFloat(inputs[3].value) || 0,
+          consumo:        parseFloat(inputs[4].value) || 0,
+          tipoFinalidade: { id: tipoId }
+        }
+        const finId = parseInt(tr.dataset.finalidadeId)
+        if (!isNaN(finId)) entry.id = finId
+        result.push(entry)
+      })
+    })
+    return result
+  }
+
+  /**
+   * @description Lê todas as células da tabela transposta de demandas (Req e Auth).
+   * Cada mês gera um registro com vazão, tempo e período.
+   * @returns {Array<{vazao, tempo, periodo, mes, tipoFinalidade}>}
+   */
+  function _readDemandas() {
+    const result = []
+    ;[['Req', 1], ['Auth', 2]].forEach(([tab, tipoId]) => {
+      const table = _el(`idDem${tab}Table`)
+      if (!table) return
+      const byMes = {}
+      table.querySelectorAll('input.id-dem-cell').forEach(inp => {
+        const mes   = parseInt(inp.dataset.mes)
+        const field = inp.dataset.field
+        const val   = parseFloat(inp.value) || 0
+        if (!byMes[mes]) byMes[mes] = { mes, vazao: 0, tempo: 0, periodo: 0, tipoFinalidade: { id: tipoId } }
+        byMes[mes][field] = val
+      })
+      for (let m = 1; m <= 12; m++) {
+        if (byMes[m]) result.push(byMes[m])
+      }
+    })
+    return result
+  }
+
+  function _numOrNull(v)  { const n = parseFloat(v); return isNaN(n) ? null : n }
+  function _boolOrNull(v) { return v === 'true' ? true : v === 'false' ? false : null }
+
   // ── Utilitários ──────────────────────────────────────────────────────────
 
   function _fillSelect(id, items) {
@@ -411,5 +693,5 @@ const InterferenceDetails = (() => {
   /** @param {string} id @returns {HTMLElement} */
   function _el(id) { return document.getElementById(id) }
 
-  return { mount, fillDomains, fill, fillEmpty, show, hide }
+  return { mount, fillDomains, fill, fillEmpty, show, hide, getValue }
 })()

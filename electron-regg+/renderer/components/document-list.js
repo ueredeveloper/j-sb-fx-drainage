@@ -111,6 +111,17 @@ const DocumentList = (() => {
         <td>${r.processoNumero   || '—'}</td>
         <td class="col-address" title="${r.logradouro || ''}">${r.logradouro || '—'}</td>
         <td class="doc-list-action-cell">
+          <button type="button" class="doc-list-acts-btn" title="Atos Administrativos">
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
+                 fill="none" stroke="currentColor" stroke-width="2.5"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="16" y1="13" x2="8" y2="13"/>
+              <line x1="16" y1="17" x2="8" y2="17"/>
+              <line x1="12" y1="9" x2="8" y2="9"/>
+            </svg>
+          </button>
           <button type="button" class="doc-list-delete-btn" title="Excluir">
             <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
                  fill="none" stroke="currentColor" stroke-width="2.5"
@@ -146,6 +157,9 @@ const DocumentList = (() => {
 
     tbody.querySelectorAll('.doc-list-row').forEach(tr =>
       tr.addEventListener('click', () => _selectRow(tr))
+    )
+    tbody.querySelectorAll('.doc-list-acts-btn').forEach(btn =>
+      btn.addEventListener('click', (e) => { e.stopPropagation(); _openActs(btn.closest('tr')) })
     )
     tbody.querySelectorAll('.doc-list-delete-btn').forEach(btn =>
       btn.addEventListener('click', (e) => { e.stopPropagation(); _deleteRow(btn.closest('tr')) })
@@ -188,10 +202,23 @@ const DocumentList = (() => {
 
     tr.classList.add('doc-list-row--flash')
     tr.addEventListener('click', () => _selectRow(tr))
+    tr.querySelector('.doc-list-acts-btn').addEventListener('click', (e) => {
+      e.stopPropagation()
+      _openActs(tr)
+    })
     tr.querySelector('.doc-list-delete-btn').addEventListener('click', (e) => {
       e.stopPropagation()
       _deleteRow(tr)
     })
+  }
+
+  /**
+   * @description Seleciona o documento da linha e abre os Atos Administrativos.
+   * @param {HTMLTableRowElement} tr
+   */
+  function _openActs(tr) {
+    _selectRow(tr)
+    AdministrativeActsView.open()
   }
 
   /**

@@ -9,7 +9,7 @@
  */
 
 const path      = require('path')
-const { appendJson } = require('../utils/write-json')
+const { appendJson, writeJson } = require('../utils/write-json')
 
 const BASE_URL    = 'https://app-sis-out-srh-backend-01-h3hkbcf5f8dubbdy.brazilsouth-01.azurewebsites.net'
 const OUT_FETCH   = path.join(__dirname, 'json', 'document-fetch-by-param.json')
@@ -30,7 +30,7 @@ class DocumentService {
     if (!res.ok) throw new Error(`fetchByParam: HTTP ${res.status} ${res.statusText}`)
     const data = await res.json()
 
-    if (Array.isArray(data) && data.length > 0) appendJson(OUT_FETCH, data[0])
+    if (Array.isArray(data) && data.length > 0) writeJson(OUT_FETCH, data[0])
 
     return Array.isArray(data) ? data.map(d => this._normalize(d)) : []
   }

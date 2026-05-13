@@ -22,54 +22,52 @@ const DocumentView = (() => {
    */
   function mount(container) {
     container.innerHTML = `
-      <div class="form-section doc-view">
-        <div class="doc-view-header">
-          <span class="doc-view-title">
-            <span class="section-icon">📄</span> Documento
-          </span>
-          <button type="button" class="btn av-new-btn" id="btnNew">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
-                 fill="none" stroke="currentColor" stroke-width="2.5"
-                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/>
-            </svg>
-            Novo
-          </button>
-          <button type="button" class="btn btn-primary" id="btnSave">Salvar</button>
-        </div>
-        <div class="doc-view-body">
-          <div class="form-row">
-            <div class="form-group type-select">
-              <label for="docType">Tipo <span class="required">*</span></label>
-              <select id="docType" name="docType" required>
-                <option value="">Selecione...</option>
-                ${TYPES.map(t => `<option value="${t.id}">${t.name}</option>`).join('\n                ')}
-              </select>
-            </div>
-            <div class="form-group grow">
-              <label for="docNumber">Número <span class="required">*</span></label>
-              <input
-                type="text"
-                id="docNumber"
-                name="docNumber"
-                placeholder="Ex: 155378018"
-                required
-              >
-            </div>
-            <div class="form-group grow">
-              <label for="docNumberSei">Número SEI <span class="required">*</span></label>
-              <input
-                type="text"
-                id="docNumberSei"
-                name="docNumberSei"
-                placeholder="Ex: 456852147"
-                inputmode="numeric"
-                required
-              >
-            </div>
+      <div class="doc-view-toolbar">
+        <button type="button" class="btn av-new-btn" id="btnNew">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="2.5"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/>
+          </svg>
+          Novo
+        </button>
+        <button type="button" class="btn btn-primary" id="btnSave">Salvar</button>
+      </div>
+      <fieldset class="form-section">
+        <legend class="section-title">
+          <span class="section-icon">📄</span> Documento
+        </legend>
+        <div class="form-row">
+          <div class="form-group type-select">
+            <label for="docType">Tipo <span class="required">*</span></label>
+            <select id="docType" name="docType" required>
+              <option value="">Selecione...</option>
+              ${TYPES.map(t => `<option value="${t.id}">${t.name}</option>`).join('\n              ')}
+            </select>
+          </div>
+          <div class="form-group grow">
+            <label for="docNumber">Número <span class="required">*</span></label>
+            <input
+              type="text"
+              id="docNumber"
+              name="docNumber"
+              placeholder="Ex: 155378018"
+              required
+            >
+          </div>
+          <div class="form-group grow">
+            <label for="docNumberSei">Número SEI <span class="required">*</span></label>
+            <input
+              type="text"
+              id="docNumberSei"
+              name="docNumberSei"
+              placeholder="Ex: 456852147"
+              inputmode="numeric"
+              required
+            >
           </div>
         </div>
-      </div>
+      </fieldset>
     `
     _bindEvents()
     _mounted = true

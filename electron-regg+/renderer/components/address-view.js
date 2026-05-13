@@ -1,17 +1,14 @@
 /**
  * @file address-view.js
- * @description Painel lateral deslizante (drawer) para cadastro e seleção de endereços.
- * Desliza da direita para a esquerda sobre o painel de formulário.
- *
- * Seções internas:
- *  1. Formulário de cadastro: logradouro, bairro, cidade, CEP, estado.
- *  2. Pesquisa de endereços existentes com lista de resultados.
+ * @description Drawer de cadastro de endereços. Apenas o formulário.
+ * A seção de pesquisa/lista é delegada ao componente AddressList.
  *
  * Eventos disparados:
- *  - `address-view:select`  → usuário clica em um endereço da lista (fecha o drawer).
- *  - `address-view:saved`   → usuário salva um novo endereço.
+ *  - `address-view:select` → endereço selecionado via AddressList.
+ *  - `address-view:saved`  → endereço salvo com sucesso.
  *
- * Aberto via `AddressView.open()` e fechado pelo botão Voltar ou tecla Escape.
+ * Escuta:
+ *  - `address-list:select` → preenche formulário e notifica SelectAddress.
  */
 const AddressView = (() => {
   let _mounted     = false
@@ -20,8 +17,7 @@ const AddressView = (() => {
   let _estadoList  = []
 
   /**
-   * @description Renderiza o drawer no container e registra os eventos.
-   * O container deve ser o `#address-drawer` no DOM.
+   * @description Renderiza o drawer e monta AddressList abaixo do formulário.
    * @param {HTMLElement} container
    */
   function mount(container) {
@@ -52,7 +48,6 @@ const AddressView = (() => {
 
       <div class="av-content">
 
-        <!-- Formulário de cadastro de novo endereço -->
         <form id="avForm" autocomplete="off">
           <fieldset class="form-section">
             <legend class="section-title">
@@ -88,46 +83,19 @@ const AddressView = (() => {
           </fieldset>
         </form>
 
-        <!-- Pesquisa e lista de endereços cadastrados -->
-        <div class="form-section">
-          <div class="doc-list-header">
-            <span class="doc-list-title">Pesquisar Endereços</span>
-          </div>
-          <div class="doc-search-bar">
-            <div class="form-group grow">
-              <input type="text" id="avSearch"
-                placeholder="Pesquisar por logradouro ou cidade..."
-                autocomplete="off">
-            </div>
-            <button type="button" id="avSearchBtn" class="btn btn-primary">Pesquisar</button>
-          </div>
-          <div class="doc-list-wrap">
-            <table class="doc-list-table" style="table-layout:fixed" aria-label="Lista de endereços">
-              <thead>
-                <tr>
-                  <th style="width:38%">Logradouro</th>
-                  <th style="width:19%">Bairro</th>
-                  <th style="width:22%">Cidade</th>
-                  <th style="width:12%">UF</th>
-                  <th style="width:44px"></th>
-                </tr>
-              </thead>
-              <tbody id="avListBody"></tbody>
-            </table>
-            <p class="doc-list-empty" id="avListEmpty" hidden>Nenhum endereço encontrado.</p>
-          </div>
-        </div>
+        <div id="avListMount"></div>
 
       </div>
     `
 
     _bindEvents()
+    AddressList.mount(_el('avListMount'))
     _mounted = true
     _loadEstados()
   }
 
   /**
-   * @description Carrega a lista de estados da API e popula o select de UF.
+   * @description Carrega a lista de estados e popula o select de UF.
    */
   async function _loadEstados() {
     try {
@@ -143,37 +111,40 @@ const AddressView = (() => {
   }
 
   /**
-   * @description Registra todos os eventos do drawer.
+   * @description Registra os eventos do formulário e escuta seleção da lista.
    */
   function _bindEvents() {
-    /* Botão Voltar */
     _el('avBack').addEventListener('click', close)
     _el('avNew').addEventListener('click', _new)
     _el('avSave').addEventListener('click', _save)
 
-    /* Pesquisa na lista */
-    _el('avSearchBtn').addEventListener('click', () => _searchList(_el('avSearch').value.trim()))
-    _el('avSearch').addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') _searchList(_el('avSearch').value.trim())
-    })
-
-    /* Máscara de CEP */
     _el('avCep').addEventListener('input', (e) => {
       let v = e.target.value.replace(/\D/g, '')
       v = v.replace(/(\d{5})(\d)/, '$1-$2')
       e.target.value = v
     })
 
-    /* Escape fecha o drawer */
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && _container?.classList.contains('open')) close()
+    })
+
+    document.addEventListener('address-list:select', (e) => {
+      const d = e.detail
+      _selectedId               = d.id
+      _el('avSave').textContent = 'Editar'
+      _el('avLogradouro').value = d.logradouro || ''
+      _el('avCep').value        = d.cep        || ''
+      _el('avBairro').value     = d.bairro     || ''
+      _el('avCidade').value     = d.cidade     || ''
+      _el('avEstado').value     = d.estadoId   || ''
+      document.dispatchEvent(new CustomEvent('address-view:select', {
+        detail: { id: d.id, label: d.label }
+      }))
     })
   }
 
   /**
-   * @description Valida e salva um novo endereço.
-   * Dispara `address-view:saved` com os dados para que o banco possa persistir.
-   * TODO: conectar a window.db.insertAddress(data).
+   * @description Valida e salva um endereço.
    */
   async function _save() {
     const form = _el('avForm')
@@ -194,13 +165,13 @@ const AddressView = (() => {
     const payload = _selectedId ? { id: _selectedId, ...formData } : formData
 
     try {
-      const raw  = await window.addressService.save(payload)
+      const raw   = await window.addressService.save(payload)
       const saved = raw?.object ?? raw
       document.dispatchEvent(new CustomEvent('address-view:saved', { detail: saved }))
       _selectedId = null
       _el('avSave').textContent = 'Salvar'
       form.reset()
-      _prependRow({
+      AddressList.prependRow({
         id:         saved?.id         ?? payload.id,
         logradouro: saved?.logradouro ?? formData.logradouro,
         bairro:     saved?.bairro     ?? formData.bairro,
@@ -215,164 +186,6 @@ const AddressView = (() => {
   }
 
   /**
-   * @description Insere ou move um endereço para o topo da tabela e destaca com animação.
-   * @param {Object} r - Endereço normalizado.
-   */
-  function _prependRow(r) {
-    if (!r?.id) return
-    const tbody = _el('avListBody')
-    const empty = _el('avListEmpty')
-
-    tbody.querySelector(`tr[data-id="${r.id}"]`)?.remove()
-
-    const tr = document.createElement('tr')
-    tr.className          = 'doc-list-row'
-    tr.dataset.id         = String(r.id)
-    tr.dataset.logradouro = r.logradouro || ''
-    tr.dataset.bairro     = r.bairro     || ''
-    tr.dataset.cidade     = r.cidade     || ''
-    tr.dataset.cep        = r.cep        || ''
-    tr.dataset.estado     = r.estado     || ''
-    tr.dataset.estadoId   = String(r.estadoId || '')
-
-    tr.innerHTML = `
-      <td title="${r.logradouro}">${r.logradouro || '—'}</td>
-      <td>${r.bairro || '—'}</td>
-      <td>${r.cidade || '—'}</td>
-      <td>${r.estado || '—'}</td>
-      <td class="doc-list-action-cell">
-        <button type="button" class="doc-list-delete-btn" title="Excluir">
-          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
-               fill="none" stroke="currentColor" stroke-width="2.5"
-               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <polyline points="3 6 5 6 21 6"/>
-            <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
-            <path d="M10 11v6M14 11v6M9 6V4h6v2"/>
-          </svg>
-        </button>
-      </td>
-    `
-
-    tbody.prepend(tr)
-    empty.setAttribute('hidden', '')
-
-    tr.addEventListener('click', () => _pickAddress(tr))
-    tr.querySelector('.doc-list-delete-btn').addEventListener('click', (e) => {
-      e.stopPropagation(); _deleteRow(tr)
-    })
-
-    void tr.offsetWidth
-    tr.classList.add('doc-list-row--flash')
-  }
-
-  /**
-   * @description Pesquisa endereços pelo logradouro ou cidade via API.
-   * @param {string} term
-   */
-  async function _searchList(term) {
-    try {
-      const rows = await window.addressService.fetchByKeyword(term)
-      _renderRows(rows)
-    } catch (err) {
-      console.error('AddressView: erro ao buscar endereços', err)
-      _renderRows([])
-    }
-  }
-
-  /**
-   * @description Popula a tabela de endereços com os resultados da busca.
-   * Armazena os dados completos em `_rows` para preencher o formulário ao selecionar.
-   * @param {Array<{id: number, logradouro: string, bairro: string, cidade: string, cep: string, estado: string}>} rows
-   */
-  function _renderRows(rows) {
-    const tbody = _el('avListBody')
-    const empty = _el('avListEmpty')
-
-    if (!rows.length) {
-      tbody.innerHTML = ''
-      empty.removeAttribute('hidden')
-      return
-    }
-
-    empty.setAttribute('hidden', '')
-    tbody.innerHTML = rows.map(r => `
-      <tr class="doc-list-row"
-          data-id="${r.id}"
-          data-logradouro="${r.logradouro || ''}"
-          data-bairro="${r.bairro || ''}"
-          data-cidade="${r.cidade || ''}"
-          data-cep="${r.cep || ''}"
-          data-estado="${r.estado || ''}"
-          data-estado-id="${r.estadoId || ''}">
-        <td title="${r.logradouro}">${r.logradouro || '—'}</td>
-        <td>${r.bairro || '—'}</td>
-        <td>${r.cidade || '—'}</td>
-        <td>${r.estado || '—'}</td>
-        <td class="doc-list-action-cell">
-          <button type="button" class="doc-list-delete-btn" title="Excluir">
-            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
-                 fill="none" stroke="currentColor" stroke-width="2.5"
-                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <polyline points="3 6 5 6 21 6"/>
-              <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
-              <path d="M10 11v6M14 11v6M9 6V4h6v2"/>
-            </svg>
-          </button>
-        </td>
-      </tr>
-    `).join('')
-
-    tbody.querySelectorAll('.doc-list-row').forEach(tr =>
-      tr.addEventListener('click', () => _pickAddress(tr))
-    )
-    tbody.querySelectorAll('.doc-list-delete-btn').forEach(btn =>
-      btn.addEventListener('click', (e) => { e.stopPropagation(); _deleteRow(btn.closest('tr')) })
-    )
-  }
-
-  /**
-   * @description Remove um endereço pelo id.
-   * @param {HTMLTableRowElement} tr
-   */
-  async function _deleteRow(tr) {
-    const id = tr.dataset.id
-    if (!confirm('Confirmar exclusão do endereço?')) return
-    try {
-      await window.addressService.deleteById(id)
-      document.dispatchEvent(new CustomEvent('address-view:deleted', { detail: { id } }))
-      tr.remove()
-    } catch (err) {
-      console.error('AddressView: erro ao excluir endereço', err)
-    }
-  }
-
-  /**
-   * @description Seleciona um endereço da lista, preenche o formulário e notifica o SelectAddress.
-   * O drawer permanece aberto. O evento `address-view:select` é capturado pelo SelectAddress.
-   * @param {HTMLTableRowElement} tr
-   */
-  function _pickAddress(tr) {
-    _selectedId               = tr.dataset.id
-    _el('avSave').textContent = 'Editar'
-    _el('avLogradouro').value = tr.dataset.logradouro || ''
-    _el('avCep').value        = tr.dataset.cep        || ''
-    _el('avBairro').value     = tr.dataset.bairro     || ''
-    _el('avCidade').value     = tr.dataset.cidade     || ''
-    _el('avEstado').value     = tr.dataset.estadoId   || ''
-
-    document.dispatchEvent(new CustomEvent('address-view:select', {
-      detail: {
-        id:    tr.dataset.id,
-        label: `${tr.dataset.logradouro} — ${tr.dataset.cidade}/${tr.dataset.estado}`
-      }
-    }))
-  }
-
-  /**
-   * @description Abre o drawer com animação de deslize e pré-preenche o formulário
-   * com os dados do endereço atualmente selecionado em SelectAddress, se houver.
-   */
-  /**
    * @description Limpa o formulário e reseta para modo de criação.
    */
   function _new() {
@@ -381,6 +194,9 @@ const AddressView = (() => {
     _el('avForm').reset()
   }
 
+  /**
+   * @description Abre o drawer e pré-preenche com o endereço selecionado em SelectAddress.
+   */
   async function open() {
     if (!_mounted) return
     const { addressId } = SelectAddress.getValue()
@@ -391,40 +207,38 @@ const AddressView = (() => {
       }
       if (r) {
         _selectedId               = addressId
-        _el('avLogradouro').value = r.logradouro          || ''
-        _el('avCep').value        = r.cep                 || ''
-        _el('avBairro').value     = r.bairro              || ''
-        _el('avCidade').value     = r.cidade              || ''
-        _el('avEstado').value     = String(r.estadoId     || '')
+        _el('avLogradouro').value = r.logradouro      || ''
+        _el('avCep').value        = r.cep             || ''
+        _el('avBairro').value     = r.bairro          || ''
+        _el('avCidade').value     = r.cidade          || ''
+        _el('avEstado').value     = String(r.estadoId || '')
       }
     }
     _el('avSave').textContent = _selectedId ? 'Editar' : 'Salvar'
     _container.classList.add('open')
-    setTimeout(() => _el('avSearch')?.focus(), 320)
+    setTimeout(() => _el('alvSearch')?.focus(), 320)
   }
 
   /**
-   * @description Fecha o drawer com animação de deslize.
+   * @description Fecha o drawer.
    */
   function close() {
     _container?.classList.remove('open')
   }
 
-  /** @returns {boolean} */
-  function isMounted() { return _mounted }
-
-  /** @description Limpa o formulário e a lista ao fechar/resetar. */
+  /**
+   * @description Limpa o formulário e a lista.
+   */
   function reset() {
     if (!_mounted) return
     _el('avForm')?.reset()
-    _el('avSearch').value = ''
-    _el('avListBody').innerHTML = ''
-    _el('avListEmpty').setAttribute('hidden', '')
+    AddressList.reset()
     close()
   }
 
-  function validate() { return true }
+  function validate()  { return true }
   function getValue()  { return {} }
+  function isMounted() { return _mounted }
 
   /** @param {string} id @returns {HTMLElement} */
   function _el(id) { return document.getElementById(id) }

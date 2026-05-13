@@ -28,7 +28,8 @@ class BaciaService {
   }
 
   /**
-   * @description Busca bacias hidrográficas que contêm o ponto geográfico informado.
+   * @description Busca a bacia hidrográfica que contém o ponto geográfico informado.
+   * Retorna o mesmo formato de listAll() — { id, descricao } — para uso direto nos selects.
    * @param {number|string} lat - Latitude.
    * @param {number|string} lng - Longitude.
    * @returns {Promise<Array<{id: number, descricao: string}>>}
@@ -37,8 +38,10 @@ class BaciaService {
     const url = `${BASE_URL}/hydrographic-basins/find-by-point?latitude=${lat}&longitude=${lng}`
     const res = await fetch(url)
     if (!res.ok) throw new Error(`findByPoint: HTTP ${res.status} ${res.statusText}`)
-    const data = await res.json()
-    return Array.isArray(data) ? data : Object.values(data)
+    const data  = await res.json()
+    const items = Array.isArray(data) ? data : Object.values(data)
+    items.sort((a, b) => (a.baciaCod ?? 0) - (b.baciaCod ?? 0))
+    return items.map(b => ({ id: b.objectid, descricao: `${b.baciaCod} - ${b.baciaNome}` }))
   }
 }
 
