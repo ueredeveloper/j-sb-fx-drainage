@@ -33,6 +33,10 @@ class ObjectView {
 			para fins de <span class="inter-finalidades"></span>, localizado no endereço: <span class="end-logradouro"></span> - 
 			Distrito Federal, 
 			tendo a seguinte característica:</p>
+			<b>I - Dados da Captação:</b>
+
+			<div id="geographic-table-view"></div>
+        	<br>
 			</div>
         `;
 

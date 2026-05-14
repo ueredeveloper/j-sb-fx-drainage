@@ -16,12 +16,12 @@ function App() {
 			<!-- não utilizada em registor <div id="subject-view"></div> -->
 			<div id="object-view"></div>
 
-			<p>I - Dados da Captação:</p>
+			<b>I - Dados da Captação:</b>
 				<div align="justify" id="geographic-table-view"></div>
 
 			<p>Art. 2º A demanda registrada mencionada no art. 1º é a seguinte:</p>
 			
-			<p>II - Demanda a ser registrada:</p>
+			<b>II - Demanda a ser registrada:</b>
 				<div id="limits-table-view"></div>
 
 			<p>&nbsp;</p>

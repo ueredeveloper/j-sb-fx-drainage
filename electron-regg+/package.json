@@ -5,10 +5,36 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "dev": "electron ."
+    "dev": "electron .",
+    "dist": "electron-builder --win portable"
+  },
+  "build": {
+    "appId": "com.ueredeveloper.reegg",
+    "productName": "REEG+",
+    "files": [
+      "**/*",
+      "!node_modules/electron/**",
+      "!node_modules/electron-reload/**",
+      "!node_modules/electron-builder/**"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "assets/icon.ico"
+    },
+    "portable": {
+      "artifactName": "REEG+-portable.exe"
+    }
   },
   "devDependencies": {
     "electron": "^28.0.0",
+    "electron-builder": "^26.8.1",
     "electron-reload": "^2.0.0-alpha.1"
   },
   "dependencies": {

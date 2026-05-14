@@ -20,7 +20,7 @@ function App() {
 			<br>
 			<p>Art. 2º A reserva de disponibilidade hídrica para cada um dos poços tubulares mencionados no art. 1º é a seguinte:</p>
 
-			<p>I – Tabela dos limites outorgados.</p>
+			<b>II – Tabela dos limites outorgados.</b>
 
 			<p>&nbsp;</p>
 			

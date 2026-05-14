@@ -27,14 +27,17 @@ class ObjectView {
 			e inciso VII do art. 23 da Lei nº 4.285, de 26 de dezembro de 2008, tendo em vista o que consta do Processo SEI N.º <b>
 			<span class="proc-anexo"></span></b>, resolve:</p>
 
-			<p>Art. 1º Emitir outorga prévia para reservar o direito de uso de água subterrânea a <b><span class="us-nome"></span>
-			</b>, 
+			<p>Art. 1º Emitir outorga prévia para reservar o direito de uso de água subterrânea a <b><span class="us-nome"></span></b>, 
 			CPF/CNPJ n.º <b><span class="us-cpf-cnpj"></span></b>, mediante a perfuração de 01 (um) poço 
 			<span class="inter-tipo-poco"></span>, 
 			para fins de <span class="inter-finalidades"></span>, localizado no endereço: <span class="end-logradouro"></span> - 
 			Distrito Federal, 
 			tendo a seguinte característica:</p>
 			</div>
+			<b>I - Dados da Captação:</b>
+
+			<div id="geographic-table-view"></div>
+        	<br>
         `;
 
 		this.div.innerHTML = innerHTML;

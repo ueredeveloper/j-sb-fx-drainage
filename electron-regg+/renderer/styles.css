@@ -705,26 +705,30 @@ select {
 .doc-list-row--flash { animation: row-flash 2s ease-out forwards; }
 
 .doc-list-action-cell {
-  width: 80px;
+  width: 96px;
   padding: 0 6px !important;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: 8px;
 }
 
-.doc-list-acts-btn {
+.doc-list-acts-btn,
+.doc-list-delete-btn {
   background: none;
   border: none;
   cursor: pointer;
-  color: var(--accent);
-  opacity: 0.55;
-  padding: 4px 6px;
-  border-radius: 3px;
+  padding: 6px 8px;
+  border-radius: 4px;
   line-height: 1;
   display: inline-flex;
   align-items: center;
   transition: opacity 0.15s, background 0.15s;
+}
+
+.doc-list-acts-btn {
+  color: var(--accent);
+  opacity: 0.65;
 }
 
 .doc-list-acts-btn:hover {
@@ -734,17 +738,8 @@ select {
 }
 
 .doc-list-delete-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
   color: #e74c3c;
-  opacity: 0.5;
-  padding: 4px 7px;
-  border-radius: 3px;
-  line-height: 1;
-  display: inline-flex;
-  align-items: center;
-  transition: opacity 0.15s, background 0.15s;
+  opacity: 0.6;
 }
 
 .doc-list-delete-btn:hover {

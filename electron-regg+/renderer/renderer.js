@@ -233,7 +233,12 @@ document.getElementById('btnSave').addEventListener('click', async () => {
 })
 
 document.getElementById('btnToggleMap').addEventListener('click', () => {
-  document.querySelector('.workspace').classList.toggle('map-expanded')
+  const ws = document.querySelector('.workspace')
+  ws.classList.toggle('map-expanded')
+  if (ws.classList.contains('map-expanded')) {
+    ;[AddressView, InterferenceView, UserView, ProcessView, AnnexView, AdministrativeActsView]
+      .forEach(v => v.isMounted() && v.close())
+  }
   setTimeout(() => map.invalidateSize({ animate: false }), 370)
 })
 

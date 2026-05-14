@@ -34,6 +34,10 @@ class ObjectView {
         <span class="end-logradouro"></span> - Distrito Federal, tendo a seguinte característica:
     	</p>
 		</div>
+		<b>I - Dados da Captação:</b>
+		<br>
+		<div id="geographic-table-view"></div>
+        <br>
 
         `;
 

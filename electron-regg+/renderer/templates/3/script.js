@@ -21,7 +21,7 @@
 
 			<p>Art. 2º A demanda outorgada mencionada no art. 1º é a seguinte:</p>
 
-			<p>I – Tabela dos limites outorgados.</p>
+			<b>II – Tabela dos limites outorgados.</b>
 
 			<p>&nbsp;</p>
 			
