@@ -226,16 +226,34 @@ const DocumentList = (() => {
    * @param {HTMLTableRowElement} tr
    */
   async function _deleteRow(tr) {
-    const id = tr.dataset.id
-    if (!confirm('Confirmar exclusão do documento?')) return
-    try {
-      await window.documentService.deleteById(id)
-      document.dispatchEvent(new CustomEvent('document-list:deleted', { detail: { id } }))
-      if (_selectedId === id) _selectedId = null
-      tr.remove()
-    } catch (err) {
-      console.error('[DocumentList] Erro ao excluir:', err)
+    const id   = tr.dataset.id
+    const cell = tr.querySelector('.doc-list-action-cell')
+
+    const origHTML = cell.innerHTML
+    const restore  = () => {
+      cell.innerHTML = origHTML
+      cell.querySelector('.doc-list-delete-btn')
+          ?.addEventListener('click', e => { e.stopPropagation(); _deleteRow(tr) })
     }
+
+    cell.innerHTML = `
+      <button type="button" class="doc-list-confirm-yes" title="Confirmar exclusão">Sim</button>
+      <button type="button" class="doc-list-confirm-no"  title="Cancelar">Não</button>`
+
+    cell.querySelector('.doc-list-confirm-no').addEventListener('click', e => { e.stopPropagation(); restore() })
+    cell.querySelector('.doc-list-confirm-yes').addEventListener('click', async e => {
+      e.stopPropagation()
+      try {
+        await window.documentService.deleteById(id)
+        document.dispatchEvent(new CustomEvent('document-list:deleted', { detail: { id } }))
+        if (_selectedId === id) _selectedId = null
+        tr.remove()
+      } catch (err) {
+        console.error('[DocumentList] Erro ao excluir:', err)
+        window.showToast?.('Não foi possível excluir o documento.', 'error')
+        restore()
+      }
+    })
   }
 
   /**

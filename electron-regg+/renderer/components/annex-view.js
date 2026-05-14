@@ -11,9 +11,10 @@
  *  - `annex-list:select` → preenche formulário e notifica SelectAnnex.
  */
 const AnnexView = (() => {
-  let _mounted    = false
-  let _container  = null
-  let _selectedId = null
+  let _mounted      = false
+  let _container    = null
+  let _selectedId   = null
+  let _lastSelected = null
 
   /**
    * @description Renderiza o drawer e monta AnnexList abaixo do formulário.
@@ -122,6 +123,7 @@ const AnnexView = (() => {
       _el('axProcClear').hidden    = !procNumero
       _el('axUserSearch').value    = usuarioNome || ''
       _el('axUserClear').hidden    = !usuarioNome
+      _lastSelected = { annexId: id, annexLabel: numero || '', processoNumero: procNumero || '' }
       document.dispatchEvent(new CustomEvent('annex-view:select', { detail: { id, label } }))
     })
   }
@@ -237,8 +239,9 @@ const AnnexView = (() => {
     try {
       const raw   = await window.annexService.save(payload)
       const saved = raw?.object ?? raw
+      const savedId = saved?.id ?? _selectedId
+      _lastSelected = { annexId: savedId, annexLabel: saved?.numero ?? data.processPrincipal, processoNumero: data.processo }
       document.dispatchEvent(new CustomEvent('annex-view:saved', { detail: saved }))
-      const savedId = _selectedId
       _selectedId = null
       _el('axSave').textContent = 'Salvar'
       form.reset()
@@ -254,6 +257,7 @@ const AnnexView = (() => {
       })
     } catch (err) {
       console.error('AnnexView: erro ao salvar processo principal', err)
+      window.showToast?.('Erro ao salvar processo principal. Tente novamente.', 'error')
     }
   }
 
@@ -275,6 +279,7 @@ const AnnexView = (() => {
    */
   async function open() {
     if (!_mounted) return
+    _lastSelected = null
     const { annexId } = SelectAnnex.getValue()
     if (annexId) {
       let r = SelectAnnex.getData()
@@ -299,6 +304,9 @@ const AnnexView = (() => {
    * @description Fecha o drawer.
    */
   function close() {
+    if (_lastSelected && SelectAnnex.isMounted()) {
+      SelectAnnex.setValue(_lastSelected)
+    }
     _container?.classList.remove('open')
   }
 

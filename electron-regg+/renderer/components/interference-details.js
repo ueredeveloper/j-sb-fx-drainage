@@ -89,6 +89,10 @@ const InterferenceDetails = (() => {
         <div class="id-tabs">
           <button type="button" class="id-tab id-tab-active" id="idTabReqBtn">Requeridas</button>
           <button type="button" class="id-tab"               id="idTabAuthBtn">Autorizadas</button>
+          <button type="button" class="id-copy-req-btn" id="idCopyReqBtn"
+                  title="Preencher Autorizadas com os valores das Requeridas">
+            ↓ Copiar Req → Auth
+          </button>
         </div>
 
         <div id="idPanelReq"  class="id-tab-panel">${_panelHTML('Req')}</div>
@@ -99,6 +103,7 @@ const InterferenceDetails = (() => {
 
     _el('idTabReqBtn').addEventListener('click',  () => _switchTab('requeridas'))
     _el('idTabAuthBtn').addEventListener('click', () => _switchTab('autorizadas'))
+    _el('idCopyReqBtn').addEventListener('click', _copyReqToAuth)
     _el('idTipoPoco').addEventListener('change', _onTipoPocoChange)
     _el('idSistema').addEventListener('change', _onSistemaChange)
     _el('idCodSistema').addEventListener('change', _onCodSistemaChange)
@@ -465,6 +470,41 @@ const InterferenceDetails = (() => {
     else          tbody.appendChild(tr)
 
     return tr
+  }
+
+  /**
+   * @description Copia todas as finalidades e demandas da aba Requeridas para a aba Autorizadas,
+   * sobrescrevendo os dados existentes. Muda para a aba Autorizadas após copiar.
+   */
+  function _copyReqToAuth() {
+    const reqBody  = _el('idFinReqBody')
+    const authBody = _el('idFinAuthBody')
+    authBody.innerHTML = ''
+    reqBody.querySelectorAll('tr').forEach(tr => {
+      const inputs = tr.querySelectorAll('input')
+      if (!inputs.length) return
+      _addFinRow('Auth', {
+        finalidade:    inputs[0].value,
+        subfinalidade: inputs[1].value,
+        quantidade:    parseFloat(inputs[2].value) || undefined,
+        total:         parseFloat(inputs[3].value) || undefined,
+        consumo:       parseFloat(inputs[4].value) || undefined
+      })
+    })
+    _updateFinTotal('Auth')
+
+    const reqTable  = _el('idDemReqTable')
+    const authTable = _el('idDemAuthTable')
+    if (reqTable && authTable) {
+      reqTable.querySelectorAll('input.id-dem-cell').forEach(inp => {
+        const authInp = authTable.querySelector(
+          `[data-mes="${inp.dataset.mes}"][data-field="${inp.dataset.field}"]`
+        )
+        if (authInp) authInp.value = inp.value
+      })
+    }
+
+    _switchTab('autorizadas')
   }
 
   function _updateFinTotal(tab) {

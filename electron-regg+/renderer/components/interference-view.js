@@ -16,6 +16,7 @@ const InterferenceView = (() => {
   let _domainsLoaded  = false
   let _addrSelectedId = null
   let _selectedId     = null
+  let _lastSelected   = null
 
   /**
    * @description Renderiza o drawer no container e monta InterferenceList abaixo do formulário.
@@ -222,6 +223,7 @@ const InterferenceView = (() => {
       } else {
         InterferenceDetails.hide()
       }
+      _lastSelected = { latitude: String(r.latitude ?? ''), longitude: String(r.longitude ?? '') }
       document.dispatchEvent(new CustomEvent('interference-view:select', {
         detail: {
           id:        r.id,
@@ -428,7 +430,12 @@ const InterferenceView = (() => {
       } else {
         result = await window.interferenceService.save(payload)
       }
-      const savedId  = result?.id ?? _selectedId ?? null
+      const saved    = result?.object ?? result
+      const savedId  = saved?.id ?? _selectedId ?? null
+      _lastSelected = {
+        latitude:  String(rowSnapshot.latitude  ?? ''),
+        longitude: String(rowSnapshot.longitude ?? '')
+      }
       document.dispatchEvent(new CustomEvent('interference-view:saved', { detail: payload }))
       _selectedId     = null
       _addrSelectedId = null
@@ -438,6 +445,7 @@ const InterferenceView = (() => {
       InterferenceList.prependRow({ id: savedId, ...rowSnapshot })
     } catch (err) {
       console.error('InterferenceView: erro ao salvar interferência', err)
+      window.showToast?.('Erro ao salvar interferência. Tente novamente.', 'error')
     } finally {
       btn.disabled = false
     }
@@ -527,13 +535,26 @@ const InterferenceView = (() => {
 
   /**
    * @description Abre o drawer e pré-preenche coordenadas do SelectInterference, se houver.
+   * Se nenhum endereço estiver selecionado no formulário, pré-preenche o autocomplete de
+   * endereço com o endereço selecionado no SelectAddress da tela principal.
    */
   function open() {
     if (!_mounted) return
+    _lastSelected = null
     const { latitude, longitude } = SelectInterference.getValue()
     if (latitude && longitude) {
       _el('ivLat').value = latitude
       _el('ivLon').value = longitude
+    }
+    if (!_addrSelectedId) {
+      const { addressId } = SelectAddress.getValue()
+      if (addressId) {
+        const label = SelectAddress.getLabel()
+        _addrSelectedId           = String(addressId)
+        _el('ivAddrId').value     = String(addressId)
+        _el('ivAddrSearch').value = label
+        _el('ivAddrClear').hidden = !label
+      }
     }
     _loadDomains()
     _el('ivSave').textContent = _selectedId ? 'Editar' : 'Salvar'
@@ -545,6 +566,9 @@ const InterferenceView = (() => {
    * @description Fecha o drawer.
    */
   function close() {
+    if (_lastSelected && SelectInterference.isMounted()) {
+      SelectInterference.setValue(_lastSelected)
+    }
     _container?.classList.remove('open')
   }
 

@@ -180,8 +180,11 @@ class DocumentService {
     if (data.processId || data.annexId) {
       payload.processo = {}
 
-      if (data.processId) payload.processo.id     = Number(data.processId)
-      if (proc.numero)    payload.processo.numero  = proc.numero
+      const procIdNum  = parseInt(data.processId)
+      const procNumero = proc.numero || (!isNaN(procIdNum) ? null : String(data.processId ?? '')) || null
+
+      if (!isNaN(procIdNum))  payload.processo.id     = procIdNum
+      if (procNumero)         payload.processo.numero  = procNumero
 
       // processo.usuario
       if (proc.usuarioId || proc.usuarioNome) {
@@ -192,13 +195,18 @@ class DocumentService {
 
       // processo.anexo
       if (data.annexId) {
-        payload.processo.anexo = { id: Number(data.annexId) }
-        if (anx.numero) payload.processo.anexo.numero = anx.numero
+        const annexIdNum  = parseInt(data.annexId)
+        const annexNumero = anx.numero || (!isNaN(annexIdNum) ? null : String(data.annexId ?? '')) || null
+
+        payload.processo.anexo = {}
+        if (!isNaN(annexIdNum))  payload.processo.anexo.id     = annexIdNum
+        if (annexNumero)         payload.processo.anexo.numero  = annexNumero
 
         // processo.anexo.processos (referência circular ao próprio processo)
         if (data.processId) {
-          const procRef = { id: Number(data.processId) }
-          if (proc.numero) procRef.numero = proc.numero
+          const procRef = {}
+          if (!isNaN(procIdNum)) procRef.id     = procIdNum
+          if (procNumero)        procRef.numero  = procNumero
           if (proc.usuarioId || proc.usuarioNome) {
             procRef.usuario = {}
             if (proc.usuarioId)   procRef.usuario.id   = Number(proc.usuarioId)

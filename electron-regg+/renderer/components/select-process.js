@@ -73,6 +73,12 @@ const SelectProcess = (() => {
     _el('sProcSearch').addEventListener('focus',   () => {
       if (_el('sProcSearch').value.trim().length >= 2) _search(_el('sProcSearch').value.trim())
     })
+    _el('sProcSearch').addEventListener('paste', () => {
+      setTimeout(() => {
+        const term = _el('sProcSearch').value.trim()
+        if (term.length >= 2) _search(term)
+      }, 0)
+    })
     _el('sProcClear').addEventListener('click', reset)
     _el('sProcOpenDrawer').addEventListener('click', () => ProcessView.open())
 
@@ -108,6 +114,21 @@ const SelectProcess = (() => {
     if (e.key === 'ArrowDown')  { e.preventDefault(); _activeIdx = Math.min(_activeIdx + 1, items.length - 1); _highlight(items) }
     else if (e.key === 'ArrowUp')    { e.preventDefault(); _activeIdx = Math.max(_activeIdx - 1, 0);               _highlight(items) }
     else if (e.key === 'Enter' && _activeIdx >= 0) { e.preventDefault(); items[_activeIdx]?.click() }
+    else if (e.key === 'Enter' && _activeIdx < 0) {
+      e.preventDefault()
+      const term = _el('sProcSearch').value.trim()
+      if (_lastRows.length === 1) {
+        const r = _lastRows[0]
+        _select({ id: String(r.id), label: r.numero }, r)
+        _closeDropdown()
+      } else if (term.length >= 2) {
+        _select(
+          { id: term, label: term },
+          { id: null, numero: term, usuarioNome: '', anexoNumero: '' }
+        )
+        _closeDropdown()
+      }
+    }
     else if (e.key === 'Escape') _closeDropdown()
   }
 
@@ -127,10 +148,16 @@ const SelectProcess = (() => {
   async function _search(term) {
     try {
       const rows = await window.processService.fetchByKeyword(term)
-      _renderDropdown(rows)
+      const exact = rows.find(r => r.numero.toLowerCase() === term.toLowerCase())
+      if (exact) {
+        _select({ id: String(exact.id), label: exact.numero }, exact)
+        _closeDropdown()
+        return
+      }
+      _renderDropdown(rows, term)
     } catch (err) {
       console.error('SelectProcess: erro ao buscar processos', err)
-      _renderDropdown([])
+      _renderDropdown([], term)
     }
   }
 
@@ -138,23 +165,48 @@ const SelectProcess = (() => {
    * @description Popula o dropdown com os resultados da busca.
    * @param {Array<{id: number, numero: string}>} rows
    */
-  function _renderDropdown(rows) {
+  /**
+   * @description Popula o dropdown com os resultados e uma opção de uso livre do texto digitado.
+   * @param {Array<{id: number, numero: string}>} rows
+   * @param {string} [term]
+   */
+  function _renderDropdown(rows, term) {
     const list = _el('sProcDropdown')
     _activeIdx = -1
     _lastRows  = rows
+
     list.innerHTML = rows.length
       ? rows.map(r => `
           <li class="autocomplete-item" role="option"
-              data-id="${r.id}"
-              data-label="${r.numero}">
+              data-id="${r.id}" data-label="${r.numero}">
             <span class="autocomplete-item__main">${r.numero}</span>
           </li>`).join('')
-      : '<li class="autocomplete-empty">Nenhum resultado</li>'
+      : ''
+
+    if (term) {
+      const useLi = document.createElement('li')
+      useLi.className = 'autocomplete-item autocomplete-item--use-typed'
+      useLi.setAttribute('role', 'option')
+      useLi.textContent = `Usar: ${term}`
+      useLi.addEventListener('click', () => {
+        _select(
+          { id: term, label: term },
+          { id: null, numero: term, usuarioNome: '', anexoNumero: '' }
+        )
+      })
+      useLi.addEventListener('mouseenter', () => {
+        _activeIdx = [...list.children].indexOf(useLi)
+        _highlight(list.querySelectorAll('.autocomplete-item'))
+      })
+      list.appendChild(useLi)
+    }
+
+    if (!list.children.length) list.innerHTML = '<li class="autocomplete-empty">Nenhum resultado</li>'
 
     list.removeAttribute('hidden')
     _el('sProcSearch').setAttribute('aria-expanded', 'true')
 
-    list.querySelectorAll('.autocomplete-item').forEach(li => {
+    list.querySelectorAll('.autocomplete-item:not(.autocomplete-item--use-typed)').forEach(li => {
       li.addEventListener('click', () => {
         const data = _lastRows.find(r => String(r.id) === li.dataset.id) ?? null
         _select({ id: li.dataset.id, label: li.dataset.label }, data)

@@ -11,9 +11,10 @@
  *  - `user-list:select` → preenche formulário e notifica SelectUser.
  */
 const UserView = (() => {
-  let _mounted    = false
-  let _container  = null
-  let _selectedId = null
+  let _mounted      = false
+  let _container    = null
+  let _selectedId   = null
+  let _lastSelected = null
 
   /**
    * @description Renderiza o drawer e monta UserList abaixo do formulário.
@@ -105,6 +106,7 @@ const UserView = (() => {
       _el('uvSave').textContent  = 'Editar'
       _el('uvNome').value        = nome    || ''
       _el('uvCpfCnpj').value     = _maskCpfCnpj(cpfCnpj || '')
+      _lastSelected = { userId: id, userLabel: nome || '', cpfCnpj: cpfCnpj || '' }
       document.dispatchEvent(new CustomEvent('user-view:select', { detail: { id, label } }))
     })
   }
@@ -125,8 +127,9 @@ const UserView = (() => {
     try {
       const raw   = await window.userService.save(payload)
       const saved = raw?.object ?? raw
+      const savedId = saved?.id ?? _selectedId
+      _lastSelected = { userId: savedId, userLabel: saved?.nome ?? data.nome, cpfCnpj: saved?.cpfCnpj ?? data.cpfCnpj }
       document.dispatchEvent(new CustomEvent('user-view:saved', { detail: saved }))
-      const savedId = _selectedId
       _selectedId = null
       _el('uvSave').textContent = 'Salvar'
       form.reset()
@@ -137,6 +140,7 @@ const UserView = (() => {
       })
     } catch (err) {
       console.error('UserView: erro ao salvar usuário', err)
+      window.showToast?.('Erro ao salvar usuário. Tente novamente.', 'error')
     }
   }
 
@@ -154,6 +158,7 @@ const UserView = (() => {
    */
   async function open() {
     if (!_mounted) return
+    _lastSelected = null
     const { userId } = SelectUser.getValue()
     if (userId) {
       let r = SelectUser.getData()
@@ -175,6 +180,9 @@ const UserView = (() => {
    * @description Fecha o drawer.
    */
   function close() {
+    if (_lastSelected && SelectUser.isMounted()) {
+      SelectUser.setValue(_lastSelected)
+    }
     _container?.classList.remove('open')
   }
 

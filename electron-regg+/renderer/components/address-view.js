@@ -11,10 +11,11 @@
  *  - `address-list:select` → preenche formulário e notifica SelectAddress.
  */
 const AddressView = (() => {
-  let _mounted     = false
-  let _container   = null
-  let _selectedId  = null
-  let _estadoList  = []
+  let _mounted      = false
+  let _container    = null
+  let _selectedId   = null
+  let _estadoList   = []
+  let _lastSelected = null
 
   /**
    * @description Renderiza o drawer e monta AddressList abaixo do formulário.
@@ -71,7 +72,7 @@ const AddressView = (() => {
               </div>
               <div class="form-group grow">
                 <label for="avCidade">Cidade <span class="required">*</span></label>
-                <input type="text" id="avCidade" name="avCidade" placeholder="Cidade" required>
+                <input type="text" id="avCidade" name="avCidade" placeholder="Cidade" value="Brasília" required>
               </div>
               <div class="form-group narrow">
                 <label for="avEstado">UF</label>
@@ -108,6 +109,15 @@ const AddressView = (() => {
     if (!sel || !_estadoList.length) return
     sel.innerHTML = '<option value="">UF</option>' +
       _estadoList.map(e => `<option value="${e.id}">${e.descricao}</option>`).join('')
+    _applyDefaults()
+  }
+
+  /** @description Aplica valores padrão de Brasília/DF quando nenhum endereço está selecionado. */
+  function _applyDefaults() {
+    if (_selectedId) return
+    if (!_el('avCidade').value) _el('avCidade').value = 'Brasília'
+    const dfOpt = Array.from(_el('avEstado').options).find(o => o.text === 'DF')
+    if (dfOpt && !_el('avEstado').value) _el('avEstado').value = dfOpt.value
   }
 
   /**
@@ -137,6 +147,15 @@ const AddressView = (() => {
       _el('avBairro').value     = d.bairro     || ''
       _el('avCidade').value     = d.cidade     || ''
       _el('avEstado').value     = d.estadoId   || ''
+      _lastSelected = {
+        addressId:    d.id,
+        addressLabel: d.logradouro || '',
+        bairro:       d.bairro     || '',
+        cidade:       d.cidade     || '',
+        cep:          d.cep        || '',
+        estado:       d.estado     || '',
+        estadoId:     d.estadoId   || null
+      }
       document.dispatchEvent(new CustomEvent('address-view:select', {
         detail: { id: d.id, label: d.label }
       }))
@@ -167,12 +186,23 @@ const AddressView = (() => {
     try {
       const raw   = await window.addressService.save(payload)
       const saved = raw?.object ?? raw
+      const savedId = saved?.id ?? payload.id
+      _lastSelected = {
+        addressId:    savedId,
+        addressLabel: saved?.logradouro ?? formData.logradouro,
+        bairro:       saved?.bairro     ?? formData.bairro,
+        cidade:       saved?.cidade     ?? formData.cidade,
+        cep:          saved?.cep        ?? formData.cep,
+        estado:       saved?.estado     ?? formData.estado,
+        estadoId:     saved?.estadoId   ?? formData.estadoId
+      }
       document.dispatchEvent(new CustomEvent('address-view:saved', { detail: saved }))
       _selectedId = null
       _el('avSave').textContent = 'Salvar'
       form.reset()
+      _applyDefaults()
       AddressList.prependRow({
-        id:         saved?.id         ?? payload.id,
+        id:         savedId,
         logradouro: saved?.logradouro ?? formData.logradouro,
         bairro:     saved?.bairro     ?? formData.bairro,
         cidade:     saved?.cidade     ?? formData.cidade,
@@ -182,6 +212,7 @@ const AddressView = (() => {
       })
     } catch (err) {
       console.error('AddressView: erro ao salvar endereço', err)
+      window.showToast?.('Erro ao salvar endereço. Tente novamente.', 'error')
     }
   }
 
@@ -192,6 +223,7 @@ const AddressView = (() => {
     _selectedId = null
     _el('avSave').textContent = 'Salvar'
     _el('avForm').reset()
+    _applyDefaults()
   }
 
   /**
@@ -199,6 +231,7 @@ const AddressView = (() => {
    */
   async function open() {
     if (!_mounted) return
+    _lastSelected = null
     const { addressId } = SelectAddress.getValue()
     if (addressId) {
       let r = SelectAddress.getData()
@@ -223,6 +256,9 @@ const AddressView = (() => {
    * @description Fecha o drawer.
    */
   function close() {
+    if (_lastSelected && SelectAddress.isMounted()) {
+      SelectAddress.setValue(_lastSelected)
+    }
     _container?.classList.remove('open')
   }
 

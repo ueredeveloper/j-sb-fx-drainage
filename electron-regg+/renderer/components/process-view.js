@@ -11,9 +11,10 @@
  *  - `process-list:select` → preenche formulário e notifica SelectProcess.
  */
 const ProcessView = (() => {
-  let _mounted    = false
-  let _container  = null
-  let _selectedId = null
+  let _mounted      = false
+  let _container    = null
+  let _selectedId   = null
+  let _lastSelected = null
 
   /**
    * @description Renderiza o drawer e monta ProcessList abaixo do formulário.
@@ -122,6 +123,7 @@ const ProcessView = (() => {
       _el('pvUserClear').hidden      = !usuarioNome
       _el('pvAnexoSearch').value     = anexoNumero || ''
       _el('pvAnexoClear').hidden     = !anexoNumero
+      _lastSelected = { processId: id, processLabel: numero || '', anexoNumero: anexoNumero || '' }
       document.dispatchEvent(new CustomEvent('process-view:select', { detail: { id, label } }))
     })
   }
@@ -237,8 +239,9 @@ const ProcessView = (() => {
     try {
       const raw   = await window.processService.save(payload)
       const saved = raw?.object ?? raw
+      const savedId = saved?.id ?? _selectedId
+      _lastSelected = { processId: savedId, processLabel: saved?.numero ?? data.numero, anexoNumero: saved?.anexoNumero ?? data.processPrincipal }
       document.dispatchEvent(new CustomEvent('process-view:saved', { detail: saved }))
-      const savedId = _selectedId
       _selectedId = null
       _el('pvSave').textContent = 'Salvar'
       form.reset()
@@ -254,6 +257,7 @@ const ProcessView = (() => {
       })
     } catch (err) {
       console.error('ProcessView: erro ao salvar processo', err)
+      window.showToast?.('Erro ao salvar processo. Tente novamente.', 'error')
     }
   }
 
@@ -275,6 +279,7 @@ const ProcessView = (() => {
    */
   async function open() {
     if (!_mounted) return
+    _lastSelected = null
     const { processId } = SelectProcess.getValue()
     if (processId) {
       let r = SelectProcess.getData()
@@ -299,6 +304,9 @@ const ProcessView = (() => {
    * @description Fecha o drawer.
    */
   function close() {
+    if (_lastSelected && SelectProcess.isMounted()) {
+      SelectProcess.setValue(_lastSelected)
+    }
     _container?.classList.remove('open')
   }
 

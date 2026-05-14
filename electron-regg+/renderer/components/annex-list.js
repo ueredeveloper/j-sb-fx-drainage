@@ -131,17 +131,34 @@ const AnnexList = (() => {
    * @param {HTMLTableRowElement} tr
    */
   async function _deleteRow(tr) {
-    const id = tr.dataset.id
-    if (!confirm('Confirmar exclusão do processo principal?')) return
-    try {
-      await window.annexService.deleteById(id)
-      document.dispatchEvent(new CustomEvent('annex-list:deleted', { detail: { id } }))
-      tr.remove()
-      if (!_el('axlListBody').children.length) _el('axlListEmpty').removeAttribute('hidden')
-    } catch (err) {
-      console.error('AnnexList: erro ao excluir processo principal', err)
-      alert(_deletionErrorMsg(err.message))
+    const id   = tr.dataset.id
+    const cell = tr.querySelector('.doc-list-action-cell')
+
+    const origHTML = cell.innerHTML
+    const restore  = () => {
+      cell.innerHTML = origHTML
+      cell.querySelector('.doc-list-delete-btn')
+          ?.addEventListener('click', e => { e.stopPropagation(); _deleteRow(tr) })
     }
+
+    cell.innerHTML = `
+      <button type="button" class="doc-list-confirm-yes" title="Confirmar exclusão">Sim</button>
+      <button type="button" class="doc-list-confirm-no"  title="Cancelar">Não</button>`
+
+    cell.querySelector('.doc-list-confirm-no').addEventListener('click', e => { e.stopPropagation(); restore() })
+    cell.querySelector('.doc-list-confirm-yes').addEventListener('click', async e => {
+      e.stopPropagation()
+      try {
+        await window.annexService.deleteById(id)
+        document.dispatchEvent(new CustomEvent('annex-list:deleted', { detail: { id } }))
+        tr.remove()
+        if (!_el('axlListBody').children.length) _el('axlListEmpty').removeAttribute('hidden')
+      } catch (err) {
+        console.error('AnnexList: erro ao excluir processo principal', err)
+        window.showToast?.(_deletionErrorMsg(err.message), 'error')
+        restore()
+      }
+    })
   }
 
   /**
@@ -208,8 +225,8 @@ const AnnexList = (() => {
   }
 
   function _trashSvg() {
-    return `<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
-         fill="none" stroke="currentColor" stroke-width="2.5"
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+         fill="none" stroke="currentColor" stroke-width="2"
          stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
       <polyline points="3 6 5 6 21 6"/>
       <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>

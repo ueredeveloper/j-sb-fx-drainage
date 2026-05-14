@@ -748,6 +748,30 @@ select {
   opacity: 1;
 }
 
+.doc-list-confirm-yes,
+.doc-list-confirm-no {
+  padding: 3px 7px;
+  border-radius: 3px;
+  border: 1px solid;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+.doc-list-confirm-yes {
+  background: #fee2e2;
+  border-color: #fca5a5;
+  color: #dc2626;
+}
+.doc-list-confirm-yes:hover { background: #fecaca; }
+.doc-list-confirm-no {
+  background: #f3f4f6;
+  border-color: #d1d5db;
+  color: #6b7280;
+  margin-left: 4px;
+}
+.doc-list-confirm-no:hover { background: #e5e7eb; }
+
 .doc-list-empty {
   padding: 24px;
   text-align: center;
@@ -1073,6 +1097,17 @@ select {
   color: var(--primary);
 }
 
+.autocomplete-item--use-typed {
+  border-top: 1px solid #e5e7eb;
+  color: #6b7280;
+  font-style: italic;
+}
+.autocomplete-item--use-typed:hover,
+.autocomplete-item--active.autocomplete-item--use-typed {
+  background: #f0fdf4;
+  color: #166534;
+}
+
 .autocomplete-item__main {
   display: block;
   font-size: 13px;
@@ -1141,6 +1176,21 @@ select {
   border-bottom-color: #0e7490;
   font-weight: 700;
 }
+
+.id-copy-req-btn {
+  margin-left: auto;
+  padding: 4px 10px;
+  border: 1px solid #a5f3fc;
+  border-radius: 4px;
+  background: #ecfeff;
+  cursor: pointer;
+  font-size: 11px;
+  color: #0e7490;
+  align-self: center;
+  white-space: nowrap;
+  transition: background 0.15s, border-color 0.15s;
+}
+.id-copy-req-btn:hover { background: #cffafe; border-color: #67e8f9; }
 
 .id-tab-panel { padding: 10px 14px 14px; }
 

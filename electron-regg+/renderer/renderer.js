@@ -299,3 +299,14 @@ function showToast(msg, type) {
   clearTimeout(_toastTimer)
   _toastTimer = setTimeout(() => toast.classList.remove('show'), 3000)
 }
+window.showToast = showToast
+
+/* Workaround para Electron/Windows: após operações IPC assíncronas os inputs de
+   texto podem perder a capacidade de receber foco via teclado. Forçar o foco
+   no mousedown (fase de captura) garante que o input seja sempre ativável. */
+document.addEventListener('mousedown', (e) => {
+  const el = e.target
+  if ((el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') && !el.disabled && !el.readOnly) {
+    setTimeout(() => { if (document.contains(el)) el.focus() }, 0)
+  }
+}, true)
