@@ -97,10 +97,13 @@ class DocumentService {
   }
 
   async deleteById(id) {
-    const res = await fetch(`${BASE_URL}/documents/delete-document?id=${id}`, { method: 'DELETE' })
+    const res  = await fetch(`${BASE_URL}/documents/delete-document?id=${id}`, { method: 'DELETE' })
+    const text = await res.text().catch(() => '')
+    let data = null
+    try { data = text ? JSON.parse(text) : null } catch { data = null }
+    appendJson(OUT_DELETE, { timestamp: new Date().toISOString(), id: Number(id), status: res.status, body: data })
     if (!res.ok) throw new Error(`deleteById: HTTP ${res.status} ${res.statusText}`)
-    const text = await res.text()
-    appendJson(OUT_DELETE, text ? JSON.parse(text) : { deleted: true, id: Number(id) })
+    if (data?.status === 'erro') throw new Error(data.mensagem ?? 'Erro ao excluir documento.')
   }
 
   /**

@@ -1,6 +1,13 @@
-const { app, BrowserWindow, ipcMain } = require('electron')
+const { app, BrowserWindow, ipcMain, screen } = require('electron')
 const path = require('path')
 const fs   = require('fs')
+
+// Impede que o DPI scaling do Windows (125%, 150% etc.) amplie a UI do app.
+// O Chromium renderiza em pixels físicos 1:1, ignorando a escala do SO.
+if (process.platform === 'win32') {
+  app.commandLine.appendSwitch('high-dpi-support', '1')
+  app.commandLine.appendSwitch('force-device-scale-factor', '1')
+}
 
 const DocumentService      = require('./services/document-service')
 const DomainService        = require('./services/domain-service')
@@ -64,10 +71,11 @@ if (!app.isPackaged) {
 }
 
 function createWindow() {
+  const { width: sw, height: sh } = screen.getPrimaryDisplay().workAreaSize
   const win = new BrowserWindow({
-    width: 1280,
-    height: 800,
-    minWidth: 900,
+    width:     Math.min(1280, sw),
+    height:    Math.min(800,  sh),
+    minWidth:  900,
     minHeight: 600,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
