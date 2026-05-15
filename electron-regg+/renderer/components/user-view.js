@@ -1,25 +1,23 @@
 /**
  * @file user-view.js
- * @description Painel lateral deslizante (drawer) para cadastro e seleção de usuários/requerentes.
- * Desliza da direita para a esquerda sobre o painel de formulário.
- *
- * Seções internas:
- *  1. Formulário de cadastro: nome e CPF/CNPJ.
- *  2. Pesquisa de usuários cadastrados com lista de resultados.
+ * @description Drawer de cadastro de usuários. Apenas o formulário.
+ * A seção de pesquisa/lista é delegada ao componente UserList.
  *
  * Eventos disparados:
- *  - `user-view:select` → usuário clica em um registro da lista (fecha o drawer).
+ *  - `user-view:select` → usuário selecionado via UserList { id, label }.
  *  - `user-view:saved`  → novo usuário salvo com sucesso.
  *
- * Aberto via `UserView.open()` e fechado pelo botão Voltar ou tecla Escape.
+ * Escuta:
+ *  - `user-list:select` → preenche formulário e notifica SelectUser.
  */
 const UserView = (() => {
-  let _mounted   = false
-  let _container = null
+  let _mounted      = false
+  let _container    = null
+  let _selectedId   = null
+  let _lastSelected = null
 
   /**
-   * @description Renderiza o drawer no container e registra os eventos.
-   * O container deve ser o `#user-drawer` no DOM.
+   * @description Renderiza o drawer e monta UserList abaixo do formulário.
    * @param {HTMLElement} container
    */
   function mount(container) {
@@ -37,12 +35,19 @@ const UserView = (() => {
           Voltar
         </button>
         <span class="av-title">Cadastro de Usuário</span>
-        <button type="button" class="btn btn-primary" id="uvSave">Salvar Usuário</button>
+        <button type="button" class="btn btn-secondary av-new-btn" id="uvNew">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="2.5"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/>
+          </svg>
+          Novo
+        </button>
+        <button type="button" class="btn btn-primary" id="uvSave">Salvar</button>
       </div>
 
       <div class="av-content">
 
-        <!-- Formulário de cadastro de novo usuário -->
         <form id="uvForm" autocomplete="off">
           <fieldset class="form-section">
             <legend class="section-title">
@@ -69,30 +74,25 @@ const UserView = (() => {
           </fieldset>
         </form>
 
-        <!-- Pesquisa e lista de usuários cadastrados -->
-        <div class="form-section">
-          <div class="doc-list-header">
-            <span class="doc-list-title">Pesquisar Usuários</span>
-          </div>
-          <div class="doc-search-bar">
-            <div class="form-group grow">
-              <input type="text" id="uvSearch"
-                placeholder="Pesquisar por nome e CPF/CNPJ..."
-                autocomplete="off">
-            </div>
-            <button type="button" id="uvSearchBtn" class="btn btn-primary">Pesquisar</button>
+        <div id="uvListMount"></div>
+
+        <div id="uvUserDocs" hidden>
+          <div class="doc-list-header" style="margin-top:12px">
+            <span class="doc-list-title">Documentos do Usuário</span>
           </div>
           <div class="doc-list-wrap">
-            <table class="doc-list-table" aria-label="Lista de usuários">
+            <table class="doc-list-table" style="table-layout:fixed" aria-label="Documentos do usuário">
               <thead>
                 <tr>
-                  <th style="width:55%">Nome</th>
-                  <th style="width:45%">CPF / CNPJ</th>
+                  <th style="width:110px">Número</th>
+                  <th style="width:90px">SEI</th>
+                  <th>Processo</th>
+                  <th style="width:160px">Endereço</th>
                 </tr>
               </thead>
-              <tbody id="uvListBody"></tbody>
+              <tbody id="uvDocListBody"></tbody>
             </table>
-            <p class="doc-list-empty" id="uvListEmpty" hidden>Nenhum usuário encontrado.</p>
+            <p class="doc-list-empty" id="uvDocListEmpty" hidden>Nenhum documento encontrado.</p>
           </div>
         </div>
 
@@ -100,22 +100,18 @@ const UserView = (() => {
     `
 
     _bindEvents()
+    UserList.mount(_el('uvListMount'))
     _mounted = true
   }
 
   /**
-   * @description Registra todos os eventos do drawer.
+   * @description Registra os eventos do formulário e escuta seleção da lista.
    */
   function _bindEvents() {
     _el('uvBack').addEventListener('click', close)
+    _el('uvNew').addEventListener('click', _new)
     _el('uvSave').addEventListener('click', _save)
 
-    _el('uvSearchBtn').addEventListener('click', () => _searchList(_el('uvSearch').value.trim()))
-    _el('uvSearch').addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') _searchList(_el('uvSearch').value.trim())
-    })
-
-    /* Máscara de CPF/CNPJ */
     _el('uvCpfCnpj').addEventListener('input', (e) => {
       e.target.value = _maskCpfCnpj(e.target.value)
     })
@@ -123,121 +119,144 @@ const UserView = (() => {
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && _container?.classList.contains('open')) close()
     })
+
+    document.addEventListener('user-list:select', (e) => {
+      const { id, nome, cpfCnpj, label } = e.detail
+      _selectedId = id
+      _el('uvSave').textContent  = 'Editar'
+      _el('uvNome').value        = nome    || ''
+      _el('uvCpfCnpj').value     = _maskCpfCnpj(cpfCnpj || '')
+      _lastSelected = { userId: id, userLabel: nome || '', cpfCnpj: cpfCnpj || '' }
+      document.dispatchEvent(new CustomEvent('user-view:select', { detail: { id, label } }))
+      _loadUserDocs(id)
+    })
   }
 
   /**
-   * @description Valida e salva um novo usuário.
-   * TODO: conectar a window.documentService.saveUser(data).
+   * @description Busca e renderiza os documentos relacionados ao usuário selecionado.
+   * @param {string|number} userId
    */
-  function _save() {
+  async function _loadUserDocs(userId) {
+    const panel = _el('uvUserDocs')
+    const tbody = _el('uvDocListBody')
+    const empty = _el('uvDocListEmpty')
+    if (!panel) return
+
+    panel.removeAttribute('hidden')
+    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--text-light);padding:8px">Carregando...</td></tr>'
+    empty.setAttribute('hidden', '')
+
+    try {
+      const docs = await window.documentService.fetchByUserId(userId)
+      if (!docs.length) {
+        tbody.innerHTML = ''
+        empty.removeAttribute('hidden')
+        return
+      }
+      tbody.innerHTML = docs.map(d => `
+        <tr class="doc-list-row">
+          <td title="${d.numero || ''}">${d.numero || '—'}</td>
+          <td>${d.numeroSei || '—'}</td>
+          <td title="${d.processoNumero || ''}">${d.processoNumero || '—'}</td>
+          <td title="${d.logradouro || ''}">${d.logradouro || '—'}</td>
+        </tr>`).join('')
+    } catch (err) {
+      console.error('UserView: erro ao buscar documentos do usuário', err)
+      tbody.innerHTML = ''
+      empty.textContent = 'Erro ao carregar documentos.'
+      empty.removeAttribute('hidden')
+    }
+  }
+
+  /**
+   * @description Valida e salva um usuário.
+   */
+  async function _save() {
     const form = _el('uvForm')
     if (!form.checkValidity()) { form.reportValidity(); return }
 
     const data = {
-      nome:     _el('uvNome').value.trim(),
-      cpfCnpj:  _el('uvCpfCnpj').value.trim()
+      nome:    _el('uvNome').value.trim(),
+      cpfCnpj: _el('uvCpfCnpj').value.trim()
     }
+    const payload = _selectedId ? { id: _selectedId, ...data } : data
 
-    console.log('Salvar usuário:', data)
-    document.dispatchEvent(new CustomEvent('user-view:saved', { detail: data }))
-    form.reset()
-    _searchList('')
-  }
-
-  /**
-   * @description Busca usuários cadastrados pelo nome ou CPF/CNPJ via API.
-   * @param {string} term
-   */
-  async function _searchList(term) {
     try {
-      const rows = await window.userService.fetchByKeyword(term)
-      _renderRows(rows)
+      const raw   = await window.userService.save(payload)
+      const saved = raw?.object ?? raw
+      const savedId = saved?.id ?? _selectedId
+      _lastSelected = { userId: savedId, userLabel: saved?.nome ?? data.nome, cpfCnpj: saved?.cpfCnpj ?? data.cpfCnpj }
+      document.dispatchEvent(new CustomEvent('user-view:saved', { detail: saved }))
+      _selectedId = null
+      _el('uvSave').textContent = 'Salvar'
+      form.reset()
+      UserList.prependRow({
+        id:      saved?.id      ?? savedId,
+        nome:    saved?.nome    ?? data.nome,
+        cpfCnpj: saved?.cpfCnpj ?? data.cpfCnpj
+      })
     } catch (err) {
-      console.error('UserView: erro ao buscar usuários', err)
-      _renderRows([])
+      console.error('UserView: erro ao salvar usuário', err)
+      window.showToast?.('Erro ao salvar usuário. Tente novamente.', 'error')
     }
   }
 
   /**
-   * @description Popula a tabela de usuários com os resultados da busca.
-   * @param {Array<{id: number, nome: string, cpfCnpj: string}>} rows
+   * @description Limpa o formulário e reseta para modo de criação.
    */
-  function _renderRows(rows) {
-    const tbody = _el('uvListBody')
-    const empty = _el('uvListEmpty')
-
-    if (!rows.length) {
-      tbody.innerHTML = ''
-      empty.removeAttribute('hidden')
-      return
-    }
-
-    empty.setAttribute('hidden', '')
-    tbody.innerHTML = rows.map(r => {
-      const cpf = _maskCpfCnpj(r.cpfCnpj || '')
-      return `
-        <tr class="doc-list-row"
-            data-id="${r.id}"
-            data-nome="${r.nome || ''}"
-            data-cpfcnpj="${r.cpfCnpj || ''}"
-            data-label="${r.nome}">
-          <td title="${r.nome}">${r.nome}</td>
-          <td>${cpf || '—'}</td>
-        </tr>`
-    }).join('')
-
-    tbody.querySelectorAll('.doc-list-row').forEach(tr =>
-      tr.addEventListener('click', () => _pickUser(tr))
-    )
+  function _new() {
+    _selectedId = null
+    _el('uvSave').textContent = 'Salvar'
+    _el('uvForm').reset()
   }
 
   /**
-   * @description Seleciona um usuário da lista, preenche o formulário e notifica o SelectUser.
-   * O drawer permanece aberto para permitir nova seleção se necessário.
-   * @param {HTMLTableRowElement} tr
+   * @description Abre o drawer e pré-preenche com o usuário selecionado em SelectUser.
    */
-  function _pickUser(tr) {
-    _el('uvNome').value    = tr.dataset.nome                       || ''
-    _el('uvCpfCnpj').value = _maskCpfCnpj(tr.dataset.cpfcnpj || '')
-
-    document.dispatchEvent(new CustomEvent('user-view:select', {
-      detail: { id: tr.dataset.id, label: tr.dataset.label }
-    }))
-  }
-
-  /**
-   * @description Abre o drawer com animação de deslize.
-   */
-  function open() {
+  async function open() {
     if (!_mounted) return
+    _lastSelected = null
+    const { userId } = SelectUser.getValue()
+    if (userId) {
+      let r = SelectUser.getData()
+      if (!r) {
+        try { r = await window.userService.fetchById(userId) } catch { r = null }
+      }
+      if (r) {
+        _selectedId            = userId
+        _el('uvNome').value    = r.nome    || ''
+        _el('uvCpfCnpj').value = _maskCpfCnpj(r.cpfCnpj || '')
+      }
+    }
+    _el('uvSave').textContent = _selectedId ? 'Editar' : 'Salvar'
     _container.classList.add('open')
-    setTimeout(() => _el('uvSearch')?.focus(), 320)
+    setTimeout(() => _el('ulvSearch')?.focus(), 320)
   }
 
   /**
-   * @description Fecha o drawer com animação de deslize.
+   * @description Fecha o drawer.
    */
   function close() {
+    if (_lastSelected && SelectUser.isMounted()) {
+      SelectUser.setValue(_lastSelected)
+    }
     _container?.classList.remove('open')
   }
 
-  /** @returns {boolean} */
-  function isMounted() { return _mounted }
-
-  /** @description Limpa o formulário e a lista. */
+  /**
+   * @description Limpa o formulário e a lista.
+   */
   function reset() {
     if (!_mounted) return
     _el('uvForm')?.reset()
-    _el('uvSearch').value = ''
-    _el('uvListBody').innerHTML = ''
-    _el('uvListEmpty').setAttribute('hidden', '')
+    UserList.reset()
     close()
   }
 
   /**
    * @description Aplica máscara de CPF (000.000.000-00) ou CNPJ (00.000.000/0000-00).
-   * @param {string} raw - Valor com ou sem máscara.
-   * @returns {string} Valor formatado.
+   * @param {string} raw
+   * @returns {string}
    */
   function _maskCpfCnpj(raw) {
     let v = raw.replace(/\D/g, '')
@@ -254,8 +273,9 @@ const UserView = (() => {
     return v
   }
 
-  function validate() { return true }
+  function validate()  { return true }
   function getValue()  { return {} }
+  function isMounted() { return _mounted }
 
   /** @param {string} id @returns {HTMLElement} */
   function _el(id) { return document.getElementById(id) }

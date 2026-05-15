@@ -29,7 +29,8 @@ class UnidadeService {
   }
 
   /**
-   * @description Busca unidades hidrográficas que contêm o ponto geográfico informado.
+   * @description Busca a unidade hidrográfica que contém o ponto geográfico informado.
+   * Retorna o mesmo formato de listAll() — { id, descricao } — para uso direto nos selects.
    * @param {number|string} lat - Latitude.
    * @param {number|string} lng - Longitude.
    * @returns {Promise<Array<{id: number, descricao: string}>>}
@@ -38,8 +39,11 @@ class UnidadeService {
     const url = `${BASE_URL}/hydrographic-units/find-by-point?latitude=${lat}&longitude=${lng}`
     const res = await fetch(url)
     if (!res.ok) throw new Error(`findByPoint: HTTP ${res.status} ${res.statusText}`)
-    const data = await res.json()
-    return Array.isArray(data) ? data : Object.values(data)
+    const data  = await res.json()
+    const items = Array.isArray(data) ? data : Object.values(data)
+    const n = (u) => parseInt((u.uhLabel ?? '').match(/\d+/)?.[0] ?? '0', 10)
+    items.sort((a, b) => n(a) - n(b))
+    return items.map(u => ({ id: u.objectid, descricao: `${u.uhLabel} - ${u.uhNome}` }))
   }
 }
 

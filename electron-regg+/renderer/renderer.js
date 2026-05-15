@@ -14,11 +14,14 @@ InterferenceView.mount(document.getElementById('interference-drawer'))
 UserView.mount(document.getElementById('user-drawer'))
 ProcessView.mount(document.getElementById('process-drawer'))
 AnnexView.mount(document.getElementById('annex-drawer'))
+AdministrativeActsView.mount(document.getElementById('administrative-acts-drawer'))
+DocumentChartView.mount(document.getElementById('document-chart-drawer'))
 SelectAddress.mount(document.getElementById('section-address'))
 SelectInterference.mount(document.getElementById('section-interference'))
 SelectUser.mount(document.getElementById('section-user'))
 SelectProcess.mount(document.getElementById('section-process'))
 SelectAnnex.mount(document.getElementById('section-attachment'))
+MapCoordsBar.mount(document.getElementById('map-coords-bar'))
 CoordConverter.mount(document.getElementById('coord-converter'))
 
 // ── MAPA ─────────────────────────────────────────────────────────────────────
@@ -73,38 +76,55 @@ function placeMarker(lat, lng) {
 }
 
 /**
- * @description Atualiza o rodapé do mapa com as coordenadas atuais.
+ * @description Atualiza a barra de coordenadas do mapa.
  * @param {number} lat
  * @param {number} lng
  */
 function _updateMapFooter(lat, lng) {
-  document.getElementById('mapCoords').style.display = 'flex'
-  document.getElementById('coordDisplay').textContent =
-    `Lat: ${lat.toFixed(6)}  Lon: ${lng.toFixed(6)}`
+  MapCoordsBar.show(lat, lng)
   document.getElementById('mapHint').textContent = 'Marcador pode ser arrastado'
+  map.invalidateSize({ animate: false })
 }
 
 /* Clique no mapa posiciona o marcador */
 map.on('click', (e) => placeMarker(e.latlng.lat, e.latlng.lng))
 
-/* Botão de remover marcador */
-document.getElementById('btnRemoveMarker').addEventListener('click', () => {
+/* MapCoordsBar: remover marcador */
+document.addEventListener('map-coords:remove', () => {
   if (marker) { map.removeLayer(marker); marker = null }
-  document.getElementById('mapCoords').style.display = 'none'
+  MapCoordsBar.hide()
+  map.invalidateSize({ animate: false })
   document.getElementById('mapHint').textContent = 'Clique no mapa para marcar a interferência'
   if (SelectInterference.isMounted()) SelectInterference.reset()
   if (InterferenceView.isMounted())   InterferenceView.reset()
 })
 
-/* InterferenceView emite este evento ao clicar em "Ir ao mapa" */
+/* MapCoordsBar: centralizar mapa e propagar coordenadas ao formulário */
+document.addEventListener('map-coords:center', (e) => {
+  const { lat, lng } = e.detail
+  map.setView([lat, lng], map.getZoom())
+  if (SelectInterference.isMounted()) SelectInterference.setCoords(lat, lng)
+  if (InterferenceView.isMounted())   InterferenceView.setCoords(lat, lng)
+})
+
+/**
+ * @description Exibe um ponto no mapa com zoom animado lento e posiciona o marcador.
+ * @param {number} lat
+ * @param {number} lng
+ */
+function _showPoint(lat, lng) {
+  map.flyTo([lat, lng], 14, { duration: 1.5 })
+  placeMarker(lat, lng)
+}
+
+/* InterferenceView e conversores emitem este evento para navegar ao ponto */
 document.addEventListener('interference:goto', (e) => {
   const { lat, lng } = e.detail
   if (lat < -90 || lat > 90 || lng < -180 || lng > 180) {
     showToast('Coordenadas fora do intervalo válido.', 'error')
     return
   }
-  map.setView([lat, lng], 14)
-  placeMarker(lat, lng)
+  _showPoint(lat, lng)
 })
 
 // ── SELEÇÃO NA LISTA DE DOCUMENTOS ───────────────────────────────────────────
@@ -119,6 +139,7 @@ document.addEventListener('document-list:select', (e) => {
 
   if (DocumentView.isMounted()) {
     DocumentView.setValue({
+      id:        doc.id,
       typeId:    doc.tipoDocumentoId,
       number:    doc.numero    || '',
       numberSei: doc.numeroSei || ''
@@ -128,7 +149,12 @@ document.addEventListener('document-list:select', (e) => {
   if (SelectAddress.isMounted()) {
     SelectAddress.setValue({
       addressId:    doc.enderecoId,
-      addressLabel: doc.logradouro || ''
+      addressLabel: doc.logradouro  || '',
+      bairro:       doc.bairro      || '',
+      cidade:       doc.cidade      || '',
+      cep:          doc.cep         || '',
+      estado:       doc.enderecoEstado   || '',
+      estadoId:     doc.enderecoEstadoId ?? null
     })
   }
 
@@ -142,60 +168,133 @@ document.addEventListener('document-list:select', (e) => {
   if (SelectUser.isMounted()) {
     SelectUser.setValue({
       userId:    doc.usuarioId,
-      userLabel: doc.usuarioNome || ''
+      userLabel: doc.usuarioNome || '',
+      cpfCnpj:   doc.cpfCnpj    || ''
     })
   }
 
   if (SelectProcess.isMounted()) {
     SelectProcess.setValue({
       processId:    doc.processoId,
-      processLabel: doc.processoNumero || ''
+      processLabel: doc.processoNumero || '',
+      anexoNumero:  doc.anexoNumero    || ''
     })
   }
 
   if (SelectAnnex.isMounted()) {
     SelectAnnex.setValue({
-      annexId:    doc.anexoId,
-      annexLabel: doc.anexoNumero || ''
+      annexId:        doc.anexoId,
+      annexLabel:     doc.anexoNumero    || '',
+      processoNumero: doc.processoNumero || ''
     })
   }
 
   /* Posiciona o marcador no mapa se as coordenadas estiverem disponíveis */
   if (doc.latitude != null && doc.longitude != null) {
-    placeMarker(doc.latitude, doc.longitude)
-    map.setView([doc.latitude, doc.longitude], 14)
+    _showPoint(doc.latitude, doc.longitude)
   }
 })
 
 // ── AÇÕES DO FORMULÁRIO ───────────────────────────────────────────────────────
 
-document.getElementById('btnSave').addEventListener('click', () => {
+document.getElementById('btnNew').addEventListener('click', () => {
+  if (SelectAddress.isMounted())      SelectAddress.reset()
+  if (SelectInterference.isMounted()) SelectInterference.reset()
+  if (SelectUser.isMounted())         SelectUser.reset()
+  if (SelectProcess.isMounted())      SelectProcess.reset()
+  if (SelectAnnex.isMounted())        SelectAnnex.reset()
+  if (marker) { map.removeLayer(marker); marker = null }
+  MapCoordsBar.hide()
+  map.invalidateSize({ animate: false })
+  document.getElementById('mapHint').textContent = 'Clique no mapa para marcar a interferência'
+})
+
+document.getElementById('btnSave').addEventListener('click', async () => {
   const form = document.getElementById('documentForm')
   if (!form.checkValidity()) { form.reportValidity(); return }
+  if (!_validateSelects()) return
 
-  const data = _collectData()
-  console.log('Dados do cadastro:', data)
-  showToast('Cadastro salvo com sucesso!', 'success')
+  const btn  = document.getElementById('btnSave')
+  const orig = btn.textContent
+  btn.disabled    = true
+  btn.textContent = orig === 'Editar' ? 'Editando…' : 'Salvando…'
+
+  try {
+    const data = _collectData()
+    const { documentId } = DocumentView.getValue()
+
+    if (documentId) {
+      const updated = await window.documentService.update({ id: documentId, ...data })
+      if (DocumentList.isMounted()) DocumentList.prependRow(updated)
+      showToast('Documento atualizado com sucesso!', 'success')
+    } else {
+      const saved = await window.documentService.save(data)
+      if (DocumentList.isMounted()) DocumentList.prependRow(saved)
+      showToast('Documento salvo com sucesso!', 'success')
+    }
+  } catch (err) {
+    console.error('[renderer] Erro ao salvar documento:', err)
+    showToast('Erro ao salvar documento.', 'error')
+  } finally {
+    btn.disabled    = false
+    btn.textContent = orig
+  }
 })
 
 document.getElementById('btnToggleMap').addEventListener('click', () => {
-  document.querySelector('.workspace').classList.toggle('map-expanded')
+  const ws = document.querySelector('.workspace')
+  ws.classList.toggle('map-expanded')
+  if (ws.classList.contains('map-expanded')) {
+    ;[AddressView, InterferenceView, UserView, ProcessView, AnnexView, AdministrativeActsView]
+      .forEach(v => v.isMounted() && v.close())
+  }
   setTimeout(() => map.invalidateSize({ animate: false }), 370)
 })
 
 /**
+ * @description Valida se todos os campos obrigatórios dos Select components estão preenchidos.
+ * Exibe um toast de erro para o primeiro campo em falta e retorna false.
+ * @returns {boolean}
+ */
+function _validateSelects() {
+  const { userId }    = SelectUser.isMounted()    ? SelectUser.getValue()    : {}
+  const { addressId } = SelectAddress.isMounted() ? SelectAddress.getValue() : {}
+  const { processId } = SelectProcess.isMounted() ? SelectProcess.getValue() : {}
+  const { annexId }   = SelectAnnex.isMounted()   ? SelectAnnex.getValue()   : {}
+
+  if (!userId)    { showToast('Selecione um usuário (requerente).', 'error');         return false }
+  const userData = SelectUser.isMounted() ? SelectUser.getData() : null
+  if (userData && !userData.cpfCnpj) {
+    showToast('O usuário precisa ser cadastrado com CPF/CNPJ antes de salvar.', 'error')
+    return false
+  }
+  if (!addressId) { showToast('Selecione um endereço.',              'error');         return false }
+  if (!processId) { showToast('Selecione um processo.',              'error');         return false }
+  if (!annexId)   { showToast('Selecione um processo principal.',    'error');         return false }
+  return true
+}
+
+/**
  * @description Coleta os dados de todos os componentes montados.
+ * Inclui os dados completos (getData) dos Selects para montar o payload aninhado.
  * @returns {Object}
  */
 function _collectData() {
-  const components = [
+  const basic = [
     DocumentView, SelectAddress, SelectInterference,
     SelectUser, SelectProcess, SelectAnnex,
     InterferenceView, UserView, ProcessView, AnnexView
   ]
-  return components
     .filter(c => c.isMounted())
     .reduce((acc, c) => ({ ...acc, ...c.getValue() }), {})
+
+  return {
+    ...basic,
+    addressData:  SelectAddress.isMounted()  ? SelectAddress.getData()  : null,
+    userData:     SelectUser.isMounted()     ? SelectUser.getData()     : null,
+    processData:  SelectProcess.isMounted()  ? SelectProcess.getData()  : null,
+    annexData:    SelectAnnex.isMounted()    ? SelectAnnex.getData()    : null
+  }
 }
 
 // ── TOAST ─────────────────────────────────────────────────────────────────────
@@ -214,3 +313,14 @@ function showToast(msg, type) {
   clearTimeout(_toastTimer)
   _toastTimer = setTimeout(() => toast.classList.remove('show'), 3000)
 }
+window.showToast = showToast
+
+/* Workaround para Electron/Windows: após operações IPC assíncronas os inputs de
+   texto podem perder a capacidade de receber foco via teclado. Forçar o foco
+   no mousedown (fase de captura) garante que o input seja sempre ativável. */
+document.addEventListener('mousedown', (e) => {
+  const el = e.target
+  if ((el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') && !el.disabled && !el.readOnly) {
+    setTimeout(() => { if (document.contains(el)) el.focus() }, 0)
+  }
+}, true)

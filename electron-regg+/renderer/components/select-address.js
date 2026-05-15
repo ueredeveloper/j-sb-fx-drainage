@@ -6,9 +6,11 @@
  * Mínimo de 2 caracteres para ativar a busca.
  */
 const SelectAddress = (() => {
-  let _mounted    = false
-  let _selectedId = null
-  let _activeIdx  = -1
+  let _mounted       = false
+  let _selectedId    = null
+  let _selectedData  = null
+  let _activeIdx     = -1
+  let _lastRows      = []
 
   /**
    * @description Renderiza o componente no container e registra os eventos.
@@ -167,6 +169,7 @@ const SelectAddress = (() => {
   function _renderDropdown(rows) {
     const list = _el('addressDropdown')
     _activeIdx = -1
+    _lastRows  = rows
 
     list.innerHTML = rows.length
       ? rows.map(r => `
@@ -185,7 +188,10 @@ const SelectAddress = (() => {
     _el('addressSearch').setAttribute('aria-expanded', 'true')
 
     list.querySelectorAll('.autocomplete-item').forEach(li => {
-      li.addEventListener('click', () => _select({ id: li.dataset.id, label: li.dataset.label }))
+      li.addEventListener('click', () => {
+        const data = _lastRows.find(r => String(r.id) === li.dataset.id) ?? null
+        _select({ id: li.dataset.id, label: li.dataset.label }, data)
+      })
       li.addEventListener('mouseenter', () => {
         _activeIdx = Array.from(list.children).indexOf(li)
         _highlightItem(list.querySelectorAll('.autocomplete-item'))
@@ -196,9 +202,11 @@ const SelectAddress = (() => {
   /**
    * @description Confirma a seleção de um endereço e fecha o dropdown.
    * @param {{ id: string, label: string }} item
+   * @param {Object|null} data - Objeto completo retornado pela API.
    */
-  function _select(item) {
-    _selectedId = item.id
+  function _select(item, data = null) {
+    _selectedId   = item.id
+    _selectedData = data
     _el('addressSearch').value  = item.label
     _el('addressClear').hidden  = false
     _closeDropdown()
@@ -231,7 +239,16 @@ const SelectAddress = (() => {
    * @param {{ addressId?: string, addressLabel?: string }} data
    */
   function setValue(data = {}) {
-    _selectedId = data.addressId ?? null
+    _selectedId   = data.addressId ?? null
+    _selectedData = data.addressId ? {
+      id:         data.addressId,
+      logradouro: data.addressLabel ?? '',
+      cep:        data.cep      ?? '',
+      bairro:     data.bairro   ?? '',
+      cidade:     data.cidade   ?? '',
+      estado:     data.estado   ?? '',
+      estadoId:   data.estadoId ?? null
+    } : null
     const input = _el('addressSearch')
     if (input) {
       input.value = data.addressLabel ?? ''
@@ -244,8 +261,9 @@ const SelectAddress = (() => {
    */
   function reset() {
     if (!_mounted) return
-    _selectedId = null
-    _activeIdx  = -1
+    _selectedId   = null
+    _selectedData = null
+    _activeIdx    = -1
     const input = _el('addressSearch')
     const clear = _el('addressClear')
     if (input) input.value = ''
@@ -265,5 +283,11 @@ const SelectAddress = (() => {
   /** @param {string} id @returns {HTMLElement} */
   function _el(id) { return document.getElementById(id) }
 
-  return { mount, getValue, setValue, reset, validate, isMounted }
+  /** @returns {string} Label do endereço atualmente selecionado. */
+  function getLabel() { return _el('addressSearch')?.value ?? '' }
+
+  /** @returns {Object|null} Objeto completo do endereço selecionado (se selecionado via dropdown). */
+  function getData() { return _selectedData }
+
+  return { mount, getValue, getLabel, getData, setValue, reset, validate, isMounted }
 })()

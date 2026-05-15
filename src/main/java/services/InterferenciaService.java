@@ -43,7 +43,7 @@ public class InterferenciaService {
 			// Convert Documento object to JSON
 			String jsonInputString = convertObjectToJson(obj);
 			
-			//System.out.println("salvar int " + jsonInputString);
+			System.out.println("salvar int " + jsonInputString);
 
 			// Write JSON to request body
 			try (OutputStream os = connection.getOutputStream();
@@ -94,7 +94,7 @@ public class InterferenciaService {
 			// Convert Documento object to JSON
 			String jsonInputString = convertObjectToJson(object);
 			
-		    //System.out.println("editar int " + jsonInputString);
+		    System.out.println("editar int " + jsonInputString);
 
 			// Write JSON to request body
 			try (OutputStream os = connection.getOutputStream();
@@ -200,6 +200,8 @@ public class InterferenciaService {
 		reader.close();
 
 		String result = response.toString();
+		
+		System.out.println("inter " + result);
 		Set<Interferencia> convertedList = new HashSet<>();
 
 		if (result == null) {

@@ -6,10 +6,11 @@ contextBridge.exposeInMainWorld('electronAPI', {
 
 /** @description Serviço de documentos. */
 contextBridge.exposeInMainWorld('documentService', {
-  fetchByParam: (keyword) => ipcRenderer.invoke('document:fetchByParam', keyword),
-  save:         (doc)     => ipcRenderer.invoke('document:save', doc),
-  update:       (doc)     => ipcRenderer.invoke('document:update', doc),
-  deleteById:   (id)      => ipcRenderer.invoke('document:deleteById', id)
+  fetchByParam:   (keyword) => ipcRenderer.invoke('document:fetchByParam', keyword),
+  fetchByUserId:  (userId)  => ipcRenderer.invoke('document:fetchByUserId', userId),
+  save:           (doc)     => ipcRenderer.invoke('document:save', doc),
+  update:         (doc)     => ipcRenderer.invoke('document:update', doc),
+  deleteById:     (id)      => ipcRenderer.invoke('document:deleteById', id)
 })
 
 /** @description Serviço de tabelas de domínio (selects de interferência). */
@@ -17,6 +18,11 @@ contextBridge.exposeInMainWorld('domainService', {
   fetchAll:     () => ipcRenderer.invoke('domain:fetchAll'),
   listBacias:   () => ipcRenderer.invoke('domain:listBacias'),
   listUnidades: () => ipcRenderer.invoke('domain:listUnidades')
+})
+
+/** @description Serviço de estados. */
+contextBridge.exposeInMainWorld('estadoService', {
+  fetchAll: () => ipcRenderer.invoke('estado:fetchAll')
 })
 
 /** @description Serviço de endereços. */
@@ -28,9 +34,10 @@ contextBridge.exposeInMainWorld('addressService', {
 
 /** @description Serviço de usuários. */
 contextBridge.exposeInMainWorld('userService', {
-  fetchByKeyword: (keyword) => ipcRenderer.invoke('user:fetchByKeyword', keyword),
-  save:           (user)    => ipcRenderer.invoke('user:save', user),
-  deleteById:     (id)      => ipcRenderer.invoke('user:deleteById', id)
+  fetchByKeyword:    (keyword) => ipcRenderer.invoke('user:fetchByKeyword', keyword),
+  fetchByDocumentId: (docId)   => ipcRenderer.invoke('user:fetchByDocumentId', docId),
+  save:              (user)    => ipcRenderer.invoke('user:save', user),
+  deleteById:        (id)      => ipcRenderer.invoke('user:deleteById', id)
 })
 
 /** @description Serviço de processos. */
@@ -49,9 +56,11 @@ contextBridge.exposeInMainWorld('annexService', {
 
 /** @description Serviço de interferências hídricas. */
 contextBridge.exposeInMainWorld('interferenceService', {
-  fetchByKeyword: (keyword) => ipcRenderer.invoke('interference:fetchByKeyword', keyword),
-  save:           (obj)     => ipcRenderer.invoke('interference:save', obj),
-  deleteById:     (id)      => ipcRenderer.invoke('interference:deleteById', id)
+  fetchByKeyword:    (keyword) => ipcRenderer.invoke('interference:fetchByKeyword', keyword),
+  fetchRawByKeyword: (keyword) => ipcRenderer.invoke('interference:fetchRawByKeyword', keyword),
+  save:              (obj)     => ipcRenderer.invoke('interference:save', obj),
+  update:            (obj)     => ipcRenderer.invoke('interference:update', obj),
+  deleteById:        (id)      => ipcRenderer.invoke('interference:deleteById', id)
 })
 
 /** @description Serviço de bacias hidrográficas. */
@@ -64,6 +73,25 @@ contextBridge.exposeInMainWorld('baciaService', {
 contextBridge.exposeInMainWorld('unidadeService', {
   listAll:     ()         => ipcRenderer.invoke('unidade:listAll'),
   findByPoint: (lat, lng) => ipcRenderer.invoke('unidade:findByPoint', lat, lng)
+})
+
+/** @description Serviço de finalidades de interferência. */
+contextBridge.exposeInMainWorld('finalidadeService', {
+  deleteById: (id) => ipcRenderer.invoke('finalidade:deleteById', id)
+})
+
+/** @description Serviço de sistemas hidrogeo porosos (poço manual / poço raso). */
+contextBridge.exposeInMainWorld('porosoService', {
+  listAll:       ()          => ipcRenderer.invoke('poroso:listAll'),
+  findByPoint:   (lat, lng)  => ipcRenderer.invoke('poroso:findByPoint', lat, lng),
+  findByCodPlan: (codPlan)   => ipcRenderer.invoke('poroso:findByCodPlan', codPlan)
+})
+
+/** @description Serviço de sistemas hidrogeo fraturados (poço profundo). */
+contextBridge.exposeInMainWorld('fraturadoService', {
+  listAll:       ()          => ipcRenderer.invoke('fraturado:listAll'),
+  findByPoint:   (lat, lng)  => ipcRenderer.invoke('fraturado:findByPoint', lat, lng),
+  findByCodPlan: (codPlan)   => ipcRenderer.invoke('fraturado:findByCodPlan', codPlan)
 })
 
 /** @description Utilitário de conversão de coordenadas geográficas. */

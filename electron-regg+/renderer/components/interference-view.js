@@ -1,28 +1,25 @@
 /**
  * @file interference-view.js
- * @description Painel lateral deslizante (drawer) para cadastro e seleção de interferências hídricas.
- * Desliza da direita para a esquerda sobre o painel de formulário.
- *
- * Seções internas:
- *  1. Formulário de cadastro: logradouro, latitude, longitude e selects de domínio.
- *  2. Pesquisa de interferências cadastradas com lista de resultados.
+ * @description Drawer de cadastro de interferências hídricas.
+ * A seção de pesquisa/lista é delegada ao componente InterferenceList.
  *
  * Eventos disparados:
- *  - `interference-view:select` → usuário clica em uma interferência da lista (fecha o drawer).
- *  - `interference-view:saved`  → usuário salva uma nova interferência.
+ *  - `interference-view:select` → interferência selecionada via InterferenceList.
+ *  - `interference-view:saved`  → interferência salva com sucesso.
  *
- * Aberto via `InterferenceView.open()` e fechado pelo botão Voltar ou tecla Escape.
+ * Escuta:
+ *  - `interference-list:select` → preenche formulário e notifica SelectInterference.
  */
 const InterferenceView = (() => {
   let _mounted        = false
   let _container      = null
   let _domainsLoaded  = false
   let _addrSelectedId = null
-  let _ifRows         = []
+  let _selectedId     = null
+  let _lastSelected   = null
 
   /**
-   * @description Renderiza o drawer no container e registra os eventos.
-   * O container deve ser o `#interference-drawer` no DOM.
+   * @description Renderiza o drawer no container e monta InterferenceList abaixo do formulário.
    * @param {HTMLElement} container
    */
   function mount(container) {
@@ -40,12 +37,19 @@ const InterferenceView = (() => {
           Voltar
         </button>
         <span class="av-title">Cadastro de Interferência</span>
-        <button type="button" class="btn btn-primary" id="ivSave">Salvar Interferência</button>
+        <button type="button" class="btn btn-secondary av-new-btn" id="ivNew">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="2.5"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/>
+          </svg>
+          Novo
+        </button>
+        <button type="button" class="btn btn-primary" id="ivSave">Salvar</button>
       </div>
 
       <div class="av-content">
 
-        <!-- Formulário de cadastro de nova interferência -->
         <form id="ivForm" autocomplete="off">
           <fieldset class="form-section">
             <legend class="section-title">
@@ -84,6 +88,18 @@ const InterferenceView = (() => {
                      stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
                   <circle cx="12" cy="10" r="3"/>
+                </svg>
+              </button>
+              <button type="button" id="ivFindHidro" class="btn-drawer iv-goto-map-btn iv-find-hidro-btn"
+                      title="Identificar Bacia e Unidade Hidrográfica pelas coordenadas">
+                <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                     fill="none" stroke="currentColor" stroke-width="2"
+                     stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="10"/>
+                  <line x1="22" y1="12" x2="18" y2="12"/>
+                  <line x1="6"  y1="12" x2="2"  y2="12"/>
+                  <line x1="12" y1="6"  x2="12" y2="2"/>
+                  <line x1="12" y1="22" x2="12" y2="18"/>
                 </svg>
               </button>
             </div>
@@ -139,38 +155,16 @@ const InterferenceView = (() => {
           </fieldset>
         </form>
 
-        <!-- Pesquisa e lista de interferências cadastradas -->
-        <div class="form-section">
-          <div class="doc-list-header">
-            <span class="doc-list-title">Pesquisar Interferências</span>
-          </div>
-          <div class="doc-search-bar">
-            <div class="form-group grow">
-              <input type="text" id="ivSearch"
-                placeholder="Pesquisar por endereço..."
-                autocomplete="off">
-            </div>
-            <button type="button" id="ivSearchBtn" class="btn btn-primary">Pesquisar</button>
-          </div>
-          <div class="doc-list-wrap">
-            <table class="doc-list-table" aria-label="Lista de interferências">
-              <thead>
-                <tr>
-                  <th style="width:35%">Logradouro</th>
-                  <th style="width:22%">Latitude</th>
-                  <th style="width:22%">Longitude</th>
-                  <th style="width:21%">Tipo</th>
-                </tr>
-              </thead>
-              <tbody id="ivListBody"></tbody>
-            </table>
-            <p class="doc-list-empty" id="ivListEmpty" hidden>Nenhuma interferência encontrada.</p>
-          </div>
-        </div>
+        <div id="ivListMount"></div>
+
+        <!-- Montado por InterferenceDetails.mount() -->
+        <div id="ivDetailsContainer"></div>
 
       </div>
     `
 
+    InterferenceDetails.mount(_el('ivDetailsContainer'))
+    InterferenceList.mount(_el('ivListMount'))
     _bindEvents()
     _mounted = true
   }
@@ -180,25 +174,105 @@ const InterferenceView = (() => {
    */
   function _bindEvents() {
     _el('ivBack').addEventListener('click', close)
+    _el('ivNew').addEventListener('click', _new)
     _el('ivSave').addEventListener('click', _save)
 
-    _el('ivSearchBtn').addEventListener('click', () => _searchList(_el('ivSearch').value.trim()))
-    _el('ivSearch').addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') _searchList(_el('ivSearch').value.trim())
+    _el('ivTipoInterf').addEventListener('change', () => {
+      if (_selectedId) return
+      const sel  = _el('ivTipoInterf')
+      const text = sel.options[sel.selectedIndex]?.text ?? ''
+      if (text === 'Subterrânea') {
+        InterferenceDetails.fillEmpty()
+        InterferenceDetails.show()
+      } else {
+        InterferenceDetails.hide()
+      }
     })
 
     _bindAddressSearch()
 
     _el('ivGotoMap').addEventListener('click', _gotoMap)
+    _el('ivFindHidro').addEventListener('click', _updateHidroSelects)
+    _el('ivLat').addEventListener('change', () => { _updateHidroSelects(); _gotoMap() })
+    _el('ivLon').addEventListener('change', () => { _updateHidroSelects(); _gotoMap() })
 
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && _container?.classList.contains('open')) close()
     })
+
+    document.addEventListener('interference-list:deleted', () => {
+      if (!_mounted) return
+      _selectedId     = null
+      _addrSelectedId = null
+      _el('ivForm').reset()
+      _el('ivAddrSearch').value = ''
+      _el('ivAddrClear').hidden = true
+      _closeAddrDropdown()
+      InterferenceDetails.hide()
+      _el('ivSave').textContent = 'Salvar'
+      if (_domainsLoaded) _applyDefaults()
+    })
+
+    document.addEventListener('interference-list:select', (e) => {
+      const r = e.detail
+      _selectedId     = r.id
+      _addrSelectedId = r.enderecoId || null
+      _el('ivAddrId').value     = r.enderecoId    || ''
+      _el('ivAddrSearch').value = r.enderecoLabel || r.logradouro || ''
+      _el('ivAddrClear').hidden = !r.logradouro
+      _el('ivLat').value = r.latitude  ?? ''
+      _el('ivLon').value = r.longitude ?? ''
+      _setSelectValue('ivTipoInterf', r.tipoInterferenciaId)
+      _setSelectValue('ivTipoOut',    r.tipoOutorgaId)
+      _setSelectValue('ivSubtipoOut', r.subtipoOutorgaId)
+      _setSelectValue('ivSituacao',   r.situacaoProcessoId)
+      _setSelectValue('ivTipoAto',    r.tipoAtoId)
+      _setSelectValue('ivBacia',      r.baciaHidrograficaId)
+      _setSelectValue('ivUnidade',    r.unidadeHidrograficaId)
+      _el('ivSave').textContent = 'Editar'
+      if (r.tipoInterferencia === 'Subterrânea') {
+        InterferenceDetails.show()
+        InterferenceDetails.fill(r)
+      } else {
+        InterferenceDetails.hide()
+      }
+      _lastSelected = { latitude: String(r.latitude ?? ''), longitude: String(r.longitude ?? '') }
+      document.dispatchEvent(new CustomEvent('interference-view:select', {
+        detail: {
+          id:        r.id,
+          latitude:  r.latitude,
+          longitude: r.longitude,
+          label:     r.enderecoLabel || r.logradouro || ''
+        }
+      }))
+    })
+  }
+
+  /**
+   * @description Busca a bacia e unidade hidrográfica pelas coordenadas digitadas.
+   */
+  async function _updateHidroSelects() {
+    const lat = parseFloat(_el('ivLat').value)
+    const lng = parseFloat(_el('ivLon').value)
+    if (isNaN(lat) || isNaN(lng)) return
+    const btn = _el('ivFindHidro')
+    btn.disabled = true
+    try {
+      const [bacias, unidades] = await Promise.all([
+        window.baciaService.findByPoint(lat, lng),
+        window.unidadeService.findByPoint(lat, lng)
+      ])
+      if (bacias.length)   _setSelectValue('ivBacia',   bacias[0].id)
+      if (unidades.length) _setSelectValue('ivUnidade', unidades[0].id)
+    } catch (err) {
+      console.error('InterferenceView: erro ao identificar bacias/unidades', err)
+    } finally {
+      btn.disabled = false
+    }
   }
 
   /**
    * @description Despacha o evento `interference:goto` com as coordenadas atuais dos inputs.
-   * O renderer.js centraliza o mapa e posiciona o marcador ao receber este evento.
    */
   function _gotoMap() {
     const lat = parseFloat(_el('ivLat').value)
@@ -208,8 +282,7 @@ const InterferenceView = (() => {
   }
 
   /**
-   * @description Configura o autocomplete de endereço no formulário de interferência.
-   * Chama window.addressService para buscar endereços conforme o usuário digita.
+   * @description Configura o autocomplete de endereço no formulário.
    */
   function _bindAddressSearch() {
     const input = _el('ivAddrSearch')
@@ -239,7 +312,7 @@ const InterferenceView = (() => {
 
   /**
    * @description Busca endereços via API pelo termo digitado.
-   * @param {string} term - Texto do logradouro.
+   * @param {string} term
    */
   async function _searchAddr(term) {
     try {
@@ -253,7 +326,7 @@ const InterferenceView = (() => {
 
   /**
    * @description Renderiza o dropdown de sugestões de endereço.
-   * @param {Array<{id: number, logradouro: string, cidade: string, estado: string}>} rows
+   * @param {Array<{id, logradouro, cidade, estado}>} rows
    */
   function _renderAddrDropdown(rows) {
     const list = _el('ivAddrDropdown')
@@ -289,51 +362,122 @@ const InterferenceView = (() => {
   }
 
   /**
-   * @description Valida e salva uma nova interferência.
-   * TODO: conectar a window.documentService.saveInterference(data).
+   * @description Valida, monta o payload aninhado e envia a interferência à API.
+   * Captura os dados do formulário antes do reset para montar a linha na lista.
    */
-  function _save() {
+  async function _save() {
     const form = _el('ivForm')
     if (!form.checkValidity()) { form.reportValidity(); return }
 
-    const data = {
-      enderecoId:       _addrSelectedId || null,
-      logradouro:       _el('ivAddrSearch').value.trim(),
-      latitude:         parseFloat(_el('ivLat').value),
-      longitude:        parseFloat(_el('ivLon').value),
-      tipoInterferencia: _el('ivTipoInterf').value,
-      tipoOutorga:      _el('ivTipoOut').value,
-      subtipoOutorga:   _el('ivSubtipoOut').value,
-      situacao:         _el('ivSituacao').value,
-      tipoAto:          _el('ivTipoAto').value,
-      bacia:            _el('ivBacia').value,
-      unidade:          _el('ivUnidade').value
+    const tipoText       = (_el('ivTipoInterf').selectedOptions[0]?.text ?? '').trim()
+    const isSubterranea  = tipoText === 'Subterrânea'
+
+    const payload = {
+      latitude:            parseFloat(_el('ivLat').value)  || null,
+      longitude:           parseFloat(_el('ivLon').value)  || null,
+      endereco:            _addrSelectedId ? { id: parseInt(_addrSelectedId) } : null,
+      tipoInterferencia:   _idObj(_el('ivTipoInterf').value),
+      tipoOutorga:         _idObj(_el('ivTipoOut').value),
+      subtipoOutorga:      _idObj(_el('ivSubtipoOut').value),
+      situacaoProcesso:    _idObj(_el('ivSituacao').value),
+      tipoAto:             _idObj(_el('ivTipoAto').value),
+      baciaHidrografica:   _el('ivBacia').value   ? { objectid: parseInt(_el('ivBacia').value) }   : null,
+      unidadeHidrografica: _el('ivUnidade').value ? { objectid: parseInt(_el('ivUnidade').value) } : null
     }
 
-    console.log('Salvar interferência:', data)
-    document.dispatchEvent(new CustomEvent('interference-view:saved', { detail: data }))
-    form.reset()
-    _searchList('')
-  }
+    if (_selectedId) payload.id = _selectedId
 
-  /**
-   * @description Busca interferências cadastradas pelo logradouro via API.
-   * @param {string} term
-   */
-  async function _searchList(term) {
+    const det = isSubterranea ? InterferenceDetails.getValue() : null
+    if (det) {
+      payload.tipoPoco        = det.tipoPoco != null ? { id: det.tipoPoco } : null
+      payload.caesb           = det.caesb
+      payload.sistema         = det.sistema
+      payload.subsistema      = det.subsistema
+      payload.codPlan         = det.codPlan
+      payload.vazaoSistema    = det.vazaoSistema
+      payload.vazaoOutorgavel = det.vazaoOutorgavel
+      payload.vazaoTeste      = det.vazaoTeste
+      payload.nivelEstatico   = det.nivelEstatico
+      payload.nivelDinamico   = det.nivelDinamico
+      payload.profundidade    = det.profundidade
+      payload.finalidades     = det.finalidades
+      payload.demandas        = det.demandas
+    }
+
+    // captura antes do reset para montar a linha na lista
+    const rowSnapshot = {
+      logradouro:            _el('ivAddrSearch').value || null,
+      enderecoId:            _addrSelectedId ? parseInt(_addrSelectedId) : null,
+      enderecoLabel:         _el('ivAddrSearch').value || null,
+      latitude:              parseFloat(_el('ivLat').value)  || null,
+      longitude:             parseFloat(_el('ivLon').value)  || null,
+      tipoInterferenciaId:   parseInt(_el('ivTipoInterf').value) || null,
+      tipoInterferencia:     tipoText || null,
+      tipoOutorgaId:         parseInt(_el('ivTipoOut').value) || null,
+      subtipoOutorgaId:      parseInt(_el('ivSubtipoOut').value) || null,
+      situacaoProcessoId:    parseInt(_el('ivSituacao').value) || null,
+      tipoAtoId:             parseInt(_el('ivTipoAto').value) || null,
+      baciaHidrograficaId:   parseInt(_el('ivBacia').value) || null,
+      unidadeHidrograficaId: parseInt(_el('ivUnidade').value) || null,
+      tipoPoco:        det?.tipoPoco        ?? null,
+      caesb:           det?.caesb           ?? null,
+      sistema:         det?.sistema         ?? null,
+      subsistema:      det?.subsistema      ?? null,
+      codPlan:         det?.codPlan         ?? null,
+      vazaoSistema:    det?.vazaoSistema    ?? null,
+      vazaoOutorgavel: det?.vazaoOutorgavel ?? null,
+      vazaoTeste:      det?.vazaoTeste      ?? null,
+      nivelEstatico:   det?.nivelEstatico   ?? null,
+      nivelDinamico:   det?.nivelDinamico   ?? null,
+      profundidade:    det?.profundidade    ?? null,
+      finalidades:     det?.finalidades     ?? [],
+      demandas:        det?.demandas        ?? []
+    }
+
+    const btn = _el('ivSave')
+    btn.disabled = true
     try {
-      const rows = await window.interferenceService.fetchByKeyword(term)
-      _renderRows(rows)
+      let result
+      if (_selectedId) {
+        result = await window.interferenceService.update(payload)
+      } else {
+        result = await window.interferenceService.save(payload)
+      }
+      const saved    = result?.object ?? result
+      const savedId  = saved?.id ?? _selectedId ?? null
+      _lastSelected = {
+        latitude:  String(rowSnapshot.latitude  ?? ''),
+        longitude: String(rowSnapshot.longitude ?? '')
+      }
+      document.dispatchEvent(new CustomEvent('interference-view:saved', { detail: payload }))
+      _selectedId     = null
+      _addrSelectedId = null
+      form.reset()
+      InterferenceDetails.hide()
+      btn.textContent = 'Salvar'
+      InterferenceList.prependRow({ id: savedId, ...rowSnapshot })
     } catch (err) {
-      console.error('InterferenceView: erro ao buscar interferências', err)
-      _renderRows([])
+      console.error('InterferenceView: erro ao salvar interferência', err)
+      window.showToast?.('Erro ao salvar interferência. Tente novamente.', 'error')
+    } finally {
+      btn.disabled = false
     }
   }
 
   /**
-   * @description Popula um select com itens do domínio { id, descricao }.
+   * @description Retorna {id: N} para campos de domínio aninhados, ou null se vazio.
+   * @param {string} val
+   * @returns {{id: number}|null}
+   */
+  function _idObj(val) {
+    const n = parseInt(val)
+    return isNaN(n) ? null : { id: n }
+  }
+
+  /**
+   * @description Popula um select com itens de domínio { id, descricao }.
    * @param {string} selectId
-   * @param {Array<{id: number, descricao: string}>} items
+   * @param {Array<{id, descricao}>} items
    */
   function _fillSelect(selectId, items) {
     const sel = _el(selectId)
@@ -343,9 +487,7 @@ const InterferenceView = (() => {
   }
 
   /**
-   * @description Carrega todas as tabelas de domínio via window.domainService na primeira abertura.
-   * A API retorna objetos indexados por ID string (ex: {"1":{id,descricao},...}), por isso Object.values().
-   * Bacias e Unidades vêm de endpoints dedicados via listBacias()/listUnidades().
+   * @description Carrega todas as tabelas de domínio na primeira abertura.
    */
   async function _loadDomains() {
     if (_domainsLoaded) return
@@ -356,80 +498,16 @@ const InterferenceView = (() => {
       _fillSelect('ivSubtipoOut', Object.values(d.subtipoOutorga    ?? {}))
       _fillSelect('ivSituacao',   Object.values(d.situacaoProcesso  ?? {}))
       _fillSelect('ivTipoAto',    Object.values(d.tipoAto           ?? {}))
+      InterferenceDetails.fillDomains(d)
       const bacias   = await window.baciaService.listAll()
       const unidades = await window.unidadeService.listAll()
       _fillSelect('ivBacia',   bacias)
       _fillSelect('ivUnidade', unidades)
       _domainsLoaded = true
+      if (!_selectedId) _applyDefaults()
     } catch (err) {
       console.error('InterferenceView: erro ao carregar domínios', err)
     }
-  }
-
-  /**
-   * @description Popula a tabela de interferências com os resultados da busca.
-   * Armazena os dados completos em `_ifRows` para preencher o formulário ao selecionar.
-   * @param {Array<Object>} rows - Interferências normalizadas pelo serviço.
-   */
-  function _renderRows(rows) {
-    const tbody = _el('ivListBody')
-    const empty = _el('ivListEmpty')
-    _ifRows = rows
-
-    if (!rows.length) {
-      tbody.innerHTML = ''
-      empty.removeAttribute('hidden')
-      return
-    }
-
-    empty.setAttribute('hidden', '')
-    tbody.innerHTML = rows.map((r, idx) => `
-      <tr class="doc-list-row" data-idx="${idx}">
-        <td title="${r.logradouro || ''}">${r.logradouro || '—'}</td>
-        <td>${r.latitude  ?? '—'}</td>
-        <td>${r.longitude ?? '—'}</td>
-        <td>${r.tipoInterferencia || '—'}</td>
-      </tr>
-    `).join('')
-
-    tbody.querySelectorAll('.doc-list-row').forEach(tr =>
-      tr.addEventListener('click', () => _pickInterference(tr))
-    )
-  }
-
-  /**
-   * @description Seleciona uma interferência da lista, preenche o formulário e notifica o SelectInterference.
-   * O drawer permanece aberto. O evento `interference-view:select` é capturado pelo SelectInterference.
-   * @param {HTMLTableRowElement} tr
-   */
-  function _pickInterference(tr) {
-    const r = _ifRows[parseInt(tr.dataset.idx, 10)]
-    if (!r) return
-
-    _addrSelectedId = r.enderecoId || null
-    _el('ivAddrId').value     = r.enderecoId    || ''
-    _el('ivAddrSearch').value = r.enderecoLabel || r.logradouro || ''
-    _el('ivAddrClear').hidden = !r.logradouro
-
-    _el('ivLat').value = r.latitude  ?? ''
-    _el('ivLon').value = r.longitude ?? ''
-
-    _setSelectValue('ivTipoInterf', r.tipoInterferenciaId)
-    _setSelectValue('ivTipoOut',    r.tipoOutorgaId)
-    _setSelectValue('ivSubtipoOut', r.subtipoOutorgaId)
-    _setSelectValue('ivSituacao',   r.situacaoProcessoId)
-    _setSelectValue('ivTipoAto',    r.tipoAtoId)
-    _setSelectValue('ivBacia',      r.baciaHidrograficaId)
-    _setSelectValue('ivUnidade',    r.unidadeHidrograficaId)
-
-    document.dispatchEvent(new CustomEvent('interference-view:select', {
-      detail: {
-        id:        r.id,
-        latitude:  r.latitude,
-        longitude: r.longitude,
-        label:     r.enderecoLabel || r.logradouro || ''
-      }
-    }))
   }
 
   /**
@@ -443,8 +521,27 @@ const InterferenceView = (() => {
   }
 
   /**
+   * @description Aplica os valores padrão de Situação e Tipo de Ato para novo cadastro.
+   */
+  function _applyDefaults() {
+    _setSelectByText('ivSituacao', 'Em Análise')
+    _setSelectByText('ivTipoAto',  'Despacho')
+  }
+
+  /**
+   * @description Seleciona uma opção pelo texto visível.
+   * @param {string} selectId
+   * @param {string} text
+   */
+  function _setSelectByText(selectId, text) {
+    const sel = _el(selectId)
+    if (!sel) return
+    const opt = Array.from(sel.options).find(o => o.text.trim() === text.trim())
+    if (opt) sel.value = opt.value
+  }
+
+  /**
    * @description Preenche os campos de latitude e longitude com as coordenadas do mapa.
-   * Chamado pelo renderer.js quando o marcador é posicionado.
    * @param {number} lat
    * @param {number} lng
    */
@@ -454,43 +551,80 @@ const InterferenceView = (() => {
     const lonEl = _el('ivLon')
     if (latEl) { latEl.value = lat.toFixed(6); latEl.classList.add('from-map') }
     if (lonEl) { lonEl.value = lng.toFixed(6); lonEl.classList.add('from-map') }
+    _updateHidroSelects()
   }
 
   /**
-   * @description Abre o drawer com animação de deslize.
+   * @description Limpa o formulário e reseta para modo de criação.
+   */
+  function _new() {
+    _selectedId     = null
+    _addrSelectedId = null
+    _el('ivForm').reset()
+    _el('ivAddrClear').hidden = true
+    _closeAddrDropdown()
+    InterferenceDetails.hide()
+    _el('ivSave').textContent = 'Salvar'
+    if (_domainsLoaded) _applyDefaults()
+  }
+
+  /**
+   * @description Abre o drawer e pré-preenche coordenadas do SelectInterference, se houver.
+   * Se nenhum endereço estiver selecionado no formulário, pré-preenche o autocomplete de
+   * endereço com o endereço selecionado no SelectAddress da tela principal.
    */
   function open() {
     if (!_mounted) return
+    _lastSelected = null
+    const { latitude, longitude } = SelectInterference.getValue()
+    if (latitude && longitude) {
+      _el('ivLat').value = latitude
+      _el('ivLon').value = longitude
+    }
+    if (!_addrSelectedId) {
+      const { addressId } = SelectAddress.getValue()
+      if (addressId) {
+        const label = SelectAddress.getLabel()
+        _addrSelectedId           = String(addressId)
+        _el('ivAddrId').value     = String(addressId)
+        _el('ivAddrSearch').value = label
+        _el('ivAddrClear').hidden = !label
+      }
+    }
     _loadDomains()
+    _el('ivSave').textContent = _selectedId ? 'Editar' : 'Salvar'
     _container.classList.add('open')
-    setTimeout(() => _el('ivSearch')?.focus(), 320)
+    setTimeout(() => _el('iflSearch')?.focus(), 320)
   }
 
   /**
-   * @description Fecha o drawer com animação de deslize.
+   * @description Fecha o drawer.
    */
   function close() {
+    if (_lastSelected && SelectInterference.isMounted()) {
+      SelectInterference.setValue(_lastSelected)
+    }
     _container?.classList.remove('open')
   }
 
-  /** @returns {boolean} */
-  function isMounted() { return _mounted }
-
-  /** @description Limpa o formulário, o autocomplete de endereço e a lista. */
+  /**
+   * @description Limpa o formulário, o autocomplete de endereço e a lista.
+   */
   function reset() {
     if (!_mounted) return
     _el('ivForm')?.reset()
     _addrSelectedId = null
     _el('ivAddrClear').hidden = true
     _closeAddrDropdown()
-    _el('ivSearch').value = ''
-    _el('ivListBody').innerHTML = ''
-    _el('ivListEmpty').setAttribute('hidden', '')
+    InterferenceList.reset()
     close()
   }
 
-  function validate() { return true }
+  function validate()  { return true }
   function getValue()  { return {} }
+
+  /** @returns {boolean} */
+  function isMounted() { return _mounted }
 
   /** @param {string} id @returns {HTMLElement} */
   function _el(id) { return document.getElementById(id) }

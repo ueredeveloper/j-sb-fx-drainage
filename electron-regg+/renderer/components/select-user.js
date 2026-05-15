@@ -6,9 +6,11 @@
  * TODO: conectar ao banco via `window.db.searchUser(term)`.
  */
 const SelectUser = (() => {
-  let _mounted    = false
-  let _selectedId = null
-  let _activeIdx  = -1
+  let _mounted      = false
+  let _selectedId   = null
+  let _selectedData = null
+  let _activeIdx    = -1
+  let _lastRows     = []
 
   /**
    * @description Renderiza o componente e registra os eventos.
@@ -139,6 +141,7 @@ const SelectUser = (() => {
   function _renderDropdown(rows) {
     const list = _el('sUserDropdown')
     _activeIdx = -1
+    _lastRows  = rows
     list.innerHTML = rows.length
       ? rows.map(r => `
           <li class="autocomplete-item" role="option"
@@ -152,7 +155,10 @@ const SelectUser = (() => {
     _el('sUserSearch').setAttribute('aria-expanded', 'true')
 
     list.querySelectorAll('.autocomplete-item').forEach(li => {
-      li.addEventListener('click',      () => _select({ id: li.dataset.id, label: li.dataset.label }))
+      li.addEventListener('click', () => {
+        const data = _lastRows.find(r => String(r.id) === li.dataset.id) ?? null
+        _select({ id: li.dataset.id, label: li.dataset.label }, data)
+      })
       li.addEventListener('mouseenter', () => {
         _activeIdx = [...list.children].indexOf(li)
         _highlight(list.querySelectorAll('.autocomplete-item'))
@@ -164,8 +170,9 @@ const SelectUser = (() => {
    * @description Confirma a seleção e fecha o dropdown.
    * @param {{ id: string, label: string }} item
    */
-  function _select(item) {
-    _selectedId = item.id
+  function _select(item, data = null) {
+    _selectedId   = item.id
+    _selectedData = data ? { ...data, _fromSearch: true } : null
     _el('sUserSearch').value = item.label
     _el('sUserClear').hidden = false
     _closeDropdown()
@@ -180,15 +187,26 @@ const SelectUser = (() => {
   }
 
   /**
-   * @returns {{ userId: string|null }}
+   * @returns {{ userId: string|null, userLabel: string|null }}
    */
-  function getValue() { return { userId: _selectedId } }
+  function getValue() {
+    return {
+      userId:    _selectedId,
+      userLabel: _el('sUserSearch')?.value?.trim() || null
+    }
+  }
 
   /**
    * @param {{ userId?: string, userLabel?: string }} data
    */
   function setValue(data = {}) {
-    _selectedId = data.userId ?? null
+    _selectedId   = data.userId ?? null
+    _selectedData = data.userId ? {
+      id:          data.userId,
+      nome:        data.userLabel ?? '',
+      cpfCnpj:     data.cpfCnpj  ?? '',
+      _fromSearch: false   // carregado do documento, não de uma busca fresca
+    } : null
     const input = _el('sUserSearch')
     if (input) { input.value = data.userLabel ?? ''; _el('sUserClear').hidden = !data.userLabel }
   }
@@ -196,7 +214,8 @@ const SelectUser = (() => {
   /** @description Limpa a seleção e o campo de busca. */
   function reset() {
     if (!_mounted) return
-    _selectedId = null
+    _selectedId   = null
+    _selectedData = null
     const input = _el('sUserSearch')
     if (input) input.value = ''
     _el('sUserClear').hidden = true
@@ -212,5 +231,11 @@ const SelectUser = (() => {
   /** @param {string} id @returns {HTMLElement} */
   function _el(id) { return document.getElementById(id) }
 
-  return { mount, getValue, setValue, reset, validate, isMounted }
+  /** @returns {string} Label do usuário atualmente selecionado. */
+  function getLabel() { return _el('sUserSearch')?.value ?? '' }
+
+  /** @returns {Object|null} Objeto completo do usuário selecionado. */
+  function getData() { return _selectedData }
+
+  return { mount, getValue, getLabel, getData, setValue, reset, validate, isMounted }
 })()

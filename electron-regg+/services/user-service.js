@@ -6,10 +6,12 @@
  */
 
 const path          = require('path')
-const { writeJson } = require('../utils/write-json')
+const { appendJson, writeJson } = require('../utils/write-json')
 
 const BASE_URL   = 'https://app-sis-out-srh-backend-01-h3hkbcf5f8dubbdy.brazilsouth-01.azurewebsites.net'
-const SAMPLE_OUT = path.join(__dirname, 'json', 'user-fetch-by-keyword.json')
+const OUT_FETCH  = path.join(__dirname, 'json', 'user-fetch-by-keyword.json')
+const OUT_SAVE   = path.join(__dirname, 'json', 'user-save-response.json')
+const OUT_DELETE = path.join(__dirname, 'json', 'user-delete-response.json')
 
 class UserService {
   /**
@@ -23,7 +25,7 @@ class UserService {
     const res = await fetch(url)
     if (!res.ok) throw new Error(`fetchByKeyword: HTTP ${res.status} ${res.statusText}`)
     const data = await res.json()
-    if (Array.isArray(data) && data.length > 0) writeJson(SAMPLE_OUT, data[0])
+    if (Array.isArray(data) && data.length > 0) writeJson(OUT_FETCH, data[0])
     return Array.isArray(data) ? data : []
   }
 
@@ -39,7 +41,9 @@ class UserService {
       body:    JSON.stringify(user)
     })
     if (!res.ok) throw new Error(`save: HTTP ${res.status} ${res.statusText}`)
-    return res.json()
+    const raw = await res.json()
+    appendJson(OUT_SAVE, raw)
+    return raw
   }
 
   /**
@@ -47,9 +51,27 @@ class UserService {
    * @param {number} id
    * @returns {Promise<void>}
    */
+  /**
+   * @description Busca usuários vinculados a um documento pelo seu ID.
+   * Equivale a: GET /users/search-users-by-document-id?docId=<id>
+   * @param {number|string} docId - ID do documento.
+   * @returns {Promise<Object[]>} Lista de usuários.
+   */
+  async fetchByDocumentId(docId) {
+    const url = `${BASE_URL}/users/search-users-by-document-id?docId=${encodeURIComponent(docId)}`
+    const res = await fetch(url)
+    if (!res.ok) throw new Error(`fetchByDocumentId: HTTP ${res.status} ${res.statusText}`)
+    const data = await res.json()
+    return Array.isArray(data) ? data : []
+  }
+
   async deleteById(id) {
-    const res = await fetch(`${BASE_URL}/users/delete-user-by-id?id=${id}`, { method: 'DELETE' })
+    const res  = await fetch(`${BASE_URL}/users/delete-user-by-id?id=${id}`, { method: 'DELETE' })
+    const text = await res.text().catch(() => '')
+    const data = text ? JSON.parse(text) : null
+    appendJson(OUT_DELETE, { timestamp: new Date().toISOString(), id: Number(id), status: res.status, body: data })
     if (!res.ok) throw new Error(`deleteById: HTTP ${res.status} ${res.statusText}`)
+    if (data?.status === 'erro') throw new Error(data.mensagem ?? 'Erro ao excluir usuário.')
   }
 }
 

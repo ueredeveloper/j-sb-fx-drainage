@@ -6,10 +6,12 @@
  */
 
 const path          = require('path')
-const { writeJson } = require('../utils/write-json')
+const { appendJson, writeJson } = require('../utils/write-json')
 
 const BASE_URL   = 'https://app-sis-out-srh-backend-01-h3hkbcf5f8dubbdy.brazilsouth-01.azurewebsites.net'
-const SAMPLE_OUT = path.join(__dirname, 'json', 'process-fetch-by-keyword.json')
+const OUT_FETCH  = path.join(__dirname, 'json', 'process-fetch-by-keyword.json')
+const OUT_SAVE   = path.join(__dirname, 'json', 'process-save-response.json')
+const OUT_DELETE = path.join(__dirname, 'json', 'process-delete-response.json')
 
 class ProcessService {
   /**
@@ -23,7 +25,7 @@ class ProcessService {
     const res = await fetch(url)
     if (!res.ok) throw new Error(`fetchByKeyword: HTTP ${res.status} ${res.statusText}`)
     const data = await res.json()
-    if (Array.isArray(data) && data.length > 0) writeJson(SAMPLE_OUT, data[0])
+    if (Array.isArray(data) && data.length > 0) writeJson(OUT_FETCH, data[0])
     return Array.isArray(data) ? data.map(p => this._normalize(p)) : []
   }
 
@@ -39,7 +41,9 @@ class ProcessService {
       body:    JSON.stringify(process)
     })
     if (!res.ok) throw new Error(`save: HTTP ${res.status} ${res.statusText}`)
-    return res.json()
+    const raw = await res.json()
+    appendJson(OUT_SAVE, raw)
+    return raw
   }
 
   /**
@@ -48,8 +52,12 @@ class ProcessService {
    * @returns {Promise<void>}
    */
   async deleteById(id) {
-    const res = await fetch(`${BASE_URL}/processes/delete-process?id=${id}`, { method: 'DELETE' })
+    const res  = await fetch(`${BASE_URL}/processes/delete-process?id=${id}`, { method: 'DELETE' })
+    const text = await res.text().catch(() => '')
+    const data = text ? JSON.parse(text) : null
+    appendJson(OUT_DELETE, { timestamp: new Date().toISOString(), id: Number(id), status: res.status, body: data })
     if (!res.ok) throw new Error(`deleteById: HTTP ${res.status} ${res.statusText}`)
+    if (data?.status === 'erro') throw new Error(data.mensagem ?? 'Erro ao excluir processo.')
   }
 
   /**
