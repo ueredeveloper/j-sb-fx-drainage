@@ -13,6 +13,7 @@ var myChart = echarts.init(document.getElementById('chart-container'), null, {
   useDirtyRect: false
 })
 
+
 var _pendingDelete = null
 var _state = { doc: null, users: [], interferences: [] }
 

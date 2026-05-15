@@ -1,5 +1,6 @@
 const { contextBridge, ipcRenderer } = require('electron')
 
+
 contextBridge.exposeInMainWorld('electronAPI', {
   onMessage: (callback) => ipcRenderer.on('message', (_event, value) => callback(value))
 })

@@ -9,6 +9,7 @@ if (process.platform === 'win32') {
   app.commandLine.appendSwitch('force-device-scale-factor', '1')
 }
 
+
 const DocumentService      = require('./services/document-service')
 const DomainService        = require('./services/domain-service')
 const AddressService       = require('./services/address-service')

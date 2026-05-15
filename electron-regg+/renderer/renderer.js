@@ -5,6 +5,7 @@
  * descomente o div correspondente em index.html e a linha .mount() abaixo.
  */
 
+
 // ── COMPONENTES ATIVOS ──────────────────────────────────────────────────────
 
 DocumentList.mount(document.getElementById('section-document-list'))

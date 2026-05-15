@@ -96,6 +96,7 @@ class DocumentService {
     return Array.isArray(data) ? data.map(d => this._normalize(d)) : []
   }
 
+  
   async deleteById(id) {
 
     console.log(`Deleting document with ID: ${id}`)

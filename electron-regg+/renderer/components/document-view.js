@@ -16,6 +16,7 @@ const DocumentView = (() => {
     { id: 4, name: 'Ofício' }
   ]
 
+  
   /**
    * @description Renderiza o componente dentro do container e ativa os eventos.
    * @param {HTMLElement} container - Elemento que receberá o HTML.
