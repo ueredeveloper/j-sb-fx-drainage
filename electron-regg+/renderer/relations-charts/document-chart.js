@@ -1,5 +1,11 @@
 /**
- * Hierarquia: Proc. Principal → Processo → Usuário(s) → Documento → Endereço → Interferências
+ * Hierarquia:
+ *   Proc. Principal
+ *     └── Processo
+ *           ├── Usuário(s)
+ *           ├── Documento
+ *           └── Endereço
+ *                 └── Interferências
  */
 
 var myChart = echarts.init(document.getElementById('chart-container'), null, {
@@ -71,7 +77,7 @@ function updateChart(doc, users, interferences) {
         ? [ _node('Interferência', _v(doc.latitude) + ', ' + _v(doc.longitude), COLOR.interferencia) ]
         : [])
 
-  /* ── Endereço (com interferências como filhos) ───────────────────── */
+  /* ── Endereço (filho do processo, com interferências) ────────────── */
   var enderecoNode = doc.logradouro
     ? _node('Endereço', _v(doc.logradouro), COLOR.endereco,
         interfNodes.length ? interfNodes : null,
@@ -80,53 +86,49 @@ function updateChart(doc, users, interferences) {
           : null)
     : null
 
-  /* ── Documento (com endereço como filho) ─────────────────────────── */
+  /* ── Documento (filho do processo) ───────────────────────────────── */
   var documentoNode = _node(
     'Documento', _v(doc.numero), COLOR.documento,
-    enderecoNode ? [enderecoNode] : null,
+    null,
     doc.id
       ? { fn: 'deleteDocument', id: doc.id, label: doc.numero || ('Doc #' + doc.id) }
       : null
   )
 
-  /* ── Usuário(s) (com documento como filho) ───────────────────────── */
-  var usuarioNode
+  /* ── Usuário(s) (filhos do processo) ─────────────────────────────── */
+  var userNodes
   if (users.length > 1) {
     var userLeaves = users.map(function (u) {
       return _node(u.nome || ('ID ' + u.id), u.cpfCnpj || null, COLOR.usuario, null,
         { fn: 'deleteUser', id: u.id, label: u.nome || ('ID ' + u.id) })
     })
-    usuarioNode = _node(
-      'Usuários (' + users.length + ')', null, COLOR.usuario,
-      userLeaves.concat([documentoNode])
-    )
+    userNodes = [ _node('Usuários (' + users.length + ')', null, COLOR.usuario, userLeaves) ]
   } else if (users.length === 1) {
     var u = users[0]
-    usuarioNode = _node(
-      u.nome || ('ID ' + u.id), u.cpfCnpj || null, COLOR.usuario,
-      [documentoNode],
+    userNodes = [ _node(
+      u.nome || ('ID ' + u.id), u.cpfCnpj || null, COLOR.usuario, null,
       { fn: 'deleteUser', id: u.id, label: u.nome || ('ID ' + u.id) }
-    )
+    ) ]
   } else if (doc.usuarioNome) {
-    usuarioNode = _node(
-      _v(doc.usuarioNome), doc.cpfCnpj || null, COLOR.usuario,
-      [documentoNode],
-      doc.usuarioId
-        ? { fn: 'deleteUser', id: doc.usuarioId, label: doc.usuarioNome }
-        : null
-    )
+    userNodes = [ _node(
+      _v(doc.usuarioNome), doc.cpfCnpj || null, COLOR.usuario, null,
+      doc.usuarioId ? { fn: 'deleteUser', id: doc.usuarioId, label: doc.usuarioNome } : null
+    ) ]
   } else {
-    usuarioNode = documentoNode
+    userNodes = []
   }
 
-  /* ── Processo (com usuário como filho) ───────────────────────────── */
+  /* ── Processo: hub com usuários, documento e endereço como filhos ── */
+  var processoChildren = userNodes.concat([documentoNode])
+  if (enderecoNode) processoChildren.push(enderecoNode)
+
   var processoNode = doc.processoNumero
     ? _node('Processo', _v(doc.processoNumero), COLOR.processo,
-        [usuarioNode],
+        processoChildren,
         doc.processoId
           ? { fn: 'deleteProcess', id: doc.processoId, label: doc.processoNumero }
           : null)
-    : usuarioNode
+    : _node('(sem processo)', null, COLOR.processo, processoChildren)
 
   /* ── Processo Principal / raiz ───────────────────────────────────── */
   var treeData = doc.anexoNumero
@@ -215,15 +217,18 @@ function updateChart(doc, users, interferences) {
 }
 
 /* ── Tradução de erros do backend ────────────────────────────────────── */
+
+// artigo + nome para a tabela que está BLOQUEANDO a exclusão
 var _TABLE_PT = {
-  processo:      'processo',
-  documento:     'documento',
-  usuario:       'usuário',
-  endereco:      'endereço',
-  interferencia: 'interferência',
-  anexo:         'processo principal'
+  processo:      'um processo',
+  documento:     'um documento',
+  usuario:       'um usuário',
+  endereco:      'um endereço',
+  interferencia: 'uma interferência',
+  anexo:         'um processo principal'
 }
 
+// nome da entidade que está sendo DELETADA
 var _ENTITY_PT = {
   deleteUser:         'usuário',
   deleteAddress:      'endereço',
@@ -236,11 +241,16 @@ var _ENTITY_PT = {
 function _friendlyError(err, del) {
   var msg = (err && err.message) ? err.message : String(err)
 
-  var fkMatch = msg.match(/on table "?(\w+)"?/i)
+  // Formato PostgreSQL: "on table "A" violates foreign key constraint "..." on table "B""
+  // Precisamos de B (a tabela bloqueante), não de A (a tabela operada).
+  // Regex aponta para o "on table" que vem DEPOIS de "violates foreign key constraint".
+  var fkMatch = msg.match(/violates foreign key constraint\s+"?[^"\s]+"?\s+on table\s+"?(\w+)"?/i)
+
   if (fkMatch || /foreign key/i.test(msg)) {
-    var blockedBy  = fkMatch ? (_TABLE_PT[fkMatch[1].toLowerCase()] || fkMatch[1]) : 'outro registro'
+    var blockerKey = fkMatch ? fkMatch[1].toLowerCase() : ''
+    var blockedBy  = _TABLE_PT[blockerKey] || blockerKey || 'outro registro'
     var entityPt   = (del && _ENTITY_PT[del.fn]) || 'registro'
-    return 'Não é possível excluir este(a) ' + entityPt + ': há um(a) ' + blockedBy + ' vinculado(a) a ele(a).'
+    return 'Não é possível excluir este ' + entityPt + ': há ' + blockedBy + ' vinculado a ele.'
   }
 
   var httpMatch = msg.match(/HTTP (\d{3})/i)
@@ -255,16 +265,22 @@ function _friendlyError(err, del) {
 }
 
 /* ── Confirmação de exclusão ──────────────────────────────────────────── */
+var _confirmEl = null
+function _confirmOverlay() {
+  if (!_confirmEl) _confirmEl = document.getElementById('dc-confirm')
+  return _confirmEl
+}
+
 function _showConfirm(del) {
   _pendingDelete = del
   document.getElementById('dc-confirm-msg').textContent =
     'Excluir "' + del.label + '"? Esta ação não pode ser desfeita.'
-  document.getElementById('dc-confirm').removeAttribute('hidden')
+  _confirmOverlay().style.display = 'flex'
 }
 
 function _hideConfirm() {
   _pendingDelete = null
-  document.getElementById('dc-confirm').setAttribute('hidden', '')
+  _confirmOverlay().style.display = 'none'
 }
 
 document.getElementById('dc-confirm-cancel').addEventListener('click', _hideConfirm)
@@ -283,9 +299,15 @@ document.getElementById('dc-confirm-ok').addEventListener('click', async functio
     else if (del.fn === 'deleteInterference')  await svc.deleteInterference(del.id)
     else if (del.fn === 'deleteProcess')       await svc.deleteProcess(del.id)
     else if (del.fn === 'deleteAnnex')         await svc.deleteAnnex(del.id)
+    else if (del.fn === 'deleteDocument')      await svc.deleteDocument(del.id)
 
-    _removeFromState(del)
-    _showToast('Excluído com sucesso.', false)
+    if (del.fn === 'deleteDocument') {
+      _showToast('Documento excluído. Fechando...', false)
+      setTimeout(function () { if (svc.closeView) svc.closeView() }, 2000)
+    } else {
+      _removeFromState(del)
+      _showToast('Excluído com sucesso.', false)
+    }
   } catch (err) {
     console.error('document-chart: erro ao excluir', err)
     _showToast(_friendlyError(err, del), true)

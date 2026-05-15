@@ -27,7 +27,7 @@ const DocumentChartView = (() => {
             </svg>
             Fechar
           </button>
-          <span class="av-title">Relacionamentos do Documento</span>
+          <span class="av-title">Gráfico de Relacionamentos</span>
         </div>
 
         <iframe id="dcFrame" class="dc-frame" src="" frameborder="0"></iframe>
@@ -68,7 +68,9 @@ const DocumentChartView = (() => {
           deleteAddress:      id => window.addressService.deleteById(id),
           deleteInterference: id => window.interferenceService.deleteById(id),
           deleteProcess:      id => window.processService.deleteById(id),
-          deleteAnnex:        id => window.annexService.deleteById(id)
+          deleteAnnex:        id => window.annexService.deleteById(id),
+          deleteDocument:     id => window.documentService.deleteById(id),
+          closeView:          ()  => close()
         }
 
         if (typeof frame.contentWindow.updateChart === 'function') {

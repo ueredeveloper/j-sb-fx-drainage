@@ -97,8 +97,12 @@ class DocumentService {
   }
 
   async deleteById(id) {
+
+    console.log(`Deleting document with ID: ${id}`)
     const res  = await fetch(`${BASE_URL}/documents/delete-document?id=${id}`, { method: 'DELETE' })
     const text = await res.text().catch(() => '')
+
+    console.log(`Delete response for ID ${id}:`, { status: res.status, body: text })
     let data = null
     try { data = text ? JSON.parse(text) : null } catch { data = null }
     appendJson(OUT_DELETE, { timestamp: new Date().toISOString(), id: Number(id), status: res.status, body: data })
