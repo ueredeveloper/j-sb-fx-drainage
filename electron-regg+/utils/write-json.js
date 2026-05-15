@@ -6,25 +6,16 @@
 
 const fs   = require('fs')
 const path = require('path')
+const { app } = require('electron')
 
-/**
- * @description Serializa `data` e grava em `filePath`, sobrescrevendo o conteúdo anterior.
- * @param {string} filePath - Caminho absoluto do arquivo de destino.
- * @param {*} data - Valor serializável para JSON.
- */
 function writeJson(filePath, data) {
+  if (app.isPackaged) return
   fs.mkdirSync(path.dirname(filePath), { recursive: true })
   fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf-8')
 }
 
-/**
- * @description Adiciona `data` a um array no arquivo `filePath`.
- * Se o arquivo não existir, cria com `[data]`.
- * Se existir e contiver um array, faz push. Caso contrário, envolve o conteúdo anterior em array.
- * @param {string} filePath - Caminho absoluto do arquivo de destino.
- * @param {*} data - Valor serializável para JSON.
- */
 function appendJson(filePath, data) {
+  if (app.isPackaged) return
   fs.mkdirSync(path.dirname(filePath), { recursive: true })
   let arr = []
   if (fs.existsSync(filePath)) {

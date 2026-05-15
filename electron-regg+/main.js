@@ -39,28 +39,20 @@ const _porosoSvc     = new HidrogeoPorosoService()
 const _fraturadoSvc  = new HidrogeoFraturadoService()
 const _finalidadeSvc = new FinalidadeService()
 
-/* Caminho real do electron.exe lido do path.txt do pacote npm.
-   Necessário porque dentro do processo Electron require('electron')
-   retorna as APIs, não o executável. */
-const _electronExec = path.join(
-  __dirname, 'node_modules', 'electron', 'dist',
-  fs.readFileSync(
-    path.join(__dirname, 'node_modules', 'electron', 'path.txt'), 'utf-8'
-  ).trim()
-)
-
-/* Hot reload ativo apenas fora do build empacotado (modo desenvolvimento).
-   - Mudanças em renderer/ → recarrega só a janela (rápido).
-   - Mudanças em main.js ou preload.js → reinicia o processo inteiro. */
 if (!app.isPackaged) {
+  const _electronExec = path.join(
+    __dirname, 'node_modules', 'electron', 'dist',
+    fs.readFileSync(
+      path.join(__dirname, 'node_modules', 'electron', 'path.txt'), 'utf-8'
+    ).trim()
+  )
+
   const reload = require('electron-reload')
 
-  /* Renderer: recarrega a janela sem reiniciar o processo */
   reload(path.join(__dirname, 'renderer'), {
     electron: _electronExec
   })
 
-  /* Processo principal: reinicia o app ao alterar main ou preload */
   reload([
     path.join(__dirname, 'main.js'),
     path.join(__dirname, 'preload.js')

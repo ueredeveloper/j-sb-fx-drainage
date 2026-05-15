@@ -2,11 +2,12 @@
   "name": "electron-regg",
   "version": "1.0.0",
   "description": "Sistema de Registro e Outorga de Recursos Hídricos - Desktop",
+  "author": "Fabrício José Barrozo",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
     "dev": "electron .",
-    "dist": "electron-builder --win portable"
+    "dist": "set CSC_IDENTITY_AUTO_DISCOVERY=false && electron-builder --win portable"
   },
   "build": {
     "appId": "com.ueredeveloper.reegg",
@@ -15,7 +16,8 @@
       "**/*",
       "!node_modules/electron/**",
       "!node_modules/electron-reload/**",
-      "!node_modules/electron-builder/**"
+      "!node_modules/electron-builder/**",
+      "!services/json/**"
     ],
     "win": {
       "target": [
