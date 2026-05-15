@@ -12,6 +12,7 @@ const SelectAnnex = (() => {
   let _selectedData = null
   let _activeIdx    = -1
   let _lastRows     = []
+  let _fromPaste    = false
 
   /**
    * @description Renderiza o componente e registra os eventos.
@@ -74,6 +75,7 @@ const SelectAnnex = (() => {
       if (_el('sAnnSearch').value.trim().length >= 2) _search(_el('sAnnSearch').value.trim())
     })
     _el('sAnnSearch').addEventListener('paste', () => {
+      _fromPaste = true
       setTimeout(() => {
         const term = _el('sAnnSearch').value.trim()
         if (term.length >= 2) _search(term)
@@ -146,6 +148,8 @@ const SelectAnnex = (() => {
    * @param {string} term
    */
   async function _search(term) {
+    const isPaste = _fromPaste
+    _fromPaste = false
     try {
       const rows = await window.annexService.fetchByKeyword(term)
       const exact = rows.find(r => r.numero.toLowerCase() === term.toLowerCase())
@@ -154,10 +158,10 @@ const SelectAnnex = (() => {
         _closeDropdown()
         return
       }
-      _renderDropdown(rows, term)
+      _renderDropdown(rows, term, isPaste)
     } catch (err) {
       console.error('SelectAnnex: erro ao buscar anexos', err)
-      _renderDropdown([], term)
+      _renderDropdown([], term, isPaste)
     }
   }
 
@@ -170,7 +174,13 @@ const SelectAnnex = (() => {
    * @param {Array<{id: number, numero: string}>} rows
    * @param {string} [term]
    */
-  function _renderDropdown(rows, term) {
+  /**
+   * @description Popula o dropdown com os resultados e uma opção de uso livre do texto digitado.
+   * @param {Array<{id: number, numero: string}>} rows
+   * @param {string} [term]
+   * @param {boolean} [highlightUse] - Se true, pré-destaca a opção "Usar".
+   */
+  function _renderDropdown(rows, term, highlightUse = false) {
     const list = _el('sAnnDropdown')
     _activeIdx = -1
     _lastRows  = rows
@@ -216,6 +226,12 @@ const SelectAnnex = (() => {
         _highlight(list.querySelectorAll('.autocomplete-item'))
       })
     })
+
+    if (highlightUse && term) {
+      const all = list.querySelectorAll('.autocomplete-item')
+      _activeIdx = all.length - 1
+      _highlight(all)
+    }
   }
 
   /**

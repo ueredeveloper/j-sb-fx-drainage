@@ -172,7 +172,7 @@ const SelectUser = (() => {
    */
   function _select(item, data = null) {
     _selectedId   = item.id
-    _selectedData = data
+    _selectedData = data ? { ...data, _fromSearch: true } : null
     _el('sUserSearch').value = item.label
     _el('sUserClear').hidden = false
     _closeDropdown()
@@ -187,9 +187,14 @@ const SelectUser = (() => {
   }
 
   /**
-   * @returns {{ userId: string|null }}
+   * @returns {{ userId: string|null, userLabel: string|null }}
    */
-  function getValue() { return { userId: _selectedId } }
+  function getValue() {
+    return {
+      userId:    _selectedId,
+      userLabel: _el('sUserSearch')?.value?.trim() || null
+    }
+  }
 
   /**
    * @param {{ userId?: string, userLabel?: string }} data
@@ -197,9 +202,10 @@ const SelectUser = (() => {
   function setValue(data = {}) {
     _selectedId   = data.userId ?? null
     _selectedData = data.userId ? {
-      id:      data.userId,
-      nome:    data.userLabel ?? '',
-      cpfCnpj: data.cpfCnpj  ?? ''
+      id:          data.userId,
+      nome:        data.userLabel ?? '',
+      cpfCnpj:     data.cpfCnpj  ?? '',
+      _fromSearch: false   // carregado do documento, não de uma busca fresca
     } : null
     const input = _el('sUserSearch')
     if (input) { input.value = data.userLabel ?? ''; _el('sUserClear').hidden = !data.userLabel }

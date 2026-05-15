@@ -87,7 +87,8 @@ function createWindow() {
 
 /* ── IPC: DocumentService ──────────────────────────────────────────────────── */
 
-ipcMain.handle('document:fetchByParam', (_event, keyword) => _docSvc.fetchByParam(keyword))
+ipcMain.handle('document:fetchByParam',   (_event, keyword) => _docSvc.fetchByParam(keyword))
+ipcMain.handle('document:fetchByUserId', (_event, userId)  => _docSvc.fetchByUserId(userId))
 ipcMain.handle('document:save',         (_event, doc)     => _docSvc.save(doc))
 ipcMain.handle('document:update',       (_event, doc)     => _docSvc.update(doc))
 ipcMain.handle('document:deleteById',   (_event, id)      => _docSvc.deleteById(id))

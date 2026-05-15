@@ -86,7 +86,7 @@ const InterferenceDetails = (() => {
           </div>
         </div>
 
-        <div class="id-tabs">
+        <div class="id-tabs" style="margin-top: 2rem">
           <button type="button" class="id-tab id-tab-active" id="idTabReqBtn">Requeridas</button>
           <button type="button" class="id-tab"               id="idTabAuthBtn">Autorizadas</button>
           <button type="button" class="id-copy-req-btn" id="idCopyReqBtn"
@@ -104,7 +104,7 @@ const InterferenceDetails = (() => {
     _el('idTabReqBtn').addEventListener('click',  () => _switchTab('requeridas'))
     _el('idTabAuthBtn').addEventListener('click', () => _switchTab('autorizadas'))
     _el('idCopyReqBtn').addEventListener('click', _copyReqToAuth)
-    _el('idTipoPoco').addEventListener('change', _onTipoPocoChange)
+    _el('idTipoPoco').addEventListener('change', () => _onTipoPocoChange(true))
     _el('idSistema').addEventListener('change', _onSistemaChange)
     _el('idCodSistema').addEventListener('change', _onCodSistemaChange)
     _mounted = true
@@ -136,7 +136,7 @@ const InterferenceDetails = (() => {
         </table>
       </div>
 
-      <p class="id-group-title">Demandas Mensais</p>
+      <p class="id-group-title" style="margin-top: 2rem">Demandas Mensais</p>
       <div class="iv-demandas-scroll">
         <table class="iv-demandas-table id-dem-table" id="idDem${tab}Table"></table>
       </div>
@@ -231,11 +231,11 @@ const InterferenceDetails = (() => {
   }
 
   /**
-   * @description Reage à mudança do tipo de poço: carrega sistemas via listAll()
-   * e auto-seleciona pelo ponto geográfico via findByPoint().
-   * Poroso → Poço Manual / Poço Raso | Fraturado → Poço Profundo.
+   * @description Reage à mudança do tipo de poço: carrega sistemas via listAll().
+   * Auto-seleciona pelo ponto geográfico apenas quando chamado pelo usuário (autoSelect=true).
+   * @param {boolean} autoSelect - true apenas quando disparado pelo evento 'change' do usuário.
    */
-  async function _onTipoPocoChange() {
+  async function _onTipoPocoChange(autoSelect = false) {
     const text = _getTipoPocoText()
     _el('idSistema').innerHTML    = '<option value="">Selecione...</option>'
     _el('idSubsistema').innerHTML = '<option value="">Selecione...</option>'
@@ -246,21 +246,24 @@ const InterferenceDetails = (() => {
 
     _el('idSubsistemaWrap').hidden = !isFraturado
 
-    if (isPoroso)    await _loadPorosoData()
-    else if (isFraturado) await _loadFraturadoData()
+    if (isPoroso)         await _loadPorosoData(autoSelect)
+    else if (isFraturado) await _loadFraturadoData(autoSelect)
   }
 
   /**
-   * @description Carrega sistemas porosos e auto-seleciona pelo ponto.
+   * @description Carrega sistemas porosos e, opcionalmente, auto-seleciona pelo ponto.
+   * @param {boolean} autoSelect
    */
-  async function _loadPorosoData() {
+  async function _loadPorosoData(autoSelect = false) {
     try {
       const items = await window.porosoService.listAll()
       _fillSistemaSelectPoroso(items)
-      const coords = _getCoords()
-      if (coords) {
-        const found = await window.porosoService.findByPoint(coords.lat, coords.lng)
-        if (found.length) _applyPorosoSelection(found[0])
+      if (autoSelect) {
+        const coords = _getCoords()
+        if (coords) {
+          const found = await window.porosoService.findByPoint(coords.lat, coords.lng)
+          if (found.length) _applyPorosoSelection(found[0])
+        }
       }
     } catch (err) {
       console.error('InterferenceDetails: erro ao carregar poroso', err)
@@ -268,16 +271,19 @@ const InterferenceDetails = (() => {
   }
 
   /**
-   * @description Carrega sistemas fraturados e auto-seleciona pelo ponto.
+   * @description Carrega sistemas fraturados e, opcionalmente, auto-seleciona pelo ponto.
+   * @param {boolean} autoSelect
    */
-  async function _loadFraturadoData() {
+  async function _loadFraturadoData(autoSelect = false) {
     try {
       const items = await window.fraturadoService.listAll()
       _fillSistemaSelectFraturado(items)
-      const coords = _getCoords()
-      if (coords) {
-        const found = await window.fraturadoService.findByPoint(coords.lat, coords.lng)
-        if (found.length) _applyFraturadoSelection(found[0])
+      if (autoSelect) {
+        const coords = _getCoords()
+        if (coords) {
+          const found = await window.fraturadoService.findByPoint(coords.lat, coords.lng)
+          if (found.length) _applyFraturadoSelection(found[0])
+        }
       }
     } catch (err) {
       console.error('InterferenceDetails: erro ao carregar fraturado', err)
@@ -721,7 +727,8 @@ const InterferenceDetails = (() => {
 
   function _setSelectValue(id, value) {
     const sel = _el(id)
-    if (sel && value != null) sel.value = String(value)
+    if (!sel) return
+    sel.value = value != null ? String(value) : ''
   }
 
   function _esc(s) {

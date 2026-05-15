@@ -42,6 +42,8 @@ class DocumentService {
    */
   async save(doc) {
     const payload = this._toPayload(doc)
+
+    console.log('Saving document with payload:', payload)
    
     const res = await fetch(`${BASE_URL}/documents/upsert-document`, {
       method:  'POST',
@@ -62,6 +64,8 @@ class DocumentService {
    */
   async update(doc) {
     const payload = this._toPayload(doc)
+
+    console.log('Updating document with payload:', payload)
    
     const res = await fetch(`${BASE_URL}/documents/upsert-document`, {
       method:  'POST',
@@ -79,6 +83,19 @@ class DocumentService {
    * @param {number} id
    * @returns {Promise<void>}
    */
+  /**
+   * @description Busca documentos relacionados a um usuário pelo seu ID.
+   * @param {number} userId
+   * @returns {Promise<Object[]>} Lista de documentos normalizados.
+   */
+  async fetchByUserId(userId) {
+    const url = `${BASE_URL}/documents/search-documents-by-user-id?id=${userId}`
+    const res = await fetch(url)
+    if (!res.ok) throw new Error(`fetchByUserId: HTTP ${res.status} ${res.statusText}`)
+    const data = await res.json()
+    return Array.isArray(data) ? data.map(d => this._normalize(d)) : []
+  }
+
   async deleteById(id) {
     const res = await fetch(`${BASE_URL}/documents/delete-document?id=${id}`, { method: 'DELETE' })
     if (!res.ok) throw new Error(`deleteById: HTTP ${res.status} ${res.statusText}`)
@@ -176,6 +193,8 @@ class DocumentService {
     // processo + anexo
     const proc = data.processData || {}
     const anx  = data.annexData   || {}
+    // definido cedo para uso também em processo.usuario
+    const user = data.userData    || {}
 
     if (data.processId || data.annexId) {
       payload.processo = {}
@@ -186,11 +205,16 @@ class DocumentService {
       if (!isNaN(procIdNum))  payload.processo.id     = procIdNum
       if (procNumero)         payload.processo.numero  = procNumero
 
-      // processo.usuario
+      // processo.usuario — do processData; fallback para o requerente (userData)
       if (proc.usuarioId || proc.usuarioNome) {
         payload.processo.usuario = {}
         if (proc.usuarioId)   payload.processo.usuario.id   = Number(proc.usuarioId)
         if (proc.usuarioNome) payload.processo.usuario.nome = proc.usuarioNome
+      } else if (data.userId) {
+        payload.processo.usuario = { id: Number(data.userId) }
+        const procUserNome = (user._fromSearch !== false && user.nome) ? user.nome : (data.userLabel || null)
+        if (procUserNome) payload.processo.usuario.nome    = procUserNome
+        if (user.cpfCnpj) payload.processo.usuario.cpfCnpj = user.cpfCnpj
       }
 
       // processo.anexo
@@ -211,6 +235,11 @@ class DocumentService {
             procRef.usuario = {}
             if (proc.usuarioId)   procRef.usuario.id   = Number(proc.usuarioId)
             if (proc.usuarioNome) procRef.usuario.nome = proc.usuarioNome
+          } else if (data.userId) {
+            procRef.usuario = { id: Number(data.userId) }
+            const refNome = (user._fromSearch !== false && user.nome) ? user.nome : (data.userLabel || null)
+            if (refNome)      procRef.usuario.nome    = refNome
+            if (user.cpfCnpj) procRef.usuario.cpfCnpj = user.cpfCnpj
           }
           payload.processo.anexo.processos = [procRef]
         }
@@ -218,10 +247,11 @@ class DocumentService {
     }
 
     // usuarios (requerente)
-    const user = data.userData || {}
+    // Prioridade: nome da busca fresca → label exibido no campo (data.userLabel) → omite
     if (data.userId) {
       const u = { id: Number(data.userId) }
-      if (user.nome)    u.nome    = user.nome
+      const nome = (user._fromSearch !== false && user.nome) ? user.nome : (data.userLabel || null)
+      if (nome)         u.nome    = nome
       if (user.cpfCnpj) u.cpfCnpj = user.cpfCnpj
       payload.usuarios = [u]
     }

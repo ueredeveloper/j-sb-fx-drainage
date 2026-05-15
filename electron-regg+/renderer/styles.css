@@ -705,11 +705,12 @@ select {
 .doc-list-row--flash { animation: row-flash 2s ease-out forwards; }
 
 .doc-list-action-cell {
-  width: 96px;
+  width: 120px;
+  min-width: 120px;
   padding: 0 6px !important;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
   gap: 8px;
 }
 
@@ -1507,3 +1508,29 @@ select {
   color: var(--text-light) !important;
   cursor: default !important;
 }
+
+/* ── DOCUMENT CHART OVERLAY ── */
+.dc-frame {
+  flex: 1;
+  border: none;
+  min-height: 0;
+  background: #0f172a;
+}
+
+.doc-list-chart-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 3px 4px;
+  border-radius: 4px;
+  line-height: 0;
+  color: #8b5cf6;
+  opacity: 0.65;
+  transition: opacity 0.15s, background 0.15s;
+}
+
+.doc-list-chart-btn:hover {
+  background: #ede9fe;
+  opacity: 1;
+}
+

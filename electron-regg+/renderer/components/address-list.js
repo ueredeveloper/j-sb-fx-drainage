@@ -164,7 +164,9 @@ const AddressList = (() => {
   function _deletionErrorMsg(msg) {
     if (!msg) return 'Não foi possível excluir o endereço.'
     if (/interferencia/i.test(msg)) return 'Este endereço não pode ser excluído pois está vinculado a uma interferência.'
-    const m = msg.match(/on table "([^"]+)"/)
+    // Captura a tabela que possui a FK (após "foreign key constraint ... on table"),
+    // não a tabela que está sendo deletada (primeiro "on table" da mensagem).
+    const m = msg.match(/foreign key constraint "[^"]+" on table "([^"]+)"/)
     if (m) {
       const tableLabels = { documento: 'um documento', processo: 'um processo' }
       const label = tableLabels[m[1]] ?? `"${m[1]}"`

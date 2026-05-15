@@ -193,11 +193,24 @@ const InterferenceView = (() => {
 
     _el('ivGotoMap').addEventListener('click', _gotoMap)
     _el('ivFindHidro').addEventListener('click', _updateHidroSelects)
-    _el('ivLat').addEventListener('change', _updateHidroSelects)
-    _el('ivLon').addEventListener('change', _updateHidroSelects)
+    _el('ivLat').addEventListener('change', () => { _updateHidroSelects(); _gotoMap() })
+    _el('ivLon').addEventListener('change', () => { _updateHidroSelects(); _gotoMap() })
 
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && _container?.classList.contains('open')) close()
+    })
+
+    document.addEventListener('interference-list:deleted', () => {
+      if (!_mounted) return
+      _selectedId     = null
+      _addrSelectedId = null
+      _el('ivForm').reset()
+      _el('ivAddrSearch').value = ''
+      _el('ivAddrClear').hidden = true
+      _closeAddrDropdown()
+      InterferenceDetails.hide()
+      _el('ivSave').textContent = 'Salvar'
+      if (_domainsLoaded) _applyDefaults()
     })
 
     document.addEventListener('interference-list:select', (e) => {
@@ -491,6 +504,7 @@ const InterferenceView = (() => {
       _fillSelect('ivBacia',   bacias)
       _fillSelect('ivUnidade', unidades)
       _domainsLoaded = true
+      if (!_selectedId) _applyDefaults()
     } catch (err) {
       console.error('InterferenceView: erro ao carregar domínios', err)
     }
@@ -504,6 +518,26 @@ const InterferenceView = (() => {
   function _setSelectValue(selectId, value) {
     const sel = _el(selectId)
     if (sel && value != null) sel.value = String(value)
+  }
+
+  /**
+   * @description Aplica os valores padrão de Situação e Tipo de Ato para novo cadastro.
+   */
+  function _applyDefaults() {
+    _setSelectByText('ivSituacao', 'Em Análise')
+    _setSelectByText('ivTipoAto',  'Despacho')
+  }
+
+  /**
+   * @description Seleciona uma opção pelo texto visível.
+   * @param {string} selectId
+   * @param {string} text
+   */
+  function _setSelectByText(selectId, text) {
+    const sel = _el(selectId)
+    if (!sel) return
+    const opt = Array.from(sel.options).find(o => o.text.trim() === text.trim())
+    if (opt) sel.value = opt.value
   }
 
   /**
@@ -531,6 +565,7 @@ const InterferenceView = (() => {
     _closeAddrDropdown()
     InterferenceDetails.hide()
     _el('ivSave').textContent = 'Salvar'
+    if (_domainsLoaded) _applyDefaults()
   }
 
   /**

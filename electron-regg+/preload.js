@@ -6,10 +6,11 @@ contextBridge.exposeInMainWorld('electronAPI', {
 
 /** @description Serviço de documentos. */
 contextBridge.exposeInMainWorld('documentService', {
-  fetchByParam: (keyword) => ipcRenderer.invoke('document:fetchByParam', keyword),
-  save:         (doc)     => ipcRenderer.invoke('document:save', doc),
-  update:       (doc)     => ipcRenderer.invoke('document:update', doc),
-  deleteById:   (id)      => ipcRenderer.invoke('document:deleteById', id)
+  fetchByParam:   (keyword) => ipcRenderer.invoke('document:fetchByParam', keyword),
+  fetchByUserId:  (userId)  => ipcRenderer.invoke('document:fetchByUserId', userId),
+  save:           (doc)     => ipcRenderer.invoke('document:save', doc),
+  update:         (doc)     => ipcRenderer.invoke('document:update', doc),
+  deleteById:     (id)      => ipcRenderer.invoke('document:deleteById', id)
 })
 
 /** @description Serviço de tabelas de domínio (selects de interferência). */

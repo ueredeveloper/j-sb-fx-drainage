@@ -39,6 +39,7 @@
   },
   "dependencies": {
     "@turf/helpers": "^6.5.0",
+    "echarts": "^5.4.3",
     "leaflet": "^1.9.4",
     "turf": "^3.0.14"
   }

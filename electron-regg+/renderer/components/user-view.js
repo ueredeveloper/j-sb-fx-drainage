@@ -76,6 +76,26 @@ const UserView = (() => {
 
         <div id="uvListMount"></div>
 
+        <div id="uvUserDocs" hidden>
+          <div class="doc-list-header" style="margin-top:12px">
+            <span class="doc-list-title">Documentos do Usuário</span>
+          </div>
+          <div class="doc-list-wrap">
+            <table class="doc-list-table" style="table-layout:fixed" aria-label="Documentos do usuário">
+              <thead>
+                <tr>
+                  <th style="width:110px">Número</th>
+                  <th style="width:90px">SEI</th>
+                  <th>Processo</th>
+                  <th style="width:160px">Endereço</th>
+                </tr>
+              </thead>
+              <tbody id="uvDocListBody"></tbody>
+            </table>
+            <p class="doc-list-empty" id="uvDocListEmpty" hidden>Nenhum documento encontrado.</p>
+          </div>
+        </div>
+
       </div>
     `
 
@@ -108,7 +128,44 @@ const UserView = (() => {
       _el('uvCpfCnpj').value     = _maskCpfCnpj(cpfCnpj || '')
       _lastSelected = { userId: id, userLabel: nome || '', cpfCnpj: cpfCnpj || '' }
       document.dispatchEvent(new CustomEvent('user-view:select', { detail: { id, label } }))
+      _loadUserDocs(id)
     })
+  }
+
+  /**
+   * @description Busca e renderiza os documentos relacionados ao usuário selecionado.
+   * @param {string|number} userId
+   */
+  async function _loadUserDocs(userId) {
+    const panel = _el('uvUserDocs')
+    const tbody = _el('uvDocListBody')
+    const empty = _el('uvDocListEmpty')
+    if (!panel) return
+
+    panel.removeAttribute('hidden')
+    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--text-light);padding:8px">Carregando...</td></tr>'
+    empty.setAttribute('hidden', '')
+
+    try {
+      const docs = await window.documentService.fetchByUserId(userId)
+      if (!docs.length) {
+        tbody.innerHTML = ''
+        empty.removeAttribute('hidden')
+        return
+      }
+      tbody.innerHTML = docs.map(d => `
+        <tr class="doc-list-row">
+          <td title="${d.numero || ''}">${d.numero || '—'}</td>
+          <td>${d.numeroSei || '—'}</td>
+          <td title="${d.processoNumero || ''}">${d.processoNumero || '—'}</td>
+          <td title="${d.logradouro || ''}">${d.logradouro || '—'}</td>
+        </tr>`).join('')
+    } catch (err) {
+      console.error('UserView: erro ao buscar documentos do usuário', err)
+      tbody.innerHTML = ''
+      empty.textContent = 'Erro ao carregar documentos.'
+      empty.removeAttribute('hidden')
+    }
   }
 
   /**

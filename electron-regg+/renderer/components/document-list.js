@@ -40,15 +40,15 @@ const DocumentList = (() => {
         </div>
 
         <div class="doc-list-wrap">
-          <table class="doc-list-table" aria-label="Lista de documentos">
+          <table class="doc-list-table" style="table-layout:fixed" aria-label="Lista de documentos">
             <thead>
               <tr>
-                <th>Tipo de Documento</th>
-                <th>Número</th>
-                <th>Número SEI</th>
-                <th>Processo</th>
-                <th class="col-address">Endereço</th>
-                <th></th>
+                <th style="width:100px">Tipo</th>
+                <th style="width:80px">Número</th>
+                <th style="width:80px">SEI</th>
+                <th style="width:120px">Processo</th>
+                <th style="width:320px">Endereço</th>
+                <th style="width:100px;min-width:90px"></th>
               </tr>
             </thead>
             <tbody id="docListBody"></tbody>
@@ -111,6 +111,17 @@ const DocumentList = (() => {
         <td>${r.processoNumero   || '—'}</td>
         <td class="col-address" title="${r.logradouro || ''}">${r.logradouro || '—'}</td>
         <td class="doc-list-action-cell">
+          <button type="button" class="doc-list-chart-btn" title="Visualizar Relacionamentos">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                 fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="18" cy="5" r="3"/>
+              <circle cx="6" cy="12" r="3"/>
+              <circle cx="18" cy="19" r="3"/>
+              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+              <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+            </svg>
+          </button>
           <button type="button" class="doc-list-acts-btn" title="Atos Administrativos">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
                  fill="none" stroke="currentColor" stroke-width="2"
@@ -158,6 +169,9 @@ const DocumentList = (() => {
     tbody.querySelectorAll('.doc-list-row').forEach(tr =>
       tr.addEventListener('click', () => _selectRow(tr))
     )
+    tbody.querySelectorAll('.doc-list-chart-btn').forEach(btn =>
+      btn.addEventListener('click', (e) => { e.stopPropagation(); _openChart(btn.closest('tr')) })
+    )
     tbody.querySelectorAll('.doc-list-acts-btn').forEach(btn =>
       btn.addEventListener('click', (e) => { e.stopPropagation(); _openActs(btn.closest('tr')) })
     )
@@ -202,6 +216,10 @@ const DocumentList = (() => {
 
     tr.classList.add('doc-list-row--flash')
     tr.addEventListener('click', () => _selectRow(tr))
+    tr.querySelector('.doc-list-chart-btn').addEventListener('click', (e) => {
+      e.stopPropagation()
+      _openChart(tr)
+    })
     tr.querySelector('.doc-list-acts-btn').addEventListener('click', (e) => {
       e.stopPropagation()
       _openActs(tr)
@@ -210,6 +228,16 @@ const DocumentList = (() => {
       e.stopPropagation()
       _deleteRow(tr)
     })
+  }
+
+  /**
+   * @description Seleciona o documento da linha e abre a visualização de relacionamentos.
+   * @param {HTMLTableRowElement} tr
+   */
+  function _openChart(tr) {
+    _selectRow(tr)
+    const row = _rows[parseInt(tr.dataset.idx, 10)]
+    DocumentChartView.open(row)
   }
 
   /**
@@ -232,6 +260,10 @@ const DocumentList = (() => {
     const origHTML = cell.innerHTML
     const restore  = () => {
       cell.innerHTML = origHTML
+      cell.querySelector('.doc-list-chart-btn')
+          ?.addEventListener('click', e => { e.stopPropagation(); _openChart(tr) })
+      cell.querySelector('.doc-list-acts-btn')
+          ?.addEventListener('click', e => { e.stopPropagation(); _openActs(tr) })
       cell.querySelector('.doc-list-delete-btn')
           ?.addEventListener('click', e => { e.stopPropagation(); _deleteRow(tr) })
     }

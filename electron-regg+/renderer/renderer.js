@@ -15,6 +15,7 @@ UserView.mount(document.getElementById('user-drawer'))
 ProcessView.mount(document.getElementById('process-drawer'))
 AnnexView.mount(document.getElementById('annex-drawer'))
 AdministrativeActsView.mount(document.getElementById('administrative-acts-drawer'))
+DocumentChartView.mount(document.getElementById('document-chart-drawer'))
 SelectAddress.mount(document.getElementById('section-address'))
 SelectInterference.mount(document.getElementById('section-interference'))
 SelectUser.mount(document.getElementById('section-user'))
@@ -106,15 +107,24 @@ document.addEventListener('map-coords:center', (e) => {
   if (InterferenceView.isMounted())   InterferenceView.setCoords(lat, lng)
 })
 
-/* InterferenceView emite este evento ao clicar em "Ir ao mapa" */
+/**
+ * @description Exibe um ponto no mapa com zoom animado lento e posiciona o marcador.
+ * @param {number} lat
+ * @param {number} lng
+ */
+function _showPoint(lat, lng) {
+  map.flyTo([lat, lng], 14, { duration: 1.5 })
+  placeMarker(lat, lng)
+}
+
+/* InterferenceView e conversores emitem este evento para navegar ao ponto */
 document.addEventListener('interference:goto', (e) => {
   const { lat, lng } = e.detail
   if (lat < -90 || lat > 90 || lng < -180 || lng > 180) {
     showToast('Coordenadas fora do intervalo válido.', 'error')
     return
   }
-  map.setView([lat, lng], 14)
-  placeMarker(lat, lng)
+  _showPoint(lat, lng)
 })
 
 // ── SELEÇÃO NA LISTA DE DOCUMENTOS ───────────────────────────────────────────
@@ -181,8 +191,7 @@ document.addEventListener('document-list:select', (e) => {
 
   /* Posiciona o marcador no mapa se as coordenadas estiverem disponíveis */
   if (doc.latitude != null && doc.longitude != null) {
-    placeMarker(doc.latitude, doc.longitude)
-    map.setView([doc.latitude, doc.longitude], 14)
+    _showPoint(doc.latitude, doc.longitude)
   }
 })
 
@@ -254,6 +263,11 @@ function _validateSelects() {
   const { annexId }   = SelectAnnex.isMounted()   ? SelectAnnex.getValue()   : {}
 
   if (!userId)    { showToast('Selecione um usuário (requerente).', 'error');         return false }
+  const userData = SelectUser.isMounted() ? SelectUser.getData() : null
+  if (userData && !userData.cpfCnpj) {
+    showToast('O usuário precisa ser cadastrado com CPF/CNPJ antes de salvar.', 'error')
+    return false
+  }
   if (!addressId) { showToast('Selecione um endereço.',              'error');         return false }
   if (!processId) { showToast('Selecione um processo.',              'error');         return false }
   if (!annexId)   { showToast('Selecione um processo principal.',    'error');         return false }
