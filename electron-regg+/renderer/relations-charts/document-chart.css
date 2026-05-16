@@ -49,14 +49,30 @@ body {
   justify-content: flex-end;
 }
 
+/* ── Painel de ações (copiar / excluir) ─────────────────────────────────── */
+.dc-actions-panel {
+  display: none;
+  position: fixed;
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  padding: 8px;
+  z-index: 50;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 190px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.55);
+}
+
 .dc-btn {
-  padding: 7px 16px;
+  padding: 9px 20px;
   border-radius: 5px;
   border: none;
-  font-size: 13px;
+  font-size: 14px;
   font-family: system-ui, sans-serif;
   cursor: pointer;
   transition: opacity 0.15s;
+  text-align: left;
 }
 
 .dc-btn:hover {
@@ -66,6 +82,11 @@ body {
 .dc-btn-cancel {
   background: #334155;
   color: #e2e8f0;
+}
+
+.dc-btn-copy {
+  background: #0f766e;
+  color: #fff;
 }
 
 .dc-btn-danger {

@@ -82,7 +82,7 @@ function createWindow() {
   win.loadFile(path.join(__dirname, 'renderer', 'index.html'))
 
   win.once('ready-to-show', () => {
-    win.show()
+    win.maximize()
   })
 }
 

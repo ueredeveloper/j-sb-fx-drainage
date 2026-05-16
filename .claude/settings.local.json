@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Bash(npm install *)",
-      "Bash(rm -rf \"C:/Users/fabmu/AppData/Local/electron-builder/Cache/winCodeSign/159487175\" 2>/dev/null; echo \"Cache parcial removido\")"
+      "Bash(rm -rf \"C:/Users/fabmu/AppData/Local/electron-builder/Cache/winCodeSign/159487175\" 2>/dev/null; echo \"Cache parcial removido\")",
+      "Bash(npm start *)"
     ],
     "additionalDirectories": [
       "C:\\Users\\fabmu\\AppData\\Local\\electron-builder\\Cache\\winCodeSign\\159487175"

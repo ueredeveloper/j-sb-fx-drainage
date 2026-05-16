@@ -19,7 +19,14 @@ var _state = { doc: null, users: [], interferences: [] }
 
 myChart.on('click', function (params) {
   var d = params.data
-  if (d && d._delete) _showConfirm(d._delete)
+  if (!d) return
+  var hasActions = d._delete || (d._copies && d._copies.length)
+  if (!hasActions) return
+  var evt = params.event && params.event.event
+  var x = evt ? evt.clientX : 100
+  var y = evt ? evt.clientY : 100
+  _showActions(d, x, y)
+  if (evt) evt.stopPropagation()
 })
 
 window.addEventListener('resize', function () { myChart.resize() })
@@ -33,7 +40,7 @@ var COLOR = {
   interferencia: '#ef4444'
 }
 
-function _node(name, value, color, children, del) {
+function _node(name, value, color, children, del, copies) {
   var n = { name: name, itemStyle: { color: color, borderColor: color } }
   if (value != null && value !== '') n.value = String(value)
   if (children) {
@@ -41,6 +48,9 @@ function _node(name, value, color, children, del) {
     if (f.length) n.children = f
   }
   if (del && del.id != null) n._delete = del
+  if (copies && copies.length) {
+    n._copies = copies.filter(function (c) { return c && c.value })
+  }
   return n
 }
 
@@ -64,14 +74,16 @@ function updateChart(doc, users, interferences) {
   /* ── Interferências (filhos do endereço) ─────────────────────────── */
   var interfNodes = interferences.length
     ? interferences.map(function (i) {
+        var coords = (i.latitude != null && i.longitude != null)
+          ? _v(i.latitude) + ', ' + _v(i.longitude)
+          : null
         return _node(
           '#' + i.id,
-          (i.latitude != null && i.longitude != null)
-            ? _v(i.latitude) + ', ' + _v(i.longitude)
-            : null,
+          coords,
           COLOR.interferencia,
           null,
-          { fn: 'deleteInterference', id: i.id, label: 'Interferência #' + i.id }
+          { fn: 'deleteInterference', id: i.id, label: 'Interferência #' + i.id },
+          coords ? [{ label: 'Copiar Coordenadas', value: coords }] : null
         )
       })
     : (doc.latitude != null
@@ -84,7 +96,8 @@ function updateChart(doc, users, interferences) {
         interfNodes.length ? interfNodes : null,
         doc.enderecoId
           ? { fn: 'deleteAddress', id: doc.enderecoId, label: doc.logradouro }
-          : null)
+          : null,
+        [{ label: 'Copiar Logradouro', value: doc.logradouro }])
     : null
 
   /* ── Documento (filho do processo) ───────────────────────────────── */
@@ -93,7 +106,8 @@ function updateChart(doc, users, interferences) {
     null,
     doc.id
       ? { fn: 'deleteDocument', id: doc.id, label: doc.numero || ('Doc #' + doc.id) }
-      : null
+      : null,
+    doc.numero ? [{ label: 'Copiar Número', value: doc.numero }] : null
   )
 
   /* ── Usuário(s) (filhos do processo) ─────────────────────────────── */
@@ -101,19 +115,32 @@ function updateChart(doc, users, interferences) {
   if (users.length > 1) {
     var userLeaves = users.map(function (u) {
       return _node(u.nome || ('ID ' + u.id), u.cpfCnpj || null, COLOR.usuario, null,
-        { fn: 'deleteUser', id: u.id, label: u.nome || ('ID ' + u.id) })
+        { fn: 'deleteUser', id: u.id, label: u.nome || ('ID ' + u.id) },
+        [
+          u.nome    ? { label: 'Copiar Nome',     value: u.nome }    : null,
+          u.cpfCnpj ? { label: 'Copiar CPF/CNPJ', value: u.cpfCnpj } : null
+        ].filter(Boolean)
+      )
     })
     userNodes = [ _node('Usuários (' + users.length + ')', null, COLOR.usuario, userLeaves) ]
   } else if (users.length === 1) {
     var u = users[0]
     userNodes = [ _node(
       u.nome || ('ID ' + u.id), u.cpfCnpj || null, COLOR.usuario, null,
-      { fn: 'deleteUser', id: u.id, label: u.nome || ('ID ' + u.id) }
+      { fn: 'deleteUser', id: u.id, label: u.nome || ('ID ' + u.id) },
+      [
+        u.nome    ? { label: 'Copiar Nome',     value: u.nome }    : null,
+        u.cpfCnpj ? { label: 'Copiar CPF/CNPJ', value: u.cpfCnpj } : null
+      ].filter(Boolean)
     ) ]
   } else if (doc.usuarioNome) {
     userNodes = [ _node(
       _v(doc.usuarioNome), doc.cpfCnpj || null, COLOR.usuario, null,
-      doc.usuarioId ? { fn: 'deleteUser', id: doc.usuarioId, label: doc.usuarioNome } : null
+      doc.usuarioId ? { fn: 'deleteUser', id: doc.usuarioId, label: doc.usuarioNome } : null,
+      [
+        doc.usuarioNome ? { label: 'Copiar Nome',     value: doc.usuarioNome } : null,
+        doc.cpfCnpj     ? { label: 'Copiar CPF/CNPJ', value: doc.cpfCnpj }     : null
+      ].filter(Boolean)
     ) ]
   } else {
     userNodes = []
@@ -128,7 +155,8 @@ function updateChart(doc, users, interferences) {
         processoChildren,
         doc.processoId
           ? { fn: 'deleteProcess', id: doc.processoId, label: doc.processoNumero }
-          : null)
+          : null,
+        [{ label: 'Copiar Número', value: doc.processoNumero }])
     : _node('(sem processo)', null, COLOR.processo, processoChildren)
 
   /* ── Processo Principal / raiz ───────────────────────────────────── */
@@ -137,7 +165,8 @@ function updateChart(doc, users, interferences) {
         [processoNode],
         doc.anexoId
           ? { fn: 'deleteAnnex', id: doc.anexoId, label: doc.anexoNumero }
-          : null)
+          : null,
+        [{ label: 'Copiar Número', value: doc.anexoNumero }])
     : processoNode
 
   /* ── Render ──────────────────────────────────────────────────────── */
@@ -151,7 +180,8 @@ function updateChart(doc, users, interferences) {
         var tip = d.value
           ? '<b>' + d.name + '</b>: ' + d.value
           : '<b>' + d.name + '</b>'
-        if (d._delete) tip += '<br><span style="color:#94a3b8;font-size:11px">Clique para excluir</span>'
+        var hasAct = d._delete || (d._copies && d._copies.length)
+        if (hasAct) tip += '<br><span style="color:#94a3b8;font-size:11px">Clique para opções</span>'
         return tip
       },
       backgroundColor: '#1e293b',
@@ -175,15 +205,16 @@ function updateChart(doc, users, interferences) {
         fontSize: 12,
         formatter: function (params) {
           var d = params.data
-          var del = d._delete ? ' {del|✕}' : ''
+          var hasAct = d._delete || (d._copies && d._copies.length)
+          var act = hasAct ? ' {act|···}' : ''
           return d.value
-            ? '{n|' + d.name + '} {v|' + d.value + '}' + del
-            : '{n|' + d.name + '}' + del
+            ? '{n|' + d.name + '} {v|' + d.value + '}' + act
+            : '{n|' + d.name + '}' + act
         },
         rich: {
           n:   { color: '#64748b', fontSize: 11 },
           v:   { color: '#e2e8f0', fontSize: 12, fontWeight: 'bold' },
-          del: { color: '#ef4444', fontSize: 11 }
+          act: { color: '#475569', fontSize: 11 }
         }
       },
       leaves: {
@@ -193,15 +224,16 @@ function updateChart(doc, users, interferences) {
           align: 'left',
           formatter: function (params) {
             var d = params.data
-            var del = d._delete ? ' {del|✕}' : ''
+            var hasAct = d._delete || (d._copies && d._copies.length)
+            var act = hasAct ? ' {act|···}' : ''
             return d.value
-              ? '{n|' + d.name + '}: {v|' + d.value + '}' + del
-              : '{n|' + d.name + '}' + del
+              ? '{n|' + d.name + '}: {v|' + d.value + '}' + act
+              : '{n|' + d.name + '}' + act
           },
           rich: {
             n:   { color: '#64748b', fontSize: 11 },
             v:   { color: '#e2e8f0', fontSize: 12, fontWeight: 'bold' },
-            del: { color: '#ef4444', fontSize: 11 }
+            act: { color: '#475569', fontSize: 11 }
           }
         }
       },
@@ -341,6 +373,71 @@ function _removeFromState(del) {
   updateChart(_state.doc, _state.users, _state.interferences)
 }
 
+/* ── Painel de ações (copiar / excluir) ──────────────────────────────── */
+var _actionsEl = null
+
+function _getActionsPanel() {
+  if (!_actionsEl) _actionsEl = document.getElementById('dc-actions')
+  return _actionsEl
+}
+
+function _showActions(d, x, y) {
+  var panel = _getActionsPanel()
+  panel.innerHTML = ''
+
+  if (d._copies && d._copies.length) {
+    d._copies.forEach(function (cp) {
+      var btn = document.createElement('button')
+      btn.className = 'dc-btn dc-btn-copy'
+      btn.textContent = cp.label
+      btn.addEventListener('click', function (e) {
+        e.stopPropagation()
+        navigator.clipboard.writeText(cp.value || '').then(function () {
+          _showToast('Copiado: ' + cp.value, false)
+          _hideActions()
+        }).catch(function () {
+          _showToast('Erro ao copiar.', true)
+        })
+      })
+      panel.appendChild(btn)
+    })
+  }
+
+  if (d._delete) {
+    var btn = document.createElement('button')
+    btn.className = 'dc-btn dc-btn-danger'
+    btn.textContent = 'Excluir'
+    btn.addEventListener('click', function (e) {
+      e.stopPropagation()
+      _hideActions()
+      _showConfirm(d._delete)
+    })
+    panel.appendChild(btn)
+  }
+
+  panel.style.left = x + 'px'
+  panel.style.top  = y + 'px'
+  panel.style.display = 'flex'
+
+  requestAnimationFrame(function () {
+    var rect = panel.getBoundingClientRect()
+    if (rect.right > window.innerWidth)   panel.style.left = (x - rect.width)  + 'px'
+    if (rect.bottom > window.innerHeight) panel.style.top  = (y - rect.height) + 'px'
+  })
+}
+
+function _hideActions() {
+  var panel = _getActionsPanel()
+  panel.style.display = 'none'
+  panel.innerHTML = ''
+}
+
+document.addEventListener('click', function () {
+  var panel = _getActionsPanel()
+  if (panel && panel.style.display !== 'none') _hideActions()
+})
+
+/* ── Toast ───────────────────────────────────────────────────────────── */
 function _showToast(msg, isError) {
   var t = document.getElementById('dc-toast')
   t.textContent = msg
