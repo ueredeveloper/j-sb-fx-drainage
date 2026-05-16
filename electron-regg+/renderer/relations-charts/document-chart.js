@@ -416,7 +416,7 @@ function _showActions(d, x, y) {
   }
 
   panel.style.left = x + 'px'
-  panel.style.top  = y + 'px'
+  panel.style.top  = (y + 30) + 'px'
   panel.style.display = 'flex'
 
   requestAnimationFrame(function () {

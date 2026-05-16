@@ -20,19 +20,19 @@ const CcGms = (() => {
   function _render() {
     _container.innerHTML = `
       <div class="cc-row">
-        <div class="cc-field narrow"><label>Lat °</label><input type="number" id="ccGmsLatD" value="8"></div>
-        <div class="cc-field narrow"><label>′</label><input type="number" id="ccGmsLatM" value="45"></div>
-        <div class="cc-field sec"><label>″</label><input type="number" id="ccGmsLatS" value="43" step="0.001"></div>
+        <div class="cc-field narrow"><label>Lat °</label><input type="number" id="ccGmsLatD" value="15"></div>
+        <div class="cc-field narrow"><label>′</label><input type="number" id="ccGmsLatM" value="46"></div>
+        <div class="cc-field sec"><label>″</label><input type="number" id="ccGmsLatS" value="32.012" step="0.001"></div>
         <div class="cc-field narrow">
           <label>Dir.</label>
           <select id="ccGmsLatDir"><option value="S">S</option><option value="N">N</option></select>
         </div>
-        <div class="cc-field narrow"><label>Lon °</label><input type="number" id="ccGmsLonD" value="63"></div>
-        <div class="cc-field narrow"><label>′</label><input type="number" id="ccGmsLonM" value="54"></div>
-        <div class="cc-field sec"><label>″</label><input type="number" id="ccGmsLonS" value="14" step="0.001"></div>
+        <div class="cc-field narrow"><label>Lon °</label><input type="number" id="ccGmsLonD" value="47"></div>
+        <div class="cc-field narrow"><label>′</label><input type="number" id="ccGmsLonM" value="56"></div>
+        <div class="cc-field sec"><label>″</label><input type="number" id="ccGmsLonS" value="27.067" step="0.001"></div>
         <div class="cc-field narrow">
           <label>Dir.</label>
-          <select id="ccGmsLonDir"><option value="O">O</option><option value="W">W</option><option value="E">E</option></select>
+          <select id="ccGmsLonDir"><option value="W">W</option><option value="E">E</option></select>
         </div>
         <button class="btn btn-primary cc-convert-btn" id="ccGmsBtn">
           <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24"

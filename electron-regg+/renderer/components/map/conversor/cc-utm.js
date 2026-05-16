@@ -33,11 +33,11 @@ const CcUtm = (() => {
         </div>
         <div class="cc-field grow">
           <label>Leste — E (m)</label>
-          <input type="number" id="ccUtmE" value="188000">
+          <input type="number" id="ccUtmE" value="184973">
         </div>
         <div class="cc-field grow">
           <label>Norte — N (m)</label>
-          <input type="number" id="ccUtmN" value="8261000">
+          <input type="number" id="ccUtmN" value="8253357">
         </div>
         <button class="btn btn-primary cc-convert-btn" id="ccUtmBtn">
           <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24"

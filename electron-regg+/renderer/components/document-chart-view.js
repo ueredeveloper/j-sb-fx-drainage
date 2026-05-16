@@ -27,7 +27,7 @@ const DocumentChartView = (() => {
             </svg>
             Fechar
           </button>
-          <span class="av-title">Gráfico de Relacionamentos</span>
+          <span class="av-title">Documento - Visão Geral</span>
         </div>
 
         <iframe id="dcFrame" class="dc-frame" src="" frameborder="0"></iframe>
