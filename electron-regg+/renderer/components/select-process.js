@@ -11,7 +11,6 @@ const SelectProcess = (() => {
   let _selectedData = null
   let _activeIdx    = -1
   let _lastRows     = []
-  let _fromPaste    = false
 
   /**
    * @description Renderiza o componente e registra os eventos.
@@ -75,7 +74,6 @@ const SelectProcess = (() => {
       if (_el('sProcSearch').value.trim().length >= 2) _search(_el('sProcSearch').value.trim())
     })
     _el('sProcSearch').addEventListener('paste', () => {
-      _fromPaste = true
       setTimeout(() => {
         const term = _el('sProcSearch').value.trim()
         if (term.length >= 2) _search(term)
@@ -148,20 +146,12 @@ const SelectProcess = (() => {
    * @param {string} term
    */
   async function _search(term) {
-    const isPaste = _fromPaste
-    _fromPaste = false
     try {
       const rows = await window.processService.fetchByKeyword(term)
-      const exact = rows.find(r => r.numero.toLowerCase() === term.toLowerCase())
-      if (exact) {
-        _select({ id: String(exact.id), label: exact.numero }, exact)
-        _closeDropdown()
-        return
-      }
-      _renderDropdown(rows, term, isPaste)
+      _renderDropdown(rows, term)
     } catch (err) {
       console.error('SelectProcess: erro ao buscar processos', err)
-      _renderDropdown([], term, isPaste)
+      _renderDropdown([], term)
     }
   }
 
@@ -180,7 +170,7 @@ const SelectProcess = (() => {
    * @param {string} [term]
    * @param {boolean} [highlightUse] - Se true, pré-destaca a opção "Usar".
    */
-  function _renderDropdown(rows, term, highlightUse = false) {
+  function _renderDropdown(rows, term) {
     const list = _el('sProcDropdown')
     _activeIdx = -1
     _lastRows  = rows
@@ -227,11 +217,6 @@ const SelectProcess = (() => {
       })
     })
 
-    if (highlightUse && term) {
-      const all = list.querySelectorAll('.autocomplete-item')
-      _activeIdx = all.length - 1
-      _highlight(all)
-    }
   }
 
   /**

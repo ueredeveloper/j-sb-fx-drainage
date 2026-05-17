@@ -12,7 +12,6 @@ const SelectAnnex = (() => {
   let _selectedData = null
   let _activeIdx    = -1
   let _lastRows     = []
-  let _fromPaste    = false
 
   /**
    * @description Renderiza o componente e registra os eventos.
@@ -75,7 +74,6 @@ const SelectAnnex = (() => {
       if (_el('sAnnSearch').value.trim().length >= 2) _search(_el('sAnnSearch').value.trim())
     })
     _el('sAnnSearch').addEventListener('paste', () => {
-      _fromPaste = true
       setTimeout(() => {
         const term = _el('sAnnSearch').value.trim()
         if (term.length >= 2) _search(term)
@@ -148,20 +146,12 @@ const SelectAnnex = (() => {
    * @param {string} term
    */
   async function _search(term) {
-    const isPaste = _fromPaste
-    _fromPaste = false
     try {
       const rows = await window.annexService.fetchByKeyword(term)
-      const exact = rows.find(r => r.numero.toLowerCase() === term.toLowerCase())
-      if (exact) {
-        _select({ id: String(exact.id), label: exact.numero }, exact)
-        _closeDropdown()
-        return
-      }
-      _renderDropdown(rows, term, isPaste)
+      _renderDropdown(rows, term)
     } catch (err) {
       console.error('SelectAnnex: erro ao buscar anexos', err)
-      _renderDropdown([], term, isPaste)
+      _renderDropdown([], term)
     }
   }
 
@@ -180,7 +170,7 @@ const SelectAnnex = (() => {
    * @param {string} [term]
    * @param {boolean} [highlightUse] - Se true, pré-destaca a opção "Usar".
    */
-  function _renderDropdown(rows, term, highlightUse = false) {
+  function _renderDropdown(rows, term) {
     const list = _el('sAnnDropdown')
     _activeIdx = -1
     _lastRows  = rows
@@ -227,11 +217,6 @@ const SelectAnnex = (() => {
       })
     })
 
-    if (highlightUse && term) {
-      const all = list.querySelectorAll('.autocomplete-item')
-      _activeIdx = all.length - 1
-      _highlight(all)
-    }
   }
 
   /**

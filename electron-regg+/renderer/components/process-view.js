@@ -15,6 +15,7 @@ const ProcessView = (() => {
   let _container    = null
   let _selectedId   = null
   let _lastSelected = null
+  let _fromPaste    = false
 
   /**
    * @description Renderiza o drawer e monta ProcessList abaixo do formulário.
@@ -145,6 +146,13 @@ const ProcessView = (() => {
       if (term.length < 2) { _closeInlineDropdown(dropdownId, inputId); return }
       searchFn(term)
     })
+    input.addEventListener('paste', () => {
+      _fromPaste = true
+      setTimeout(() => {
+        const term = input.value.trim()
+        if (term.length >= 2) searchFn(term)
+      }, 0)
+    })
     clear.addEventListener('click', () => {
       input.value = ''
       clear.hidden = true
@@ -169,13 +177,14 @@ const ProcessView = (() => {
    * @param {string} term
    */
   async function _searchAnexo(term) {
+    _fromPaste = false
     try {
       const rows = await window.annexService.fetchByKeyword(term)
       _renderInlineDropdown('pvAnexoDropdown', 'pvAnexoSearch', 'pvAnexoClear',
-        rows.map(r => ({ id: r.id, label: r.numero })))
+        rows.map(r => ({ id: r.id, label: r.numero })), term)
     } catch (err) {
       console.error('ProcessView: erro ao buscar anexos', err)
-      _renderInlineDropdown('pvAnexoDropdown', 'pvAnexoSearch', 'pvAnexoClear', [])
+      _renderInlineDropdown('pvAnexoDropdown', 'pvAnexoSearch', 'pvAnexoClear', [], term)
     }
   }
 
@@ -184,13 +193,14 @@ const ProcessView = (() => {
    * @param {string} term
    */
   async function _searchUser(term) {
+    _fromPaste = false
     try {
       const rows = await window.userService.fetchByKeyword(term)
       _renderInlineDropdown('pvUserDropdown', 'pvUserSearch', 'pvUserClear',
-        rows.map(r => ({ id: r.id, label: r.nome })))
+        rows.map(r => ({ id: r.id, label: r.nome })), term)
     } catch (err) {
       console.error('ProcessView: erro ao buscar usuários', err)
-      _renderInlineDropdown('pvUserDropdown', 'pvUserSearch', 'pvUserClear', [])
+      _renderInlineDropdown('pvUserDropdown', 'pvUserSearch', 'pvUserClear', [], term)
     }
   }
 
@@ -201,23 +211,41 @@ const ProcessView = (() => {
    * @param {string} clearId
    * @param {Array<{id, label}>} rows
    */
-  function _renderInlineDropdown(dropdownId, inputId, clearId, rows) {
+  function _renderInlineDropdown(dropdownId, inputId, clearId, rows, term) {
     const list = _el(dropdownId)
+
     list.innerHTML = rows.length
       ? rows.map(r => `<li class="autocomplete-item" role="option"
             data-id="${r.id}" data-label="${r.label}">
           <span class="autocomplete-item__main">${r.label}</span>
         </li>`).join('')
-      : '<li class="autocomplete-empty">Nenhum resultado</li>'
+      : ''
+
+    if (term) {
+      const useLi = document.createElement('li')
+      useLi.className = 'autocomplete-item autocomplete-item--use-typed'
+      useLi.setAttribute('role', 'option')
+      useLi.textContent = `Usar: ${term}`
+      useLi.addEventListener('click', () => {
+        _el(inputId).value = term
+        _el(clearId).hidden = false
+        list.setAttribute('hidden', '')
+        _el(inputId).setAttribute('aria-expanded', 'false')
+      })
+      list.appendChild(useLi)
+    }
+
+    if (!list.children.length) list.innerHTML = '<li class="autocomplete-empty">Nenhum resultado</li>'
 
     list.removeAttribute('hidden')
     _el(inputId).setAttribute('aria-expanded', 'true')
 
-    list.querySelectorAll('.autocomplete-item').forEach(li => {
+    list.querySelectorAll('.autocomplete-item:not(.autocomplete-item--use-typed)').forEach(li => {
       li.addEventListener('click', () => {
         _el(inputId).value = li.dataset.label
         _el(clearId).hidden = false
         list.setAttribute('hidden', '')
+        _el(inputId).setAttribute('aria-expanded', 'false')
       })
     })
   }
